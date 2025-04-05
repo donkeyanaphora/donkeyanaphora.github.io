@@ -3,110 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔮(𓁹 𓁹)ִ ࣪𖤐 alchemy lab of latent things</title>
+  <title>🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things</title>
   <style>
     /* Global Styles */
     body {
       margin: 0;
       padding: 0;
-      background-color: #1e1e1e;
-      color: #e0e0e0;
-      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0; /* Old-school light background */
+      color: #000;
+      font-family: 'Times New Roman', serif;
       line-height: 1.6;
     }
+    a {
+      color: #0000EE;
+      text-decoration: none;
+    }
     header {
-      background-color: #2e2e2e;
-      padding: 2rem;
+      background-color: #dcdcdc; /* Light gray header */
+      padding: 1rem;
+      border-bottom: 1px solid #bbb;
       text-align: center;
-      border-bottom: 1px solid #444;
+    }
+    header .header-content {
+      max-width: 900px;
+      margin: auto;
     }
     header h1 {
       margin: 0;
       font-size: 2.5rem;
-      color: #ffcc00; /* Golden tone for a mystical vibe */
+      color: #000;
+    }
+    header p.subtitle {
+      margin: 0.5rem 0;
+      font-style: italic;
+      color: #333;
     }
     nav {
       margin-top: 1rem;
     }
-    nav a {
-      color: #ffcc00;
-      text-decoration: none;
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    nav ul li {
       margin: 0 1rem;
-      font-weight: bold;
     }
-    section {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
-    h2 {
-      border-bottom: 2px solid #444;
+    aside {
+      width: 25%;
+      padding-right: 2rem;
+      border-right: 1px solid #bbb;
+    }
+    aside h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid #bbb;
       padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
+      color: #000;
+    }
+    aside ul {
+      list-style: none;
+      padding: 0;
+    }
+    aside ul li {
+      margin: 0.5rem 0;
+    }
+    main {
+      width: 75%;
+      padding-left: 2rem;
+    }
+    main section {
+      margin-bottom: 2rem;
+    }
+    main h2 {
+      font-size: 2rem;
+      border-bottom: 2px solid #bbb;
+      padding-bottom: 0.5rem;
+      color: #000;
     }
     .card {
-      background-color: #2e2e2e;
+      background-color: #fff;
+      color: #000;
       padding: 1rem;
       margin: 1rem 0;
+      border: 1px solid #bbb;
       border-radius: 5px;
     }
     .card h3 {
       margin-top: 0;
-      color: #ffcc00;
-    }
-    .card a {
-      color: #ffcc00;
-      text-decoration: none;
+      font-size: 1.8rem;
     }
     footer {
       text-align: center;
       padding: 1rem;
-      background-color: #2e2e2e;
-      border-top: 1px solid #444;
+      background-color: #dcdcdc;
+      border-top: 1px solid #bbb;
       font-size: 0.8rem;
+      color: #000;
+    }
+    /* Styling for Quick Links */
+    .quick-links {
+      padding: 0.5rem;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      background-color: #fff;
     }
   </style>
 </head>
 <body>
   <!-- Header Section -->
   <header>
-    <h1>🔮(𓁹 𓁹)ִ ࣪𖤐 alchemy lab of latent things</h1>
+    <div class="header-content">
+      <h1>🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things</h1>
+      <p class="subtitle">Exploring the Mystical Intersection of Alchemy and Computation</p>
+    </div>
     <nav>
-      <a href="#articles">Articles</a>
-      <a href="#projects">Projects</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
   
-  <!-- Articles Section -->
-  <section id="articles">
-    <h2>Articles</h2>
-    <div class="card">
-      <h3>Article Title 1</h3>
-      <p>A brief description of your first article goes here. Explore the mysterious side of deep learning and data science.</p>
-      <a href="articles/article1/shallow_fusion.html">Read More</a>
-    </div>
-    <div class="card">
-      <h3>Article Title 2</h3>
-      <p>A brief description of your second article. Unveil the secrets of latent representations in modern algorithms.</p>
-      <a href="articles/article2.html">Read More</a>
-    </div>
-  </section>
-  
-  
-  <!-- Projects Section -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="card">
-      <h3>Project Name 1</h3>
-      <p>Overview of the project highlighting your data science work. Delve into the alchemy behind deep learning innovations.</p>
-      <a href="projects/project1.html">Explore Project</a>
-    </div>
-    <div class="card">
-      <h3>Project Name 2</h3>
-      <p>A short summary of another project that uncovers hidden insights using data. Witness the fusion of science and alchemy.</p>
-      <a href="projects/project2.html">Explore Project</a>
-    </div>
-  </section>
+  <!-- Main Content Container -->
+  <div class="container">
+    <!-- Sidebar for Quick Links -->
+    <aside>
+      <div class="quick-links">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="https://github.com/donkeyanaphora" target="_blank">GitHub</a></li>
+          <li><a href="cv.pdf" target="_blank">CV</a></li>
+        </ul>
+      </div>
+    </aside>
+    
+    <!-- Main Section -->
+    <main>
+      <!-- About Section -->
+      <section id="about">
+        <h2>About</h2>
+        <p>Welcome to the Alchemy Lab of Latent Things, where ancient alchemical themes meet modern computational exploration. Delve into the world of data, algorithms, and the mystique of transformation.</p>
+      </section>
+      
+      <!-- Work Section -->
+      <section id="work">
+        <h2>Work</h2>
+        
+        <!-- Card 1: Original Article -->
+        <div class="card">
+          <h3>Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges</h3>
+          <p>A minor rant about "AI adoption" and exploration of shallow fusion as a method to address data scarcity and integration in specialized domains.</p>
+          <div class="links">
+            <a href="articles/article1/shallow_fusion.html">Read Article</a> |
+            <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION" target="_blank">GPT2 Pipeline</a> |
+            <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION/blob/main/notebooks/shallow_fusion_demo.ipynb" target="_blank">View Demo</a>
+          </div>
+        </div>
+        
+        <!-- Card 2: Original Article -->
+        <div class="card">
+          <h3>Unleashing Linear Models in Modern Applications</h3>
+          <p>A closer look at how using least squares projection can offer a stable alternative to semantic filtering.</p>
+          <div class="links">
+            <a href="articles/article2.html">Read Article</a> |
+            <a href="projects/project2.html" target="_blank">View Demo</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Contact Section -->
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>For inquiries, please email me at <a href="mailto:donkey@example.com">donkey@example.com</a>.</p>
+      </section>
+    </main>
+  </div>
   
   <!-- Footer Section -->
   <footer>
