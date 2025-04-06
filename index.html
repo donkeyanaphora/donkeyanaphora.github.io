@@ -76,7 +76,8 @@
   <header>
     <div class="header-content">
       <h1 data-text="🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things">🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things</h1>
-      <p class="subtitle">"Too dumb for distributed computing, too broke for a second GPU." - Nicolas Flamel</p>
+      <!-- The hidden message is stored in a data attribute -->
+      <p class="subtitle hidden-message" data-original="&quot;Too dumb for distributed computing, too broke for a second GPU.&quot; - Nicolas Flamel"></p>
     </div>
     <nav>
       <ul>
@@ -137,11 +138,20 @@
 
   <canvas id="noise"></canvas>
   <script>
-    // Gather text nodes
+    // ROT13 function to encode/decode the hidden message
+    function rot13(str) {
+      return str.replace(/[a-zA-Z]/g, function(c) {
+        return String.fromCharCode(
+          (c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
+        );
+      });
+    }
+
+    // Gather text nodes for glitch effect (excluding certain elements)
     const marks = ["̍","̎","̄","̅","̿","̑","̆","̐","͒","͗","͑","͓","͋","͌","̃","̂","̌","͐","̀","́","̏","̒","̓","̔","̽","̉","ͣ","ͤ","ͥ","ͦ","ͧ","ͨ","ͩ","ͪ","ͫ","ͬ","ͭ","ͮ","ͯ","̾","͛","͆","̚"];
     const textNodes = [];
     document.querySelectorAll('body *').forEach(el => {
-      if (el.closest('nav, aside.quick-links, footer, a')) return; //header .card
+      if (el.closest('nav, aside.quick-links, footer, a')) return;
       el.childNodes.forEach(node => {
         if (node.nodeType === Node.TEXT_NODE && /\S/.test(node.textContent)) {
           textNodes.push({ node, original: node.textContent });
@@ -149,20 +159,21 @@
       });
     });
 
-    // Noise animation
+    // Noise animation for the background
     (function(){
-      const canvas = document.getElementById('noise'), ctx = canvas.getContext('2d');
+      const canvas = document.getElementById('noise'),
+            ctx = canvas.getContext('2d');
       function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
       window.addEventListener('resize', resize);
       resize();
       (function draw(){
         const img = ctx.createImageData(canvas.width, canvas.height);
-        for(let i=0; i<img.data.length; i+=4){
-          const v = Math.random()*255;
-          img.data[i]=img.data[i+1]=img.data[i+2]=v;
-          img.data[i+3]=Math.random()*50;
+        for(let i = 0; i < img.data.length; i += 4){
+          const v = Math.random() * 255;
+          img.data[i] = img.data[i+1] = img.data[i+2] = v;
+          img.data[i+3] = Math.random() * 50;
         }
-        ctx.putImageData(img,0,0);
+        ctx.putImageData(img, 0, 0);
         requestAnimationFrame(draw);
       })();
     })();
@@ -171,33 +182,44 @@
     const noiseCanvas = document.getElementById('noise');
     const toggle = document.getElementById('toggleCursed');
 
-    function scrollJitter(){ if(Math.random()<0.15) window.scrollBy(0,(Math.random()>0.5?1:-1)*30); }
+    function scrollJitter(){ if(Math.random() < 0.15) window.scrollBy(0, (Math.random() > 0.5 ? 1 : -1) * 30); }
 
     function applyCursed() {
       document.documentElement.classList.add('cursed');
-      noiseCanvas.style.display='block';
-      document.body.style.cursor="url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABBayygAAAAKUlEQVQYV2NkYGD4z0ABYTAwMCYh8GBgYGBjEwMDAwMDAwMDAwMBABAAFAAZ2qk2wAAAAASUVORK5CYII='), auto";
+      noiseCanvas.style.display = 'block';
+      document.body.style.cursor = "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABBayygAAAAKUlEQVQYV2NkYGD4z0ABYTAwMCYh8GBgYGBjEwMDAwMDAwMDAwMBABAAFAAZ2qk2wAAAAASUVORK5CYII='), auto";
       window.addEventListener('wheel', scrollJitter);
-      textNodes.forEach(({node,original})=>{
-        node.textContent = original.split('').map(ch=>ch+marks[Math.floor(Math.random()*marks.length)]).join('');
+      textNodes.forEach(({node, original}) => {
+        node.textContent = original.split('').map(ch => ch + marks[Math.floor(Math.random() * marks.length)]).join('');
       });
-      toggle.textContent='Original View';
+      // Reveal the hidden message by decoding it (using the original text)
+      document.querySelectorAll('.hidden-message').forEach(el => {
+        const original = el.getAttribute('data-original');
+        el.textContent = original;
+      });
+      toggle.textContent = 'Original View';
     }
+
     function revertOriginal() {
       document.documentElement.classList.remove('cursed');
-      noiseCanvas.style.display='none';
-      document.body.style.cursor='';
+      noiseCanvas.style.display = 'none';
+      document.body.style.cursor = '';
       window.removeEventListener('wheel', scrollJitter);
-      textNodes.forEach(({node,original})=>node.textContent=original);
-      toggle.textContent='Cursed View';
+      textNodes.forEach(({node, original}) => node.textContent = original);
+      // Encode the hidden message using ROT13 for the main view
+      document.querySelectorAll('.hidden-message').forEach(el => {
+        const original = el.getAttribute('data-original');
+        el.textContent = rot13(original);
+      });
+      toggle.textContent = 'Cursed View';
     }
 
-    toggle.addEventListener('click',()=>{
-      cursed=!cursed;
-      cursed?applyCursed():revertOriginal();
+    toggle.addEventListener('click', () => {
+      cursed = !cursed;
+      cursed ? applyCursed() : revertOriginal();
     });
 
-    // start original
+    // Initialize with the hidden message encoded
     revertOriginal();
   </script>
 </body>
