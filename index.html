@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Set the initial title to "COLLINS WESTNEDGE" -->
+  <!-- Initial title -->
   <title>COLLINS WESTNEDGE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -11,14 +11,10 @@
     a { color:#0000EE; text-decoration:none; }
     header { background:#ffffff; padding:1rem; border-bottom:1px solid #bbb; text-align:center; position:relative; }
     header .header-content { max-width:900px; margin:auto; }
-    /* The h1 now stores two versions: data-original and data-alt */
-    header h1 { 
-      margin:0; 
-      font-size:2.5rem; 
-      color:#000;
-    }
+    header h1 { margin:0; font-size:2.5rem; color:#000; }
     header p.subtitle { margin:0.5rem 0; color:#333; font-style:italic; }
-    /* Make the hidden message clickable and add hover effects */
+
+    /* Hidden message styles */
     .hidden-message {
       cursor: pointer;
       transition: color 0.3s, text-shadow 0.3s;
@@ -28,6 +24,13 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
       text-decoration: underline;
     }
+    /* highlight on scroll */
+    .hidden-message.highlight {
+      color: #ff4500;
+      text-shadow: 0 0 8px rgba(255,69,0,0.7);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
     nav { margin-top:1rem; }
     nav ul { list-style:none; display:flex; justify-content:center; padding:0; margin:0; }
     nav li { margin:0 1rem; }
@@ -49,11 +52,7 @@
     .cursed body { background:#111 !important; color:#eee !important; }
     .cursed a { color:#4af !important; }
     .cursed header { background:#111 !important; border-color:#333 !important; }
-    .cursed header h1 { 
-      color:#eee !important; 
-      position:relative; 
-      animation:glitch 3s infinite;
-    }
+    .cursed header h1 { color:#eee !important; position:relative; animation:glitch 3s infinite; }
     .cursed header h1::before,
     .cursed header h1::after {
       content:attr(data-text);
@@ -85,41 +84,27 @@
 
     /* Mobile Friendly Adjustments */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-        max-width: 100%;
-        margin: 1rem auto;
-        padding: 0 1rem;
-      }
-      aside, main {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-      }
-      aside {
-        border: none;
-        border-bottom: 1px solid #bbb;
-        margin-bottom: 1rem;
-      }
-      header h1 { font-size: 2rem; }
-      /* Keep navigation links inline with wrapping if needed */
-      nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; }
+      .container { flex-direction: column; max-width:100%; margin:1rem auto; padding:0 1rem; }
+      aside, main { width:100%; padding:0; margin:0; }
+      aside { border:none; border-bottom:1px solid #bbb; margin-bottom:1rem; }
+      header h1 { font-size:2rem; }
+      nav ul { flex-direction:row; flex-wrap:wrap; gap:0.5rem; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <!-- 
-           The h1 now holds both the original and alternate titles.
-           Initial state: "COLLINS WESTNEDGE"
-      -->
-      <h1 data-original="COLLINS WESTNEDGE" data-alt="🔮(𓁹 𓁹) The Latent Realm 𓆏" data-text="🔮(𓁹 𓁹) The Latent Realm 𓆏">
-        COLLINS WESTNEDGE
-      </h1>
-      <!-- The hidden message now includes a title attribute to hint interactivity -->
-       <!--"Too dumb for distributed computing, too broke for a second GPU. - Anonymous"-->
-      <p class="subtitle hidden-message" title="Click to decode" data-original="Compute is precious to me, though I buy it with great pain"></p>
+      <h1
+        data-original="COLLINS WESTNEDGE"
+        data-alt="🔮(𓁹 𓁹) The Latent Realm 𓆏"
+        data-text="🔮(𓁹 𓁹) The Latent Realm 𓆏"
+      >COLLINS WESTNEDGE</h1>
+      <p
+        class="subtitle hidden-message"
+        title="Click to decode"
+        data-original="Compute is precious to me, though I buy it with great pain"
+      ></p>
     </div>
     <nav>
       <ul>
@@ -146,10 +131,11 @@
     <main>
       <section id="about">
         <h2>About</h2>
-        <p id="aboutText"
-           data-original="Hi, I’m Collins. I work as a Senior Data Scientist. My background is in philosophy, specifically in the philosophy of language, where my studies focused on various phenomena in natural language and the ways in which these phenomena can be formalized. This interest eventually led me to explore probabilistic approaches to language, and in turn the field data science as a whole."
-           data-alt="Welcome to latent realm. Follow me on my journey through data, philosophy, and ML in the pursuit of bending AI to will of human-kind. Also, checkout my articles below and lets connect on Linkedin!">
-        </p>
+        <p
+          id="aboutText"
+          data-original="Hi, I’m Collins. I work as a Senior Data Scientist. My background is in philosophy, specifically in the philosophy of language, where my studies focused on various phenomena in natural language and the ways in which these phenomena can be formalized. This interest eventually led me to explore probabilistic approaches to language, and in turn the field data science as a whole."
+          data-alt="Welcome to latent realm. Follow me on my journey through data, philosophy, and ML in the pursuit of bending AI to will of human-kind. Also, checkout my articles below and lets connect on Linkedin!"
+        ></p>
       </section>
       <section id="work">
         <h2>Work</h2>
@@ -193,112 +179,102 @@
 
   <canvas id="noise"></canvas>
   <script>
-    // ROT13 function to encode/decode the hidden message
+    // ROT13 for hidden message
     function rot13(str) {
-      return str.replace(/[a-zA-Z]/g, function(c) {
-        return String.fromCharCode(
-          (c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
-        );
-      });
+      return str.replace(/[a-zA-Z]/g, c =>
+        String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26)
+      );
     }
 
-    // Gather text nodes for glitch effect (excluding certain elements)
+    // Gather text nodes for glitch
     const marks = ["̍","̎","̄","̅","̿","̑","̆","̐","͒","͗","͑","͓","͋","͌","̃","̂","̌","͐","̀","́","̏","̒","̓","̔","̽","̉","ͣ","ͤ","ͥ","ͦ","ͧ","ͨ","ͩ","ͪ","ͫ","ͬ","ͭ","ͮ","ͯ","̾","͛","͆","̚"];
     const textNodes = [];
     document.querySelectorAll('body *').forEach(el => {
       if (el.closest('nav, aside.quick-links, footer, a')) return;
-      el.childNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE && /\S/.test(node.textContent)) {
-          textNodes.push({ node, original: node.textContent });
+      el.childNodes.forEach(n => {
+        if (n.nodeType === Node.TEXT_NODE && /\S/.test(n.textContent)) {
+          textNodes.push({ node: n, original: n.textContent });
         }
       });
     });
 
-    // Noise animation for the background
+    // Noise canvas animation
     (function(){
-      const canvas = document.getElementById('noise'),
-            ctx = canvas.getContext('2d');
-      function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+      const c = document.getElementById('noise'), ctx = c.getContext('2d');
+      function resize(){ c.width = innerWidth; c.height = innerHeight; }
       window.addEventListener('resize', resize);
       resize();
       (function draw(){
-        const img = ctx.createImageData(canvas.width, canvas.height);
-        for(let i = 0; i < img.data.length; i += 4){
-          const v = Math.random() * 255;
-          img.data[i] = img.data[i+1] = img.data[i+2] = v;
-          img.data[i+3] = Math.random() * 50;
+        const img = ctx.createImageData(c.width, c.height);
+        for(let i=0; i<img.data.length; i+=4){
+          const v = Math.random()*255;
+          img.data[i]=img.data[i+1]=img.data[i+2]=v;
+          img.data[i+3]=Math.random()*50;
         }
-        ctx.putImageData(img, 0, 0);
+        ctx.putImageData(img,0,0);
         requestAnimationFrame(draw);
       })();
     })();
 
-    // State to track if cursed mode is active
     let cursed = false;
-    
-    function scrollJitter(){ if(Math.random() < 0.15) window.scrollBy(0, (Math.random() > 0.5 ? 1 : -1) * 30); }
+    function scrollJitter(){
+      if(Math.random()<0.15) window.scrollBy(0, (Math.random()>0.5?1:-1)*30);
+    }
 
-    // Function to update the title and header based on mode
-    function updateTitle(isCursed) {
+    function updateTitle(on){
       const h1 = document.querySelector('header h1');
-      if (isCursed) {
-        const alt = h1.getAttribute('data-alt');
-        h1.textContent = alt;
-        document.title = alt;
-      } else {
-        const orig = h1.getAttribute('data-original');
-        h1.textContent = orig;
-        document.title = orig;
-      }
+      h1.textContent = on ? h1.dataset.alt : h1.dataset.original;
+      document.title = on ? h1.dataset.alt : h1.dataset.original;
+    }
+    function updateAbout(on){
+      const p = document.getElementById('aboutText');
+      p.textContent = on ? p.dataset.alt : p.dataset.original;
     }
 
-    // Function to update the About section paragraph based on mode
-    function updateAboutText(isCursed) {
-      const about = document.getElementById('aboutText');
-      if (isCursed) {
-        about.textContent = about.getAttribute('data-alt');
-      } else {
-        about.textContent = about.getAttribute('data-original');
-      }
-    }
-
-    function applyCursed() {
+    function applyCursed(){
       document.documentElement.classList.add('cursed');
       document.getElementById('noise').style.display = 'block';
-      document.body.style.cursor = "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABBayygAAAAKUlEQVQYV2NkYGD4z0ABYTAwMCYh8GBgYGBjEwMDAwMDAwMDAwMBABAAFAAZ2qk2wAAAAASUVORK5CYII='), auto";
+      document.body.style.cursor = "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABBayygAAAAKUlEQVQYV2NkYGD4z0ABYTAwMCYh8GBgYGBjEwMDAwMDAwMDAwMBABAAFAAZ2qk2wAAAAASUVORK5CYII='),auto";
       window.addEventListener('wheel', scrollJitter);
-      textNodes.forEach(({node, original}) => {
-        node.textContent = original.split('').map(ch => ch + marks[Math.floor(Math.random() * marks.length)]).join('');
+      textNodes.forEach(({node, original})=>{
+        node.textContent = original.split('').map(ch=>ch+marks[Math.floor(Math.random()*marks.length)]).join('');
       });
-      // Reveal the hidden message by decoding it (using the original text)
-      document.querySelectorAll('.hidden-message').forEach(el => {
-        el.textContent = el.getAttribute('data-original');
+      document.querySelectorAll('.hidden-message').forEach(el=>{
+        el.textContent = el.dataset.original;
       });
       updateTitle(true);
-      updateAboutText(true);
+      updateAbout(true);
     }
 
-    function revertOriginal() {
+    function revertOriginal(){
       document.documentElement.classList.remove('cursed');
       document.getElementById('noise').style.display = 'none';
       document.body.style.cursor = '';
       window.removeEventListener('wheel', scrollJitter);
-      textNodes.forEach(({node, original}) => node.textContent = original);
-      // Encode the hidden message using ROT13 for the main view
-      document.querySelectorAll('.hidden-message').forEach(el => {
-        el.textContent = rot13(el.getAttribute('data-original'));
+      textNodes.forEach(({node, original})=> node.textContent = original);
+      document.querySelectorAll('.hidden-message').forEach(el=>{
+        el.textContent = rot13(el.dataset.original);
       });
       updateTitle(false);
-      updateAboutText(false);
+      updateAbout(false);
     }
 
-    // Toggle cursed mode when clicking the hidden message
-    document.querySelector('.hidden-message').addEventListener('click', () => {
+    // Toggle on click
+    document.querySelector('.hidden-message').addEventListener('click', ()=>{
       cursed = !cursed;
       cursed ? applyCursed() : revertOriginal();
     });
 
-    // Initialize with the hidden message encoded and original title/text
+    // Scroll highlight
+    let scrollTimeout;
+    window.addEventListener('scroll', ()=>{
+      const msg = document.querySelector('.hidden-message');
+      msg.classList.add('highlight');
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(()=> msg.classList.remove('highlight'), 300);
+    });
+
+    // Initialize
     revertOriginal();
   </script>
 </body>
