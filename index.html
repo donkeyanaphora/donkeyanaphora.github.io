@@ -6,7 +6,7 @@
   <title>🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things</title>
   <style>
     /* Original Styles */
-    body { margin:0; padding:0; background:#ffffff; color:#000; font-family:'Times New Roman',serif; line-height:1.6; }
+    body { margin:0; padding:0; background:#ffffff; color:#000; font-family:'Times New Roman', serif; line-height:1.6; }
     a { color:#0000EE; text-decoration:none; }
     header { background:#ffffff; padding:1rem; border-bottom:1px solid #bbb; text-align:center; position:relative; }
     header .header-content { max-width:900px; margin:auto; }
@@ -69,6 +69,28 @@
       background:#0000EE; border:none; color:#fff;
       padding:0.5rem 1rem; cursor:pointer; border-radius:4px;
       font-weight:bold;
+    }
+
+    /* Mobile Friendly Adjustments */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 1rem auto;
+        padding: 0 1rem;
+      }
+      aside, main {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      aside {
+        border: none;
+        border-bottom: 1px solid #bbb;
+        margin-bottom: 1rem;
+      }
+      header h1 { font-size: 2rem; }
+      nav ul { flex-direction: column; gap: 0.5rem; }
     }
   </style>
 </head>
@@ -211,7 +233,7 @@
         const original = el.getAttribute('data-original');
         el.textContent = rot13(original);
       });
-      toggle.textContent = '(∩｀-´)⊃━☆ﾟ.*･｡ﾟ';
+      toggle.textContent = 'Cursed View';
     }
 
     toggle.addEventListener('click', () => {
