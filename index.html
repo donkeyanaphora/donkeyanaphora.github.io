@@ -12,6 +12,16 @@
     header .header-content { max-width:900px; margin:auto; }
     header h1 { margin:0; font-size:2.5rem; color:#000; }
     header p.subtitle { margin:0.5rem 0; color:#333; font-style:italic; }
+    /* Make the hidden message clickable and add hover effects */
+    .hidden-message {
+      cursor: pointer;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .hidden-message:hover {
+      color: #ff0000;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      text-decoration: underline;
+    }
     nav { margin-top:1rem; }
     nav ul { list-style:none; display:flex; justify-content:center; padding:0; margin:0; }
     nav li { margin:0 1rem; }
@@ -63,14 +73,6 @@
       40% { clip:rect(80px,9999px,140px,0); transform:translate(2px,-1px); }
     }
 
-    /* Toggle Button */
-    #toggleCursed {
-      position:absolute; top:1rem; right:1rem;
-      background:#0000EE; border:none; color:#fff;
-      padding:0.5rem 1rem; cursor:pointer; border-radius:4px;
-      font-weight:bold;
-    }
-
     /* Mobile Friendly Adjustments */
     @media (max-width: 768px) {
       .container {
@@ -90,16 +92,19 @@
         margin-bottom: 1rem;
       }
       header h1 { font-size: 2rem; }
-      nav ul { flex-direction: column; gap: 0.5rem; }
+      /* Keep navigation links inline with wrapping if needed */
+      nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <h1 data-text="🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things">🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things</h1>
-      <!-- The hidden message is stored in a data attribute -->
-      <p class="subtitle hidden-message" data-original="&quot;Too dumb for distributed computing, too broke for a second GPU.&quot; - Nicolas Flamel"></p>
+      <h1 data-text="🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things">
+        🔮(𓁹 𓁹)ִ ࣪𖤐 Alchemy Lab of Latent Things
+      </h1>
+      <!-- The hidden message now includes a title attribute to hint interactivity -->
+      <p class="subtitle hidden-message" title="Click to decode" data-original="&quot;Too dumb for distributed computing, too broke for a second GPU.&quot; - Nicolas Flamel"></p>
     </div>
     <nav>
       <ul>
@@ -108,7 +113,6 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
-    <button id="toggleCursed">Cursed View</button>
   </header>
 
   <div class="container">
@@ -200,15 +204,14 @@
       })();
     })();
 
+    // State to track if cursed mode is active
     let cursed = false;
-    const noiseCanvas = document.getElementById('noise');
-    const toggle = document.getElementById('toggleCursed');
-
+    
     function scrollJitter(){ if(Math.random() < 0.15) window.scrollBy(0, (Math.random() > 0.5 ? 1 : -1) * 30); }
 
     function applyCursed() {
       document.documentElement.classList.add('cursed');
-      noiseCanvas.style.display = 'block';
+      document.getElementById('noise').style.display = 'block';
       document.body.style.cursor = "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABBayygAAAAKUlEQVQYV2NkYGD4z0ABYTAwMCYh8GBgYGBjEwMDAwMDAwMDAwMBABAAFAAZ2qk2wAAAAASUVORK5CYII='), auto";
       window.addEventListener('wheel', scrollJitter);
       textNodes.forEach(({node, original}) => {
@@ -219,12 +222,11 @@
         const original = el.getAttribute('data-original');
         el.textContent = original;
       });
-      toggle.textContent = 'Original View';
     }
 
     function revertOriginal() {
       document.documentElement.classList.remove('cursed');
-      noiseCanvas.style.display = 'none';
+      document.getElementById('noise').style.display = 'none';
       document.body.style.cursor = '';
       window.removeEventListener('wheel', scrollJitter);
       textNodes.forEach(({node, original}) => node.textContent = original);
@@ -233,10 +235,10 @@
         const original = el.getAttribute('data-original');
         el.textContent = rot13(original);
       });
-      toggle.textContent = 'Cursed View';
     }
 
-    toggle.addEventListener('click', () => {
+    // Toggle cursed mode when clicking the hidden message
+    document.querySelector('.hidden-message').addEventListener('click', () => {
       cursed = !cursed;
       cursed ? applyCursed() : revertOriginal();
     });
