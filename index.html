@@ -141,7 +141,7 @@
     const marks = ["̍","̎","̄","̅","̿","̑","̆","̐","͒","͗","͑","͓","͋","͌","̃","̂","̌","͐","̀","́","̏","̒","̓","̔","̽","̉","ͣ","ͤ","ͥ","ͦ","ͧ","ͨ","ͩ","ͪ","ͫ","ͬ","ͭ","ͮ","ͯ","̾","͛","͆","̚"];
     const textNodes = [];
     document.querySelectorAll('body *').forEach(el => {
-      if (el.closest('header, nav, aside.quick-links, footer, a, .card')) return;
+      if (el.closest('nav, aside.quick-links, footer, a')) return; //header .card
       el.childNodes.forEach(node => {
         if (node.nodeType === Node.TEXT_NODE && /\S/.test(node.textContent)) {
           textNodes.push({ node, original: node.textContent });
