@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
 <link rel="stylesheet" href="file:////Users/collinswestnedge/.vscode/extensions/goessner.mdmath-2.7.4/themes/default/style.css">
-
 <style>
   .markdown-body {
     max-width: 800px;  /* Limits the width to mimic a PDF layout */
@@ -15,14 +14,17 @@
     padding: 2rem;     /* Adds space around the content for readability */
   }
 </style>
-
 </head>
 <body class="markdown-body">
 <h2 dir="auto" id="introduction">Introduction</h2>
+<p dir="auto">When I first attended NeurIPS (Dec 2023) nearly every pannel discussed or addressed AI ethics and the future of AI. By now these topics make up the vast majority of Linkedin post, earnings call, and employee town hall.</p>
+<p dir="auto">The merit of these topics is undeniable, but their oversaturation has dulled meaningful discourse, turning urgent discussions into background noise. Yet beneath these trending topics lies a more pressing, subtler issue: the struggle against data scarcity, and the practical complexities surrounding real-world integration of AI.</p>
+<h2 dir="auto" id="the-simple-picture">The Simple Picture</h2>
 <p dir="auto">The discourse around the future of AI and its industry adoption is as polarizing as debates around immigration with many parallels. One camp warns that &quot;AI will take our jobs&quot; the counter point to which is the promise of economic growth and filled labor shortages; a picture in which AI fully automates the tedious underpaid jobs that struggle to be filled in the first place and at fraction of the cost/pay. The reality of integration and adoption is more nuanced. Adoption isn't some blind plug and play process, rather it is a process of careful, deliberate and at times tedious integration.</p>
-<p dir="auto">Consider applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. Companies often resort to standard recipes e.g. “exciting” the right activations through few-shot examples, data-dumps of internal documents, or ambitious attempts at fine-tuning on small internal datasets. However, in practice there’s often no gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error. Although each new model release may simplify industry adoption, the significant challenges I've outlined don't amount to a compelling enough success story for your typical earnings call.</p>
-<p dir="auto">In short, most companies lack the tech infrastructure and expertise to integrate at scale and this is largely a function of the <a href="https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall">data wall</a> e.g. the gap between available data and the data needed for task/domain specific AI usecases. In practice the data wall is always present and bridging different data modalities or balancing generalist and specialist data distributions is a significant challenge. However, concepts like self-supervision scale effectively without the need for heavily structured data.</p>
-<p dir="auto">While many companies have ample unstructured text relevant to their domain, few possess the extensive structured datasets required to train robust end-to-end models. Techniques such as <strong>shallow fusion</strong> not only address issues with data scarcity and the complexities inherent in achieving integration of large scale AI systems, but it also naturally extends to broader trends within AI development.</p>
+<p dir="auto">Consider applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. Companies often resort to standard recipes e.g. “exciting” the right neurons through few-shot examples, data-dumps of internal documents, or ambitious attempts at fine-tuning on small internal datasets. However, in practice there’s often no gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error. Although each new model release may simplify industry adoption, the significant challenges I've outlined don't amount to a compelling enough success story for your typical earnings call.</p>
+<p dir="auto">In short, most companies lack the tech infrastructure and expertise to integrate at scale.</p>
+<h2 dir="auto" id="bridging-the-data-wall-collaborative-approach">Bridging the Data Wall: Collaborative Approach</h2>
+<p dir="auto">The <a href="https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall">data wall</a> e.g. the gap between available data and the data needed for task/domain specific AI poses a major hurdle. In practice the data wall is always present and bridging different data modalities or balancing generalist and specialist data distributions is a significant challenge. However, concepts like self-supervision scale effectively without the need for heavily structured data. While many companies have ample unstructured text relevant to their domain, few possess the extensive structured datasets required to train robust end-to-end models. Techniques such as shallow fusion not only address issues with data scarcity and the complexities inherent in achieving integration of large scale AI systems, but it also naturally extends to broader trends within AI development.</p>
 <h2 dir="auto" id="why-this-matters-synecdoche-for-industry-trends">Why This Matters: Synecdoche for Industry Trends</h2>
 <p dir="auto">The concept of shallow fusion I think is a good starting point to illustrate...</p>
 <ol dir="auto">
@@ -57,7 +59,7 @@ y^* = \arg\max_{y_t}\;\Bigl[
 <h4 dir="auto" id="process-diagram">Process Diagram:</h4>
 <div  dir="auto" ></div>
 <center>
-  <img src="assets/image.png" alt="diagram">
+  <img src="image.png" alt="diagram">
 </center>
 <div  dir="auto" ></div>
 <!-- ![diagram](data/image.png) -->

@@ -1,5 +1,5 @@
 ## Introduction
-When I first attended NeurIPS (Dec 2023) nearly every pannel discussed or addressed AI ethics and the future of AI. By now these topics infect every Linkedin post, earnings call, and employee town hall, like a bilboard top 10 stagnating the charts well past it's expiration date. 
+When I first attended NeurIPS (Dec 2023) nearly every pannel discussed or addressed AI ethics and the future of AI. By now these topics make up the vast majority of Linkedin post, earnings call, and employee town hall. 
 
 The merit of these topics is undeniable, but their oversaturation has dulled meaningful discourse, turning urgent discussions into background noise. Yet beneath these trending topics lies a more pressing, subtler issue: the struggle against data scarcity, and the practical complexities surrounding real-world integration of AI.
 
