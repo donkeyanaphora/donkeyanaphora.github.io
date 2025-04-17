@@ -1,36 +1,20 @@
-## Introduction
-When I first attended NeurIPS (Dec 2023) nearly every pannel discussed or addressed AI ethics and the future of AI. By now these topics make up the vast majority of Linkedin post, earnings call, and employee town hall. 
+# AI Integration Beyond the Buzz:  
+### A Technical Exploration through Shallow Fusion  
 
-The merit of these topics is undeniable, but their oversaturation has dulled meaningful discourse, turning urgent discussions into background noise. Yet beneath these trending topics lies a more pressing, subtler issue: the struggle against data scarcity, and the practical complexities surrounding real-world integration of AI.
+**Collins Westnedge**  
+*April 16, 2025*
 
-## The Simple Picture
-The discourse around the future of AI and its industry adoption is as polarizing as debates around immigration with many parallels. One camp warns that "AI will take our jobs" the counter point to which is the promise of economic growth and filled labor shortages; a picture in which AI fully automates the tedious underpaid jobs that struggle to be filled in the first place and at fraction of the cost/pay. The reality of integration and adoption is more nuanced. Adoption isn't some blind plug and play process, rather it is a process of careful, deliberate and at times tedious integration.
+AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption. 
 
-Consider applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. Companies often resort to standard recipes e.g. “exciting” the right neurons through few-shot examples, data-dumps of internal documents, or ambitious attempts at fine-tuning on small internal datasets. However, in practice there’s often no gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error. Although each new model release may simplify industry adoption, the significant challenges I've outlined don't amount to a compelling enough success story for your typical earnings call.
+The fundamental challenge is the gap between available data and the data needed for a domain-specific task this is known as the the [data wall](https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall). Consider for example applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. For the generalist model to succeed, it must first grasp dense company prospectuses, specialized jargon, and the nuances of the business problem itself. To address this gap companies often resort to standard recipes e.g. “exciting” the right activations through few-shot examples, dumping streams of internal documents into the model's context, or ambitious attempts at fine-tuning on small internal datasets. However, with these approaches there’s often no optimization signal or gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error. 
 
-In short, most companies lack the tech infrastructure and expertise to integrate at scale.
-
-## Bridging the Data Wall: Collaborative Approach
-The [data wall](https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall) e.g. the gap between available data and the data needed for task/domain specific AI poses a major hurdle. In practice the data wall is always present and bridging different data modalities or balancing generalist and specialist data distributions is a significant challenge. However, concepts like self-supervision scale effectively without the need for heavily structured data. While many companies have ample unstructured text relevant to their domain, few possess the extensive structured datasets required to train robust end-to-end models. Techniques such as shallow fusion not only address issues with data scarcity and the complexities inherent in achieving integration of large scale AI systems, but it also naturally extends to broader trends within AI development.
-
-
-## Why This Matters: Synecdoche for Industry Trends
-The concept of shallow fusion I think is a good starting point to illustrate... 
-1. broader trends within AI such as Mixture of Experts (MoE) and the limitations they address
-2. The blind spots that exist between modalities
-3. errors that arise in out-of-distribution use cases.
-5. the shortage of structured domain specific data
-6. and lastly, the amount of work required for industry integration.
-
-But first, what is shallow fusion? 
-
-Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing. 
-
-Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to.
+In contrast to the popular narrative, my day-to-day experience has shown me that these discussions routinely overlook the many technical challenges mentioned above. As someone stuck in the generalist specialist divide, it's hard not to feel frustration when leaders boast an AI integration victory that is nothing more than an API call. This disconnect motivated me to develop a case study leveraging **shallow fusion**. The goal of which is twofold: highlight the technical challenges of AI integration and demonstrate how bridging this divide can close the gap between AI's marketing promises and its operational reality. 
 
 ## A Formal Example: Shallow Fusion
 
-To build on the analogy from earlier we can now formally describe this process. In the example below think of $P_{\text{ASR}}$ as the person listening to the audio and $P_{\text{LM}}$ as the domain expert that is hard of hearing but deeply understands the context. 
+But first, what is shallow fusion? Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing. 
+
+Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to. With this analogy we can now formally describe this process. In the example below think of $P_{\text{ASR}}$ as the person listening to the audio and $P_{\text{LM}}$ as the domain expert that is hard of hearing but deeply understands the context. 
 
 #### Mathematical Formulation
 
@@ -100,7 +84,7 @@ For our models let's take Whisper to be our ASR model and GTP2 to be our LM. In 
   ...
   - Token: "claimant" → high confidence
   - Token: "'s" → high confidence
-  - At the final subword, Whisper exhibits uncertainty, spreading probabilities across candidates "diploma", "aroma" and "melanoma"
+  - At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates "diploma", "aroma" and "melanoma"
 
 
 #### 2. **Domain GPT-2 Predictions:**  
