@@ -1,9 +1,9 @@
-# AI Integration Beyond the Buzz:  
-### A Technical Exploration through Shallow Fusion  
+# AI Integration Beyond the Buzz: A Technical Exploration through Shallow Fusion  
 
 **Collins Westnedge**  
 *April 16, 2025*
 
+## Introduction
 AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption. 
 
 The fundamental challenge is the gap between available data and the data needed for a domain-specific task this is known as the the [data wall](https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall). Consider for example applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. For the generalist model to succeed, it must first grasp dense company prospectuses, specialized jargon, and the nuances of the business problem itself. To address this gap companies often resort to standard recipes e.g. “exciting” the right activations through few-shot examples, dumping streams of internal documents into the model's context, or ambitious attempts at fine-tuning on small internal datasets. However, with these approaches there’s often no optimization signal or gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error. 
@@ -123,7 +123,7 @@ where $\lambda$ = 0.2:
 "melanoma" now has the highest combined score.
 
 #### **Final Corrected Output:**  
-- "The procedure was medically necessary for the treatment of claimant's `melanomia`." ✅
+- "The procedure was medically necessary for the treatment of claimant's `melanoma`." ✅
 
 #### Key Takeaway:
 
