@@ -68,6 +68,72 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   max-width:100%;
   height:auto;
   border:1px solid var(--section-border);
+  display:block;
+  margin:0 auto;
+}
+
+/* SKETCH PAD */
+.sketch-container {
+  text-align: center;
+  user-select: none;
+}
+.sketch-canvas {
+  border: 2px solid var(--section-border);
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+  margin: 1rem 0;
+}
+.theme-dark .sketch-canvas {
+  background: #222;
+}
+.sketch-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.sketch-controls button {
+  padding: 0.3rem 0.8rem;
+  border: 2px outset #c0c0c0;
+  background: var(--nav-bg);
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: bold;
+}
+.sketch-controls button:active {
+  border-style: inset;
+}
+.color-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  border: 2px outset #c0c0c0;
+}
+.color-btn.active {
+  border-style: inset;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .mood-image img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+  }
+  
+  .mood-item {
+    padding: 0.5rem;
+  }
+  
+  .mood-image {
+    padding: 0.5rem;
+  }
+  
+  .sketch-canvas {
+    width: 100% !important;
+  }
 }
 
 /* FOOTER */
@@ -143,7 +209,6 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
   <details class="section">
     <summary>🖼️ Mood Board</summary>
     <div>
-
       <div class="mood-item">
         <h3>🤕 On Bad Conscience</h3>
         <blockquote>
@@ -162,20 +227,27 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
       </div>
 
       <div class="mood-item">
-        <!-- <h3>🤫 Machines at Work</h3> -->
+        <h3>🤫 Machines at Work</h3>
         <div class="mood-image">
-          <img src="articles/article1/assets/shh.jpg" alt="Quiet Please — Machines Are Learning" style="max-width: 300px;"/>
+          <img src="/api/placeholder/300/400" alt="Quiet Please — Machines Are Learning" />
           <p style="margin-top: 0.5rem; font-style: italic;">Quiet Please — Machines Are Learning</p>
         </div>
       </div>
-<!-- 
-      <div class="mood-item">
-        <h3>yeah...</h3>
-        <div class="mood-image">
-          <img src="articles/article1/assets/JO53.jpg" alt="yeah..." style="max-width: 300px;"/>
-        </div>
-      </div> -->
 
+      <div class="mood-item">
+        <h3>✏️ Consciousness Sketchpad</h3>
+        <div class="sketch-container">
+          <canvas id="sketchpad" class="sketch-canvas" width="600" height="300"></canvas>
+          <div class="sketch-controls">
+            <button class="color-btn active" data-color="#000000" style="background:#000"></button>
+            <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
+            <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
+            <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
+            <button class="color-btn" data-color="#ffffff" style="background:#fff;border-color:#000"></button>
+            <button id="clearBtn">Clear</button>
+          </div>
+        </div>
+      </div>
     </div>
   </details>
 
@@ -226,6 +298,77 @@ btn.onclick = () => {
   }
   btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙';
 };
+
+/* Sketch Pad Functionality */
+const canvas = document.getElementById('sketchpad');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let currentColor = '#000000';
+
+// Set up canvas
+ctx.lineWidth = 2;
+ctx.lineCap = 'round';
+ctx.strokeStyle = currentColor;
+
+// Handle drawing
+function startDrawing(e) {
+  isDrawing = true;
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX || e.touches[0].clientX) - rect.left;
+  const y = (e.clientY || e.touches[0].clientY) - rect.top;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+}
+
+function draw(e) {
+  if (!isDrawing) return;
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX || e.touches[0].clientX) - rect.left;
+  const y = (e.clientY || e.touches[0].clientY) - rect.top;
+  ctx.lineTo(x, y);
+  ctx.stroke();
+}
+
+function stopDrawing() {
+  isDrawing = false;
+}
+
+// Event listeners
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+// Touch events
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('touchend', stopDrawing);
+
+// Color selection
+document.querySelectorAll('.color-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelector('.color-btn.active')?.classList.remove('active');
+    e.target.classList.add('active');
+    currentColor = e.target.dataset.color;
+    ctx.strokeStyle = currentColor;
+  });
+});
+
+// Clear button
+document.getElementById('clearBtn').addEventListener('click', () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+// Adjust canvas for dark mode
+const observer = new MutationObserver(() => {
+  if (root.classList.contains('theme-dark') && currentColor === '#000000') {
+    ctx.strokeStyle = '#ffffff';
+  } else if (!root.classList.contains('theme-dark') && currentColor === '#ffffff') {
+    ctx.strokeStyle = '#000000';
+  }
+});
+observer.observe(root, { attributes: true, attributeFilter: ['class'] });
 </script>
 </body>
 </html>
