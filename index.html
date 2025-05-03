@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>COLLINS WESTNEDGE — Home Page</title>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <style>
 /* ========== DESIGN TOKENS ========== */
 :root{
@@ -187,6 +187,47 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   border-style: inset;
 }
 
+/* MOBILE FRIENDLY WHITEBOARD */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    height: 70%;
+    min-width: 300px;
+    min-height: 400px;
+    resize: none; /* Disable resize on mobile */
+    transform: translate(-50%, -50%) !important; /* Prevent dragging */
+  }
+  
+  .modal-header {
+    cursor: default; /* No dragging on mobile */
+    padding: 15px 10px;
+  }
+  
+  .window-controls button {
+    font-size: 1.5rem;
+    padding: 5px 10px;
+  }
+  
+  .sketch-controls {
+    gap: 0.8rem;
+    padding: 10px 5px;
+  }
+  
+  .sketch-controls button {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+  }
+  
+  .color-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  #fullscreenBtn {
+    display: none; /* Hide fullscreen on mobile */
+  }
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .mood-image img {
@@ -229,7 +270,7 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 <div id="sketchModal" class="modal">
   <div class="modal-content" id="modalContent">
     <div class="modal-header">
-      <h2>✎WHITEBOARD</h2>
+      <h2>WHITEBOARD</h2>
       <div class="window-controls">
         <button id="fullscreenBtn">⛶</button>
         <button class="close">&times;</button>
@@ -534,6 +575,13 @@ function initSketchpad() {
   canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
   canvas.addEventListener('touchend', handleTouchEnd);
   
+  // Prevent scrolling when touching the canvas on mobile
+  canvas.addEventListener('touchstart', function(e) {
+    if (e.target === canvas) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
   // Color selection
   document.querySelectorAll('.color-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -649,7 +697,10 @@ document.addEventListener('mouseup', dragEnd);
 
 function dragStart(e) {
   if (e.target.closest('.window-controls')) return;
-  if (isFullscreen) return; // Don't allow dragging in fullscreen
+  if (isFullscreen) return;
+  
+  // Disable dragging on mobile devices
+  if (window.innerWidth <= 768) return;
   
   initialX = e.clientX - xOffset;
   initialY = e.clientY - yOffset;
