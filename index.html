@@ -4,103 +4,7 @@
 <meta charset="UTF-8">
 <title>COLLINS WESTNEDGE — Home Page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<style>
-/* ========== DESIGN TOKENS ========== */
-:root{
-  --bg-img:url("assets/starfield_tile.gif"); --bg-col:#fff; --txt:#000;
-  --h1:#ff0000; --h1-shadow:#ffff00; --link:#00f; --visited:#808;
-  --section-border:#00f; --card-border:#008; --card-bg:#ffffe8;
-  --aside-bg:#f5f5f5; --nav-bg:#e0e0e0; --footer-bg:#e4e4e4;
-  --uc-bg:#fff0f0; --uc-border:#f00; --passage-bg:#fdfdfd;
-}
-html.theme-dark{
-  --bg-img:url("assets/starfield_tile_dark.gif"); --bg-col:#000; --txt:#e0e0e0;
-  --h1:#ff7373; --h1-shadow:#ff0000; --link:#5ab9ff; --visited:#c78bff;
-  --section-border:#5ab9ff; --card-border:#5ab9ff; --card-bg:#111;
-  --aside-bg:#1a1a1a; --nav-bg:#1f1f1f; --footer-bg:#1a1a1a;
-  --uc-bg:#330000; --uc-border:#ff7373; --passage-bg:#111;
-}
-
-html,body{height:100%;}
-
-/* ========== GLOBAL ========== */
-body{margin:0;background:var(--bg-img) repeat, var(--bg-col);color:var(--txt);font-family:"Comic Sans MS","Trebuchet MS",Tahoma,sans-serif;text-align:center;transition:.4s all;}
-a{color:var(--link);}a:visited{color:var(--visited);}a:hover{background:var(--h1-shadow);}
-h1{margin:.5em 0;font-size:2.5rem;color:var(--h1);text-shadow:2px 2px 0 var(--h1-shadow);}h2{margin:0 0 .5em;font-size:1.5rem;color:var(--link);}
-
-/* LAYOUT */
-#wrapper{width:90%;margin:0 auto;text-align:left;max-width:800px;}
-
-/* COLLAPSIBLE SECTIONS */
-details.section{margin:1rem 0;border:3px double var(--section-border);background:var(--passage-bg);padding:1rem;}
-details.section summary{cursor:pointer;font-weight:bold;color:var(--link);font-size:1.25rem;padding:.5rem 0;}
-details.section summary::-webkit-details-marker{display:none;}
-details.section summary::before{content:"▸ ";display:inline-block;transition:transform .2s;}
-details.section[open] summary::before{transform:rotate(90deg);}details.section > div{margin-top:1rem;}
-
-/* CARD */
-.card{border:2px ridge var(--card-border);background:var(--card-bg);padding:1rem;margin:1rem 0;}
-.card h3{margin-top:0;color:var(--card-border);}
-
-/* UC */
-.uc{display:flex;align-items:center;gap:8px;justify-content:center;border:3px dashed var(--uc-border);background:var(--uc-bg);padding:.75rem;margin:1rem 0;font-weight:bold;}
-
-/* BLOCKQUOTE */
-blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section-border);font-style:italic;}
-.attribution{text-align:right;font-style:normal;margin-top:1rem;color:var(--visited);}
-
-/* MOOD BOARD */
-.mood-item{border:2px ridge var(--card-border);background:var(--card-bg);padding:1rem;margin:1.5rem 0;}
-.mood-item h3{margin-top:0;color:var(--card-border);font-size:1.1rem;}
-.mood-image{text-align:center;padding:1rem;}
-.mood-image img{max-width:100%;height:auto;border:1px solid var(--section-border);display:block;margin:0 auto;}
-
-/* WHITEBOARD MODAL */
-.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);} 
-.modal-content{background-color:var(--card-bg);position:fixed;border:3px double var(--section-border);width:600px;height:400px;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;}
-/* ---------- FULLSCREEN SCRATCH‑PAD ---------- */
-.modal-content.fullscreen{width:100vw;height:100dvh;top:0;left:0;transform:none;}
-.modal-content.fullscreen .modal-body{height:calc(100dvh - 52px);} /* 52 px header */
-/* -------------------------------------------- */
-.modal-header{padding:10px;background:var(--nav-bg);display:flex;justify-content:center;align-items:center;border-bottom:2px solid var(--section-border);user-select:none;position:relative;}
-.modal-header h2{margin:0;font-size:1.2rem;text-align:center;}
-.window-controls{display:flex;gap:10px;position:absolute;right:10px;}
-.window-controls button{background:transparent;border:none;cursor:pointer;font-size:1.2rem;color:var(--txt);padding:0 5px;}
-.window-controls button:hover{color:var(--link);} 
-.modal-body{padding:10px;height:calc(100% - 52px);display:flex;flex-direction:column;overflow:hidden;}
-.sketch-container{text-align:center;user-select:none;flex:1;display:flex;flex-direction:column;min-height:0;}
-.sketch-canvas{border:2px solid var(--section-border);background:#fff;cursor:crosshair;touch-action:none;flex:1;width:100%;min-height:0;}
-.theme-dark .sketch-canvas{background:#222;}
-.sketch-controls{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:10px;flex-shrink:0;min-height:40px;}
-.sketch-controls button{padding:0.3rem 0.8rem;border:2px outset #c0c0c0;background:var(--nav-bg);font-family:inherit;cursor:pointer;font-weight:bold;}
-.sketch-controls button:active{border-style:inset;}
-.color-btn{width:30px;height:30px;padding:0 !important;border:2px outset #c0c0c0;}
-.color-btn.active{border-style:inset;}
-
-/* MOBILE RESPONSIVE */
-@media (max-width:768px){
-  .modal-content{width:95%;height:85%;}
-  .mood-image img{max-width:100%;width:100%;height:auto;}
-  .mood-item{padding:0.5rem;}
-  .mood-image{padding:0.5rem;}
-  h1{font-size:1.8rem;}
-  #wrapper{width:95%;}
-  .sketch-controls{gap:0.8rem;padding:10px 5px;}
-  .sketch-controls button{padding:0.8rem 1.2rem;font-size:1rem;}
-  .color-btn{width:40px;height:40px;}
-}
-
-/* FOOTER */
-footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;background:var(--footer-bg);} 
-
-/* FLOATING BUTTONS */
-.float-btn{position:fixed;bottom:1rem;right:1rem;padding:.5rem 1rem;font-weight:bold;border:2px outset #c0c0c0;background:var(--nav-bg);color:var(--txt);cursor:pointer;}
-#sketchBtn{right:5rem;}
-
-/* QUICK LINKS */
-.quick-links{display:flex;gap:1rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;}
-.quick-links a{padding:.5rem 1rem;border:2px outset #c0c0c0;background:var(--nav-bg);text-decoration:none;}
-</style>
+<link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
 <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
@@ -202,13 +106,23 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
           <p class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</p>
         </blockquote>
       </div>
+
       <div class="mood-item">
-        <h3>🤫 Machines at Work</h3>
+        <h3>Machines at Work</h3>
         <div class="mood-image">
-          <img src="/api/placeholder/300/400" alt="Quiet Please — Machines Are Learning" />
+          <img src="assets/images/shh.jpg" alt="Quiet Please — Machines Are Learning" />
           <p style="margin-top: 0.5rem; font-style: italic;">Quiet Please — Machines Are Learning</p>
         </div>
       </div>
+
+      <div class="mood-item">
+        <h3>It is complicated</h3>
+        <div class="mood-image">
+          <img src="assets/images/bitter.jpg" alt="Quiet Please — Machines Are Learning" />
+          <p style="margin-top: 0.5rem; font-style: italic;">I think I might be the one of the left.</p>
+        </div>
+      </div>
+      
     </div>
   </details>
 
@@ -221,244 +135,6 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 </div>
 
 <footer>&copy; 2025 Donkey Anaphora. All rights reserved.</footer>
-
-<script>
-/* ----------------------------------------------------------------------
-   Helper utilities
----------------------------------------------------------------------- */
-const $          = selector => document.querySelector(selector);
-const $$         = selector => document.querySelectorAll(selector);
-const isDarkMode = () => document.documentElement.classList.contains('theme-dark');
-
-/* ----------------------------------------------------------------------
-   1.  Quote rotator in the header
----------------------------------------------------------------------- */
-(function rotateQuotes() {
-  const quotes = [
-    'Man is something that shall be overcome'
-  ];
-  let index = 0;
-  setInterval(() => {
-    index = (index + 1) % quotes.length;
-    $('#quip').textContent = `"${quotes[index]}"`;
-  }, 10_000);
-})();
-
-/* ----------------------------------------------------------------------
-   2.  Dark‑/light‑mode toggle with localStorage persistence
----------------------------------------------------------------------- */
-(function darkModeToggle() {
-  const btn          = $('#toggleDark');
-  const rootElement  = document.documentElement;
-  const storageKey   = 'theme';
-
-  // –— initialise -------------------------------------------------------
-  try {
-    if (localStorage.getItem(storageKey) === 'dark') {
-      rootElement.classList.add('theme-dark');
-    }
-  } catch (_) {/* localStorage may be blocked – ignore */}
-
-  const updateIcon = () => {
-    btn.textContent = isDarkMode() ? '☀️' : '🌙';
-  };
-  updateIcon();
-
-  // –— click handler ----------------------------------------------------
-  btn.addEventListener('click', () => {
-    rootElement.classList.toggle('theme-dark');
-    updateIcon();
-
-    try {
-      localStorage.setItem(storageKey, isDarkMode() ? 'dark' : 'light');
-    } catch (_) {/* ignore quota / privacy errors */}
-
-    // update canvas background to match new theme
-    updateCanvasBackground();
-  });
-})();
-
-/* ----------------------------------------------------------------------
-   3.  Whiteboard modal logic
----------------------------------------------------------------------- */
-const modal          = $('#sketchModal');
-const modalContent   = $('#modalContent');
-const sketchButton   = $('#sketchBtn');
-const closeButton    = $('.close');
-const fullscreenBtn  = $('#fullscreenBtn');
-const canvas         = $('#sketchpad');
-
-let ctx;                       // 2‑D context (set in initWhiteboard)
-let isDrawing     = false;     // pointer is pressed
-let isEraserMode  = false;     // eraser vs. pen
-let currentColor  = '#000000'; // default ink colour
-let lastFocusEl   = null;      // element that had focus before opening
-let isFullscreen  = false;     // fullscreen toggle state
-
-/* ---------- 3a. modal open / close ----------------------------------- */
-function openModal() {
-  modal.style.display = 'block';
-  modal.setAttribute('aria-hidden', 'false');
-  lastFocusEl = document.activeElement;
-  modalContent.focus();
-  initWhiteboard();
-}
-
-function closeModal() {
-  modal.style.display = 'none';
-  modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  if (lastFocusEl) lastFocusEl.focus();
-}
-
-sketchButton.addEventListener('click', openModal);
-closeButton.   addEventListener('click', closeModal);
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-});
-window.addEventListener('click', e => {
-  if (e.target === modal) closeModal();
-});
-
-/* ---------- 3b. fullscreen toggle ------------------------------------ */
-fullscreenBtn.addEventListener('click', () => {
-  isFullscreen = !isFullscreen;
-  modalContent.classList.toggle('fullscreen', isFullscreen);
-  fullscreenBtn.textContent = isFullscreen ? '⛌' : '⛶';
-  document.body.style.overflow = isFullscreen ? 'hidden' : '';
-  requestAnimationFrame(initWhiteboard); // rebuild canvas after resize
-});
-
-/* ----------------------------------------------------------------------
-   4.  Canvas helpers
----------------------------------------------------------------------- */
-function strokeSize() {
-  // scale line width to device size for a consistent feel
-  return isEraserMode ? Math.max(4, canvas.width / 40)
-                      : Math.max(2, canvas.width / 200);
-}
-
-function resetStrokeStyle() {
-  // Always draw black (or chosen colour) on a white board; no dark‑mode magic
-  const lw = isEraserMode ? Math.max(4, canvas.width / 40)
-                          : Math.max(2, canvas.width / 200);
-  ctx.lineWidth  = lw;
-  ctx.lineCap    = 'round';
-  ctx.lineJoin   = 'round';
-  ctx.strokeStyle = isEraserMode ? '#ffffff' : currentColor;
-}
-
-function updateCanvasBackground() {
-  if (!ctx) return;
-  ctx.save();
-  ctx.globalCompositeOperation = 'destination-over';
-  ctx.fillStyle = '#ffffff';      // white board regardless of theme
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-}
-
-/* ----------------------------------------------------------------------
-   5.  Whiteboard initialisation & resize logic
----------------------------------------------------------------------- */
-function initWhiteboard() {
-  ctx = canvas.getContext('2d');
-
-  // ---- resize canvas to fit container --------------------------------
-  const containerRect = canvas.parentElement.getBoundingClientRect();
-  const controlsH     = $('.sketch-controls').offsetHeight;
-  const targetW       = Math.round(containerRect.width);
-  const targetH       = Math.max(100, Math.round(containerRect.height - controlsH - 20));
-
-  if (canvas.width !== targetW || canvas.height !== targetH) {
-    // preserve drawing when resizing: copy → resize → draw back
-    const copy = document.createElement('canvas');
-    copy.width  = canvas.width;
-    copy.height = canvas.height;
-    copy.getContext('2d').drawImage(canvas, 0, 0);
-
-    canvas.width  = targetW;
-    canvas.height = targetH;
-    ctx.drawImage(copy, 0, 0);
-  }
-
-  updateCanvasBackground();
-  resetStrokeStyle();
-  attachCanvasListeners();
-  attachUiListeners();
-}
-
-/* ----------------------------------------------------------------------
-   6.  Pointer / touch drawing handlers
----------------------------------------------------------------------- */
-function canvasPos(evt) {
-  const rect = canvas.getBoundingClientRect();
-  const x    = (evt.touches ? evt.touches[0].clientX : evt.clientX) - rect.left;
-  const y    = (evt.touches ? evt.touches[0].clientY : evt.clientY) - rect.top;
-  return { x, y };
-}
-
-function beginStroke(evt) {
-  evt.preventDefault();
-  isDrawing = true;
-  const { x, y } = canvasPos(evt);
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-}
-function continueStroke(evt) {
-  if (!isDrawing) return;
-  evt.preventDefault();
-  const { x, y } = canvasPos(evt);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-}
-function endStroke() { isDrawing = false; }
-
-function attachCanvasListeners() {
-  if (canvas.dataset.listenersAttached) return; // idempotent
-  canvas.dataset.listenersAttached = 'true';
-
-  /* mouse */
-  canvas.addEventListener('mousedown', beginStroke);
-  canvas.addEventListener('mousemove', continueStroke);
-  canvas.addEventListener('mouseup',   endStroke);
-  canvas.addEventListener('mouseout',  endStroke);
-
-  /* touch */
-  canvas.addEventListener('touchstart', beginStroke, { passive:false });
-  canvas.addEventListener('touchmove',  continueStroke, { passive:false });
-  canvas.addEventListener('touchend',   endStroke);
-}
-
-/* ----------------------------------------------------------------------
-   7.  UI controls – colour palette, eraser, clear button
----------------------------------------------------------------------- */
-function attachUiListeners() {
-  // colour / eraser buttons
-  $$('.color-btn').forEach(btn => {
-    if (btn.dataset.wired) return;
-    btn.dataset.wired = 'true';
-
-    btn.addEventListener('click', evt => {
-      $$('.color-btn.active').forEach(b => b.classList.remove('active'));
-      evt.currentTarget.classList.add('active');
-
-      const colour = evt.currentTarget.dataset.color;
-      isEraserMode = (colour === 'eraser');
-      if (!isEraserMode) currentColor = colour;
-      resetStrokeStyle();
-    });
-  });
-
-  // clear button
-  const clearBtn = $('#clearBtn');
-  if (!clearBtn.dataset.wired) {
-    clearBtn.dataset.wired = 'true';
-    clearBtn.addEventListener('click', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      updateCanvasBackground();
-    });
-  }
-}
-</script>
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>
