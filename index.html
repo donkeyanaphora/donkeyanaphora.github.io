@@ -9,6 +9,7 @@
 <body>
 <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
 <button id="sketchBtn" class="float-btn" aria-label="Open sketchpad">✍️</button>
+<button id="codeBtn" class="float-btn" aria-label="Open pseudo‑code pad">⌨️</button>
 
 <!-- Sketch Modal -->
 <div id="sketchModal" class="modal" aria-hidden="true">
@@ -36,6 +37,27 @@
   </div>
 </div>
 
+<!-- Pseudo‑code Keyboard Modal -->
+<div id="codeModal" class="modal" aria-hidden="true">
+  <div id="codeContent" class="modal-content" role="dialog"
+       aria-modal="true" aria-label="Pseudo‑code Pad">
+    <div class="modal-header">
+      <h2>⌨️ PSEUDO‑CODE</h2>
+      <div class="window-controls">
+        <button id="codeFullscreen" aria-label="Toggle fullscreen">⛶</button>
+        <button class="code-close" aria-label="Close code pad">&times;</button>
+      </div>
+    </div>
+
+    <div class="modal-body" style="padding:0">
+      <textarea id="codeArea" spellcheck="false"
+        style="flex:1;width:100%;height:100%;border:0;resize:none;
+               font:1rem/1.4 monospace;padding:12px;box-sizing:border-box;">
+      </textarea>
+    </div>
+  </div>
+</div>
+
 <h1>🔮(𓁹 𓁹) The Latent Realm 𓆏</h1>
 <p id="quip" style="font-style:italic;margin:1rem 0;">"Man is something that shall be overcome"</p>
 
@@ -43,7 +65,9 @@
     <div class="quick-links">
     <a href="https://github.com/donkeyanaphora" target="_blank">GitHub</a>
     <a href="https://huggingface.co/cwestnedge" target="_blank">HuggingFace</a>
-    <a href="cv.pdf" target="_blank">CV</a>
+    <!-- disabled CV button -->
+    <!-- <a href="cv.pdf" target="_blank">CV</a> -->
+    <a class="disabled uc" aria-label="CV coming soon">CV — Coming Soon</a>
     <a href="https://www.linkedin.com/in/collins-westnedge/" target="_blank">LinkedIn</a>
   </div>
 
@@ -56,17 +80,32 @@
 
   <details class="section">
     <summary>🛠️ Articles / Work</summary>
+
     <div>
       <div class="card">
         <h3>Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges</h3>
         <p>A minor rant about "AI adoption" and exploration of shallow fusion as a method to address data scarcity and integration in specialized domains.</p>
-        <p><a href="articles/article1/shallow_fusion.html">Read Article</a> · <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION" target="_blank">GPT2 Pipeline</a> · <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION/blob/main/notebooks/shallow_fusion_demo.ipynb" target="_blank">Demo</a></p>
+        <p><a href="articles/article1/index.html">Read Article</a> · <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION" target="_blank">GPT2 Pipeline</a> · <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION/blob/main/notebooks/shallow_fusion_demo.ipynb" target="_blank">Demo</a></p>
       </div>
+
       <div class="card">
         <h3>Using Linear Models in Modern Applications</h3>
         <p>A closer look at how using least squares projection can offer a stable alternative to semantic filtering.</p>
-        <p><a href="articles/article2.html">Read Article</a> · <a href="projects/project2.html" target="_blank">Demo</a></p>
+        <div class="uc" style="margin-top:0.5rem">
+          <span>Article UNDER CONSTRUCTION — check back soon!</span>
+        </div>
+        <!-- <p><a href="articles/article2.html">Read Article</a> · <a href="projects/project2.html" target="_blank">Demo</a></p> -->
       </div>
+
+      <div class="card">
+        <h3>Spatial Clustering for Document Chunking</h3>
+        <p>A lightweight clustering approach for grouping OCR tokens into coherent chunks in "chaos documents" with no predefined layout.</p>
+        <div class="uc" style="margin-top:0.5rem">
+          <span>Article UNDER CONSTRUCTION — check back soon!</span>
+        </div>
+        <!-- <p><a href="articles/article2.html">Read Article</a> · <a href="projects/project2.html" target="_blank">Demo</a></p> -->
+      </div>
+
     </div>
   </details>
 
@@ -86,7 +125,6 @@
     <summary>🚧 Coming Soon</summary>
     <div>
       <div class="uc">
-        <img src="/api/placeholder/40/40" alt="Under construction" height="40"/>
         <span>Section UNDER CONSTRUCTION — check back soon!</span>
       </div>
     </div>

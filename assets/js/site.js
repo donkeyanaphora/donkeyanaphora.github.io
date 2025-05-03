@@ -234,3 +234,48 @@ function attachUiListeners() {
     });
   }
 }
+
+/* ----------------------------------------------------------------------
+   8.  Pseudo‑code pad modal
+---------------------------------------------------------------------- */
+const codeModal      = $('#codeModal');
+const codeContent    = $('#codeContent');
+const codeBtn        = $('#codeBtn');
+const codeClose      = $('.code-close');
+const codeFullBtn    = $('#codeFullscreen');
+const codeArea       = $('#codeArea');
+
+let codeFullscreen = false;
+const CODE_KEY = 'pseudoCode';        // localStorage key
+
+function openCode(){
+  codeModal.style.display='block';
+  codeModal.setAttribute('aria-hidden','false');
+  lastFocusEl=document.activeElement;
+  codeContent.focus();
+  try{ codeArea.value=localStorage.getItem(CODE_KEY)||''; }catch(_){}
+}
+function closeCode(){
+  codeModal.style.display='none';
+  codeModal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  lastFocusEl?.focus();
+  try{ localStorage.setItem(CODE_KEY,codeArea.value); }catch(_){}
+}
+
+codeBtn.addEventListener('click', openCode);
+codeClose.addEventListener('click', closeCode);
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && codeModal.style.display === 'block') closeCode();
+});
+window.addEventListener('click', e => {
+  if (e.target === codeModal) closeCode();
+});
+
+codeFullBtn.addEventListener('click', () => {
+  codeFullscreen = !codeFullscreen;
+  codeContent.classList.toggle('fullscreen', codeFullscreen);
+  codeFullBtn.textContent = codeFullscreen ? '⛌' : '⛶';
+  document.body.style.overflow = codeFullscreen ? 'hidden' : '';
+  setTimeout(() => codeArea.focus(), 50);
+});
