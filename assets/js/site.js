@@ -253,7 +253,7 @@ function openCode(){
   codeModal.setAttribute('aria-hidden','false');
   lastFocusEl=document.activeElement;
   codeContent.focus();
-  try{ codeArea.value=localStorage.getItem(CODE_KEY)||''; }catch(_){}
+  try{ codeArea.value=localStorage.getItem(CODE_KEY)||'Howdy! '; }catch(_){}
 }
 function closeCode(){
   codeModal.style.display='none';
