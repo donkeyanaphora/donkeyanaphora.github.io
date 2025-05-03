@@ -94,13 +94,20 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   transform: translate(-50%, -50%);
   overflow: hidden;
 }
-.modal-content.fullscreen {
-  width: 100%;
-  height: 100%;
+/* ---------- FULLSCREEN SCRATCH‑PAD ---------- */
+.modal-content.fullscreen{
+  width: 100vw;                 /* fill width edge‑to‑edge                */
+  height: 100dvh;               /* dynamic viewport height on mobile      */
   top: 0;
   left: 0;
   transform: none;
 }
+
+/* give the drawing area the remainder below the 52 px header */
+.modal-content.fullscreen .modal-body{
+  height: calc(100dvh - 52px);
+}
+/* -------------------------------------------- */
 .modal-header {
   padding: 10px;
   background: var(--nav-bg);
@@ -442,26 +449,34 @@ window.onclick = function(event) {
 }
 
 // Fullscreen toggle
-fullscreenBtn.onclick = function() {
+fullscreenBtn.onclick = () => {
   isFullscreen = !isFullscreen;
-  if (isFullscreen) {
-    modalContent.classList.add('fullscreen');
-    fullscreenBtn.textContent = '⛌';
-  } else {
-    modalContent.classList.remove('fullscreen');
-    fullscreenBtn.textContent = '⛶';
-  }
-  
-  // Reinitialize canvas after size change
-  setTimeout(() => {
-    initWhiteboard();
-  }, 100);
+  modalContent.classList.toggle('fullscreen', isFullscreen);
+  fullscreenBtn.textContent = isFullscreen ? '⛌' : '⛶';
+
+  /* optional: lock background scrolling while fullscreen */
+  document.body.style.overflow = isFullscreen ? 'hidden' : '';
+
+  /* wait one paint frame, then size the canvas */
+  requestAnimationFrame(initWhiteboard);
+};
+
+
+function resetDrawingStyle() {
+  ctx.lineWidth  = isEraser ? 10 : 2;
+  ctx.lineCap    = 'round';
+  ctx.lineJoin   = 'round';
+  ctx.strokeStyle = isEraser
+    ? (document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff')
+    : currentColor;
 }
+
 
 /* Initialize whiteboard */
 function initWhiteboard() {
   canvas = document.getElementById('sketchpad');
   ctx = canvas.getContext('2d');
+  resetDrawingStyle(); 
   
   // Set canvas size to match container
   const container = canvas.parentElement;
@@ -489,10 +504,13 @@ function initWhiteboard() {
 }
 
 function setupEventListeners() {
-  // Remove existing listeners
-  canvas.replaceWith(canvas.cloneNode(true));
-  canvas = document.getElementById('sketchpad');
-  
+  // // Remove existing listeners
+  // canvas.replaceWith(canvas.cloneNode(true));
+  // canvas = document.getElementById('sketchpad');
+
+  if (canvas.dataset.prepped) return;   // listeners already attached
+  canvas.dataset.prepped = 'true';      // mark as wired
+
   // Mouse events
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
