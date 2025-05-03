@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>COLLINS WESTNEDGE — Home Page</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <style>
 /* ========== DESIGN TOKENS ========== */
 :root{
@@ -72,7 +72,7 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   margin:0 auto;
 }
 
-/* SKETCH PAD MODAL */
+/* WHITEBOARD MODAL */
 .modal {
   display: none;
   position: fixed;
@@ -92,15 +92,18 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  resize: both;
   overflow: hidden;
-  min-width: 400px;
-  min-height: 300px;
+}
+.modal-content.fullscreen {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: none;
 }
 .modal-header {
   padding: 10px;
   background: var(--nav-bg);
-  cursor: move;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,25 +190,33 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   border-style: inset;
 }
 
-/* MOBILE FRIENDLY WHITEBOARD */
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
     height: 70%;
-    min-width: 300px;
-    min-height: 400px;
-    resize: none; /* Disable resize on mobile */
-    transform: translate(-50%, -50%) !important; /* Prevent dragging */
   }
   
-  .modal-header {
-    cursor: default; /* No dragging on mobile */
-    padding: 15px 10px;
+  .mood-image img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
   }
   
-  .window-controls button {
-    font-size: 1.5rem;
-    padding: 5px 10px;
+  .mood-item {
+    padding: 0.5rem;
+  }
+  
+  .mood-image {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  #wrapper {
+    width: 95%;
   }
   
   .sketch-controls {
@@ -221,32 +232,6 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   .color-btn {
     width: 40px;
     height: 40px;
-  }
-  
-  #fullscreenBtn {
-    display: none; /* Hide fullscreen on mobile */
-  }
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-  .mood-image img {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-  }
-  
-  .mood-item {
-    padding: 0.5rem;
-  }
-  
-  .mood-image {
-    padding: 0.5rem;
-  }
-  
-  .modal-content {
-    width: 95%;
-    height: 70%;
   }
 }
 
@@ -270,7 +255,7 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 <div id="sketchModal" class="modal">
   <div class="modal-content" id="modalContent">
     <div class="modal-header">
-      <h2>WHITEBOARD</h2>
+      <h2>✎WHITEBOARD</h2>
       <div class="window-controls">
         <button id="fullscreenBtn">⛶</button>
         <button class="close">&times;</button>
@@ -426,145 +411,89 @@ btn.onclick = () => {
   btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙';
 };
 
-/* Sketch Pad Modal Functionality */
+/* Whiteboard Modal */
 const modal = document.getElementById('sketchModal');
 const modalContent = document.getElementById('modalContent');
 const sketchBtn = document.getElementById('sketchBtn');
 const closeBtn = document.querySelector('.close');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-// Canvas and drawing variables
 let canvas, ctx;
 let isDrawing = false;
 let currentColor = '#000000';
 let isEraser = false;
-let canvasData = null;
-
-// Resize observer for modal
-const resizeObserver = new ResizeObserver(entries => {
-  for (let entry of entries) {
-    if (entry.target === modalContent) {
-      // Save current canvas
-      if (canvas && ctx) {
-        canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      }
-      
-      // Reinitialize canvas
-      setTimeout(() => {
-        initSketchpad();
-        
-        // Restore canvas data if available
-        if (canvasData && canvas.width >= canvasData.width && canvas.height >= canvasData.height) {
-          ctx.putImageData(canvasData, 0, 0);
-        }
-      }, 100);
-    }
-  }
-});
-
-// Start observing the modal
-document.addEventListener('DOMContentLoaded', () => {
-  resizeObserver.observe(modalContent);
-});
+let isFullscreen = false;
 
 // Open modal
 sketchBtn.onclick = function() {
   modal.style.display = "block";
-  
-  // Always reset to center when opening
-  modalContent.style.transform = 'translate(-50%, -50%)';
-  xOffset = 0;
-  yOffset = 0;
-  
-  initSketchpad();
+  initWhiteboard();
 }
 
 // Close modal
 closeBtn.onclick = function() {
   modal.style.display = "none";
-  // Reset position when closing
-  modalContent.style.transform = 'translate(-50%, -50%)';
-  xOffset = 0;
-  yOffset = 0;
 }
 
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
-    // Reset position when clicking outside
-    modalContent.style.transform = 'translate(-50%, -50%)';
-    xOffset = 0;
-    yOffset = 0;
   }
 }
 
 // Fullscreen toggle
-let isFullscreen = false;
 fullscreenBtn.onclick = function() {
-  if (!isFullscreen) {
-    // Go fullscreen
-    modalContent.style.width = '100%';
-    modalContent.style.height = '100%';
-    modalContent.style.top = '0';
-    modalContent.style.left = '0';
-    modalContent.style.transform = 'none';
-    modalContent.style.resize = 'none';
+  isFullscreen = !isFullscreen;
+  if (isFullscreen) {
+    modalContent.classList.add('fullscreen');
     fullscreenBtn.textContent = '⛌';
-    isFullscreen = true;
   } else {
-    // Exit fullscreen
-    modalContent.style.width = '600px';
-    modalContent.style.height = '400px';
-    modalContent.style.top = '50%';
-    modalContent.style.left = '50%';
-    modalContent.style.transform = 'translate(-50%, -50%)';
-    modalContent.style.resize = 'both';
+    modalContent.classList.remove('fullscreen');
     fullscreenBtn.textContent = '⛶';
-    isFullscreen = false;
-    
-    // Reset offsets when exiting fullscreen
-    xOffset = 0;
-    yOffset = 0;
   }
   
-  // Reinitialize canvas with new size
+  // Reinitialize canvas after size change
   setTimeout(() => {
-    initSketchpad();
+    initWhiteboard();
   }, 100);
 }
 
-/* Initialize sketchpad */
-function initSketchpad() {
+/* Initialize whiteboard */
+function initWhiteboard() {
   canvas = document.getElementById('sketchpad');
   ctx = canvas.getContext('2d');
   
-  // Calculate available space for canvas
+  // Set canvas size to match container
   const container = canvas.parentElement;
   const rect = container.getBoundingClientRect();
   const controls = document.querySelector('.sketch-controls');
   const controlsHeight = controls ? controls.offsetHeight : 50;
   
-  // Set canvas size to match available space
   canvas.width = rect.width;
-  canvas.height = Math.max(100, rect.height - controlsHeight - 20); // Leave space for controls
+  canvas.height = Math.max(100, rect.height - controlsHeight - 20);
   
   // Set drawing styles
-  ctx.lineWidth = 2;
+  ctx.lineWidth = isEraser ? 10 : 2;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.strokeStyle = currentColor;
+  ctx.strokeStyle = isEraser ? 
+    (document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff') : 
+    currentColor;
   
   // Fill background
   ctx.fillStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  // Remove any existing event listeners
-  canvas.removeEventListener('mousedown', handleMouseDown);
-  canvas.removeEventListener('mousemove', handleMouseMove);
-  canvas.removeEventListener('mouseup', handleMouseUp);
-  canvas.removeEventListener('mouseout', handleMouseUp);
-  
   // Add event listeners
+  setupEventListeners();
+}
+
+function setupEventListeners() {
+  // Remove existing listeners
+  canvas.replaceWith(canvas.cloneNode(true));
+  canvas = document.getElementById('sketchpad');
+  
+  // Mouse events
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mouseup', handleMouseUp);
@@ -575,13 +504,6 @@ function initSketchpad() {
   canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
   canvas.addEventListener('touchend', handleTouchEnd);
   
-  // Prevent scrolling when touching the canvas on mobile
-  canvas.addEventListener('touchstart', function(e) {
-    if (e.target === canvas) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-  
   // Color selection
   document.querySelectorAll('.color-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -591,12 +513,12 @@ function initSketchpad() {
       
       if (color === 'eraser') {
         isEraser = true;
-        ctx.lineWidth = 10; // Larger size for eraser
+        ctx.lineWidth = 10;
         ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
       } else {
         isEraser = false;
         currentColor = color;
-        ctx.lineWidth = 2; // Normal size for pencil
+        ctx.lineWidth = 2;
         ctx.strokeStyle = currentColor;
       }
     });
@@ -612,23 +534,17 @@ function initSketchpad() {
 /* Drawing functions */
 function getMousePos(e) {
   const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  
   return {
-    x: (e.clientX - rect.left) * scaleX,
-    y: (e.clientY - rect.top) * scaleY
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
   };
 }
 
 function getTouchPos(e) {
   const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  
   return {
-    x: (e.touches[0].clientX - rect.left) * scaleX,
-    y: (e.touches[0].clientY - rect.top) * scaleY
+    x: e.touches[0].clientX - rect.left,
+    y: e.touches[0].clientY - rect.top
   };
 }
 
@@ -644,11 +560,6 @@ function handleMouseMove(e) {
   const pos = getMousePos(e);
   ctx.lineTo(pos.x, pos.y);
   ctx.stroke();
-  
-  // Update stroke style if using eraser and theme changes
-  if (isEraser) {
-    ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
-  }
 }
 
 function handleMouseUp() {
@@ -669,98 +580,10 @@ function handleTouchMove(e) {
   const pos = getTouchPos(e);
   ctx.lineTo(pos.x, pos.y);
   ctx.stroke();
-  
-  // Update stroke style if using eraser and theme changes
-  if (isEraser) {
-    ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
-  }
 }
 
 function handleTouchEnd() {
   isDrawing = false;
-}
-
-// Make modal draggable
-let isDragging = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
-
-const modalHeader = document.querySelector('.modal-header');
-
-modalHeader.addEventListener('mousedown', dragStart);
-document.addEventListener('mousemove', drag);
-document.addEventListener('mouseup', dragEnd);
-
-function dragStart(e) {
-  if (e.target.closest('.window-controls')) return;
-  if (isFullscreen) return;
-  
-  // Disable dragging on mobile devices
-  if (window.innerWidth <= 768) return;
-  
-  initialX = e.clientX - xOffset;
-  initialY = e.clientY - yOffset;
-  
-  isDragging = true;
-}
-
-function drag(e) {
-  if (isDragging) {
-    e.preventDefault();
-    
-    const newX = e.clientX - initialX;
-    const newY = e.clientY - initialY;
-    
-    // Get modal dimensions
-    const rect = modalContent.getBoundingClientRect();
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    
-    // Calculate where the edges would be with the new position
-    const leftEdge = windowWidth/2 + newX - rect.width/2;
-    const rightEdge = windowWidth/2 + newX + rect.width/2;
-    const topEdge = windowHeight/2 + newY - rect.height/2;
-    const bottomEdge = windowHeight/2 + newY + rect.height/2;
-    
-    // Keep at least 50px visible on each side
-    const minVisible = 50;
-    
-    // Apply constraints
-    if (leftEdge < -rect.width + minVisible) {
-      currentX = -windowWidth/2 - rect.width/2 + minVisible;
-    } else if (rightEdge > windowWidth + rect.width - minVisible) {
-      currentX = windowWidth/2 + rect.width/2 - minVisible;
-    } else {
-      currentX = newX;
-    }
-    
-    if (topEdge < -rect.height + minVisible) {
-      currentY = -windowHeight/2 - rect.height/2 + minVisible;
-    } else if (bottomEdge > windowHeight + rect.height - minVisible) {
-      currentY = windowHeight/2 + rect.height/2 - minVisible;
-    } else {
-      currentY = newY;
-    }
-    
-    xOffset = currentX;
-    yOffset = currentY;
-    
-    setTranslate(currentX, currentY, modalContent);
-  }
-}
-
-function dragEnd() {
-  initialX = currentX;
-  initialY = currentY;
-  isDragging = false;
-}
-
-function setTranslate(xPos, yPos, el) {
-  el.style.transform = `translate(calc(-50% + ${xPos}px), calc(-50% + ${yPos}px))`;
 }
 </script>
 </body>
