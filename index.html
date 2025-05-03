@@ -48,6 +48,28 @@ details.section > div{margin-top:1rem;}
 blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section-border);font-style:italic;}
 .attribution{text-align:right;font-style:normal;margin-top:1rem;color:var(--visited);}
 
+/* MOOD BOARD */
+.mood-item{
+  border:2px ridge var(--card-border);
+  background:var(--card-bg);
+  padding:1rem;
+  margin:1.5rem 0;
+}
+.mood-item h3{
+  margin-top:0;
+  color:var(--card-border);
+  font-size:1.1rem;
+}
+.mood-image{
+  text-align:center;
+  padding:1rem;
+}
+.mood-image img{
+  max-width:100%;
+  height:auto;
+  border:1px solid var(--section-border);
+}
+
 /* FOOTER */
 footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;background:var(--footer-bg);}
 
@@ -119,21 +141,41 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
   </details>
 
   <details class="section">
-    <summary>🤕 On Bad Conscience</summary>
+    <summary>🖼️ Mood Board</summary>
     <div>
-      <blockquote>
-        <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
-        
-        <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
-        
-        <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
-        
-        <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
-        
-        <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
-        
-        <p class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</p>
-      </blockquote>
+
+      <div class="mood-item">
+        <h3>🤕 On Bad Conscience</h3>
+        <blockquote>
+          <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
+          
+          <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
+          
+          <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
+          
+          <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
+          
+          <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
+          
+          <p class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</p>
+        </blockquote>
+      </div>
+
+      <div class="mood-item">
+        <!-- <h3>🤫 Machines at Work</h3> -->
+        <div class="mood-image">
+          <img src="articles/article1/assets/shh.jpg" alt="Quiet Please — Machines Are Learning" style="max-width: 300px;"/>
+          <p style="margin-top: 0.5rem; font-style: italic;">Quiet Please — Machines Are Learning</p>
+        </div>
+      </div>
+<!-- 
+      <div class="mood-item">
+        <h3>yeah...</h3>
+        <div class="mood-image">
+          <img src="articles/article1/assets/JO53.jpg" alt="yeah..." style="max-width: 300px;"/>
+        </div>
+      </div> -->
+
     </div>
   </details>
 
