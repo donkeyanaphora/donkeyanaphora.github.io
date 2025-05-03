@@ -72,7 +72,36 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   margin:0 auto;
 }
 
-/* SKETCH PAD */
+/* SKETCH PAD MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background-color: var(--card-bg);
+  margin: 5% auto;
+  padding: 20px;
+  border: 3px double var(--section-border);
+  width: 80%;
+  max-width: 700px;
+  position: relative;
+}
+.close {
+  color: var(--txt);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: var(--link);
+}
 .sketch-container {
   text-align: center;
   user-select: none;
@@ -83,6 +112,11 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   cursor: crosshair;
   touch-action: none;
   margin: 1rem 0;
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .theme-dark .sketch-canvas {
   background: #222;
@@ -134,13 +168,19 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   .sketch-canvas {
     width: 100% !important;
   }
+  
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
 }
 
 /* FOOTER */
 footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;background:var(--footer-bg);}
 
-/* BUTTON */
-#toggleDark{position:fixed;bottom:1rem;right:1rem;padding:.5rem 1rem;font-weight:bold;border:2px outset #c0c0c0;background:var(--nav-bg);color:var(--txt);cursor:pointer;}
+/* FLOATING BUTTONS */
+.float-btn{position:fixed;bottom:1rem;right:1rem;padding:.5rem 1rem;font-weight:bold;border:2px outset #c0c0c0;background:var(--nav-bg);color:var(--txt);cursor:pointer;}
+#sketchBtn{right:5rem;}
 
 /* QUICK LINKS */
 .quick-links{display:flex;gap:1rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;}
@@ -148,7 +188,28 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 </style>
 </head>
 <body>
-<button id="toggleDark" aria-label="Toggle dark mode">🌙</button>
+<button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
+<button id="sketchBtn" class="float-btn" aria-label="Open sketchpad">✍️</button>
+
+<!-- Sketch Modal -->
+<div id="sketchModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>✏️ Whiteboard</h2>
+    <div class="sketch-container">
+      <canvas id="sketchpad" class="sketch-canvas" width="600" height="300"></canvas>
+      <div class="sketch-controls">
+        <button class="color-btn active" data-color="#000000" style="background:#000"></button>
+        <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
+        <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
+        <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
+        <button class="color-btn" data-color="#ffffff" style="background:#fff;border-color:#000"></button>
+        <button id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- <h1>~*~ COLLINS WESTNEDGE ~*~</h1> -->
 <h1>🔮(𓁹 𓁹) The Latent Realm 𓆏</h1>
 <p id="quip" style="font-style:italic;margin:1rem 0;">"Man is something that shall be overcome"</p>
@@ -233,21 +294,6 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
           <p style="margin-top: 0.5rem; font-style: italic;">Quiet Please — Machines Are Learning</p>
         </div>
       </div>
-
-      <div class="mood-item">
-        <h3>✏️ Consciousness Sketchpad</h3>
-        <div class="sketch-container">
-          <canvas id="sketchpad" class="sketch-canvas" width="600" height="300"></canvas>
-          <div class="sketch-controls">
-            <button class="color-btn active" data-color="#000000" style="background:#000"></button>
-            <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
-            <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
-            <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
-            <button class="color-btn" data-color="#ffffff" style="background:#fff;border-color:#000"></button>
-            <button id="clearBtn">Clear</button>
-          </div>
-        </div>
-      </div>
     </div>
   </details>
 
@@ -299,76 +345,114 @@ btn.onclick = () => {
   btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙';
 };
 
-/* Sketch Pad Functionality */
-const canvas = document.getElementById('sketchpad');
-const ctx = canvas.getContext('2d');
-let isDrawing = false;
-let currentColor = '#000000';
+/* Sketch Pad Modal Functionality */
+const modal = document.getElementById('sketchModal');
+const sketchBtn = document.getElementById('sketchBtn');
+const closeBtn = document.querySelector('.close');
 
-// Set up canvas
-ctx.lineWidth = 2;
-ctx.lineCap = 'round';
-ctx.strokeStyle = currentColor;
-
-// Handle drawing
-function startDrawing(e) {
-  isDrawing = true;
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX || e.touches[0].clientX) - rect.left;
-  const y = (e.clientY || e.touches[0].clientY) - rect.top;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
+sketchBtn.onclick = function() {
+  modal.style.display = "block";
+  initSketchpad();
 }
 
-function draw(e) {
-  if (!isDrawing) return;
-  e.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX || e.touches[0].clientX) - rect.left;
-  const y = (e.clientY || e.touches[0].clientY) - rect.top;
-  ctx.lineTo(x, y);
-  ctx.stroke();
+closeBtn.onclick = function() {
+  modal.style.display = "none";
 }
 
-function stopDrawing() {
-  isDrawing = false;
-}
-
-// Event listeners
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', stopDrawing);
-canvas.addEventListener('mouseout', stopDrawing);
-
-// Touch events
-canvas.addEventListener('touchstart', startDrawing);
-canvas.addEventListener('touchmove', draw);
-canvas.addEventListener('touchend', stopDrawing);
-
-// Color selection
-document.querySelectorAll('.color-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    document.querySelector('.color-btn.active')?.classList.remove('active');
-    e.target.classList.add('active');
-    currentColor = e.target.dataset.color;
-    ctx.strokeStyle = currentColor;
-  });
-});
-
-// Clear button
-document.getElementById('clearBtn').addEventListener('click', () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-// Adjust canvas for dark mode
-const observer = new MutationObserver(() => {
-  if (root.classList.contains('theme-dark') && currentColor === '#000000') {
-    ctx.strokeStyle = '#ffffff';
-  } else if (!root.classList.contains('theme-dark') && currentColor === '#ffffff') {
-    ctx.strokeStyle = '#000000';
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
   }
-});
-observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+}
+
+/* Sketch Pad Functionality */
+function initSketchpad() {
+  const canvas = document.getElementById('sketchpad');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let currentColor = '#000000';
+
+  // Set up canvas
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = currentColor;
+
+  // Fill with white in light mode, dark in dark mode
+  if (document.documentElement.classList.contains('theme-dark')) {
+    ctx.fillStyle = '#222';
+  } else {
+    ctx.fillStyle = '#fff';
+  }
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Handle drawing
+  function startDrawing(e) {
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
+
+  function stopDrawing() {
+    isDrawing = false;
+  }
+
+  // Event listeners
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseout', stopDrawing);
+
+  // Touch events
+  canvas.addEventListener('touchstart', startDrawing);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stopDrawing);
+
+  // Color selection
+  document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelector('.color-btn.active')?.classList.remove('active');
+      e.target.classList.add('active');
+      currentColor = e.target.dataset.color;
+      ctx.strokeStyle = currentColor;
+    });
+  });
+
+  // Clear button
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (document.documentElement.classList.contains('theme-dark')) {
+      ctx.fillStyle = '#222';
+    } else {
+      ctx.fillStyle = '#fff';
+    }
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  });
+
+  // Adjust canvas for dark mode
+  const observer = new MutationObserver(() => {
+    if (root.classList.contains('theme-dark') && currentColor === '#000000') {
+      ctx.strokeStyle = '#ffffff';
+    } else if (!root.classList.contains('theme-dark') && currentColor === '#ffffff') {
+      ctx.strokeStyle = '#000000';
+    }
+  });
+  observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+}
 </script>
 </body>
 </html>
