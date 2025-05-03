@@ -20,11 +20,13 @@ html.theme-dark{
   --aside-bg:#1a1a1a; --nav-bg:#1f1f1f; --footer-bg:#1a1a1a;
   --uc-bg:#330000; --uc-border:#ff7373; --passage-bg:#111;
 }
+
+html,body{height:100%;}
+
 /* ========== GLOBAL ========== */
 body{margin:0;background:var(--bg-img) repeat, var(--bg-col);color:var(--txt);font-family:"Comic Sans MS","Trebuchet MS",Tahoma,sans-serif;text-align:center;transition:.4s all;}
 a{color:var(--link);}a:visited{color:var(--visited);}a:hover{background:var(--h1-shadow);}
-h1{margin:.5em 0;font-size:2.5rem;color:var(--h1);text-shadow:2px 2px 0 var(--h1-shadow);}
-h2{margin:0 0 .5em;font-size:1.5rem;color:var(--link);}
+h1{margin:.5em 0;font-size:2.5rem;color:var(--h1);text-shadow:2px 2px 0 var(--h1-shadow);}h2{margin:0 0 .5em;font-size:1.5rem;color:var(--link);}
 
 /* LAYOUT */
 #wrapper{width:90%;margin:0 auto;text-align:left;max-width:800px;}
@@ -34,8 +36,7 @@ details.section{margin:1rem 0;border:3px double var(--section-border);background
 details.section summary{cursor:pointer;font-weight:bold;color:var(--link);font-size:1.25rem;padding:.5rem 0;}
 details.section summary::-webkit-details-marker{display:none;}
 details.section summary::before{content:"▸ ";display:inline-block;transition:transform .2s;}
-details.section[open] summary::before{transform:rotate(90deg);}
-details.section > div{margin-top:1rem;}
+details.section[open] summary::before{transform:rotate(90deg);}details.section > div{margin-top:1rem;}
 
 /* CARD */
 .card{border:2px ridge var(--card-border);background:var(--card-bg);padding:1rem;margin:1rem 0;}
@@ -49,201 +50,48 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
 .attribution{text-align:right;font-style:normal;margin-top:1rem;color:var(--visited);}
 
 /* MOOD BOARD */
-.mood-item{
-  border:2px ridge var(--card-border);
-  background:var(--card-bg);
-  padding:1rem;
-  margin:1.5rem 0;
-}
-.mood-item h3{
-  margin-top:0;
-  color:var(--card-border);
-  font-size:1.1rem;
-}
-.mood-image{
-  text-align:center;
-  padding:1rem;
-}
-.mood-image img{
-  max-width:100%;
-  height:auto;
-  border:1px solid var(--section-border);
-  display:block;
-  margin:0 auto;
-}
+.mood-item{border:2px ridge var(--card-border);background:var(--card-bg);padding:1rem;margin:1.5rem 0;}
+.mood-item h3{margin-top:0;color:var(--card-border);font-size:1.1rem;}
+.mood-image{text-align:center;padding:1rem;}
+.mood-image img{max-width:100%;height:auto;border:1px solid var(--section-border);display:block;margin:0 auto;}
 
 /* WHITEBOARD MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-}
-.modal-content {
-  background-color: var(--card-bg);
-  position: fixed;
-  border: 3px double var(--section-border);
-  width: 600px;
-  height: 400px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  overflow: hidden;
-}
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);} 
+.modal-content{background-color:var(--card-bg);position:fixed;border:3px double var(--section-border);width:600px;height:400px;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;}
 /* ---------- FULLSCREEN SCRATCH‑PAD ---------- */
-.modal-content.fullscreen{
-  width: 100vw;                 /* fill width edge‑to‑edge                */
-  height: 100dvh;               /* dynamic viewport height on mobile      */
-  top: 0;
-  left: 0;
-  transform: none;
-}
-
-/* give the drawing area the remainder below the 52 px header */
-.modal-content.fullscreen .modal-body{
-  height: calc(100dvh - 52px);
-}
+.modal-content.fullscreen{width:100vw;height:100dvh;top:0;left:0;transform:none;}
+.modal-content.fullscreen .modal-body{height:calc(100dvh - 52px);} /* 52 px header */
 /* -------------------------------------------- */
-.modal-header {
-  padding: 10px;
-  background: var(--nav-bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 2px solid var(--section-border);
-  user-select: none;
-  position: relative;
-}
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  text-align: center;
-}
-.window-controls {
-  display: flex;
-  gap: 10px;
-  position: absolute;
-  right: 10px;
-}
-.window-controls button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: var(--txt);
-  padding: 0 5px;
-}
-.window-controls button:hover {
-  color: var(--link);
-}
-.modal-body {
-  padding: 10px;
-  height: calc(100% - 52px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.sketch-container {
-  text-align: center;
-  user-select: none;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.sketch-canvas {
-  border: 2px solid var(--section-border);
-  background: #fff;
-  cursor: crosshair;
-  touch-action: none;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-.theme-dark .sketch-canvas {
-  background: #222;
-}
-.sketch-controls {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  flex-shrink: 0;
-  min-height: 40px;
-}
-.sketch-controls button {
-  padding: 0.3rem 0.8rem;
-  border: 2px outset #c0c0c0;
-  background: var(--nav-bg);
-  font-family: inherit;
-  cursor: pointer;
-  font-weight: bold;
-}
-.sketch-controls button:active {
-  border-style: inset;
-}
-.color-btn {
-  width: 30px;
-  height: 30px;
-  padding: 0 !important;
-  border: 2px outset #c0c0c0;
-}
-.color-btn.active {
-  border-style: inset;
-}
+.modal-header{padding:10px;background:var(--nav-bg);display:flex;justify-content:center;align-items:center;border-bottom:2px solid var(--section-border);user-select:none;position:relative;}
+.modal-header h2{margin:0;font-size:1.2rem;text-align:center;}
+.window-controls{display:flex;gap:10px;position:absolute;right:10px;}
+.window-controls button{background:transparent;border:none;cursor:pointer;font-size:1.2rem;color:var(--txt);padding:0 5px;}
+.window-controls button:hover{color:var(--link);} 
+.modal-body{padding:10px;height:calc(100% - 52px);display:flex;flex-direction:column;overflow:hidden;}
+.sketch-container{text-align:center;user-select:none;flex:1;display:flex;flex-direction:column;min-height:0;}
+.sketch-canvas{border:2px solid var(--section-border);background:#fff;cursor:crosshair;touch-action:none;flex:1;width:100%;min-height:0;}
+.theme-dark .sketch-canvas{background:#222;}
+.sketch-controls{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:10px;flex-shrink:0;min-height:40px;}
+.sketch-controls button{padding:0.3rem 0.8rem;border:2px outset #c0c0c0;background:var(--nav-bg);font-family:inherit;cursor:pointer;font-weight:bold;}
+.sketch-controls button:active{border-style:inset;}
+.color-btn{width:30px;height:30px;padding:0 !important;border:2px outset #c0c0c0;}
+.color-btn.active{border-style:inset;}
 
 /* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
-    height: 70%;
-  }
-  
-  .mood-image img {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-  }
-  
-  .mood-item {
-    padding: 0.5rem;
-  }
-  
-  .mood-image {
-    padding: 0.5rem;
-  }
-  
-  h1 {
-    font-size: 1.8rem;
-  }
-  
-  #wrapper {
-    width: 95%;
-  }
-  
-  .sketch-controls {
-    gap: 0.8rem;
-    padding: 10px 5px;
-  }
-  
-  .sketch-controls button {
-    padding: 0.8rem 1.2rem;
-    font-size: 1rem;
-  }
-  
-  .color-btn {
-    width: 40px;
-    height: 40px;
-  }
+@media (max-width:768px){
+  .modal-content{width:95%;height:85%;}
+  .mood-image img{max-width:100%;width:100%;height:auto;}
+  .mood-item{padding:0.5rem;}
+  .mood-image{padding:0.5rem;}
+  h1{font-size:1.8rem;}
+  #wrapper{width:95%;}
+  .sketch-controls{gap:0.8rem;padding:10px 5px;}
+  .sketch-controls button{padding:0.8rem 1.2rem;font-size:1rem;}
+  .color-btn{width:40px;height:40px;}
 }
 
 /* FOOTER */
-footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;background:var(--footer-bg);}
+footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;background:var(--footer-bg);} 
 
 /* FLOATING BUTTONS */
 .float-btn{position:fixed;bottom:1rem;right:1rem;padding:.5rem 1rem;font-weight:bold;border:2px outset #c0c0c0;background:var(--nav-bg);color:var(--txt);cursor:pointer;}
@@ -259,37 +107,36 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 <button id="sketchBtn" class="float-btn" aria-label="Open sketchpad">✍️</button>
 
 <!-- Sketch Modal -->
-<div id="sketchModal" class="modal">
-  <div class="modal-content" id="modalContent">
+<div id="sketchModal" class="modal" aria-hidden="true">
+  <div class="modal-content" id="modalContent" role="dialog" aria-modal="true" aria-label="Whiteboard">
     <div class="modal-header">
       <h2>✎WHITEBOARD</h2>
       <div class="window-controls">
-        <button id="fullscreenBtn">⛶</button>
-        <button class="close">&times;</button>
+        <button id="fullscreenBtn" aria-label="Toggle fullscreen">⛶</button>
+        <button class="close" aria-label="Close whiteboard">&times;</button>
       </div>
     </div>
     <div class="modal-body">
       <div class="sketch-container">
         <canvas id="sketchpad" class="sketch-canvas"></canvas>
         <div class="sketch-controls">
-          <button class="color-btn active" data-color="#000000" style="background:#000"></button>
-          <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
-          <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
-          <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
-          <button class="color-btn" data-color="eraser" style="background:#fff;border-color:#000">⌫</button>
-          <button id="clearBtn">Clear</button>
+          <button class="color-btn active" data-color="#000000" style="background:#000" aria-label="Black"></button>
+          <button class="color-btn" data-color="#ff0000" style="background:#f00" aria-label="Red"></button>
+          <button class="color-btn" data-color="#0000ff" style="background:#00f" aria-label="Blue"></button>
+          <button class="color-btn" data-color="#00ff00" style="background:#0f0" aria-label="Green"></button>
+          <button class="color-btn" data-color="eraser" style="background:#fff;border-color:#000" aria-label="Eraser">⌫</button>
+          <button id="clearBtn" aria-label="Clear drawing">🧹</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- <h1>~*~ COLLINS WESTNEDGE ~*~</h1> -->
 <h1>🔮(𓁹 𓁹) The Latent Realm 𓆏</h1>
 <p id="quip" style="font-style:italic;margin:1rem 0;">"Man is something that shall be overcome"</p>
 
 <div id="wrapper">
-  <div class="quick-links">
+    <div class="quick-links">
     <a href="https://github.com/donkeyanaphora" target="_blank">GitHub</a>
     <a href="https://huggingface.co/cwestnedge" target="_blank">HuggingFace</a>
     <a href="cv.pdf" target="_blank">CV</a>
@@ -348,19 +195,13 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
         <h3>🤕 On Bad Conscience</h3>
         <blockquote>
           <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
-          
           <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
-          
           <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
-          
           <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
-          
           <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
-          
           <p class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</p>
         </blockquote>
       </div>
-
       <div class="mood-item">
         <h3>🤫 Machines at Work</h3>
         <div class="mood-image">
@@ -382,226 +223,241 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 <footer>&copy; 2025 Donkey Anaphora. All rights reserved.</footer>
 
 <script>
-/* Quote rotation */
-const quotes = ["Man is something that shall be overcome"];
-let qi = 0;
-setInterval(() => {
-  qi = (qi + 1) % quotes.length;
-  document.getElementById('quip').textContent = `"${quotes[qi]}"`;
-}, 10000);
+/* ----------------------------------------------------------------------
+   Helper utilities
+---------------------------------------------------------------------- */
+const $          = selector => document.querySelector(selector);
+const $$         = selector => document.querySelectorAll(selector);
+const isDarkMode = () => document.documentElement.classList.contains('theme-dark');
 
-/* Dark mode toggle with persistence */
-const root = document.documentElement;
-const btn = document.getElementById('toggleDark');
+/* ----------------------------------------------------------------------
+   1.  Quote rotator in the header
+---------------------------------------------------------------------- */
+(function rotateQuotes() {
+  const quotes = [
+    'Man is something that shall be overcome'
+  ];
+  let index = 0;
+  setInterval(() => {
+    index = (index + 1) % quotes.length;
+    $('#quip').textContent = `"${quotes[index]}"`;
+  }, 10_000);
+})();
 
-// Check if localStorage is available
-let storageAvailable = false;
-try {
-  storageAvailable = typeof localStorage !== 'undefined' && localStorage !== null;
-  if (storageAvailable && localStorage.theme === 'dark') {
-    root.classList.add('theme-dark');
-  }
-} catch (e) {
-  console.log('localStorage not available');
-}
+/* ----------------------------------------------------------------------
+   2.  Dark‑/light‑mode toggle with localStorage persistence
+---------------------------------------------------------------------- */
+(function darkModeToggle() {
+  const btn          = $('#toggleDark');
+  const rootElement  = document.documentElement;
+  const storageKey   = 'theme';
 
-btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙';
-btn.onclick = () => {
-  root.classList.toggle('theme-dark');
-  if (storageAvailable) {
-    try {
-      localStorage.theme = root.classList.contains('theme-dark') ? 'dark' : 'light';
-    } catch (e) {
-      // Ignore localStorage errors
+  // –— initialise -------------------------------------------------------
+  try {
+    if (localStorage.getItem(storageKey) === 'dark') {
+      rootElement.classList.add('theme-dark');
     }
-  }
-  btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙';
-};
+  } catch (_) {/* localStorage may be blocked – ignore */}
 
-/* Whiteboard Modal */
-const modal = document.getElementById('sketchModal');
-const modalContent = document.getElementById('modalContent');
-const sketchBtn = document.getElementById('sketchBtn');
-const closeBtn = document.querySelector('.close');
-const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const updateIcon = () => {
+    btn.textContent = isDarkMode() ? '☀️' : '🌙';
+  };
+  updateIcon();
 
-let canvas, ctx;
-let isDrawing = false;
-let currentColor = '#000000';
-let isEraser = false;
-let isFullscreen = false;
+  // –— click handler ----------------------------------------------------
+  btn.addEventListener('click', () => {
+    rootElement.classList.toggle('theme-dark');
+    updateIcon();
 
-// Open modal
-sketchBtn.onclick = function() {
-  modal.style.display = "block";
+    try {
+      localStorage.setItem(storageKey, isDarkMode() ? 'dark' : 'light');
+    } catch (_) {/* ignore quota / privacy errors */}
+
+    // update canvas background to match new theme
+    updateCanvasBackground();
+  });
+})();
+
+/* ----------------------------------------------------------------------
+   3.  Whiteboard modal logic
+---------------------------------------------------------------------- */
+const modal          = $('#sketchModal');
+const modalContent   = $('#modalContent');
+const sketchButton   = $('#sketchBtn');
+const closeButton    = $('.close');
+const fullscreenBtn  = $('#fullscreenBtn');
+const canvas         = $('#sketchpad');
+
+let ctx;                       // 2‑D context (set in initWhiteboard)
+let isDrawing     = false;     // pointer is pressed
+let isEraserMode  = false;     // eraser vs. pen
+let currentColor  = '#000000'; // default ink colour
+let lastFocusEl   = null;      // element that had focus before opening
+let isFullscreen  = false;     // fullscreen toggle state
+
+/* ---------- 3a. modal open / close ----------------------------------- */
+function openModal() {
+  modal.style.display = 'block';
+  modal.setAttribute('aria-hidden', 'false');
+  lastFocusEl = document.activeElement;
+  modalContent.focus();
   initWhiteboard();
 }
 
-// Close modal
-closeBtn.onclick = function() {
-  modal.style.display = "none";
+function closeModal() {
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (lastFocusEl) lastFocusEl.focus();
 }
 
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+sketchButton.addEventListener('click', openModal);
+closeButton.   addEventListener('click', closeModal);
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+});
+window.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
 
-// Fullscreen toggle
-fullscreenBtn.onclick = () => {
+/* ---------- 3b. fullscreen toggle ------------------------------------ */
+fullscreenBtn.addEventListener('click', () => {
   isFullscreen = !isFullscreen;
   modalContent.classList.toggle('fullscreen', isFullscreen);
   fullscreenBtn.textContent = isFullscreen ? '⛌' : '⛶';
-
-  /* optional: lock background scrolling while fullscreen */
   document.body.style.overflow = isFullscreen ? 'hidden' : '';
+  requestAnimationFrame(initWhiteboard); // rebuild canvas after resize
+});
 
-  /* wait one paint frame, then size the canvas */
-  requestAnimationFrame(initWhiteboard);
-};
+/* ----------------------------------------------------------------------
+   4.  Canvas helpers
+---------------------------------------------------------------------- */
+function strokeSize() {
+  // scale line width to device size for a consistent feel
+  return isEraserMode ? Math.max(4, canvas.width / 40)
+                      : Math.max(2, canvas.width / 200);
+}
 
-
-function resetDrawingStyle() {
-  ctx.lineWidth  = isEraser ? 10 : 2;
+function resetStrokeStyle() {
+  // Always draw black (or chosen colour) on a white board; no dark‑mode magic
+  const lw = isEraserMode ? Math.max(4, canvas.width / 40)
+                          : Math.max(2, canvas.width / 200);
+  ctx.lineWidth  = lw;
   ctx.lineCap    = 'round';
   ctx.lineJoin   = 'round';
-  ctx.strokeStyle = isEraser
-    ? (document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff')
-    : currentColor;
+  ctx.strokeStyle = isEraserMode ? '#ffffff' : currentColor;
 }
 
-
-/* Initialize whiteboard */
-function initWhiteboard() {
-  canvas = document.getElementById('sketchpad');
-  ctx = canvas.getContext('2d');
-  resetDrawingStyle(); 
-  
-  // Set canvas size to match container
-  const container = canvas.parentElement;
-  const rect = container.getBoundingClientRect();
-  const controls = document.querySelector('.sketch-controls');
-  const controlsHeight = controls ? controls.offsetHeight : 50;
-  
-  canvas.width = rect.width;
-  canvas.height = Math.max(100, rect.height - controlsHeight - 20);
-  
-  // Set drawing styles
-  ctx.lineWidth = isEraser ? 10 : 2;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.strokeStyle = isEraser ? 
-    (document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff') : 
-    currentColor;
-  
-  // Fill background
-  ctx.fillStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+function updateCanvasBackground() {
+  if (!ctx) return;
+  ctx.save();
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.fillStyle = '#ffffff';      // white board regardless of theme
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  // Add event listeners
-  setupEventListeners();
+  ctx.restore();
 }
 
-function setupEventListeners() {
-  // // Remove existing listeners
-  // canvas.replaceWith(canvas.cloneNode(true));
-  // canvas = document.getElementById('sketchpad');
+/* ----------------------------------------------------------------------
+   5.  Whiteboard initialisation & resize logic
+---------------------------------------------------------------------- */
+function initWhiteboard() {
+  ctx = canvas.getContext('2d');
 
-  if (canvas.dataset.prepped) return;   // listeners already attached
-  canvas.dataset.prepped = 'true';      // mark as wired
+  // ---- resize canvas to fit container --------------------------------
+  const containerRect = canvas.parentElement.getBoundingClientRect();
+  const controlsH     = $('.sketch-controls').offsetHeight;
+  const targetW       = Math.round(containerRect.width);
+  const targetH       = Math.max(100, Math.round(containerRect.height - controlsH - 20));
 
-  // Mouse events
-  canvas.addEventListener('mousedown', handleMouseDown);
-  canvas.addEventListener('mousemove', handleMouseMove);
-  canvas.addEventListener('mouseup', handleMouseUp);
-  canvas.addEventListener('mouseout', handleMouseUp);
-  
-  // Touch events
-  canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-  canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-  canvas.addEventListener('touchend', handleTouchEnd);
-  
-  // Color selection
-  document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelector('.color-btn.active')?.classList.remove('active');
-      e.currentTarget.classList.add('active');
-      const color = e.currentTarget.dataset.color;
-      
-      if (color === 'eraser') {
-        isEraser = true;
-        ctx.lineWidth = 10;
-        ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
-      } else {
-        isEraser = false;
-        currentColor = color;
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = currentColor;
-      }
+  if (canvas.width !== targetW || canvas.height !== targetH) {
+    // preserve drawing when resizing: copy → resize → draw back
+    const copy = document.createElement('canvas');
+    copy.width  = canvas.width;
+    copy.height = canvas.height;
+    copy.getContext('2d').drawImage(canvas, 0, 0);
+
+    canvas.width  = targetW;
+    canvas.height = targetH;
+    ctx.drawImage(copy, 0, 0);
+  }
+
+  updateCanvasBackground();
+  resetStrokeStyle();
+  attachCanvasListeners();
+  attachUiListeners();
+}
+
+/* ----------------------------------------------------------------------
+   6.  Pointer / touch drawing handlers
+---------------------------------------------------------------------- */
+function canvasPos(evt) {
+  const rect = canvas.getBoundingClientRect();
+  const x    = (evt.touches ? evt.touches[0].clientX : evt.clientX) - rect.left;
+  const y    = (evt.touches ? evt.touches[0].clientY : evt.clientY) - rect.top;
+  return { x, y };
+}
+
+function beginStroke(evt) {
+  evt.preventDefault();
+  isDrawing = true;
+  const { x, y } = canvasPos(evt);
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+}
+function continueStroke(evt) {
+  if (!isDrawing) return;
+  evt.preventDefault();
+  const { x, y } = canvasPos(evt);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+}
+function endStroke() { isDrawing = false; }
+
+function attachCanvasListeners() {
+  if (canvas.dataset.listenersAttached) return; // idempotent
+  canvas.dataset.listenersAttached = 'true';
+
+  /* mouse */
+  canvas.addEventListener('mousedown', beginStroke);
+  canvas.addEventListener('mousemove', continueStroke);
+  canvas.addEventListener('mouseup',   endStroke);
+  canvas.addEventListener('mouseout',  endStroke);
+
+  /* touch */
+  canvas.addEventListener('touchstart', beginStroke, { passive:false });
+  canvas.addEventListener('touchmove',  continueStroke, { passive:false });
+  canvas.addEventListener('touchend',   endStroke);
+}
+
+/* ----------------------------------------------------------------------
+   7.  UI controls – colour palette, eraser, clear button
+---------------------------------------------------------------------- */
+function attachUiListeners() {
+  // colour / eraser buttons
+  $$('.color-btn').forEach(btn => {
+    if (btn.dataset.wired) return;
+    btn.dataset.wired = 'true';
+
+    btn.addEventListener('click', evt => {
+      $$('.color-btn.active').forEach(b => b.classList.remove('active'));
+      evt.currentTarget.classList.add('active');
+
+      const colour = evt.currentTarget.dataset.color;
+      isEraserMode = (colour === 'eraser');
+      if (!isEraserMode) currentColor = colour;
+      resetStrokeStyle();
     });
   });
-  
-  // Clear button
-  document.getElementById('clearBtn').addEventListener('click', () => {
-    ctx.fillStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  });
-}
 
-/* Drawing functions */
-function getMousePos(e) {
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
-  };
-}
-
-function getTouchPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x: e.touches[0].clientX - rect.left,
-    y: e.touches[0].clientY - rect.top
-  };
-}
-
-function handleMouseDown(e) {
-  isDrawing = true;
-  const pos = getMousePos(e);
-  ctx.beginPath();
-  ctx.moveTo(pos.x, pos.y);
-}
-
-function handleMouseMove(e) {
-  if (!isDrawing) return;
-  const pos = getMousePos(e);
-  ctx.lineTo(pos.x, pos.y);
-  ctx.stroke();
-}
-
-function handleMouseUp() {
-  isDrawing = false;
-}
-
-function handleTouchStart(e) {
-  e.preventDefault();
-  isDrawing = true;
-  const pos = getTouchPos(e);
-  ctx.beginPath();
-  ctx.moveTo(pos.x, pos.y);
-}
-
-function handleTouchMove(e) {
-  e.preventDefault();
-  if (!isDrawing) return;
-  const pos = getTouchPos(e);
-  ctx.lineTo(pos.x, pos.y);
-  ctx.stroke();
-}
-
-function handleTouchEnd() {
-  isDrawing = false;
+  // clear button
+  const clearBtn = $('#clearBtn');
+  if (!clearBtn.dataset.wired) {
+    clearBtn.dataset.wired = 'true';
+    clearBtn.addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateCanvasBackground();
+    });
+  }
 }
 </script>
 </body>
