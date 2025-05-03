@@ -85,38 +85,74 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
 }
 .modal-content {
   background-color: var(--card-bg);
-  margin: 5% auto;
-  padding: 20px;
+  position: fixed;
   border: 3px double var(--section-border);
-  width: 80%;
-  max-width: 700px;
+  width: 600px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  resize: both;
+  overflow: hidden;
+  min-width: 400px;
+  min-height: 300px;
+}
+.modal-header {
+  padding: 10px;
+  background: var(--nav-bg);
+  cursor: move;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid var(--section-border);
+  user-select: none;
   position: relative;
 }
-.close {
-  color: var(--txt);
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: center;
 }
-.close:hover {
+.window-controls {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  right: 10px;
+}
+.window-controls button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--txt);
+  padding: 0 5px;
+}
+.window-controls button:hover {
   color: var(--link);
+}
+.modal-body {
+  padding: 10px;
+  height: calc(100% - 52px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .sketch-container {
   text-align: center;
   user-select: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .sketch-canvas {
   border: 2px solid var(--section-border);
   background: #fff;
   cursor: crosshair;
   touch-action: none;
-  margin: 1rem 0;
-  display: block;
+  flex: 1;
   width: 100%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  min-height: 0;
 }
 .theme-dark .sketch-canvas {
   background: #222;
@@ -126,7 +162,9 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+  margin-top: 10px;
+  flex-shrink: 0;
+  min-height: 40px;
 }
 .sketch-controls button {
   padding: 0.3rem 0.8rem;
@@ -165,13 +203,9 @@ blockquote{margin:1rem 0;padding-left:1.5rem;border-left:4px solid var(--section
     padding: 0.5rem;
   }
   
-  .sketch-canvas {
-    width: 100% !important;
-  }
-  
   .modal-content {
     width: 95%;
-    margin: 10% auto;
+    height: 70%;
   }
 }
 
@@ -193,18 +227,25 @@ footer{margin-top:3rem;border-top:2px solid #000;padding:1rem;font-size:.9rem;ba
 
 <!-- Sketch Modal -->
 <div id="sketchModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>✏️ Whiteboard</h2>
-    <div class="sketch-container">
-      <canvas id="sketchpad" class="sketch-canvas" width="600" height="300"></canvas>
-      <div class="sketch-controls">
-        <button class="color-btn active" data-color="#000000" style="background:#000"></button>
-        <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
-        <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
-        <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
-        <button class="color-btn" data-color="#ffffff" style="background:#fff;border-color:#000"></button>
-        <button id="clearBtn">Clear</button>
+  <div class="modal-content" id="modalContent">
+    <div class="modal-header">
+      <h2>✎WHITEBOARD</h2>
+      <div class="window-controls">
+        <button id="fullscreenBtn">⛶</button>
+        <button class="close">&times;</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="sketch-container">
+        <canvas id="sketchpad" class="sketch-canvas"></canvas>
+        <div class="sketch-controls">
+          <button class="color-btn active" data-color="#000000" style="background:#000"></button>
+          <button class="color-btn" data-color="#ff0000" style="background:#f00"></button>
+          <button class="color-btn" data-color="#0000ff" style="background:#00f"></button>
+          <button class="color-btn" data-color="#00ff00" style="background:#0f0"></button>
+          <button class="color-btn" data-color="eraser" style="background:#fff;border-color:#000">⌫</button>
+          <button id="clearBtn">Clear</button>
+        </div>
       </div>
     </div>
   </div>
@@ -328,7 +369,6 @@ try {
     root.classList.add('theme-dark');
   }
 } catch (e) {
-  // localStorage not available in sandboxed environment
   console.log('localStorage not available');
 }
 
@@ -347,111 +387,329 @@ btn.onclick = () => {
 
 /* Sketch Pad Modal Functionality */
 const modal = document.getElementById('sketchModal');
+const modalContent = document.getElementById('modalContent');
 const sketchBtn = document.getElementById('sketchBtn');
 const closeBtn = document.querySelector('.close');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
 
+// Canvas and drawing variables
+let canvas, ctx;
+let isDrawing = false;
+let currentColor = '#000000';
+let isEraser = false;
+let canvasData = null;
+
+// Resize observer for modal
+const resizeObserver = new ResizeObserver(entries => {
+  for (let entry of entries) {
+    if (entry.target === modalContent) {
+      // Save current canvas
+      if (canvas && ctx) {
+        canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      }
+      
+      // Reinitialize canvas
+      setTimeout(() => {
+        initSketchpad();
+        
+        // Restore canvas data if available
+        if (canvasData && canvas.width >= canvasData.width && canvas.height >= canvasData.height) {
+          ctx.putImageData(canvasData, 0, 0);
+        }
+      }, 100);
+    }
+  }
+});
+
+// Start observing the modal
+document.addEventListener('DOMContentLoaded', () => {
+  resizeObserver.observe(modalContent);
+});
+
+// Open modal
 sketchBtn.onclick = function() {
   modal.style.display = "block";
+  
+  // Always reset to center when opening
+  modalContent.style.transform = 'translate(-50%, -50%)';
+  xOffset = 0;
+  yOffset = 0;
+  
   initSketchpad();
 }
 
+// Close modal
 closeBtn.onclick = function() {
   modal.style.display = "none";
+  // Reset position when closing
+  modalContent.style.transform = 'translate(-50%, -50%)';
+  xOffset = 0;
+  yOffset = 0;
 }
 
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
+    // Reset position when clicking outside
+    modalContent.style.transform = 'translate(-50%, -50%)';
+    xOffset = 0;
+    yOffset = 0;
   }
 }
 
-/* Sketch Pad Functionality */
-function initSketchpad() {
-  const canvas = document.getElementById('sketchpad');
-  if (!canvas) return;
+// Fullscreen toggle
+let isFullscreen = false;
+fullscreenBtn.onclick = function() {
+  if (!isFullscreen) {
+    // Go fullscreen
+    modalContent.style.width = '100%';
+    modalContent.style.height = '100%';
+    modalContent.style.top = '0';
+    modalContent.style.left = '0';
+    modalContent.style.transform = 'none';
+    modalContent.style.resize = 'none';
+    fullscreenBtn.textContent = '⛌';
+    isFullscreen = true;
+  } else {
+    // Exit fullscreen
+    modalContent.style.width = '600px';
+    modalContent.style.height = '400px';
+    modalContent.style.top = '50%';
+    modalContent.style.left = '50%';
+    modalContent.style.transform = 'translate(-50%, -50%)';
+    modalContent.style.resize = 'both';
+    fullscreenBtn.textContent = '⛶';
+    isFullscreen = false;
+    
+    // Reset offsets when exiting fullscreen
+    xOffset = 0;
+    yOffset = 0;
+  }
   
-  const ctx = canvas.getContext('2d');
-  let isDrawing = false;
-  let currentColor = '#000000';
+  // Reinitialize canvas with new size
+  setTimeout(() => {
+    initSketchpad();
+  }, 100);
+}
 
-  // Set up canvas
+/* Initialize sketchpad */
+function initSketchpad() {
+  canvas = document.getElementById('sketchpad');
+  ctx = canvas.getContext('2d');
+  
+  // Calculate available space for canvas
+  const container = canvas.parentElement;
+  const rect = container.getBoundingClientRect();
+  const controls = document.querySelector('.sketch-controls');
+  const controlsHeight = controls ? controls.offsetHeight : 50;
+  
+  // Set canvas size to match available space
+  canvas.width = rect.width;
+  canvas.height = Math.max(100, rect.height - controlsHeight - 20); // Leave space for controls
+  
+  // Set drawing styles
   ctx.lineWidth = 2;
   ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
   ctx.strokeStyle = currentColor;
-
-  // Fill with white in light mode, dark in dark mode
-  if (document.documentElement.classList.contains('theme-dark')) {
-    ctx.fillStyle = '#222';
-  } else {
-    ctx.fillStyle = '#fff';
-  }
+  
+  // Fill background
+  ctx.fillStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Handle drawing
-  function startDrawing(e) {
-    isDrawing = true;
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  }
-
-  function draw(e) {
-    if (!isDrawing) return;
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  function stopDrawing() {
-    isDrawing = false;
-  }
-
-  // Event listeners
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseout', stopDrawing);
-
+  
+  // Remove any existing event listeners
+  canvas.removeEventListener('mousedown', handleMouseDown);
+  canvas.removeEventListener('mousemove', handleMouseMove);
+  canvas.removeEventListener('mouseup', handleMouseUp);
+  canvas.removeEventListener('mouseout', handleMouseUp);
+  
+  // Add event listeners
+  canvas.addEventListener('mousedown', handleMouseDown);
+  canvas.addEventListener('mousemove', handleMouseMove);
+  canvas.addEventListener('mouseup', handleMouseUp);
+  canvas.addEventListener('mouseout', handleMouseUp);
+  
   // Touch events
-  canvas.addEventListener('touchstart', startDrawing);
-  canvas.addEventListener('touchmove', draw);
-  canvas.addEventListener('touchend', stopDrawing);
-
+  canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+  canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+  canvas.addEventListener('touchend', handleTouchEnd);
+  
   // Color selection
   document.querySelectorAll('.color-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       document.querySelector('.color-btn.active')?.classList.remove('active');
-      e.target.classList.add('active');
-      currentColor = e.target.dataset.color;
-      ctx.strokeStyle = currentColor;
+      e.currentTarget.classList.add('active');
+      const color = e.currentTarget.dataset.color;
+      
+      if (color === 'eraser') {
+        isEraser = true;
+        ctx.lineWidth = 10; // Larger size for eraser
+        ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+      } else {
+        isEraser = false;
+        currentColor = color;
+        ctx.lineWidth = 2; // Normal size for pencil
+        ctx.strokeStyle = currentColor;
+      }
     });
   });
-
+  
   // Clear button
   document.getElementById('clearBtn').addEventListener('click', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (document.documentElement.classList.contains('theme-dark')) {
-      ctx.fillStyle = '#222';
-    } else {
-      ctx.fillStyle = '#fff';
-    }
+    ctx.fillStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   });
+}
 
-  // Adjust canvas for dark mode
-  const observer = new MutationObserver(() => {
-    if (root.classList.contains('theme-dark') && currentColor === '#000000') {
-      ctx.strokeStyle = '#ffffff';
-    } else if (!root.classList.contains('theme-dark') && currentColor === '#ffffff') {
-      ctx.strokeStyle = '#000000';
+/* Drawing functions */
+function getMousePos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  
+  return {
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top) * scaleY
+  };
+}
+
+function getTouchPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  
+  return {
+    x: (e.touches[0].clientX - rect.left) * scaleX,
+    y: (e.touches[0].clientY - rect.top) * scaleY
+  };
+}
+
+function handleMouseDown(e) {
+  isDrawing = true;
+  const pos = getMousePos(e);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+}
+
+function handleMouseMove(e) {
+  if (!isDrawing) return;
+  const pos = getMousePos(e);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  
+  // Update stroke style if using eraser and theme changes
+  if (isEraser) {
+    ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+  }
+}
+
+function handleMouseUp() {
+  isDrawing = false;
+}
+
+function handleTouchStart(e) {
+  e.preventDefault();
+  isDrawing = true;
+  const pos = getTouchPos(e);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (!isDrawing) return;
+  const pos = getTouchPos(e);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  
+  // Update stroke style if using eraser and theme changes
+  if (isEraser) {
+    ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+  }
+}
+
+function handleTouchEnd() {
+  isDrawing = false;
+}
+
+// Make modal draggable
+let isDragging = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+let xOffset = 0;
+let yOffset = 0;
+
+const modalHeader = document.querySelector('.modal-header');
+
+modalHeader.addEventListener('mousedown', dragStart);
+document.addEventListener('mousemove', drag);
+document.addEventListener('mouseup', dragEnd);
+
+function dragStart(e) {
+  if (e.target.closest('.window-controls')) return;
+  if (isFullscreen) return; // Don't allow dragging in fullscreen
+  
+  initialX = e.clientX - xOffset;
+  initialY = e.clientY - yOffset;
+  
+  isDragging = true;
+}
+
+function drag(e) {
+  if (isDragging) {
+    e.preventDefault();
+    
+    const newX = e.clientX - initialX;
+    const newY = e.clientY - initialY;
+    
+    // Get modal dimensions
+    const rect = modalContent.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // Calculate where the edges would be with the new position
+    const leftEdge = windowWidth/2 + newX - rect.width/2;
+    const rightEdge = windowWidth/2 + newX + rect.width/2;
+    const topEdge = windowHeight/2 + newY - rect.height/2;
+    const bottomEdge = windowHeight/2 + newY + rect.height/2;
+    
+    // Keep at least 50px visible on each side
+    const minVisible = 50;
+    
+    // Apply constraints
+    if (leftEdge < -rect.width + minVisible) {
+      currentX = -windowWidth/2 - rect.width/2 + minVisible;
+    } else if (rightEdge > windowWidth + rect.width - minVisible) {
+      currentX = windowWidth/2 + rect.width/2 - minVisible;
+    } else {
+      currentX = newX;
     }
-  });
-  observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+    
+    if (topEdge < -rect.height + minVisible) {
+      currentY = -windowHeight/2 - rect.height/2 + minVisible;
+    } else if (bottomEdge > windowHeight + rect.height - minVisible) {
+      currentY = windowHeight/2 + rect.height/2 - minVisible;
+    } else {
+      currentY = newY;
+    }
+    
+    xOffset = currentX;
+    yOffset = currentY;
+    
+    setTranslate(currentX, currentY, modalContent);
+  }
+}
+
+function dragEnd() {
+  initialX = currentX;
+  initialY = currentY;
+  isDragging = false;
+}
+
+function setTranslate(xPos, yPos, el) {
+  el.style.transform = `translate(calc(-50% + ${xPos}px), calc(-50% + ${yPos}px))`;
 }
 </script>
 </body>
