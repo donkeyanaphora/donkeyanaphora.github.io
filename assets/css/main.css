@@ -17,7 +17,21 @@
   html,body{height:100%;}
   
   /* ========== GLOBAL ========== */
-  body{margin:0;background:var(--bg-img) repeat, var(--bg-col);color:var(--txt);font-family:"Comic Sans MS","Trebuchet MS",Tahoma,sans-serif;text-align:center;transition:.4s all;}
+  /* body{margin:0;background:var(--bg-img) repeat, var(--bg-col);color:var(--txt);font-family:"Comic Sans MS","Trebuchet MS",Tahoma,sans-serif;text-align:center;transition:.4s all;} */
+  
+  body {
+    margin: 0;
+    background: var(--bg-img) repeat, var(--bg-col);
+    color: var(--txt);
+    font-family:
+      "Comic Sans MS",
+      "Comic Sans",
+      cursive,
+      sans-serif;
+    text-align: center;
+    transition: .4s all;
+  }
+
   a{color:var(--link);}a:visited{color:var(--visited);}a:hover{background:var(--h1-shadow);}
   h1{margin:.5em 0;font-size:2.5rem;color:var(--h1);text-shadow:2px 2px 0 var(--h1-shadow);}h2{margin:0 0 .5em;font-size:1.5rem;color:var(--link);}
   
