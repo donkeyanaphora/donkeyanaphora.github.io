@@ -159,6 +159,7 @@ blockquote {
   background: var(--card-bg);
   padding: 1rem;
   margin: 1.5rem 0;
+  text-align: left;
 }
 .mood-item h3 { margin-top: 0; color: var(--card-border); font-size: 1.1rem; }
 .mood-image { text-align: center; padding: 1rem; }

@@ -132,15 +132,80 @@
     <summary>🖼️ Mood Board</summary>
     <div>
       <div class="mood-item">
-        <h3>🤕 On Bad Conscience</h3>
+        <h3>🎭 Meaningful Dissonance</h3>
+        <p>
+            Been thinking a lot about a chat I had awhile back with my former colleague about unexpected language. 
+            What interests me is the idea of unexpected language with clear intention, where semantic violations create meaning through contradiction. 
+            When Shakespeare writes "two distincts, division none" or "saw division grow together," he breaks semantic rules precisely to capture 
+            something beyond the reach of ordinary language.
+        </p>
+        
+        <h4>Examples of Syntactic Form + Semantic Dissonance</h4>
+        
         <blockquote>
-          <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
-          <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
-          <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
-          <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
-          <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
-          <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
+          <p>
+            So they lov'd, as love in twain<br>
+            Had the essence but in one;<br>
+            Two distincts, division none:<br>
+            Number there in love was slain.<br><br>
+            
+            Hearts remote, yet not asunder;<br>
+            Distance and no space was seen<br>
+            Twixt this Turtle and his queen
+          </p>
+          <span class="attribution">— Shakespeare, <em>The Phoenix and the Turtle</em></span>
         </blockquote>
+        <br>
+        <blockquote>
+            <p>
+                Merry and tragical! Tedious and brief!<br>
+                That is, hot ice and wondrous strange snow.<br>
+                How shall we find the concord of this discord?<br>
+            </p>
+            <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
+          </blockquote>
+          <br>
+          <blockquote>
+            <p>
+                A cage went in search of a bird.
+            </p>
+            <span class="attribution">— Kafka, <em>Aphorisms</em></span>
+          </blockquote>
+          <br>
+          <h3>Current Tools Can't Capture This</h3>
+          
+            <p>
+            <strong>PMI(x, y)</strong> = log(
+            <span class="fraction">
+                <sup>P(x, y)</sup>&frasl;<sub>P(x)·P(y)</sub>
+            </span>
+            )
+            </p>
+            <ul>
+            <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
+            <li><code>PMI = 0</code>: independent</li>
+            <li><code>PMI &gt; 0</code>: co‑occur more than chance</li>
+            </ul>
+    
+            <p>
+            <strong>Temperature</strong>: P(x<sub>i</sub>) = 
+            <span class="fraction">
+                <sup>exp(logit<sub>i</sub>/T)</sup>&frasl;<sub>Σ<sub>j</sub> exp(logit<sub>j</sub>/T)</sub>
+            </span>
+            </p>
+            <ul>
+            <li><code>T → 0</code>: deterministic (argmax)</li>
+            <li><code>T = 1</code>: standard sampling</li>
+            <li><code>T → ∞</code>: uniform distribution</li>
+            </ul>
+            <p>
+                Low PMI language: semantic dissonance (not random)<br>
+                High temperature: randomness without purpose<br>
+                Literary paradox: precision masquerading as impossibility
+            </p>
+            <p>
+                The question I want to return to: how do we formalize and computationally enforce meaningful dissonance? How do we distinguish between random and meaningful violations? What's worse is that the whole "use-theory of meaning" just makes this question fall in on itself.
+            </p>
       </div>
 
       <div class="mood-item">
@@ -151,6 +216,18 @@
         </div>
       </div>
 
+      <div class="mood-item">
+        <h3>🤕 On Bad Conscience</h3>
+        <blockquote>
+          <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
+          <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
+          <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
+          <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
+          <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
+          <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
+        </blockquote>
+      </div>
+      
       <div class="mood-item">
         <h3>It is complicated</h3>
         <div class="mood-image">
