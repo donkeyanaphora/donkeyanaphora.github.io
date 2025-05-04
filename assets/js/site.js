@@ -62,6 +62,15 @@ const sketchButton   = $('#sketchBtn');
 const closeButton    = $('.close');
 const fullscreenBtn  = $('#fullscreenBtn');
 const canvas         = $('#sketchpad');
+// new stroke‑size slider reference
+
+const strokeSlider = document.getElementById('strokeSizeSlider');
+
+if (strokeSlider) {
+  strokeSlider.addEventListener('input', () => {
+    if (ctx) resetStrokeStyle();
+  });
+}
 
 let ctx;                       // 2‑D context (set in initWhiteboard)
 let isDrawing     = false;     // pointer is pressed
@@ -114,14 +123,16 @@ function strokeSize() {
 }
 
 function resetStrokeStyle() {
-  // Always draw black (or chosen colour) on a white board; no dark‑mode magic
-  const lw = isEraserMode ? Math.max(4, canvas.width / 40)
-                          : Math.max(2, canvas.width / 200);
-  ctx.lineWidth  = lw;
-  ctx.lineCap    = 'round';
-  ctx.lineJoin   = 'round';
+  const size = strokeSlider
+    ? parseInt(strokeSlider.value, 10)
+    : (isEraserMode ? 20 : 2);
+
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
   ctx.strokeStyle = isEraserMode ? '#ffffff' : currentColor;
 }
+
 
 function updateCanvasBackground() {
   if (!ctx) return;

@@ -101,6 +101,7 @@
   .modal-content.fullscreen{width:100vw;height:100dvh;top:0;left:0;transform:none;}
   .modal-content.fullscreen .modal-body{height:calc(100dvh - 52px);} /* 52 px header */
   /* -------------------------------------------- */
+
   .modal-header{padding:10px;background:var(--nav-bg);display:flex;justify-content:center;align-items:center;border-bottom:2px solid var(--section-border);user-select:none;position:relative;}
   .modal-header h2{margin:0;font-size:1.2rem;text-align:center;}
   .window-controls{display:flex;gap:10px;position:absolute;right:10px;}
@@ -110,7 +111,47 @@
   .sketch-container{text-align:center;user-select:none;flex:1;display:flex;flex-direction:column;min-height:0;}
   .sketch-canvas{border:2px solid var(--section-border);background:#fff;cursor:crosshair;touch-action:none;flex:1;width:100%;min-height:0;}
   .theme-dark .sketch-canvas{background:#222;}
-  .sketch-controls{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:10px;flex-shrink:0;min-height:40px;}
+
+  /* ─────────────────────────────────────────────────────────── */
+  /*  WHITEBOARD CONTROLS                                       */
+  /* ─────────────────────────────────────────────────────────── */
+  .sketch-controls {
+    display: flex;
+    align-items: center;      /* vertical centering */
+    justify-content: center;  /* center buttons in the bar */
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 10px 0;           /* space above/below the bar */
+    min-height: 40px;
+    position: relative;       /* allow absolutely‐positioned slider */
+  }
+
+  .sketch-controls label[for="strokeSizeSlider"] {
+    position: absolute;
+    left: 0.5rem;    /* adjust until ✏️ is flush left */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  
+  /* slider track */
+  .sketch-controls #strokeSizeSlider {
+    position: absolute;
+    left: 2rem;      /* adjust until track clears the pencil */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4rem;
+    height: 6px;
+    cursor: ew-resize;
+  }
+  
+  /* make track shorter if you like */
+  .slider-wrapper input[type="range"] {
+    width: 4rem;
+    height: 6px;
+    cursor: ew-resize;
+  }  
+
   .sketch-controls button{padding:0.3rem 0.8rem;border:2px outset #c0c0c0;background:var(--nav-bg);font-family:inherit;cursor:pointer;font-weight:bold;}
   .sketch-controls button:active{border-style:inset;}
   .color-btn{width:30px;height:30px;padding:0 !important;border:2px outset #c0c0c0;}
