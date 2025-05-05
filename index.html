@@ -132,12 +132,12 @@
     <summary>🖼️ Mood Board</summary>
     <div>
       <div class="mood-item">
-        <h3>🎭 Meaningful Dissonance</h3>
+        <h3>🎭 Extra‑Ordinary Language</h3>
         <p>
-            Been thinking a lot about a chat I had awhile back with my former colleague about unexpected language. 
-            What interests me is the idea of unexpected language with clear intention, where semantic violations create meaning through contradiction. 
-            When Shakespeare writes "two distincts, division none" or "saw division grow together," he breaks semantic rules precisely to capture 
-            something beyond the reach of ordinary language.
+          Been thinking a lot about a chat I had awhile back with my former colleague the topic being unexpected language or expressions that could 
+          be considered anomalous. What interests me in particular is unexpected or anomalous usage with clear intention, where semantic violations 
+          in the form of absurdities (in the case of Kafka) or paradoxes in the case of Shakespeare are packed with metaphysical depth that directly 
+          violates ordinary use.
         </p>
         
         <h4>Examples of Syntactic Form + Semantic Dissonance</h4>
@@ -155,62 +155,87 @@
           </p>
           <span class="attribution">— Shakespeare, <em>The Phoenix and the Turtle</em></span>
         </blockquote>
-        <br>
+        
         <blockquote>
           <p>
-              A cage went in search of a bird.
+            A cage went in search of a bird.
           </p>
           <span class="attribution">— Kafka, <em>Aphorisms</em></span>
         </blockquote>
-        <br>
+        
         <blockquote>
-            <p>
-                Merry and tragical! Tedious and brief!<br>
-                That is, hot ice and wondrous strange snow.<br>
-                How shall we find the concord of this discord?<br>
-            </p>
-            <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
-          </blockquote>
-          <br>
-          <h4>Close but No Dice...</h4>
-          
-            <p>
-            <strong>PMI(x, y)</strong> = log(
-            <span class="fraction">
-                <sup>P(x, y)</sup>&frasl;<sub>P(x)·P(y)</sub>
-            </span>
-            )
-            </p>
-            <ul>
-            <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
-            <li><code>PMI = 0</code>: independent</li>
-            <li><code>PMI &gt; 0</code>: co‑occur more than chance</li>
-            </ul>
-    
-            <p>
-            <strong>Temperature</strong>: P(x<sub>i</sub>) = 
-            <span class="fraction">
-              <sup>exp(z<sub>i</sub> / T)</sup>&frasl;
-              <sub>&Sigma;<sub>j</sub> exp(z<sub>j</sub> / T)</sub>
-            </span>
-            </p>
-            <ul>
-            <li><code>T → 0</code>: deterministic (argmax)</li>
-            <li><code>T = 1</code>: standard sampling</li>
-            <li><code>T → ∞</code>: uniform distribution</li>
-            </ul>
-            <p>
-                Low PMI language: semantic dissonance (not random)<br>
-                High temperature: randomness without purpose<br>
-                Literary paradox: precision masquerading as impossibility
-            </p>
-            <p>
-                The question I want to return to: how do we formalize and computationally enforce meaningful dissonance? 
-                How do we distinguish between random and meaningful violations? What's worse is that the whole "use-theory of meaning" 
-                just makes this question fall in on itself.
-            </p>
-            <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example.</em></p>
-          </div>
+          <p>
+            Merry and tragical! Tedious and brief!<br>
+            That is, hot ice and wondrous strange snow.<br>
+            How shall we find the concord of this discord?
+          </p>
+          <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
+        </blockquote>
+      
+        <h4>Close but No Dice...</h4>
+        <p>
+          <em>Pointwise Mutual Information</em>:
+        </p>
+        <pre style="text-align: center;">PMI(x, y) = log( P(x, y) ⁄ P(x)·P(y) )</pre>
+        <ul>
+          <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
+          <li><code>PMI = 0</code>: independent</li>
+          <li><code>PMI &gt; 0</code>: co‑occur more than chance</li>
+        </ul>
+      
+        <p>
+          <em>Temperature</em>:
+        </p>
+        <pre style="text-align: center;">P(x<sub>i</sub>) = exp(z<sub>i</sub> / T) ⁄ Σ<sub>j</sub> exp(z<sub>j</sub> / T)</pre>
+        <ul>
+          <li><code>T → 0</code>: deterministic (argmax)</li>
+          <li><code>T = 1</code>: standard sampling</li>
+          <li><code>T → ∞</code>: uniform distribution</li>
+        </ul>
+        
+        <p><em>Takeaways:</em></p>
+        <ul>
+          <li>Low PMI language: semantic dissonance (not random)</li>
+          <li>High temperature: randomness without purpose</li>
+          <li>Literary paradox: precision masquerading as impossibility</li>
+        </ul>
+        
+        <h4>Pseudo-Formalizations</h4>
+        <p>
+          Because of their intentionality and depth I'm going to call these violations of "ordinary use" extra‑ordinary use. 
+          They don't obscure meaning but instead elucidate by way of contradiction. Now the question is how to formalize them? 
+          I think the device could be described as a jarring short‑range violation followed by a long‑range metaphysical resolution:
+        </p>
+        <pre style="text-align: center;">ExtraOrdinary(P) ≡ ◊(P ∧ ¬P) ∧ ∃R [ M(P,R) ∧ □R ]</pre>
+        <p>where</p>
+        <ul>
+          <li><code>◊ =</code> possible</li>
+          <li><code>∧ =</code> and</li>
+          <li><code>¬ =</code> not</li>
+          <li><code>∃ =</code> there exists</li>
+          <li><code>□ =</code> necessary</li>
+          <li><code>R =</code> the metaphysical resolution of P</li>
+          <li><code>M(P,R) =</code> relation that holds if R fully reconciles the contradiction in P</li>
+        </ul>
+      
+        <h4>Applied Example</h4>
+        <p>
+          <strong>P:</strong> "Two distincts, division none..."<br>
+          <strong>Resolution R:</strong> Indivisibility of love as a platonic ideal (distinct entities unified by love)
+        </p>
+        
+        <h4>Closing Thoughts</h4>
+        <p>There's still a good bit of work to be done in defining exactly what the metaphysical resolution R is. Currently
+          R remains under-specified, and candidate definitions either over-explain the poetic tension or collapse back into banal prose. 
+          It's hard not to think of Wittgenstein's elucidation of private pain or propositions like 
+          "what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence."
+        </p><p>
+          Hand-wavey metaphysical insights aside, maybe we can just define R purely in distributional terms. 
+          The JL Austin brute force approach: want to understand a linguistic phenomenon? Read through countless examples of it before you generalize. 
+          Anyway, if we can formalize it and depending on the nature of that formalization maybe we COULD have a much more interesting generation for causal language models.
+        </p>
+        <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example.</em></p>
+      </div>
 
       <div class="mood-item">
         <h3>Machines at Work</h3>
