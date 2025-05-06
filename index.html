@@ -133,114 +133,116 @@
     <div>
       <div class="mood-item">
         <h3>🎭 Extra‑Ordinary Language</h3>
-        <p>
-          I've been thinking a lot about a chat I had with a former colleague about language that breaks semantic expectations. 
-          The conversation then veered into causal language models and their various generation parameters like temperature.
-          What interests me in particular is unexpected or anomalous usage with clear intention where semantic violations in the form of absurdities or paradoxes are packed with metaphysical depth.
-          
-        </p></p>
-          In this post, I'm dog-earing these thoughts to revisit later. 
-          The aim here is to examine the specific forms these expressions take and explore how we might capture their tension and their coherence in a computational framework.
-        </p>
-        
-        <h4>Literary Examples</h4>
-        
-        <blockquote>
+        <div class="scroll-pane">
           <p>
-            So they lov'd, as love in twain<br>
-            Had the essence but in one;<br>
-            Two distincts, division none:<br>
-            Number there in love was slain.<br><br>
+            I've been thinking a lot about a chat I had with a former colleague about language that breaks semantic expectations. 
+            The conversation then veered into causal language models and their various generation parameters like temperature.
+            What interests me in particular is unexpected or anomalous usage with clear intention where semantic violations in the form of absurdities or paradoxes are packed with metaphysical depth.
             
-            Hearts remote, yet not asunder;<br>
-            Distance and no space was seen<br>
-            Twixt this Turtle and his queen
+          </p></p>
+            In this post, I'm dog-earing these thoughts to revisit later. 
+            The aim here is to examine the specific forms these expressions take and explore how we might capture their tension and their coherence in a computational framework.
           </p>
-          <span class="attribution">— Shakespeare, <em>The Phoenix and the Turtle</em></span>
-        </blockquote>
+          
+          <h4>Literary Examples</h4>
+          
+          <blockquote>
+            <p>
+              So they lov'd, as love in twain<br>
+              Had the essence but in one;<br>
+              Two distincts, division none:<br>
+              Number there in love was slain.<br><br>
+              
+              Hearts remote, yet not asunder;<br>
+              Distance and no space was seen<br>
+              Twixt this Turtle and his queen
+            </p>
+            <span class="attribution">— Shakespeare, <em>The Phoenix and the Turtle</em></span>
+          </blockquote>
+          
+          <blockquote>
+            <p>
+              A cage went in search of a bird.
+            </p>
+            <span class="attribution">— Kafka, <em>Aphorisms</em></span>
+          </blockquote>
+          
+          <blockquote>
+            <p>
+              Merry and tragical! Tedious and brief!<br>
+              That is, hot ice and wondrous strange snow.<br>
+              How shall we find the concord of this discord?
+            </p>
+            <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
+          </blockquote>
         
-        <blockquote>
+          <h4>Some Probabilistic Approaches</h4>
           <p>
-            A cage went in search of a bird.
+            <em>Pointwise Mutual Information</em>:
           </p>
-          <span class="attribution">— Kafka, <em>Aphorisms</em></span>
-        </blockquote>
+          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">PMI(x, y) = log(P(x, y) / P(x)·P(y))</p>
+          <ul>
+            <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
+            <li><code>PMI = 0</code>: independent</li>
+            <li><code>PMI &gt; 0</code>: co‑occur more than chance</li>
+          </ul>
         
-        <blockquote>
           <p>
-            Merry and tragical! Tedious and brief!<br>
-            That is, hot ice and wondrous strange snow.<br>
-            How shall we find the concord of this discord?
+            <em>Temperature</em>:
           </p>
-          <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
-        </blockquote>
-      
-        <h4>Some Probabilistic Approaches</h4>
-        <p>
-          <em>Pointwise Mutual Information</em>:
-        </p>
-        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">PMI(x, y) = log(P(x, y) / P(x)·P(y))</p>
-        <ul>
-          <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
-          <li><code>PMI = 0</code>: independent</li>
-          <li><code>PMI &gt; 0</code>: co‑occur more than chance</li>
-        </ul>
-      
-        <p>
-          <em>Temperature</em>:
-        </p>
-        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">P(x<sub>i</sub>) = exp(z<sub>i</sub> / T) / Σ<sub>j</sub> exp(z<sub>j</sub> / T)</p>
-        <ul>
-          <li><code>T → 0</code>: deterministic (argmax)</li>
-          <li><code>T = 1</code>: standard sampling</li>
-          <li><code>T → ∞</code>: uniform distribution</li>
-        </ul>
+          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">P(x<sub>i</sub>) = exp(z<sub>i</sub> / T) / Σ<sub>j</sub> exp(z<sub>j</sub> / T)</p>
+          <ul>
+            <li><code>T → 0</code>: deterministic (argmax)</li>
+            <li><code>T = 1</code>: standard sampling</li>
+            <li><code>T → ∞</code>: uniform distribution</li>
+          </ul>
+          
+          <p><em>Takeaways:</em></p>
+          <ul>
+            <li>Low PMI language: semantic dissonance (not random)</li>
+            <li>High temperature: randomness without purpose</li>
+            <li>Literary paradox: precision masquerading as impossibility</li>
+          </ul>
+          
+          <h4>Pseudo-Formalizations</h4>
+          <p>
+            Because of their intentionality and depth I'm going to call these violations of "ordinary use" extra‑ordinary use. 
+            They don't obscure meaning but instead elucidate by way of contradiction. Now the question is how to formalize them? 
+            I think the device could be described as a jarring short‑range violation followed by a long‑range metaphysical resolution:
+          </p>
+          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExtraOrdinary(P) ≡ ◊(P ∧ ¬P) ∧ ∃R [M(P,R) ∧ □R]</p>
+          <p>where</p>
+          <ul>
+            <li><code>◊ =</code> possible</li>
+            <li><code>∧ =</code> and</li>
+            <li><code>¬ =</code> not</li>
+            <li><code>∃ =</code> there exists</li>
+            <li><code>□ =</code> necessary</li>
+            <li><code>R =</code> the metaphysical resolution of P</li>
+            <li><code>M(P,R) =</code> relation that holds if R fully reconciles the contradiction in P</li>
+          </ul>
         
-        <p><em>Takeaways:</em></p>
-        <ul>
-          <li>Low PMI language: semantic dissonance (not random)</li>
-          <li>High temperature: randomness without purpose</li>
-          <li>Literary paradox: precision masquerading as impossibility</li>
-        </ul>
-        
-        <h4>Pseudo-Formalizations</h4>
-        <p>
-          Because of their intentionality and depth I'm going to call these violations of "ordinary use" extra‑ordinary use. 
-          They don't obscure meaning but instead elucidate by way of contradiction. Now the question is how to formalize them? 
-          I think the device could be described as a jarring short‑range violation followed by a long‑range metaphysical resolution:
-        </p>
-        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExtraOrdinary(P) ≡ ◊(P ∧ ¬P) ∧ ∃R [M(P,R) ∧ □R]</p>
-        <p>where</p>
-        <ul>
-          <li><code>◊ =</code> possible</li>
-          <li><code>∧ =</code> and</li>
-          <li><code>¬ =</code> not</li>
-          <li><code>∃ =</code> there exists</li>
-          <li><code>□ =</code> necessary</li>
-          <li><code>R =</code> the metaphysical resolution of P</li>
-          <li><code>M(P,R) =</code> relation that holds if R fully reconciles the contradiction in P</li>
-        </ul>
-      
-        <p>This formalization in action looks something like:</p>
-        <ul>
-          <li><code><strong>◊(P ∧ ¬P):</strong></code> "Two distincts, division none..."</li>
-          <li><code><strong>Resolution R:</strong></code> Indivisibility of love as a platonic ideal (distinct entities unified by love)</li>
-        </ul>
-        
-        <h4>Closing Thoughts</h4>
-        <p>There's still a good bit of work to be done in defining exactly what the metaphysical resolution R is. Currently
-          R remains under-specified, and our descriptions of it either over-explain the poetic tension or collapse back into banal prose. 
-        </p>
-        <p>
-          It's hard not to think of Wittgenstein's elucidation of private pain or propositions like 
-          "what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence."
-          Hand-wavey metaphysical insights aside, maybe we can just define R purely in distributional terms. 
-          The JL Austin brute force approach: want to understand a linguistic phenomenon? Read through countless examples of it BEFORE you generalize (continental philosophers take note; data before theory). 
-        </p>
-          Anyway, if we can formalize it and depending on the nature of that formalization maybe we could guide more interesting generations for language models.
-          A fully specified R could let us tune generation not just by temperature but by an anomaly–coherence trade‑off, opening new creative possibilities 🤷‍♂️.
-        </p>
-        <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example.</em></p>
+          <p>This formalization in action looks something like:</p>
+          <ul>
+            <li><code><strong>◊(P ∧ ¬P):</strong></code> "Two distincts, division none..."</li>
+            <li><code><strong>Resolution R:</strong></code> Indivisibility of love as a platonic ideal (distinct entities unified by love)</li>
+          </ul>
+          
+          <h4>Closing Thoughts</h4>
+          <p>There's still a good bit of work to be done in defining exactly what the metaphysical resolution R is. Currently
+            R remains under-specified, and our descriptions of it either over-explain the poetic tension or collapse back into banal prose. 
+          </p>
+          <p>
+            It's hard not to think of Wittgenstein's elucidation of private pain or propositions like 
+            "what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence."
+            Hand-wavey metaphysical insights aside, maybe we can just define R purely in distributional terms. 
+            The JL Austin brute force approach: want to understand a linguistic phenomenon? Read through countless examples of it BEFORE you generalize (continental philosophers take note; data before theory). 
+          </p>
+            Anyway, if we can formalize it and depending on the nature of that formalization maybe we could guide more interesting generations for language models.
+            A fully specified R could let us tune generation not just by temperature but by an anomaly–coherence trade‑off, opening new creative possibilities 🤷‍♂️.
+          </p>
+          <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example.</em></p>
+        </div>
       </div>
 
       <div class="mood-item">
@@ -253,14 +255,16 @@
 
       <div class="mood-item">
         <h3>🤕 On Bad Conscience</h3>
-        <blockquote>
-          <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
-          <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
-          <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
-          <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
-          <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
-          <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
-        </blockquote>
+        <div class="scroll-pane">
+          <blockquote>
+            <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
+            <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
+            <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
+            <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
+            <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
+            <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
+          </blockquote>
+        </div>
       </div>
 
       <div class="mood-item">
