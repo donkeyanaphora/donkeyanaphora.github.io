@@ -179,7 +179,7 @@
         <p>
           <em>Pointwise Mutual Information</em>:
         </p>
-        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">PMI(x, y) = log(P(x, y) ⁄ P(x)·P(y))</p>
+        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">PMI(x, y) = log(P(x, y) / P(x)·P(y))</p>
         <ul>
           <li><code>PMI &lt; 0</code>: co‑occur less than chance</li>
           <li><code>PMI = 0</code>: independent</li>
@@ -189,7 +189,7 @@
         <p>
           <em>Temperature</em>:
         </p>
-        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">P(x<sub>i</sub>) = exp(z<sub>i</sub> / T) ⁄ Σ<sub>j</sub> exp(z<sub>j</sub> / T)</p>
+        <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">P(x<sub>i</sub>) = exp(z<sub>i</sub> / T) / Σ<sub>j</sub> exp(z<sub>j</sub> / T)</p>
         <ul>
           <li><code>T → 0</code>: deterministic (argmax)</li>
           <li><code>T = 1</code>: standard sampling</li>
