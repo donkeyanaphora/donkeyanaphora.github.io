@@ -100,8 +100,15 @@ closeButton.   addEventListener('click', closeModal);
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
 });
-window.addEventListener('click', e => {
-  if (e.target === modal) closeModal();
+
+let wbBackDropPress = false;              // separate flag for the whiteboard
+
+modal.addEventListener('pointerdown', e => {
+  wbBackDropPress = (e.target === modal); // true only if press starts on backdrop
+});
+modal.addEventListener('pointerup', e => {
+  if (wbBackDropPress && e.target === modal) closeModal();
+  wbBackDropPress = false;                // reset every pointer sequence
 });
 
 /* ---------- 3b. fullscreen toggle ------------------------------------ */
@@ -247,42 +254,53 @@ function attachUiListeners() {
 }
 
 /* ----------------------------------------------------------------------
-   8.  Pseudo‑code pad modal
+   8.  Pseudo-code pad modal
 ---------------------------------------------------------------------- */
-const codeModal      = $('#codeModal');
-const codeContent    = $('#codeContent');
-const codeBtn        = $('#codeBtn');
-const codeClose      = $('.code-close');
-const codeFullBtn    = $('#codeFullscreen');
-const codeArea       = $('#codeArea');
+const codeModal   = $('#codeModal');
+const codeContent = $('#codeContent');
+const codeBtn     = $('#codeBtn');
+const codeClose   = $('.code-close');
+const codeFullBtn = $('#codeFullscreen');
+const codeArea    = $('#codeArea');
 
 let codeFullscreen = false;
-const CODE_KEY = 'pseudoCode';        // localStorage key
+const CODE_KEY = 'pseudoCode';   // localStorage key
 
-function openCode(){
-  codeModal.style.display='block';
-  codeModal.setAttribute('aria-hidden','false');
-  lastFocusEl=document.activeElement;
+function openCode () {
+  codeModal.style.display = 'block';
+  codeModal.setAttribute('aria-hidden', 'false');
+  lastFocusEl = document.activeElement;
   codeContent.focus();
-  try{ codeArea.value=localStorage.getItem(CODE_KEY)||'Howdy! '; }catch(_){}
+  try { codeArea.value = localStorage.getItem(CODE_KEY) || 'Howdy! '; } catch (_) {}
 }
-function closeCode(){
-  codeModal.style.display='none';
-  codeModal.setAttribute('aria-hidden','true');
-  document.body.style.overflow='';
+function closeCode () {
+  codeModal.style.display = 'none';
+  codeModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
   lastFocusEl?.focus();
-  try{ localStorage.setItem(CODE_KEY,codeArea.value); }catch(_){}
+  try { localStorage.setItem(CODE_KEY, codeArea.value); } catch (_) {}
 }
 
 codeBtn.addEventListener('click', openCode);
 codeClose.addEventListener('click', closeCode);
+
+/* --- Escape key ----------------------------------------------------- */
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape' && codeModal.style.display === 'block') closeCode();
 });
-window.addEventListener('click', e => {
-  if (e.target === codeModal) closeCode();
+
+/* --- Back-drop press begins + ends on backdrop → close -------------- */
+let cdbackDropPress = false;
+
+codeModal.addEventListener('pointerdown', e => {
+  cdbackDropPress = (e.target === codeModal);          // true only if press starts on backdrop
+});
+codeModal.addEventListener('pointerup', e => {
+  if (cdbackDropPress && e.target === codeModal) closeCode();
+  cdbackDropPress = false;                             // reset for next pointer sequence
 });
 
+/* --- Fullscreen toggle --------------------------------------------- */
 codeFullBtn.addEventListener('click', () => {
   codeFullscreen = !codeFullscreen;
   codeContent.classList.toggle('fullscreen', codeFullscreen);
@@ -290,3 +308,60 @@ codeFullBtn.addEventListener('click', () => {
   document.body.style.overflow = codeFullscreen ? 'hidden' : '';
   setTimeout(() => codeArea.focus(), 50);
 });
+
+/* --- TAB / SHIFT-TAB indent / un-indent ---------------------------- */
+codeArea.addEventListener('keydown', e => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const tab = '  ';                                   // or '\t'
+    const [s, t] = [e.target.selectionStart, e.target.selectionEnd];
+
+    if (e.shiftKey) {
+      const before = e.target.value.slice(s - tab.length, s);
+      if (before === tab) e.target.setRangeText('', s - tab.length, s, 'end');
+    } else {
+      e.target.setRangeText(tab, s, t, 'end');
+    }
+  }
+});
+
+/* --- UNDO / REDO  (⌘Z / ⌘⇧Z  or  Ctrl-Z / Ctrl-Y) ------------------- */
+(() => {
+  const undo = [];
+  const redo = [];
+  const MAX  = 100;
+
+  undo.push(codeArea.value);                           // initial snapshot
+
+  codeArea.addEventListener('input', () => {
+    if (undo.length >= MAX) undo.shift();
+    undo.push(codeArea.value);
+    redo.length = 0;                                   // clear redo chain
+  });
+
+  codeArea.addEventListener('keydown', e => {
+    const z   = e.key.toLowerCase() === 'z';
+    const y   = e.key.toLowerCase() === 'y';
+    const mod = e.metaKey || e.ctrlKey;
+
+    /* undo */
+    if (mod && z && !e.shiftKey) {
+      if (undo.length > 1) {
+        e.preventDefault();
+        redo.push(undo.pop());
+        codeArea.value = undo[undo.length - 1];
+      }
+    }
+    /* redo */
+    if ((mod && z && e.shiftKey) || (mod && y && !e.shiftKey)) {
+      if (redo.length) {
+        e.preventDefault();
+        const next = redo.pop();
+        undo.push(next);
+        codeArea.value = next;
+      }
+    }
+  });
+})();
+
+
