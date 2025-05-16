@@ -86,14 +86,7 @@ html, body {
   
   /* Ensure main content starts below the status bar */
   main.content {
-    margin-top: 0.5rem;
-  }
-  
-  /* Prevent article border from extending into status bar */
-  article.markdown-body {
-    margin-top: 0.5rem;
-    /* Don't let the border-top show at the very top of page */
-    border-top-width: env(safe-area-inset-top, 3px);
+    margin-top: 10px;
   }
 }
 
@@ -134,6 +127,13 @@ h2 {
   width: 90%;
   margin: 0 auto;
   text-align: left;
+  max-width: 800px;
+}
+
+/* ARTICLE CONTENT CONTAINER - Match wrapper styling */
+main.content {
+  width: 90%; /* Match landing page wrapper width */
+  margin: 1rem auto;
   max-width: 800px;
 }
 
@@ -399,38 +399,13 @@ footer {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
-  width: 44px;           /* Fixed width */
-  height: 44px;          /* Fixed height */
+  padding: .5rem 1rem;
   font-weight: bold;
   border: 2px outset #c0c0c0;
   background: var(--nav-bg);
   color: var(--txt);
   cursor: pointer;
   z-index: 900;
-  
-  /* Perfect centering for emojis */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-  text-align: center;
-  font-size: 24px;  /* Unified font size */
-}
-
-/* Fix for emoji alignment, especially sun ☀️ */
-#toggleDark.float-btn {
-  line-height: 0.85;  /* This helps align both sun and moon emojis */
-  transform: translateY(-1px);  /* Slight visual adjustment */
-}
-
-/* Ensure both emojis (sun and moon) maintain the same position */
-#toggleDark.float-btn,
-html.theme-dark #toggleDark.float-btn {
-  font-size: 22px;  /* Slightly reduced size helps with alignment */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #sketchBtn { right: 5rem; }
@@ -486,6 +461,7 @@ article.markdown-body {
   font-size: 1.0625rem;
   line-height: 1.55;
   max-width: 42em;
+  width: 100%; /* Fill the container */
 }
 
 /* ❸–––  PANDOC-STYLE TYPE DETAILS  –––––––––––––––––––––––– */
@@ -541,6 +517,12 @@ article.markdown-body img {
   #wrapper { 
     width: 95%; 
   }
+  
+  /* Apply the same wrapper style as the landing page to article */
+  main.content {
+    width: 95%; /* Match landing page mobile wrapper width */
+  }
+  
   .sketch-controls { 
     gap: 0.8rem; 
     padding: var(--controls-padding-y) 0; 
@@ -641,10 +623,6 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
     
     /* Ensure visibility */
     z-index: 9999;
-    
-    /* Fix for emoji centering on mobile */
-    line-height: 0.85;
-    transform: translateY(-1px);
   }
   
   /* Dark mode version */
@@ -660,16 +638,12 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    font-size: 26px;
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     z-index: 9999;
-    
-    /* Fix for emoji centering on tablets */
-    line-height: 0.85;
-    transform: translateY(-1px);
   }
 }
