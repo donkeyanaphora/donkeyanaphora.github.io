@@ -43,10 +43,10 @@ u_{\text{new}} = u-u_{\text{proj}}
 $$
 is *the* closest-possible embedding to the original query **while being perfectly orthogonal to the undesirable sub-space**.
 
-That’s the mathematical backing for the two benefits you listed:
+#### TLDR
 
-1. **Minimal distortion** (distance from $u$ is the smallest achievable).
-2. **Guaranteed orthogonality** to every filter direction in $V$.
+1. **Minimal distortion**: chooses a vector in $\mathrm{span}\{V^\perp\}$ that minimizes its distance to $\mathbf{u}$.
+2. **Guaranteed orthogonality**: that vector is orthogonal to every direction in $V$.
 
 ## Visual Intuition
 ## Mean Subtraction vs. Projection Residuals
