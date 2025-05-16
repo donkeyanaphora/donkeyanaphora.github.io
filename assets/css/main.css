@@ -387,7 +387,7 @@ html.theme-dark #codeArea {
 
 /* FOOTER */
 footer {
-  margin-top: 3rem;
+  margin-top: auto;
   border-top: 2px solid #000;
   padding: 1rem;
   font-size: .9rem;
