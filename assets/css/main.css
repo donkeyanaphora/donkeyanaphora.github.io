@@ -394,24 +394,30 @@ footer {
   background: var(--footer-bg);
 }
 
-/* Updated FLOATING BUTTONS - very slightly bigger */
+/* FLOATING BUTTONS - Simple Vertical Stack */
 .float-btn {
   position: fixed;
-  bottom: 1rem;
   right: 1rem;
-  padding: .6rem 1.1rem; /* Just slightly larger than original .5rem 1rem */
+  padding: .6rem 1.1rem;
   font-weight: bold;
   border: 2px outset #c0c0c0;
   background: var(--nav-bg);
   color: var(--txt);
   cursor: pointer;
   z-index: 900;
-  font-size: 1.05rem; /* Just 5% larger than normal */
+  font-size: 1.05rem;
 }
 
-/* Keep the positioning for other buttons */
-#sketchBtn { right: 5rem; }
-#codeBtn   { right: 9rem; }
+/* Simple hover effect that works on desktop and doesn't break anything on mobile */
+.float-btn:hover {
+  background-color: var(--bg-col);
+  border-color: var(--link);
+}
+
+/* Button positions in vertical stack */
+#toggleDark { bottom: 1rem; }
+#sketchBtn { bottom: 4.5rem; }
+#codeBtn { bottom: 8rem; }
 
 /* QUICK LINKS */
 .quick-links {
