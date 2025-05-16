@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+
+  <!-- site look & feel -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+  <!-- MathJax -->
+  <script defer id="MathJax-script"
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body class="article">
+  <!-- dark-mode toggle -->
+  <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
+
+  <!-- ✅ Markdown drops inside a styled article element -->
+  <main class="content">
+    <article class="markdown-body">
+      <h1 id="using-linear-models-in-modern-applications">Using Linear
+      Models in Modern Applications</h1>
+      <p><strong>COLLINS WESTNEDGE</strong><br />
+      <em>MAY 16, 2025</em></p>
+      <h2 id="introduction">Introduction</h2>
+      <p>I’ve been really busy so this will be a little informal but
+      <strong>STILL WORTH THE READ</strong> because in the day to day
+      landscape of people talking agentic AI, RAG systems, vector
+      databases etc things like least squares regression and linear
+      models tend to feel like dusty sklearn imports or the stuff of
+      technical coding interviews. Despite the heavy focus on foundation
+      model integration classic linear tools like ordinary least squares
+      regression and its projection formula corrolary remain
+      surprisingly powerful. By framing modern tasks like semantic
+      filtering and bias removal as geometric problems, it becomes clear
+      why simple formulas like <span class="math inline">\(X(X^{\mathsf
+      T}X)^{+}X^{\mathsf T}\)</span> work so well. The focus of this
+      article is show how ordinary least squares offers insights as well
+      as stable and theoretically grounded solution to semantic
+      filtering in modern search and retrieval systems.</p>
+      <h2 id="linalg-recap">Linalg Recap</h2>
+      <p>lorem ipsum</p>
+      <h3 id="formulas">Formulas:</h3>
+      <table>
+      <colgroup>
+      <col style="width: 33%" />
+      <col style="width: 48%" />
+      <col style="width: 17%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Formula</th>
+      <th>Intuitive role</th>
+      <th>Visual cue</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><span class="math inline">\(X^{+} =
+      (X^{\!\top}X)^{-1}X^{\!\top}\)</span></td>
+      <td><strong>Recipe for weights.</strong> Turns a target <span
+      class="math inline">\(y\)</span> into the coefficient vector that
+      minimises <span class="math inline">\(\lVert
+      y-X\beta\rVert_2^2\)</span>.</td>
+      <td>“How much of each arrow do I need?”</td>
+      </tr>
+      <tr>
+      <td><span class="math inline">\(\hat{\beta}=X^{+}y\)</span></td>
+      <td><strong>Coordinates along the arrows.</strong> These scalars
+      say how far to travel in each predictor direction to land at the
+      closest point.</td>
+      <td>Labels on the sub-space axes.</td>
+      </tr>
+      <tr>
+      <td><span class="math inline">\(P_X = X\,X^{+}\)</span></td>
+      <td><strong>Snap-to-span operator.</strong> Orthogonally drops any
+      vector onto the span of <span class="math inline">\(X\)</span>;
+      symmetric + idempotent ⇒ unmistakably an orthogonal
+      projector.</td>
+      <td>Transparent elevator lowering you to the sheet.</td>
+      </tr>
+      <tr>
+      <td><span class="math inline">\(\hat y = P_X\,y =
+      X\hat{\beta}\)</span></td>
+      <td><strong>Foot of the perpendicular.</strong> The unique point
+      in the sub-space that minimises <span class="math inline">\(\lVert
+      y-\hat y\rVert_2\)</span>; numerically, it’s the regression
+      prediction.</td>
+      <td>Black dot where the plumb line from <span
+      class="math inline">\(y\)</span> hits the sheet.</td>
+      </tr>
+      <tr>
+      <td><span class="math inline">\(r = y-\hat y =
+      (I-P_X)\,y\)</span></td>
+      <td><strong>Residual vector.</strong> Connects <span
+      class="math inline">\(y\)</span> to its foot; always orthogonal to
+      every column of <span class="math inline">\(X\)</span> (<span
+      class="math inline">\(X^{\!\top}r=0\)</span>).</td>
+      <td>Red straight-down arrow.</td>
+      </tr>
+      </tbody>
+      </table>
+      <h3 id="theorems">Theorems:</h3>
+      <p><strong>The Best Approximation Theorem:</strong></p>
+      <p>Let <span class="math inline">\(W\)</span> be a subspace of
+      <span class="math inline">\(\mathbb{R}^{n}\)</span>, let <span
+      class="math inline">\(y \in \mathbb{R}^{n}\)</span>, and let <span
+      class="math inline">\(\widehat{y} = \operatorname{proj}_{W}
+      y\)</span> be the orthogonal projection of <span
+      class="math inline">\(y\)</span> onto <span
+      class="math inline">\(W\)</span>. Then <span
+      class="math inline">\(\widehat{y}\)</span> is the closest point in
+      <span class="math inline">\(W\)</span> to <span
+      class="math inline">\(y\)</span>; in the sense that <span
+      class="math display">\[
+        \|\,y - \widehat{y}\,\|_2
+        \;&lt;\;
+        \|\,y - v\,\|_2
+        \quad\text{for all } v \in W,\; v \neq \widehat{y}.
+      \]</span></p>
+      <p>(pg 394)</p>
+      <p><strong>Other Theorem Placeholder (TODO)</strong>: well I guess
+      from the best approximation theorem we get that u_proj is the
+      closest point in V from u but then we have to prove the corollary
+      that u-uproj is the closest point to u in Vperp (pathagreas?) ###
+      Takeaways:</p>
+      <p><span class="math display">\[
+      u_{\text{new}} = u-u_{\text{proj}}
+      \]</span> is <em>the</em> closest-possible embedding to the
+      original query <strong>while being perfectly orthogonal to the
+      undesirable sub-space</strong>.</p>
+      <p>That’s the mathematical backing for the two benefits you
+      listed:</p>
+      <ol type="1">
+      <li><strong>Minimal distortion</strong> (distance from <span
+      class="math inline">\(u\)</span> is the smallest achievable).</li>
+      <li><strong>Guaranteed orthogonality</strong> to every filter
+      direction in <span class="math inline">\(V\)</span>.</li>
+      </ol>
+      <h2 id="visual-intuition">Visual Intuition</h2>
+      <h2 id="mean-subtraction-vs.-projection-residuals">Mean
+      Subtraction vs. Projection Residuals</h2>
+      <h2 id="examples">Examples</h2>
+      <h2 id="conclusion">Conclusion</h2>
+    </article>
+  </main>
+
+  <!-- your site JS -->
+  <script defer src="/assets/js/site.js"></script>
+</body>
+</html>

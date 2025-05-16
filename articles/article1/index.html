@@ -1,226 +1,364 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/default.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
-<link rel="stylesheet" href="file:////Users/collinswestnedge/.vscode/extensions/goessner.mdmath-2.7.4/themes/default/style.css">
-<style>
-  .markdown-body {
-    max-width: 900px;  /* Limits the width to mimic a PDF layout */
-    margin: 0 auto;    /* Centers the container horizontally */
-    padding: 2rem;     /* Adds space around the content for readability */
-  }
-</style>
-</head>
-<body class="markdown-body">
-<h1 dir="auto" id="ai-integration-beyond-the-buzz-a-technical-exploration-through-shallow-fusion">AI Integration Beyond the Buzz: A Technical Exploration through Shallow Fusion</h1>
-<p dir="auto"><strong>Collins Westnedge</strong><br>
-<em>April 16, 2025</em></p>
-<h2 dir="auto" id="introduction">Introduction</h2>
-<p dir="auto">AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption.</p>
-<p dir="auto">The fundamental challenge is the gap between available data and the data needed for a domain-specific task this is known as the the <a href="https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall">data wall</a>. Consider for example applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. For the generalist model to succeed, it must first grasp dense company prospectuses, specialized jargon, and the nuances of the business problem itself. To address this gap companies often resort to standard recipes e.g. “exciting” the right activations through few-shot examples, dumping streams of internal documents into the model's context, or ambitious attempts at fine-tuning on small internal datasets. However, with these approaches there’s often no optimization signal or gradient to follow and progress if there's any to be had involves a good deal of guesswork, trial, and error.</p>
-<p dir="auto">In contrast to the popular narrative, my day-to-day experience has shown me that these discussions routinely overlook the many technical challenges mentioned above. As someone stuck in the generalist specialist divide, it's hard not to feel frustration when leaders boast an AI integration victory that is nothing more than an API call. This disconnect motivated me to develop a case study leveraging <strong>shallow fusion</strong>. The goal of which is twofold: highlight the technical challenges of AI integration and demonstrate how bridging this divide can close the gap between AI's marketing promises and its operational reality.</p>
-<h2 dir="auto" id="a-formal-example-shallow-fusion">A Formal Example: Shallow Fusion</h2>
-<p dir="auto">But first, what is shallow fusion? Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing.</p>
-<p dir="auto">Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to. With this analogy we can now formally describe this process. In the example below think of <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>ASR</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{ASR}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ASR</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> as the person listening to the audio and <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>LM</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{LM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LM</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> as the domain expert that is hard of hearing but deeply understands the context.</p>
-<h4 dir="auto" id="mathematical-formulation">Mathematical Formulation</h4>
-<p dir="auto">At each decoding step for some audio input, we select the most probable token <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">y_{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> using information from the Automatic Speech Recognition model (ASR) and the Language Model (LM)</p>
-<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>y</mi><mo>∗</mo></msup><mo>=</mo><mi>arg</mi><mo>⁡</mo><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><msub><mi>y</mi><mi>t</mi></msub></munder><mtext>  </mtext><mo fence="true" stretchy="true" minsize="1.8em" maxsize="1.8em">[</mo><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>ASR</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><mi>x</mi><mo separator="true">,</mo><mtext>  </mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mtext>  </mtext><mo>+</mo><mtext>  </mtext><mi>λ</mi><mtext> </mtext><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>LM</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mo fence="true" stretchy="true" minsize="1.8em" maxsize="1.8em">]</mo></mrow><annotation encoding="application/x-tex">
-y^* = \arg\max_{y_t}\;\Bigl[
-\log P_{\text{ASR}}(y_t \!\mid\! x,\; y_{&lt;t})
-\;+\;
-\lambda\,\log P_{\text{LM}}(y_t \!\mid\! y_{&lt;t})\Bigr]
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.933136em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.986108em;vertical-align:-0.8361080000000001em;"></span><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mopen"><span class="delimsizing size2">[</span></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ASR</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LM</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.80002em;vertical-align:-0.65002em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose"><span class="delimsizing size2">]</span></span></span></span></span></span></eqn></section></math>
-<p dir="auto">where:</p>
-<ul dir="auto">
-<li dir="auto"><eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathnormal">t</span></span></span></span></eq> is the decoding step (0-based).</li>
-<li dir="auto"><eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">y_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> is the chosen token at step <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathnormal">t</span></span></span></span></eq> and <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{&lt;t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span></span></span></span></eq> are previously generated tokens.</li>
-<li dir="auto"><eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span></span></span></span></eq> represents the acoustic features (e.g. raw audio input).</li>
-<li dir="auto"><eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>ASR</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{ASR}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ASR</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> depends on both <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span></span></span></span></eq> and <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{&lt;t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span></span></span></span></eq>, while <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>LM</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{LM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LM</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></eq> depends on <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{&lt;t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span></span></span></span></eq> only.</li>
-<li dir="auto"><eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">λ</span></span></span></span></eq> is the weighting factor to determine the language model's influence.</li>
-</ul>
-<p dir="auto">The idea is that the ASR model understands phonetics and language in a general sense while the LM model understands the specialized domain in its written form, but has no access to the audio signal. Just like in the analogy from earlier by fusing their predictions, we combine phonetic understand with domain expertise, leading to more accurate transcriptions for our domain. Without careful integration or synergy between the two, both models carry major limitations.</p>
-<h4 dir="auto" id="process-diagram">Process Diagram:</h4>
-<div  dir="auto" ></div>
-<center>
-  <img src="assets/image.png" alt="diagram">
-</center>
-<div  dir="auto" ></div>
-<!-- ![diagram](data/image.png) -->
-<p dir="auto">Reference: <a href="https://arxiv.org/pdf/1712.01996">Kannan et al. 2017</a></p>
-<h4 dir="auto" id="in-practice">In Practice</h4>
-<p dir="auto">In the workflow that I dive into, token prediction is implemented in stages. Early on we rely solely on the ASR model and then gradually introduce the language model as more context becomes available. For example:</p>
-<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext mathvariant="bold">Token</mtext><mtext> </mtext><mtext mathvariant="bold">Selection</mtext><mtext> </mtext><mtext mathvariant="bold">at</mtext><mtext> </mtext><mtext mathvariant="bold">Step</mtext><mtext> </mtext></mrow><mi>t</mi><mo>:</mo><mspace width="1em"/><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.3600em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mstyle scriptlevel="0" displaystyle="true"><mi>arg</mi><mo>⁡</mo><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><msub><mi>y</mi><mi>t</mi></msub></munder><mtext>  </mtext><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>ASR</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><mi>x</mi><mo separator="true">,</mo><mtext>  </mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mo separator="true">,</mo></mstyle></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>t</mi><mo>&lt;</mo><mtext>initial_steps</mtext><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mstyle scriptlevel="0" displaystyle="true"><mi>arg</mi><mo>⁡</mo><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><msub><mi>y</mi><mi>t</mi></msub></munder><mtext>  </mtext><mo fence="true" stretchy="true" minsize="1.8em" maxsize="1.8em">[</mo><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>ASR</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><mi>x</mi><mo separator="true">,</mo><mtext>  </mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mtext>  </mtext><mo>+</mo><mtext>  </mtext><mi>λ</mi><mtext> </mtext><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>LM</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mo fence="true" stretchy="true" minsize="1.8em" maxsize="1.8em">]</mo><mo separator="true">,</mo></mstyle></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>t</mi><mo>≥</mo><mtext>initial_steps</mtext><mi mathvariant="normal">.</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
-\textbf{Token Selection at Step }t:\quad
-F(x,t)
-=
-\begin{cases}
-\displaystyle
-\arg\max_{y_t}\;\log P_{\text{ASR}}(y_t \!\mid\! x,\; y_{&lt;t}),
-&amp; t &lt; \text{initial\_steps},\\[0.75em]
-\displaystyle
-\arg\max_{y_t}\;\Bigl[
-\log P_{\text{ASR}}(y_t \!\mid\! x,\; y_{&lt;t})
-\;+\;
-\lambda\,\log P_{\text{LM}}(y_t \!\mid\! y_{&lt;t})
-\Bigr],
-&amp; t \ge \text{initial\_steps}.
-\end{cases}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord textbf">Token Selection at Step </span></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:4.2000399999999996em;vertical-align:-1.8500199999999998em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.3500199999999998em;"><span style="top:-2.19999em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.19199em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.31599999999999984em;width:0.889em;"><svg width='0.889em' height='0.31599999999999984em' style='width:0.889em' viewBox='0 0 889 316' preserveAspectRatio='xMinYMin'><path d='M384 0 H504 V316 H384z M384 0 H504 V316 H384z'/></svg></span></span><span style="top:-3.15001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292009999999999em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.31599999999999984em;width:0.889em;"><svg width='0.889em' height='0.31599999999999984em' style='width:0.889em' viewBox='0 0 889 316' preserveAspectRatio='xMinYMin'><path d='M384 0 H504 V316 H384z M384 0 H504 V316 H384z'/></svg></span></span><span style="top:-4.600019999999999em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.8500199999999998em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.338054em;"><span style="top:-4.480054em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ASR</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span></span></span><span style="top:-2.148054em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mopen"><span class="delimsizing size2">[</span></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ASR</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LM</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose"><span class="delimsizing size2">]</span></span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.838054em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.338054em;"><span style="top:-4.480054em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class="mord">initial_steps</span></span><span class="mpunct">,</span></span></span><span style="top:-2.148054em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class="mord">initial_steps</span></span><span class="mord">.</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.838054em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></eqn></section></math>
-<p dir="auto">This piecewise approach allows the system to build confidence from the raw audio transcription initially before incorporating the domain expert corrections, namely because our starting point should be conditionalized on something observed e.g. we gotta start somewhere.</p>
-<h2 dir="auto" id="case-study-in-transcription-a-concrete-example">Case Study in Transcription: A Concrete Example</h2>
-<p dir="auto">For our models let's take Whisper to be our ASR model and GTP2 to be our LM. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper (<a href="https://arxiv.org/pdf/2212.04356">Radford 2.2</a>). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term.</p>
-<p dir="auto"><strong>Input Audio (Ground Truth):</strong></p>
-<ul dir="auto">
-<li dir="auto">&quot;The procedure was medically necessary for the treatment of claimant's <code>melanoma</code>.&quot; ✅</li>
-</ul>
-<p dir="auto"><strong>Whisper Initial Output:</strong></p>
-<ul dir="auto">
-<li dir="auto">&quot;The procedure was medically necessary for the treatment of claimant's <code>diploma</code>.&quot; ❌</li>
-</ul>
-<h4 dir="auto" id="1-whisper-initial-decoding">1. <strong>Whisper Initial Decoding:</strong></h4>
-<ul dir="auto">
-<li dir="auto">Whisper produces logits at each step:
-<ul dir="auto">
-<li dir="auto">Token: &quot;The&quot; → high confidence</li>
-<li dir="auto">Token: &quot;procedure&quot; → high confidence<br>
-...</li>
-<li dir="auto">Token: &quot;claimant&quot; → high confidence</li>
-<li dir="auto">Token: &quot;'s&quot; → high confidence</li>
-<li dir="auto">At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates &quot;diploma&quot;, &quot;aroma&quot; and &quot;melanoma&quot;</li>
-</ul>
-</li>
-</ul>
-<h4 dir="auto" id="2-domain-gpt-2-predictions">2. <strong>Domain GPT-2 Predictions:</strong></h4>
-<p dir="auto">At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits based on the following context:</p>
-<ul dir="auto">
-<li dir="auto">
-<p dir="auto">&quot;The procedure was medically necessary for the treatment of claimant's <code>_____</code>&quot;</p>
-</li>
-<li dir="auto">
-<p dir="auto">GPT-2 which as been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for melanoma) while whisper which had minimal access to medical terminology assigns it a much lower likelihood (log probabilities that are more negative).</p>
-</li>
-</ul>
-<table dir="auto">
-<thead dir="auto">
-<tr dir="auto">
-<th>Next Token</th>
-<th>Whisper Log Probs</th>
-<th>GPT‑2 Log Probs</th>
-</tr>
-</thead>
-<tbody dir="auto">
-<tr dir="auto">
-<td><strong>melanoma</strong></td>
-<td><strong>–1.8</strong></td>
-<td><strong>–0.3</strong></td>
-</tr>
-<tr dir="auto">
-<td>diploma</td>
-<td>–1.0</td>
-<td>–5.0</td>
-</tr>
-<tr dir="auto">
-<td>aroma</td>
-<td>–3.5</td>
-<td>–3.8</td>
-</tr>
-</tbody>
-</table>
-<h4 dir="auto" id="3-shallow-fusion-combining-logits">3. <strong>Shallow Fusion (Combining Logits):</strong></h4>
-<p dir="auto">We combine each model's logits using a weighted sum in the follow way:</p>
-<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>combined</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>Whisper</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><mi>x</mi><mo separator="true">,</mo><mtext>  </mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mtext>  </mtext><mo>+</mo><mtext>  </mtext><mi>λ</mi><mtext> </mtext><mi>log</mi><mo>⁡</mo><msub><mi>P</mi><mtext>GPT2</mtext></msub><mo stretchy="false">(</mo><msub><mi>y</mi><mi>t</mi></msub><mtext> ⁣</mtext><mo>∣</mo><mtext> ⁣</mtext><msub><mi>y</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
-\log P_{\text{combined}}(y_t) =
-\log P_{\text{Whisper}}(y_t \!\mid\! x,\; y_{&lt;t})
-\;+\;
-\lambda\,\log P_{\text{GPT2}}(y_t \!\mid\! y_{&lt;t})
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">combined</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Whisper</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">GPT2</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:-0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></eqn></section></math>
-<p dir="auto">where <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">λ</span></span></span></span></eq> = 0.2:</p>
-<table dir="auto">
-<thead dir="auto">
-<tr dir="auto">
-<th>Next Token</th>
-<th>Whisper Score</th>
-<th>GPT‑2 Score</th>
-<th>Combined Score</th>
-</tr>
-</thead>
-<tbody dir="auto">
-<tr dir="auto">
-<td><strong>melanoma</strong></td>
-<td><strong>–1.8</strong></td>
-<td><strong>–0.3</strong></td>
-<td><strong>-1.8 + 0.2 <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">×</span></span></span></span></eq> (-0.3) = -1.86</strong> ✅</td>
-</tr>
-<tr dir="auto">
-<td>diploma</td>
-<td>–1.0</td>
-<td>–5.0</td>
-<td>-1.0 + 0.2 <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">×</span></span></span></span></eq> (-5.0) =  -2.0</td>
-</tr>
-<tr dir="auto">
-<td>aroma</td>
-<td>–3.5</td>
-<td>–3.8</td>
-<td>-3.5 + 0.2 <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">×</span></span></span></span></eq> (-3.8) = -4.26</td>
-</tr>
-</tbody>
-</table>
-<p dir="auto"><em>Note: The numbers are illustrative. In practice additional context and scaling would favor the correct token &quot;melanoma,&quot; additionally rare words are likely split into multiple tokens but the intuition remains the same)</em></p>
-<p dir="auto">&quot;melanoma&quot; now has the highest combined score.</p>
-<h4 dir="auto" id="final-corrected-output"><strong>Final Corrected Output:</strong></h4>
-<ul dir="auto">
-<li dir="auto">&quot;The procedure was medically necessary for the treatment of claimant's <code>melanoma</code>.&quot; ✅</li>
-</ul>
-<h4 dir="auto" id="key-takeaway">Key Takeaway:</h4>
-<ul dir="auto">
-<li dir="auto"><strong>Without GPT-2:</strong> The model misrecognized domain-specific terms.</li>
-<li dir="auto"><strong>With shallow fusion:</strong> The external domain LM (GPT-2) provided strong guidance toward the correct domain-specific vocabulary, correcting Whisper’s initial mistakes.</li>
-</ul>
-<p dir="auto">This demonstrates how <strong>domain-aware shallow fusion</strong> can significantly improve ASR output in specialized contexts.</p>
-<h2 dir="auto" id="reflection-and-future-directions">Reflection and Future Directions</h2>
-<ul dir="auto">
-<li dir="auto">learnable or dynamic <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>a</mi><mi>m</mi><mi>b</mi><mi>d</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">amb</span><span class="mord mathnormal">d</span><span class="mord mathnormal">a</span></span></span></span></eq></li>
-<li dir="auto">MoE</li>
-<li dir="auto">Cold Fusion</li>
-<li dir="auto">Deep Fusion</li>
-</ul>
-<h2 dir="auto" id="conclusion">Conclusion</h2>
-<ul dir="auto">
-<li dir="auto">articulate each model’s strength and weakness, emphasizing how each model hits its own data wall separately:
-<ul dir="auto">
-<li dir="auto">Whisper (generalist): broadly trained acoustic-to-text model, struggles with specialized terminology.</li>
-<li dir="auto">GPT-2 (specialist): trained in a self-supervised way solely on textual domain data, rich in domain-specific vocabulary but blind to acoustic signals.</li>
-</ul>
-</li>
-<li dir="auto">reiterate how useless these models are without deliberate and challenging integration steps e.g. adapting GPT2 to your domain</li>
-<li dir="auto">illustrate how this process extends or relates to broader trends within AI e.g. Ensemble Architectures like Mixture of Experts, multimodal integration, domain adaptation and evolution of fusion techniques (cold &amp; deep).</li>
-<li dir="auto">End with a note about out of the box plug in play solutions not being competitive because its low hanging fruit and everyone has the same boring RAG systems.</li>
-</ul>
-<h2 dir="auto" id="resources">Resources:</h2>
-<ul dir="auto">
-<li dir="auto">
-<p dir="auto"><a href="https://research.facebook.com/file/551805355910423/Deep-Shallow-Fusion-for-RNN-T-Personalization.pdf">Deep Shallow Fusion for RNN-T Personalization</a></p>
-</li>
-<li dir="auto">
-<p dir="auto"><a href="https://arxiv.org/pdf/1712.01996">Analysis of Incorporating an External Language Model...</a></p>
-</li>
-<li dir="auto">
-<p dir="auto"><a href="https://arxiv.org/pdf/2212.04356">Robust Speech Recognition via Large-Scale Weak Supervision</a></p>
-</li>
-<li dir="auto">
-<p dir="auto"><a href="https://arxiv.org/pdf/1503.03535">On Using Monolingual Corpora in Neural Machine Translation</a></p>
-</li>
-<li dir="auto">
-<p dir="auto"><a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">Language Models are Unsupervised Multitask Learners</a></p>
-</li>
-<li dir="auto">
-<p dir="auto"><a href="https://arxiv.org/pdf/2005.14165">Language Models are Few-Shot Learners</a></p>
-</li>
-</ul>
+  <meta charset="UTF-8" />
+  <title></title>
 
+  <!-- site look & feel -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+  <!-- MathJax -->
+  <script defer id="MathJax-script"
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body class="article">
+  <!-- dark-mode toggle -->
+  <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
+
+  <!-- ✅ Markdown drops inside a styled article element -->
+  <main class="content">
+    <article class="markdown-body">
+      <h1
+      id="ai-integration-beyond-the-buzz-a-technical-exploration-through-shallow-fusion">AI
+      Integration Beyond the Buzz: A Technical Exploration through
+      Shallow Fusion</h1>
+      <p><strong>Collins Westnedge</strong><br />
+      <em>April 16, 2025</em></p>
+      <h2 id="introduction">Introduction</h2>
+      <p>AI adoption and integration have become focal points in
+      seemingly every earnings call, linkedin post, townhall and
+      industry keynote. However, most of these conversations exist to
+      highlight revenue potential, promote products and services, or
+      bolster positive consumer sentiment, which is likely why they tend
+      to gloss over or abstract away the technical challenges that stand
+      in the way of effective adoption.</p>
+      <p>The fundamental challenge is the gap between available data and
+      the data needed for a domain-specific task this is known as the
+      the <a
+      href="https://situational-awareness.ai/from-gpt-4-to-agi/#The_data_wall">data
+      wall</a>. Consider for example applying a large generalist model
+      to a highly specialized task that barely surfaces in its
+      pretraining data if at all. For the generalist model to succeed,
+      it must first grasp dense company prospectuses, specialized
+      jargon, and the nuances of the business problem itself. To address
+      this gap companies often resort to standard recipes
+      e.g. “exciting” the right activations through few-shot examples,
+      dumping streams of internal documents into the model’s context, or
+      ambitious attempts at fine-tuning on small internal datasets.
+      However, with these approaches there’s often no optimization
+      signal or gradient to follow and progress if there’s any to be had
+      involves a good deal of guesswork, trial, and error.</p>
+      <p>In contrast to the popular narrative, my day-to-day experience
+      has shown me that these discussions routinely overlook the many
+      technical challenges mentioned above. As someone stuck in the
+      generalist specialist divide, it’s hard not to feel frustration
+      when leaders boast an AI integration victory that is nothing more
+      than an API call. This disconnect motivated me to develop a case
+      study leveraging <strong>shallow fusion</strong>. The goal of
+      which is twofold: highlight the technical challenges of AI
+      integration and demonstrate how bridging this divide can close the
+      gap between AI’s marketing promises and its operational
+      reality.</p>
+      <h2 id="a-formal-example-shallow-fusion">A Formal Example: Shallow
+      Fusion</h2>
+      <p>But first, what is shallow fusion? Consider for example, a
+      person listening to audio of a phone call with a customer and
+      customer service agent at an insurance claims calls center. The
+      sole function of this person is to transcribe what they hear into
+      text. The caveat, however, is that they only know very little
+      about the domain and the types of technical issues and medical
+      terminology e.g. (procedures diagnoses etc) that representatives
+      and customers are mentioning. Now consider a second person who has
+      worked in this industry for many years and has a deep
+      understanding of the domain, but is hard of hearing.</p>
+      <p>Shallow fusion can be thought of as a process of integrating
+      each person’s expertise to offset the errors of one another and
+      bridge modalities the other does not have access to. With this
+      analogy we can now formally describe this process. In the example
+      below think of <span class="math inline">\(P_{\text{ASR}}\)</span>
+      as the person listening to the audio and <span
+      class="math inline">\(P_{\text{LM}}\)</span> as the domain expert
+      that is hard of hearing but deeply understands the context.</p>
+      <h4 id="mathematical-formulation">Mathematical Formulation</h4>
+      <p>At each decoding step for some audio input, we select the most
+      probable token <span class="math inline">\(y_{t}\)</span> using
+      information from the Automatic Speech Recognition model (ASR) and
+      the Language Model (LM)</p>
+      <p><span class="math display">\[
+      y^* = \arg\max_{y_t}\;
+      \left[
+      \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
+      \;+\;
+      \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+      \right]
+      \]</span></p>
+      <p>where:<br />
+      - <span class="math inline">\(t\)</span> is the decoding step
+      (0-based).<br />
+      - <span class="math inline">\(y_t\)</span> is the chosen token at
+      step <span class="math inline">\(t\)</span> and <span
+      class="math inline">\(y_{\lt  t}\)</span> are previously generated
+      tokens.<br />
+      - <span class="math inline">\(x\)</span> represents the acoustic
+      features (e.g. raw audio input).<br />
+      - <span class="math inline">\(P_{\text{ASR}}\)</span> depends on
+      both <span class="math inline">\(x\)</span> and <span
+      class="math inline">\(y_{\lt  t}\)</span>, while <span
+      class="math inline">\(P_{\text{LM}}\)</span> depends on <span
+      class="math inline">\(y_{\lt  t}\)</span> only.<br />
+      - <span class="math inline">\(\lambda\)</span> is the weighting
+      factor to determine the language model’s influence.</p>
+      <p>The idea is that the ASR model understands phonetics and
+      language in a general sense while the LM model understands the
+      specialized domain in its written form, but has no access to the
+      audio signal. Just like in the analogy from earlier by fusing
+      their predictions, we combine phonetic understand with domain
+      expertise, leading to more accurate transcriptions for our domain.
+      Without careful integration or synergy between the two, both
+      models carry major limitations.</p>
+      <h4 id="process-diagram">Process Diagram:</h4>
+      <p><img src="assets/viz.png" alt="diagram" /> Reference: <a
+      href="https://arxiv.org/pdf/1712.01996">Kannan et al. 2017</a></p>
+      <h4 id="in-practice">In Practice</h4>
+      <p>In the workflow that I dive into, token prediction is
+      implemented in stages. Early on we rely solely on the ASR model
+      and then gradually introduce the language model as more context
+      becomes available. For example:</p>
+      <p><strong>Token Selection at Step (t)</strong></p>
+      <p><span class="math display">\[
+      \mathbf{F}(x,t)=
+      \begin{cases}
+        \displaystyle
+        \arg\max_{y_t}\log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt
+      t}\bigr),
+          &amp; t \lt  \text{initial_steps},\\[0.75em]
+        \displaystyle
+        \arg\max_{y_t}\!\bigl[
+           \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
+           + \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+        \bigr],
+          &amp; t \ge \text{initial_steps}.
+      \end{cases}
+      \]</span></p>
+      <p>This piecewise approach allows the system to build confidence
+      from the raw audio transcription initially before incorporating
+      the domain expert corrections, namely because our starting point
+      should be conditionalized on something observed e.g. we gotta
+      start somewhere.</p>
+      <h2 id="case-study-in-transcription-a-concrete-example">Case Study
+      in Transcription: A Concrete Example</h2>
+      <p>For our models let’s take Whisper to be our ASR model and GTP2
+      to be our LM. In practice these models share a tokenizer making
+      the process of integrating their predictions fairly seamless at
+      least for the english version of Whisper (<a
+      href="https://arxiv.org/pdf/2212.04356">Radford 2.2</a>). Now
+      let’s consider a claims call center transcript where an ASR model
+      misinterprets a specialized medical term.</p>
+      <p><strong>Input Audio (Ground Truth):</strong><br />
+      - “The procedure was medically necessary for the treatment of
+      claimant’s <code>melanoma</code>.”☑️</p>
+      <p><strong>Whisper Initial Output:</strong><br />
+      - “The procedure was medically necessary for the treatment of
+      claimant’s <code>diploma</code>.”🚫</p>
+      <h4 id="whisper-initial-decoding">1. <strong>Whisper Initial
+      Decoding:</strong></h4>
+      <ul>
+      <li>Whisper produces logits at each step:
+      <ul>
+      <li>Token: “The” → high confidence<br />
+      </li>
+      <li>Token: “procedure” → high confidence<br />
+      …</li>
+      <li>Token: “claimant” → high confidence</li>
+      <li>Token: “’s” → high confidence</li>
+      <li>At the final subword, Whisper may exhibit uncertainty,
+      spreading probabilities across candidates “diploma”, “aroma” and
+      “melanoma”</li>
+      </ul></li>
+      </ul>
+      <h4 id="domain-gpt-2-predictions">2. <strong>Domain GPT-2
+      Predictions:</strong></h4>
+      <p>At this ambiguous decoding step, GPT-2 (the domain-adapted LM)
+      produces logits based on the following context:</p>
+      <ul>
+      <li><p>“The procedure was medically necessary for the treatment of
+      claimant’s <code>_____</code>”</p></li>
+      <li><p>GPT-2 which as been fine tuned on medical literature
+      strongly favors the correct token (produces log probabilities
+      closer to 0 for melanoma) while Whisper, which had minimal access
+      to medical terminology, assigns it a much lower likelihood (log
+      probabilities that are more negative).</p></li>
+      </ul>
+      <table>
+      <thead>
+      <tr>
+      <th>Next Token</th>
+      <th>Whisper Log Probs</th>
+      <th>GPT-2 Log Probs</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><strong>melanoma</strong></td>
+      <td><strong>–1.8</strong></td>
+      <td><strong>–0.3</strong></td>
+      </tr>
+      <tr>
+      <td>diploma</td>
+      <td>–1.0</td>
+      <td>–5.0</td>
+      </tr>
+      <tr>
+      <td>aroma</td>
+      <td>–3.5</td>
+      <td>–3.8</td>
+      </tr>
+      </tbody>
+      </table>
+      <h4 id="shallow-fusion-combining-logits">3. <strong>Shallow Fusion
+      (Combining Logits):</strong></h4>
+      <p>We combine each model’s logits using a weighted sum in the
+      following way:</p>
+      <p><span class="math display">\[
+      \log P_{\text{combined}}(y_t)=
+      \log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
+      +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt  t}\bigr)
+      \]</span></p>
+      <p>where <span class="math inline">\(\lambda = 0.2\)</span>:</p>
+      <table>
+      <colgroup>
+      <col style="width: 24%" />
+      <col style="width: 24%" />
+      <col style="width: 22%" />
+      <col style="width: 28%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Next Token</th>
+      <th>Whisper Score</th>
+      <th>GPT-2 Score</th>
+      <th>Combined Score</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><strong>melanoma</strong></td>
+      <td><strong>–1.8</strong></td>
+      <td><strong>–0.3</strong></td>
+      <td><strong>–1.8 + 0.2 <span class="math inline">\(\times\)</span>
+      (–0.3) = –1.86</strong></td>
+      </tr>
+      <tr>
+      <td>diploma</td>
+      <td>–1.0</td>
+      <td>–5.0</td>
+      <td>–1.0 + 0.2 <span class="math inline">\(\times\)</span> (–5.0)
+      = –2.0</td>
+      </tr>
+      <tr>
+      <td>aroma</td>
+      <td>–3.5</td>
+      <td>–3.8</td>
+      <td>–3.5 + 0.2 <span class="math inline">\(\times\)</span> (–3.8)
+      = –4.26</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><em>Note: The numbers are illustrative. In practice additional
+      context and scaling would favor the correct token “melanoma”;
+      additionally, rare words are likely split into multiple tokens but
+      the intuition remains the same.</em></p>
+      <p>“melanoma” now has the highest combined score.</p>
+      <h4 id="final-corrected-output"><strong>Final Corrected
+      Output:</strong></h4>
+      <ul>
+      <li>“The procedure was medically necessary for the treatment of
+      claimant’s <code>melanoma</code>.”☑️</li>
+      </ul>
+      <h4 id="key-takeaway">Key Takeaway:</h4>
+      <ul>
+      <li><strong>Without GPT-2:</strong> The model misrecognized
+      domain-specific terms.<br />
+      </li>
+      <li><strong>With shallow fusion:</strong> The external domain LM
+      (GPT-2) provided strong guidance toward the correct
+      domain-specific vocabulary, correcting Whisper’s initial
+      mistakes.</li>
+      </ul>
+      <p>This demonstrates how <strong>domain-aware shallow
+      fusion</strong> can significantly improve ASR output in
+      specialized contexts.</p>
+      <h2 id="overcoming-the-data-wall">Overcoming the Data Wall</h2>
+      <p>In the example above we demonstrated how the integration looks
+      in practice, but we also assumed the language model (GPT-2) in our
+      case has already been adapted to the appropriate domain. In
+      practice we can fairly assume that out-of-the-box ASR models
+      perform poorly on …</p>
+      <h2 id="reflection-and-future-directions">Reflection and Future
+      Directions</h2>
+      <ul>
+      <li>learnable or dynamic <span
+      class="math inline">\(\lambda\)</span><br />
+      </li>
+      <li>MoE<br />
+      </li>
+      <li>Cold Fusion<br />
+      </li>
+      <li>Deep Fusion</li>
+      </ul>
+      <h2 id="conclusion">Conclusion</h2>
+      <ul>
+      <li>articulate each model’s strength and weakness, emphasizing how
+      each model hits its own data wall separately:
+      <ul>
+      <li>Whisper (generalist): broadly trained acoustic-to-text model,
+      struggles with specialized terminology.<br />
+      </li>
+      <li>GPT-2 (specialist): trained in a self-supervised way solely on
+      textual domain data, rich in domain-specific vocabulary but blind
+      to acoustic signals.<br />
+      </li>
+      </ul></li>
+      <li>reiterate how useless these models are without deliberate and
+      challenging integration steps e.g. adapting GPT-2 to your
+      domain<br />
+      </li>
+      <li>illustrate how this process extends or relates to broader
+      trends within AI e.g. Ensemble Architectures like Mixture of
+      Experts, multimodal integration, domain adaptation and evolution
+      of fusion techniques (cold &amp; deep).<br />
+      </li>
+      <li>End with a note about out-of-the-box plug-and-play solutions
+      not being competitive because it’s low-hanging fruit and everyone
+      has the same boring RAG systems.</li>
+      </ul>
+      <h2 id="resources">Resources</h2>
+      <ul>
+      <li><a
+      href="https://research.facebook.com/file/551805355910423/Deep-Shallow-Fusion-for-RNN-T-Personalization.pdf">Deep
+      Shallow Fusion for RNN-T Personalization</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/1712.01996">Analysis of
+      Incorporating an External Language Model…</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2212.04356">Robust Speech
+      Recognition via Large-Scale Weak Supervision</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/1503.03535">On Using
+      Monolingual Corpora in Neural Machine Translation</a><br />
+      </li>
+      <li><a
+      href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">Language
+      Models are Unsupervised Multitask Learners</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2005.14165">Language Models are
+      Few-Shot Learners</a></li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- your site JS -->
+  <script defer src="/assets/js/site.js"></script>
 </body>
 </html>

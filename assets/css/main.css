@@ -397,3 +397,56 @@ footer {
   background:var(--uc-bg);
 }
 .quick-links a.uc:hover { background:var(--uc-bg); }
+
+
+/* ─── ARTICLE / MARKDOWN PAGES ───────────────────────────── */
+details.section,
+article.markdown-body {
+  border: 3px double var(--section-border);
+  background: var(--passage-bg);
+  padding: 1rem;
+}
+
+/* ❷––– POSITION + TEXT FLOW ––––––––––––––––––––––––––––––– */
+article.markdown-body {
+  margin-left:  auto;   /* centers the whole box */
+  margin-right: auto;
+
+  text-align: left;     /* overrides body { text-align:center } */
+
+  /* (everything below can stay or be adjusted to taste) */
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  max-width: 42em;
+}
+
+/* ❸–––  PANDOC-STYLE TYPE DETAILS  –––––––––––––––––––––––– */
+article.markdown-body p             { margin: 0 0 1.1em; }
+article.markdown-body h1            { font-size: 2em;  margin: 1.2em 0 0.6em; }
+article.markdown-body h2            { font-size: 1.6em; margin: 1.1em 0 0.5em; }
+article.markdown-body h3            { font-size: 1.3em; margin: 1em   0 0.5em; }
+article.markdown-body h4,
+article.markdown-body h5,
+article.markdown-body h6            { margin: 0.8em 0 0.4em; }
+article.markdown-body ul,
+article.markdown-body ol            { margin: 0 0 1em 1.5em; }
+
+article.markdown-body code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.95em;
+  background: rgba(127,127,127,0.08);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+article.markdown-body pre code {
+  display: block;
+  padding: 0.9em 1em;
+  overflow-x: auto;
+}
+article.markdown-body img {
+  max-width: 45%;   /* scales down to the width of the article box */
+  height: auto;      /* keeps aspect ratio */
+  display: block;    /* removes stray inline gap */
+  margin: 0.5rem auto;   /* centers it nicely */
+}
