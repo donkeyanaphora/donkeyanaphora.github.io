@@ -1,367 +1,256 @@
+/* ======================================================================
+   site.js — safe on every page (2025-05-15)
+   • Guards each feature block so it only runs when its anchor element is
+     present, eliminating null-reference crashes on article pages.
+====================================================================== */
+
 /* ----------------------------------------------------------------------
    Helper utilities
 ---------------------------------------------------------------------- */
-const $          = selector => document.querySelector(selector);
-const $$         = selector => document.querySelectorAll(selector);
-const isDarkMode = () => document.documentElement.classList.contains('theme-dark');
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+/* no-op: gets redefined by whiteboard if canvas exists */
+function updateCanvasBackground () {}
 
 /* ----------------------------------------------------------------------
-   1.  Quote rotator in the header
+   1.  Quote rotator (landing page only)
 ---------------------------------------------------------------------- */
-(function rotateQuotes() {
-  const quotes = [
-    'Man is something that shall be overcome'
-  ];
-  let index = 0;
+(function () {
+  const quip = $('#quip');
+  if (!quip) return;                        // page has no quote
+
+  const quotes = ['Man is something that shall be overcome'];
+  let i = 0;
   setInterval(() => {
-    index = (index + 1) % quotes.length;
-    $('#quip').textContent = `"${quotes[index]}"`;
+    i = (i + 1) % quotes.length;
+    quip.textContent = `"${quotes[i]}"`;
   }, 10_000);
 })();
 
 /* ----------------------------------------------------------------------
-   2.  Dark‑/light‑mode toggle with localStorage persistence
+   2.  Dark-/light-mode toggle (works everywhere if button present)
 ---------------------------------------------------------------------- */
-(function darkModeToggle() {
-  const btn          = $('#toggleDark');
-  const rootElement  = document.documentElement;
-  const storageKey   = 'theme';
+(function () {
+  const btn = $('#toggleDark');
+  if (!btn) return;                         // this page has no toggle
 
-  // –— initialise -------------------------------------------------------
-  try {
-    if (localStorage.getItem(storageKey) === 'dark') {
-      rootElement.classList.add('theme-dark');
-    }
-  } catch (_) {/* localStorage may be blocked – ignore */}
+  const root = document.documentElement;
+  const KEY  = 'theme';
+  try { if (localStorage.getItem(KEY) === 'dark') root.classList.add('theme-dark'); } catch {}
 
-  const updateIcon = () => {
-    btn.textContent = isDarkMode() ? '☀️' : '🌙';
-  };
-  updateIcon();
+  const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙'; };
+  syncIcon();
 
-  // –— click handler ----------------------------------------------------
   btn.addEventListener('click', () => {
-    rootElement.classList.toggle('theme-dark');
-    updateIcon();
-
-    try {
-      localStorage.setItem(storageKey, isDarkMode() ? 'dark' : 'light');
-    } catch (_) {/* ignore quota / privacy errors */}
-
-    // update canvas background to match new theme
-    updateCanvasBackground();
+    root.classList.toggle('theme-dark');
+    syncIcon();
+    try { localStorage.setItem(KEY, root.classList.contains('theme-dark') ? 'dark' : 'light'); } catch {}
+    updateCanvasBackground();               // noop if no canvas yet
   });
 })();
 
 /* ----------------------------------------------------------------------
-   3.  Whiteboard modal logic
+   3.  Whiteboard modal (landing page only)
 ---------------------------------------------------------------------- */
-const modal          = $('#sketchModal');
-const modalContent   = $('#modalContent');
-const sketchButton   = $('#sketchBtn');
-const closeButton    = $('.close');
-const fullscreenBtn  = $('#fullscreenBtn');
-const canvas         = $('#sketchpad');
-// new stroke‑size slider reference
+(function () {
+  const sketchButton = $('#sketchBtn');
+  if (!sketchButton) return;                // skip on article pages
 
-const strokeSlider = document.getElementById('strokeSizeSlider');
+  const modal        = $('#sketchModal');
+  const modalContent = $('#modalContent');
+  const closeButton  = $('.close');
+  const fullscreenBtn= $('#fullscreenBtn');
+  const canvas       = $('#sketchpad');
+  const strokeSlider = $('#strokeSizeSlider');
 
-if (strokeSlider) {
-  strokeSlider.addEventListener('input', () => {
-    if (ctx) resetStrokeStyle();
-  });
-}
+  /* 3-state */
+  let ctx, isDrawing=false, isEraser=false, currentColor='#000000';
+  let lastFocus=null, isFS=false;
 
-let ctx;                       // 2‑D context (set in initWhiteboard)
-let isDrawing     = false;     // pointer is pressed
-let isEraserMode  = false;     // eraser vs. pen
-let currentColor  = '#000000'; // default ink colour
-let lastFocusEl   = null;      // element that had focus before opening
-let isFullscreen  = false;     // fullscreen toggle state
+  /* ── slider live preview ────────────────────────────────────────── */
+  if (strokeSlider) strokeSlider.addEventListener('input', () => { if (ctx) resetStrokeStyle(); });
 
-/* ---------- 3a. modal open / close ----------------------------------- */
-function openModal() {
-  modal.style.display = 'block';
-  modal.setAttribute('aria-hidden', 'false');
-  lastFocusEl = document.activeElement;
-  modalContent.focus();
-  initWhiteboard();
-}
-
-function closeModal() {
-  modal.style.display = 'none';
-  modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  if (lastFocusEl) lastFocusEl.focus();
-}
-
-sketchButton.addEventListener('click', openModal);
-closeButton.   addEventListener('click', closeModal);
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-});
-
-let wbBackDropPress = false;              // separate flag for the whiteboard
-
-modal.addEventListener('pointerdown', e => {
-  wbBackDropPress = (e.target === modal); // true only if press starts on backdrop
-});
-modal.addEventListener('pointerup', e => {
-  if (wbBackDropPress && e.target === modal) closeModal();
-  wbBackDropPress = false;                // reset every pointer sequence
-});
-
-/* ---------- 3b. fullscreen toggle ------------------------------------ */
-fullscreenBtn.addEventListener('click', () => {
-  isFullscreen = !isFullscreen;
-  modalContent.classList.toggle('fullscreen', isFullscreen);
-  fullscreenBtn.textContent = isFullscreen ? '⛌' : '⛶';
-  document.body.style.overflow = isFullscreen ? 'hidden' : '';
-  requestAnimationFrame(initWhiteboard); // rebuild canvas after resize
-});
-
-/* ----------------------------------------------------------------------
-   4.  Canvas helpers
----------------------------------------------------------------------- */
-function strokeSize() {
-  // scale line width to device size for a consistent feel
-  return isEraserMode ? Math.max(4, canvas.width / 40)
-                      : Math.max(2, canvas.width / 200);
-}
-
-function resetStrokeStyle() {
-  const size = strokeSlider
-    ? parseInt(strokeSlider.value, 10)
-    : (isEraserMode ? 20 : 2);
-
-  ctx.lineWidth = size;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.strokeStyle = isEraserMode ? '#ffffff' : currentColor;
-}
-
-
-function updateCanvasBackground() {
-  if (!ctx) return;
-  ctx.save();
-  ctx.globalCompositeOperation = 'destination-over';
-  ctx.fillStyle = '#ffffff';      // white board regardless of theme
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-}
-
-/* ----------------------------------------------------------------------
-   5.  Whiteboard initialisation & resize logic
----------------------------------------------------------------------- */
-function initWhiteboard() {
-  ctx = canvas.getContext('2d');
-
-  // ---- resize canvas to fit container --------------------------------
-  const containerRect = canvas.parentElement.getBoundingClientRect();
-  const controlsH     = $('.sketch-controls').offsetHeight;
-  const targetW       = Math.round(containerRect.width);
-  const targetH       = Math.max(100, Math.round(containerRect.height - controlsH - 20));
-
-  if (canvas.width !== targetW || canvas.height !== targetH) {
-    // preserve drawing when resizing: copy → resize → draw back
-    const copy = document.createElement('canvas');
-    copy.width  = canvas.width;
-    copy.height = canvas.height;
-    copy.getContext('2d').drawImage(canvas, 0, 0);
-
-    canvas.width  = targetW;
-    canvas.height = targetH;
-    ctx.drawImage(copy, 0, 0);
+  /* ── open / close helpers ───────────────────────────────────────── */
+  function openModal () {
+    modal.style.display='block';
+    modal.setAttribute('aria-hidden','false');
+    lastFocus = document.activeElement;
+    modalContent.focus();
+    initCanvas();
+  }
+  function closeModal(){
+    modal.style.display='none';
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    lastFocus?.focus();
   }
 
-  updateCanvasBackground();
-  resetStrokeStyle();
-  attachCanvasListeners();
-  attachUiListeners();
-}
+  sketchButton.addEventListener('click', openModal);
+  closeButton  .addEventListener('click', closeModal);
+  window.addEventListener('keydown', e => { if(e.key==='Escape'&&modal.style.display==='block') closeModal(); });
 
-/* ----------------------------------------------------------------------
-   6.  Pointer / touch drawing handlers
----------------------------------------------------------------------- */
-function canvasPos(evt) {
-  const rect = canvas.getBoundingClientRect();
-  const x    = (evt.touches ? evt.touches[0].clientX : evt.clientX) - rect.left;
-  const y    = (evt.touches ? evt.touches[0].clientY : evt.clientY) - rect.top;
-  return { x, y };
-}
+  /* backdrop click */
+  let backPress=false;
+  modal.addEventListener('pointerdown',e=>{backPress=(e.target===modal);});
+  modal.addEventListener('pointerup',e=>{if(backPress&&e.target===modal)closeModal();backPress=false;});
 
-function beginStroke(evt) {
-  evt.preventDefault();
-  isDrawing = true;
-  const { x, y } = canvasPos(evt);
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-}
-function continueStroke(evt) {
-  if (!isDrawing) return;
-  evt.preventDefault();
-  const { x, y } = canvasPos(evt);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-}
-function endStroke() { isDrawing = false; }
-
-function attachCanvasListeners() {
-  if (canvas.dataset.listenersAttached) return; // idempotent
-  canvas.dataset.listenersAttached = 'true';
-
-  /* mouse */
-  canvas.addEventListener('mousedown', beginStroke);
-  canvas.addEventListener('mousemove', continueStroke);
-  canvas.addEventListener('mouseup',   endStroke);
-  canvas.addEventListener('mouseout',  endStroke);
-
-  /* touch */
-  canvas.addEventListener('touchstart', beginStroke, { passive:false });
-  canvas.addEventListener('touchmove',  continueStroke, { passive:false });
-  canvas.addEventListener('touchend',   endStroke);
-}
-
-/* ----------------------------------------------------------------------
-   7.  UI controls – colour palette, eraser, clear button
----------------------------------------------------------------------- */
-function attachUiListeners() {
-  // colour / eraser buttons
-  $$('.color-btn').forEach(btn => {
-    if (btn.dataset.wired) return;
-    btn.dataset.wired = 'true';
-
-    btn.addEventListener('click', evt => {
-      $$('.color-btn.active').forEach(b => b.classList.remove('active'));
-      evt.currentTarget.classList.add('active');
-
-      const colour = evt.currentTarget.dataset.color;
-      isEraserMode = (colour === 'eraser');
-      if (!isEraserMode) currentColor = colour;
-      resetStrokeStyle();
-    });
+  /* fullscreen toggle */
+  fullscreenBtn.addEventListener('click',()=>{
+    isFS=!isFS;
+    modalContent.classList.toggle('fullscreen',isFS);
+    fullscreenBtn.textContent=isFS?'⛌':'⛶';
+    document.body.style.overflow=isFS?'hidden':'';
+    requestAnimationFrame(initCanvas);
   });
 
-  // clear button
-  const clearBtn = $('#clearBtn');
-  if (!clearBtn.dataset.wired) {
-    clearBtn.dataset.wired = 'true';
-    clearBtn.addEventListener('click', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      updateCanvasBackground();
-    });
+  /* ── canvas helpers ─────────────────────────────────────────────── */
+  function resetStrokeStyle(){
+    const size = strokeSlider ? +strokeSlider.value : (isEraser?20:2);
+    ctx.lineWidth=size;
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.strokeStyle=isEraser?'#ffffff':currentColor;
   }
-}
 
-/* ----------------------------------------------------------------------
-   8.  Pseudo-code pad modal
----------------------------------------------------------------------- */
-const codeModal   = $('#codeModal');
-const codeContent = $('#codeContent');
-const codeBtn     = $('#codeBtn');
-const codeClose   = $('.code-close');
-const codeFullBtn = $('#codeFullscreen');
-const codeArea    = $('#codeArea');
+  updateCanvasBackground = function (){
+    if(!ctx) return;
+    ctx.save();
+    ctx.globalCompositeOperation='destination-over';
+    ctx.fillStyle='#ffffff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.restore();
+  };
 
-let codeFullscreen = false;
-const CODE_KEY = 'pseudoCode';   // localStorage key
+  /* init / resize */
+  function initCanvas(){
+    ctx = canvas.getContext('2d');
+    const r=canvas.parentElement.getBoundingClientRect();
+    const hCtrl=$('.sketch-controls').offsetHeight;
+    const W=Math.round(r.width), H=Math.max(100,Math.round(r.height-hCtrl-20));
+    if(canvas.width!==W||canvas.height!==H){
+      const copy=document.createElement('canvas');
+      copy.width=canvas.width; copy.height=canvas.height;
+      copy.getContext('2d').drawImage(canvas,0,0);
+      canvas.width=W; canvas.height=H;
+      ctx.drawImage(copy,0,0);
+    }
+    updateCanvasBackground(); resetStrokeStyle();
+    attachCanvasListeners(); attachUiListeners();
+  }
 
-function openCode () {
-  codeModal.style.display = 'block';
-  codeModal.setAttribute('aria-hidden', 'false');
-  lastFocusEl = document.activeElement;
-  codeContent.focus();
-  try { codeArea.value = localStorage.getItem(CODE_KEY) || 'Howdy! '; } catch (_) {}
-}
-function closeCode () {
-  codeModal.style.display = 'none';
-  codeModal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  lastFocusEl?.focus();
-  try { localStorage.setItem(CODE_KEY, codeArea.value); } catch (_) {}
-}
+  function pos(e){const r=canvas.getBoundingClientRect(),c=e.touches?e.touches[0]:e;return{x:c.clientX-r.left,y:c.clientY-r.top};}
+  function begin(e){e.preventDefault();isDrawing=true;const {x,y}=pos(e);ctx.beginPath();ctx.moveTo(x,y);}
+  function draw(e){ if(!isDrawing)return; e.preventDefault();const {x,y}=pos(e);ctx.lineTo(x,y);ctx.stroke();}
+  function end(){isDrawing=false;}
 
-codeBtn.addEventListener('click', openCode);
-codeClose.addEventListener('click', closeCode);
+  function attachCanvasListeners(){
+    if(canvas.dataset.wired) return; canvas.dataset.wired='yes';
+    canvas.addEventListener('mousedown',begin);
+    canvas.addEventListener('mousemove',draw);
+    canvas.addEventListener('mouseup',end);
+    canvas.addEventListener('mouseout',end);
 
-/* --- Escape key ----------------------------------------------------- */
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && codeModal.style.display === 'block') closeCode();
-});
+    canvas.addEventListener('touchstart',begin,{passive:false});
+    canvas.addEventListener('touchmove',draw,{passive:false});
+    canvas.addEventListener('touchend',end);
+  }
 
-/* --- Back-drop press begins + ends on backdrop → close -------------- */
-let cdbackDropPress = false;
+  function attachUiListeners(){
+    $$('.color-btn').forEach(btn=>{
+      if(btn.dataset.wired) return;
+      btn.dataset.wired='yes';
+      btn.addEventListener('click',ev=>{
+        $$('.color-btn.active').forEach(b=>b.classList.remove('active'));
+        ev.currentTarget.classList.add('active');
+        const c=ev.currentTarget.dataset.color;
+        isEraser=(c==='eraser'); if(!isEraser) currentColor=c;
+        resetStrokeStyle();
+      });
+    });
 
-codeModal.addEventListener('pointerdown', e => {
-  cdbackDropPress = (e.target === codeModal);          // true only if press starts on backdrop
-});
-codeModal.addEventListener('pointerup', e => {
-  if (cdbackDropPress && e.target === codeModal) closeCode();
-  cdbackDropPress = false;                             // reset for next pointer sequence
-});
-
-/* --- Fullscreen toggle --------------------------------------------- */
-codeFullBtn.addEventListener('click', () => {
-  codeFullscreen = !codeFullscreen;
-  codeContent.classList.toggle('fullscreen', codeFullscreen);
-  codeFullBtn.textContent = codeFullscreen ? '⛌' : '⛶';
-  document.body.style.overflow = codeFullscreen ? 'hidden' : '';
-  setTimeout(() => codeArea.focus(), 50);
-});
-
-/* --- TAB / SHIFT-TAB indent / un-indent ---------------------------- */
-codeArea.addEventListener('keydown', e => {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const tab = '  ';                                   // or '\t'
-    const [s, t] = [e.target.selectionStart, e.target.selectionEnd];
-
-    if (e.shiftKey) {
-      const before = e.target.value.slice(s - tab.length, s);
-      if (before === tab) e.target.setRangeText('', s - tab.length, s, 'end');
-    } else {
-      e.target.setRangeText(tab, s, t, 'end');
+    const clearBtn=$('#clearBtn');
+    if(!clearBtn.dataset.wired){
+      clearBtn.dataset.wired='yes';
+      clearBtn.addEventListener('click',()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        updateCanvasBackground();
+      });
     }
   }
-});
+})();
 
-/* --- UNDO / REDO  (⌘Z / ⌘⇧Z  or  Ctrl-Z / Ctrl-Y) ------------------- */
-(() => {
-  const undo = [];
-  const redo = [];
-  const MAX  = 100;
+/* ----------------------------------------------------------------------
+   4.  Code-pad modal (landing page only)
+---------------------------------------------------------------------- */
+(function () {
+  const codeBtn = $('#codeBtn');
+  if (!codeBtn) return;                     // skip on article pages
 
-  undo.push(codeArea.value);                           // initial snapshot
+  const codeModal  = $('#codeModal');
+  const codeCont   = $('#codeContent');
+  const codeClose  = $('.code-close');
+  const codeFSBtn  = $('#codeFullscreen');
+  const codeArea   = $('#codeArea');
+  let codeFS = false, lastFocus=null;
+  const KEY='pseudoCode';
 
-  codeArea.addEventListener('input', () => {
-    if (undo.length >= MAX) undo.shift();
+  function openCode(){
+    codeModal.style.display='block';
+    codeModal.setAttribute('aria-hidden','false');
+    lastFocus=document.activeElement;
+    codeCont.focus();
+    try{codeArea.value=localStorage.getItem(KEY)||'Howdy! ';}catch{}
+  }
+  function closeCode(){
+    codeModal.style.display='none';
+    codeModal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    lastFocus?.focus();
+    try{localStorage.setItem(KEY,codeArea.value);}catch{}
+  }
+
+  codeBtn  .addEventListener('click',openCode);
+  codeClose.addEventListener('click',closeCode);
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&codeModal.style.display==='block')closeCode();});
+
+  /* backdrop */
+  let cdBack=false;
+  codeModal.addEventListener('pointerdown',e=>{cdBack=(e.target===codeModal);});
+  codeModal.addEventListener('pointerup',  e=>{if(cdBack&&e.target===codeModal)closeCode();cdBack=false;});
+
+  /* fullscreen */
+  codeFSBtn.addEventListener('click',()=>{
+    codeFS=!codeFS;
+    codeCont.classList.toggle('fullscreen',codeFS);
+    codeFSBtn.textContent=codeFS?'⛌':'⛶';
+    document.body.style.overflow=codeFS?'hidden':'';
+    setTimeout(()=>codeArea.focus(),50);
+  });
+
+  /* TAB indent / unindent */
+  codeArea.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){e.preventDefault();
+      const tab='  ';
+      const [s,t]=[e.target.selectionStart,e.target.selectionEnd];
+      if(e.shiftKey){
+        const before=e.target.value.slice(s-tab.length,s);
+        if(before===tab) e.target.setRangeText('',s-tab.length,s,'end');
+      }else{e.target.setRangeText(tab,s,t,'end');}
+    }
+  });
+
+  /* undo / redo chain */
+  (function(){
+    const undo=[], redo=[], MAX=100;
     undo.push(codeArea.value);
-    redo.length = 0;                                   // clear redo chain
-  });
-
-  codeArea.addEventListener('keydown', e => {
-    const z   = e.key.toLowerCase() === 'z';
-    const y   = e.key.toLowerCase() === 'y';
-    const mod = e.metaKey || e.ctrlKey;
-
-    /* undo */
-    if (mod && z && !e.shiftKey) {
-      if (undo.length > 1) {
-        e.preventDefault();
-        redo.push(undo.pop());
-        codeArea.value = undo[undo.length - 1];
-      }
-    }
-    /* redo */
-    if ((mod && z && e.shiftKey) || (mod && y && !e.shiftKey)) {
-      if (redo.length) {
-        e.preventDefault();
-        const next = redo.pop();
-        undo.push(next);
-        codeArea.value = next;
-      }
-    }
-  });
+    codeArea.addEventListener('input',()=>{
+      if(undo.length>=MAX)undo.shift();
+      undo.push(codeArea.value); redo.length=0;
+    });
+    codeArea.addEventListener('keydown',e=>{
+      const z=e.key.toLowerCase()==='z', y=e.key.toLowerCase()==='y', mod=e.metaKey||e.ctrlKey;
+      if(mod&&z&&!e.shiftKey){if(undo.length>1){e.preventDefault();redo.push(undo.pop());codeArea.value=undo.at(-1);}}
+      if((mod&&z&&e.shiftKey)||(mod&&y&&!e.shiftKey)){if(redo.length){e.preventDefault();const next=redo.pop();undo.push(next);codeArea.value=next;}}
+    });
+  })();
 })();
-
-
