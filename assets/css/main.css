@@ -334,40 +334,29 @@ html.theme-dark #codeArea {
 
 /* MOBILE RESPONSIVE */
 @media (max-width:768px) {
+  /* -------------- already in your file -------------- */
+  .modal-content { width:95%; height:85%; }
+  .mood-image img { max-width:100%; width:100%; height:auto; }
+  .mood-item, .mood-image { padding:0.5rem; }
+  h1 { font-size:1.8rem; }
+  #wrapper { width:95%; }
+  .sketch-controls { gap:0.8rem; padding: var(--controls-padding-y) 0; }
+  .sketch-controls button { padding:0.8rem 1.2rem; font-size:1rem; }
+  .color-btn { width:40px; height:40px; }
 
-  /* ——— Modal window ——— */
-  .modal-content   { width: 95%; height: 85%; }
-
-  /* ——— Mood-board images & cards ——— */
-  .mood-image img  { max-width: 100%; width: 100%; height: auto; }
-  .mood-image      { padding: 0.5rem; }
-  .mood-item       { padding: 0.5rem; }
-
-  /* ——— Global headings & layout shrink ——— */
-  h1               { font-size: 1.8rem; }          /* was 2.5rem */
-  #wrapper         { width: 95%; }
-
-  /* ——— Whiteboard controls ——— */
-  .sketch-controls          { gap: 0.8rem; padding: var(--controls-padding-y) 0; }
-  .sketch-controls button   { padding: 0.8rem 1.2rem; font-size: 1rem; }
-  .color-btn                { width: 40px; height: 40px; }
-
-  /* ——— Article / Markdown panel ——— */
-  article.markdown-body {
-    max-width: 95vw;      /* keep 5 % side margin inside viewport          */
-    padding: 0.75rem;     /* matches mood-item mobile padding              */
-    font-size: 1rem;      /* ~16 px body copy for legibility               */
+  /* ➕ ADD — Article panel & images */
+  article.markdown-body{
+    max-width:95vw;        /* keep it inside the viewport */
+    padding:.75rem;        /* match mood-item padding     */
+    font-size:1rem;        /* ~16 px for readability      */
   }
+  article.markdown-body h1{font-size:1.6em;}
+  article.markdown-body h2{font-size:1.3em;}
+  article.markdown-body h3{font-size:1.15em;}
 
-  /* scale article headings similarly to global h1 shrink */
-  article.markdown-body h1 { font-size: 1.6em; }
-  article.markdown-body h2 { font-size: 1.3em; }
-  article.markdown-body h3 { font-size: 1.15em; }
-
-  /* make article images fully fluid */
-  article.markdown-body img {
-    max-width: 100%;
-    height: auto;
+  article.markdown-body img{
+    max-width:100%;
+    height:auto;
   }
 }
 
