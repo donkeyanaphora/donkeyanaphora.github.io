@@ -39,109 +39,113 @@
       regression and its projection formula corrolary remain
       surprisingly powerful. By framing modern tasks like semantic
       filtering and bias removal as geometric problems, it becomes clear
-      why simple formulas like <span class="math inline">\(X(X^{\mathsf
-      T}X)^{+}X^{\mathsf T}\)</span> work so well. The focus of this
-      article is show how ordinary least squares offers insights as well
-      as stable and theoretically grounded solution to semantic
-      filtering in modern search and retrieval systems.</p>
+      why simple formulas like <span class="math display">\[
+      X(X^{\mathsf T}X)^{+}X^{\mathsf T}
+      \]</span> work so well. The focus of this article is show how
+      ordinary least squares offers insights as well as stable and
+      theoretically grounded solution to semantic filtering in modern
+      search and retrieval systems.</p>
       <h2 id="linalg-recap">Linalg Recap</h2>
-      <p>lorem ipsum</p>
-      <h3 id="formulas">Formulas:</h3>
+      <p><em>lorem ipsum</em></p>
+      <h3 id="key-formulas">Key Formulas</h3>
       <table>
       <colgroup>
-      <col style="width: 33%" />
-      <col style="width: 48%" />
-      <col style="width: 17%" />
+      <col style="width: 22%" />
+      <col style="width: 56%" />
+      <col style="width: 21%" />
       </colgroup>
       <thead>
       <tr>
       <th>Formula</th>
-      <th>Intuitive role</th>
-      <th>Visual cue</th>
+      <th>Intuitive Role</th>
+      <th>Visual Cue</th>
       </tr>
       </thead>
       <tbody>
       <tr>
       <td><span class="math inline">\(X^{+} =
       (X^{\!\top}X)^{-1}X^{\!\top}\)</span></td>
-      <td><strong>Recipe for weights.</strong> Turns a target <span
-      class="math inline">\(y\)</span> into the coefficient vector that
-      minimises <span class="math inline">\(\lVert
-      y-X\beta\rVert_2^2\)</span>.</td>
+      <td><strong>Recipe for weights.</strong> Solves <span
+      class="math inline">\(\min_\beta\|y - X\beta\|_2^2\)</span>.</td>
       <td>“How much of each arrow do I need?”</td>
       </tr>
       <tr>
       <td><span class="math inline">\(\hat{\beta}=X^{+}y\)</span></td>
-      <td><strong>Coordinates along the arrows.</strong> These scalars
-      say how far to travel in each predictor direction to land at the
-      closest point.</td>
-      <td>Labels on the sub-space axes.</td>
+      <td><strong>Coordinates along the arrows.</strong> Scalar steps to
+      reach the closest point.</td>
+      <td>Labels on the subspace axes.</td>
       </tr>
       <tr>
       <td><span class="math inline">\(P_X = X\,X^{+}\)</span></td>
-      <td><strong>Snap-to-span operator.</strong> Orthogonally drops any
-      vector onto the span of <span class="math inline">\(X\)</span>;
-      symmetric + idempotent ⇒ unmistakably an orthogonal
-      projector.</td>
-      <td>Transparent elevator lowering you to the sheet.</td>
+      <td><strong>Snap-to-span operator.</strong> Orthogonal projector:
+      symmetric, idempotent.</td>
+      <td>Elevator lowering you to the sheet.</td>
       </tr>
       <tr>
       <td><span class="math inline">\(\hat y = P_X\,y =
       X\hat{\beta}\)</span></td>
-      <td><strong>Foot of the perpendicular.</strong> The unique point
-      in the sub-space that minimises <span class="math inline">\(\lVert
-      y-\hat y\rVert_2\)</span>; numerically, it’s the regression
-      prediction.</td>
-      <td>Black dot where the plumb line from <span
-      class="math inline">\(y\)</span> hits the sheet.</td>
+      <td><strong>Foot of the perpendicular.</strong> Unique point in
+      <span class="math inline">\(\mathrm{span}\{X\}\)</span> minimizing
+      <span class="math inline">\(\|y - \hat y\|\)</span>.</td>
+      <td>Black dot where the plumb-line hits.</td>
       </tr>
       <tr>
       <td><span class="math inline">\(r = y-\hat y =
       (I-P_X)\,y\)</span></td>
-      <td><strong>Residual vector.</strong> Connects <span
-      class="math inline">\(y\)</span> to its foot; always orthogonal to
-      every column of <span class="math inline">\(X\)</span> (<span
+      <td><strong>Residual vector.</strong> Always orthogonal to every
+      column of <span class="math inline">\(X\)</span> (<span
       class="math inline">\(X^{\!\top}r=0\)</span>).</td>
       <td>Red straight-down arrow.</td>
       </tr>
       </tbody>
       </table>
-      <h3 id="theorems">Theorems:</h3>
-      <p><strong>The Best Approximation Theorem:</strong></p>
-      <p>Let <span class="math inline">\(W\)</span> be a subspace of
-      <span class="math inline">\(\mathbb{R}^{n}\)</span>, let <span
-      class="math inline">\(y \in \mathbb{R}^{n}\)</span>, and let <span
-      class="math inline">\(\widehat{y} = \operatorname{proj}_{W}
-      y\)</span> be the orthogonal projection of <span
-      class="math inline">\(y\)</span> onto <span
-      class="math inline">\(W\)</span>. Then <span
-      class="math inline">\(\widehat{y}\)</span> is the closest point in
-      <span class="math inline">\(W\)</span> to <span
-      class="math inline">\(y\)</span>; in the sense that <span
-      class="math display">\[
-        \|\,y - \widehat{y}\,\|_2
-        \;&lt;\;
-        \|\,y - v\,\|_2
-        \quad\text{for all } v \in W,\; v \neq \widehat{y}.
-      \]</span></p>
-      <p>(pg 394)</p>
-      <p><strong>Other Theorem Placeholder (TODO)</strong>: well I guess
-      from the best approximation theorem we get that u_proj is the
-      closest point in V from u but then we have to prove the corollary
-      that u-uproj is the closest point to u in Vperp (pathagreas?) ###
-      Takeaways:</p>
+      <h3 id="theorems">Theorems</h3>
+      <p><strong>Best Approximation Theorem</strong> Let <span
+      class="math inline">\(W\)</span> be a subspace of <span
+      class="math inline">\(\mathbb{R}^n\)</span>, <span
+      class="math inline">\(y\in\mathbb{R}^n\)</span>, and <span
+      class="math inline">\(\widehat y = \mathrm{proj}_W(y)\)</span> its
+      orthogonal projection onto <span class="math inline">\(W\)</span>.
+      Then</p>
       <p><span class="math display">\[
-      u_{\text{new}} = u-u_{\text{proj}}
-      \]</span> is <em>the</em> closest-possible embedding to the
-      original query <strong>while being perfectly orthogonal to the
-      undesirable sub-space</strong>.</p>
-      <p>That’s the mathematical backing for the two benefits you
-      listed:</p>
+      \|y - \widehat{y}\|_2 \;&lt;\; \|y - v\|_2
+      \quad\text{for all }v\in W,\;v\neq \widehat{y}.
+      \]</span></p>
+      <blockquote>
+      <p><em>From this it follows that the “remainder” <span
+      class="math inline">\(y - \widehat{y}\)</span> lies in <span
+      class="math inline">\(W^\perp\)</span> and is the closest point in
+      that orthogonal complement to <span
+      class="math inline">\(y\)</span>.</em></p>
+      </blockquote>
+      <h3 id="takeaway-corollary">Takeaway Corollary</h3>
+      <p>If <span class="math inline">\(\mathbf{u}_{\text{proj}} =
+      \mathrm{proj}_V(\mathbf{u})\)</span>, then</p>
+      <p><span class="math display">\[
+      \mathbf{u}_{\mathrm{new}}
+      \;=\;\mathbf{u} - \mathbf{u}_{\text{proj}}
+      \;\in\;V^\perp
+      \]</span></p>
+      <p>is the closest-possible embedding to <span
+      class="math inline">\(\mathbf{u}\)</span> that’s perfectly
+      orthogonal to <span class="math inline">\(V\)</span>.</p>
+      <h4 id="tldr">TLDR</h4>
+      <p>Define</p>
+      <p><span class="math display">\[
+      \mathbf{u}_{\mathrm{new}}
+      \;=\;\arg\min_{w\in V^\perp}\|\mathbf{u}-w\|
+      \;=\;\mathrm{proj}_{V^\perp}(\mathbf{u}).
+      \]</span></p>
       <ol type="1">
-      <li><strong>Minimal distortion</strong> (distance from <span
-      class="math inline">\(u\)</span> is the smallest achievable).</li>
-      <li><strong>Guaranteed orthogonality</strong> to every filter
-      direction in <span class="math inline">\(V\)</span>.</li>
+      <li><strong>Minimal distortion</strong> <span
+      class="math inline">\(\mathbf{u}_{\mathrm{new}}\in
+      V^\perp\)</span> is the closest vector in <span
+      class="math inline">\(V^\perp\)</span> to <span
+      class="math inline">\(\mathbf{u}\)</span>.</li>
+      <li><strong>Guaranteed orthogonality</strong> <span
+      class="math inline">\(\langle \mathbf{u}_{\mathrm{new}},\,v\rangle
+      = 0\)</span> for every <span class="math inline">\(v\in
+      V\)</span>.</li>
       </ol>
       <h2 id="visual-intuition">Visual Intuition</h2>
       <h2 id="mean-subtraction-vs.-projection-residuals">Mean
