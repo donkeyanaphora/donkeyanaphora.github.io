@@ -561,6 +561,65 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
   border-radius: 2px;
 }
 
+/* MathJax rendering improvements */
+.MathJax, 
+.MathJax_Display,
+.mjx-chtml,
+mjx-container {
+  font-size: 105% !important; /* Slightly larger for better readability */
+  text-rendering: geometricPrecision !important; /* Better text rendering */
+}
+
+/* Fix for misaligned characters */
+mjx-container mjx-math {
+  text-rendering: optimizeLegibility !important;
+  font-smooth: always !important;
+  -webkit-font-smoothing: subpixel-antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Improve spacing between math elements */
+mjx-container mjx-mo {
+  padding: 0 0.15em !important; /* More consistent operator spacing */
+}
+
+/* Better alignment for subscripts/superscripts */
+mjx-container mjx-script {
+  font-size: 80% !important; /* Consistent subscript/superscript sizing */
+}
+
+/* Better baseline alignment */
+.MathJax_Display .MJX-TEX {
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+/* Fix specific character alignment issues in math formulas */
+mjx-mrow {
+  line-height: normal !important;
+  letter-spacing: normal !important;
+}
+
+/* For browser consistency */
+.MathJax_Display, 
+mjx-container[jax="CHTML"][display="true"] {
+  margin: 1em 0 !important;
+  text-align: center !important;
+}
+
+/* Ensure proper scaling/positioning of displayed equations */
+mjx-container[jax="CHTML"][display="true"] {
+  display: block !important;
+  text-align: center !important;
+  margin: 1em 0 !important;
+}
+
+/* Fix for dark mode equation display */
+html.theme-dark .MathJax,
+html.theme-dark mjx-container {
+  color: var(--txt) !important;
+}
+
 /* Make article text slightly larger on mobile */
 @media screen and (max-device-width: 480px) {
   article.markdown-body {
