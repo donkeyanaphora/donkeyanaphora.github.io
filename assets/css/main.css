@@ -631,4 +631,20 @@ article.markdown-body td {
   article.markdown-body td { font-size: 0.9rem; }
 }
 
+/* ── PAGE-LEVEL FLEX LAYOUT  ▸ keeps footer at window bottom ───────── */
+body{
+  display:flex;              /* turn the <body> into a vertical stack  */
+  flex-direction:column;
+  /* height:100% is already set earlier, so nothing else to add here   */
+}
 
+/* whichever element holds the bulk of the page-content */
+main.content,                 /* article pages                           */
+#wrapper{                     /* landing page                            */
+  flex:1 0 auto;              /* grow to fill leftover space,            */
+}
+
+/* footer never shrinks and therefore sits at the very end */
+footer{
+  flex-shrink:0;
+}
