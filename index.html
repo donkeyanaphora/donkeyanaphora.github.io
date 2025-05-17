@@ -210,26 +210,31 @@
                 </td>
             </tr>
             <tr>
-                <!-- <td>
-                    "Hot ice / wondrous strange snow"
+                <td>
+                    "A cage went in search of a bird"
                 </td>
                 <td>
-                    <code>□ₚ ¬(Ice∧Hot) ∧ ◇ₘ (Ice∧Hot)</code>
+                    <code>Search(e, cage, bird)<br>
+                          ∧ ReqAnim(cage)<br>
+                          ∧ ¬Animate(cage)
+                    </code>
                 </td>
                 <td>
-                    Oppressions pursues freedom
-                </td> -->
+                    Oppression pursues freedom
+                </td>
             </tr>
           </table>
           <p>I think the literary devices could be described as any utterance whose literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.</p>
-          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(P) ≡ □ₚ P ∧ (□ₘ ¬P or ◇ₘ P)</p>
+          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)</p>
           <p>where</p>
           <ul>
             <li><code>◊ = possible, ∧ = and</code></li>
             <li><code>¬ = not, □ = necessary</code></li>
             <li><code>□ₚ / ◇ₚ (P = physical)</code></li>
             <li><code>□ₘ / ◇ₘ (M = metaphysical / allegorical)</code></li>
-            <li><code>ExO(P) -> Extra‑Ordinary Language</code></li>
+            <li><code>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ</code></li>
+            <li><code>MP(φ)≔ □ₚ ¬φ ∧ ◇ₘ φ</code></li>
+            <li><code>TC(φ) ≔ φ ∧ Presup(φ) ⊢ ⊥</code> &nbsp;<!-- selectional-restriction clash --></li>
           </ul>
           
           <h4>Some Probabilistic Approaches</h4>
