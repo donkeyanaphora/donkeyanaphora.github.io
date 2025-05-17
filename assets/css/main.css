@@ -611,6 +611,7 @@ article.markdown-body table {
   /* ✂️  remove   width:100%;        */
   width: max-content;           /* ⬅️ let the table size itself      */
   max-width: 100%;              /*    but never exceed the article   */
+  margin: 0 auto;          /* ← NEW: centres the table horizontally */
   overflow-x: auto;             /*    and scroll if it does          */
   -webkit-overflow-scrolling: touch;
   border-collapse: collapse;

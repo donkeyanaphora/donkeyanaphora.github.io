@@ -134,16 +134,18 @@
       <p><span class="math display">\[
       \mathbf{F}(x,t)=
       \begin{cases}
-        \displaystyle
-        \arg\max_{y_t}\log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt
-      t}\bigr),
-          &amp; t \lt  \text{initial_steps},\\[0.75em]
-        \displaystyle
-        \arg\max_{y_t}\!\bigl[
-           \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
-           + \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
-        \bigr],
-          &amp; t \ge \text{initial_steps}.
+      \displaystyle
+      \operatorname*{arg\,max}\limits_{y_t}\;
+            \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{&lt;t}\right),
+            &amp; t &lt; \text{initial_steps},\\[0.75em]
+      \displaystyle
+      \operatorname*{arg\,max}\limits_{y_t}\;
+            \Bigl[
+              \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{&lt;t}\right)
+              + \lambda\,\log P_{\text{LM}}\!\left(y_t \mid
+      y_{&lt;t}\right)
+            \Bigr],
+            &amp; t \ge \text{initial_steps}.
       \end{cases}
       \]</span></p>
       <p>This piecewise approach allows the system to build confidence
@@ -161,26 +163,26 @@
       let’s consider a claims call center transcript where an ASR model
       misinterprets a specialized medical term.</p>
       <p><strong>Input Audio (Ground Truth):</strong><br />
-      - “The procedure was medically necessary for the treatment of
+      “The procedure was medically necessary for the treatment of
       claimant’s <code>melanoma</code>.”✔️</p>
       <p><strong>Whisper Initial Output:</strong><br />
-      - “The procedure was medically necessary for the treatment of
+      “The procedure was medically necessary for the treatment of
       claimant’s <code>diploma</code>.”🚫</p>
       <h4 id="whisper-initial-decoding">1. <strong>Whisper Initial
       Decoding:</strong></h4>
-      <ul>
-      <li>Whisper produces logits at each step:
+      <p>Whisper produces logits at each step:</p>
       <ul>
       <li>Token: “The” → high confidence<br />
       </li>
       <li>Token: “procedure” → high confidence<br />
-      …</li>
-      <li>Token: “claimant” → high confidence</li>
-      <li>Token: “’s” → high confidence</li>
+      </li>
+      <li>Token: “claimant” → high confidence<br />
+      </li>
+      <li>Token: “’s” → high confidence<br />
+      </li>
       <li>At the final subword, Whisper may exhibit uncertainty,
-      spreading probabilities across candidates “diploma”, “aroma” and
+      spreading probabilities across candidates: “diploma”, “aroma”,
       “melanoma”</li>
-      </ul></li>
       </ul>
       <h4 id="domain-gpt-2-predictions">2. <strong>Domain GPT-2
       Predictions:</strong></h4>
@@ -227,10 +229,9 @@
       following way:</p>
       <p><span class="math display">\[
       \log P_{\text{combined}}(y_t)=
-      \log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
-      +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt  t}\bigr)
+      \log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
+      +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
       \]</span></p>
-      <p>where <span class="math inline">\(\lambda = 0.2\)</span>:</p>
       <table>
       <colgroup>
       <col style="width: 24%" />
@@ -243,7 +244,8 @@
       <th>Next Token</th>
       <th>Whisper Score</th>
       <th>GPT-2 Score</th>
-      <th>Combined Score</th>
+      <th>Combined Score where <span
+      class="math inline">\(\lambda\)</span> = 0.2</th>
       </tr>
       </thead>
       <tbody>
@@ -277,10 +279,8 @@
       <p>“melanoma” now has the highest combined score.</p>
       <h4 id="final-corrected-output"><strong>Final Corrected
       Output:</strong></h4>
-      <ul>
-      <li>“The procedure was medically necessary for the treatment of
-      claimant’s <code>melanoma</code>.”✔️</li>
-      </ul>
+      <p>“The procedure was medically necessary for the treatment of
+      claimant’s <code>melanoma</code>.”✔️</p>
       <h4 id="key-takeaway">Key Takeaway:</h4>
       <ul>
       <li><strong>Without GPT-2:</strong> The model misrecognized

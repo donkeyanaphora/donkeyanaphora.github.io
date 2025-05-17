@@ -50,15 +50,17 @@ In the workflow that I dive into, token prediction is implemented in stages. Ear
 $$
 \mathbf{F}(x,t)=
 \begin{cases}
-  \displaystyle
-  \arg\max_{y_t}\log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr),
-    & t \lt  \text{initial_steps},\\[0.75em]
-  \displaystyle
-  \arg\max_{y_t}\!\bigl[
-     \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
-     + \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
-  \bigr],
-    & t \ge \text{initial_steps}.
+\displaystyle
+\operatorname*{arg\,max}\limits_{y_t}\;
+      \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right),
+      & t < \text{initial_steps},\\[0.75em]
+\displaystyle
+\operatorname*{arg\,max}\limits_{y_t}\;
+      \Bigl[
+        \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right)
+        + \lambda\,\log P_{\text{LM}}\!\left(y_t \mid y_{<t}\right)
+      \Bigr],
+      & t \ge \text{initial_steps}.
 \end{cases}
 $$
 
@@ -68,19 +70,21 @@ This piecewise approach allows the system to build confidence from the raw audio
 For our models let's take Whisper to be our ASR model and GTP2 to be our LM. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford 2.2](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
 **Input Audio (Ground Truth):**  
-- "The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
+"The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
 
 **Whisper Initial Output:**  
-- "The procedure was medically necessary for the treatment of claimant's `diploma`."🚫
+"The procedure was medically necessary for the treatment of claimant's `diploma`."🚫
 
 #### 1. **Whisper Initial Decoding:**
-- Whisper produces logits at each step:
-  - Token: "The" → high confidence  
-  - Token: "procedure" → high confidence  
-  ...
-  - Token: "claimant" → high confidence
-  - Token: "'s" → high confidence
-  - At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates "diploma", "aroma" and "melanoma"
+
+Whisper produces logits at each step:
+
+- Token: "The" → high confidence  
+- Token: "procedure" → high confidence  
+- Token: "claimant" → high confidence  
+- Token: "'s" → high confidence  
+- At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "diploma", "aroma", "melanoma"
+
 
 #### 2. **Domain GPT-2 Predictions:**  
 At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits based on the following context:
@@ -100,24 +104,23 @@ We combine each model's logits using a weighted sum in the following way:
 
 $$
 \log P_{\text{combined}}(y_t)=
-\log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt  t}\bigr)
-+\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt  t}\bigr)
+\log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
++\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
 $$
 
-where $\lambda = 0.2$:
-
-| Next Token   | Whisper Score | GPT-2 Score | Combined Score |
+| Next Token   | Whisper Score | GPT-2 Score | Combined Score where $\lambda$ = 0.2|
 |--------------|--------------|-------------|----------------|
 | **melanoma** | **–1.8**     | **–0.3**    | **–1.8 + 0.2 $\times$ (–0.3) = –1.86** |
 | diploma      | –1.0         | –5.0        | –1.0 + 0.2 $\times$ (–5.0) = –2.0 |
 | aroma        | –3.5         | –3.8        | –3.5 + 0.2 $\times$ (–3.8) = –4.26 |
+
 
 *Note: The numbers are illustrative. In practice additional context and scaling would favor the correct token "melanoma"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
 
 "melanoma" now has the highest combined score.
 
 #### **Final Corrected Output:**  
-- "The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
+"The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
 
 #### Key Takeaway:
 
