@@ -450,7 +450,6 @@ footer {
 
 
 /* ─── ARTICLE / MARKDOWN PAGES ───────────────────────────── */
-/* ❶––– FRAME (keep as-is) ––––––––––––––––––––––––––––––––– */
 details.section,
 article.markdown-body {
   border: 3px double var(--section-border);
@@ -458,7 +457,7 @@ article.markdown-body {
   padding: 1rem;
 }
 
-/* ❷––– POSITION + TEXT FLOW ––––––––––––––––––––––––––––––– */
+/*––– POSITION + TEXT FLOW ––––––––––––––––––––––––––––––– */
 article.markdown-body {
   margin-left: auto;   /* centers the whole box */
   margin-right: auto;
@@ -603,3 +602,32 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
     margin: 1.5em 0 !important;
   }
 }
+
+/* ──────────────────────────────────────────────── */
+/*  TABLE RESPONSIVENESS (applies to all articles)  */
+/* ──────────────────────────────────────────────── */
+article.markdown-body table {
+  display: block;
+  /* ✂️  remove   width:100%;        */
+  width: max-content;           /* ⬅️ let the table size itself      */
+  max-width: 100%;              /*    but never exceed the article   */
+  overflow-x: auto;             /*    and scroll if it does          */
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+
+article.markdown-body th,
+article.markdown-body td {
+  padding: .45em .65em;
+  text-align: left;
+  border: 1px solid var(--section-border);
+  white-space: nowrap;          /* ⬅️ keep each cell on one line     */
+}
+
+/* optional small-phone font tweak */
+@media (max-width: 480px) {
+  article.markdown-body th,
+  article.markdown-body td { font-size: 0.9rem; }
+}
+
+
