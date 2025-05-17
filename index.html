@@ -183,58 +183,55 @@
           </p>
           <table border="1">
             <tr>
-                <th>Passage</th>
-                <th>Form</th>
-                <th>English</th>
+              <th>Passage</th>
+              <th>Logical sketch</th>
+              <th>English</th>
+            </tr>
+
+            <!-- Modal-Contradiction (MC) -->
+            <tr>
+              <td>"Two distincts, division none"</td>
+              <td><code>□ₚ Distinct(a,b) ∧ □ₘ ¬Distinct(a,b)</code></td>
+              <td>Bodies: two · Souls: one</td>
             </tr>
             <tr>
-                <td>
-                    "Two distincts, division none"
-                </td>
-                <td>
-                    <code>□ₚ Distinct(a,b) ∧ □ₘ ¬Distinct(a,b)</code>
-                </td>
-                <td>
-                    Bodies: two · Souls: one
-                </td>
+              <td>"Hearts remote, yet not asunder"</td>
+              <td><code>□ₚ Remote(a,b) ∧ □ₘ ¬Remote(a,b)</code></td>
+              <td>Spatially apart · Spiritually united</td>
             </tr>
+
+            <!-- Modal-Projection (MP) -->
             <tr>
-                <td>
-                    "Hearts remote, yet not asunder"
-                </td>
-                <td>
-                    <code>□ₚ Remote(a,b) ∧ □ₘ ¬Remote(a,b)</code>
-                </td>
-                <td>
-                    Spatially apart · Spiritually united
-                </td>
+              <td>"Hot ice / wondrous strange snow"</td>
+              <td><code>□ₚ ¬(Ice ∧ Hot) ∧ ◇ₘ (Ice ∧ Hot)</code></td>
+              <td>Burning ice · Snow beyond nature</td>
             </tr>
+
+            <!-- Type-Clash (TC) -->
             <tr>
-                <td>
-                    "A cage went in search of a bird"
-                </td>
-                <td>
-                    <code>Search(e, cage, bird)<br>
-                          ∧ ReqAnim(cage)<br>
-                          ∧ ¬Animate(cage)
-                    </code>
-                </td>
-                <td>
-                    Oppression pursues freedom
-                </td>
+              <td>"A cage went in search of a bird"</td>
+              <td>
+                <code>Search(e, cage, bird)<br>
+                            ∧ ReqAnim(cage)<br>
+                            ∧ ¬Animate(cage)
+                </code>
+              </td>
+              <td>Oppression pursues freedom</td>
             </tr>
           </table>
+
           <p>I think the literary devices could be described as any utterance whose literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.</p>
           <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)</p>
           <p>where</p>
           <ul>
-            <li><code>◊ = possible, ∧ = and</code></li>
-            <li><code>¬ = not, □ = necessary</code></li>
-            <li><code>□ₚ / ◇ₚ (P = physical)</code></li>
-            <li><code>□ₘ / ◇ₘ (M = metaphysical / allegorical)</code></li>
+            <li><code>□ = necessary</code></li>
+            <li><code>◇ = possible</code></li>
+            <li><code>¬ = not</code>, <code>∧ = and</code></li>
+            <li><code>□ₚ / ◇ₚ</code> = physical modality</li>
+            <li><code>□ₘ / ◇ₘ</code> = metaphysical / allegorical modality</li>
             <li><code>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ</code></li>
-            <li><code>MP(φ)≔ □ₚ ¬φ ∧ ◇ₘ φ</code></li>
-            <li><code>TC(φ) ≔ φ ∧ Presup(φ) ⊢ ⊥</code> &nbsp;<!-- selectional-restriction clash --></li>
+            <li><code>MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ</code></li>
+            <li><code>TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥</code>&nbsp;<!-- selectional-restriction clash --></li>
           </ul>
           
           <h4>Some Probabilistic Approaches</h4>
