@@ -394,10 +394,10 @@ footer {
   background: var(--footer-bg);
 }
 
-/* FLOATING BUTTONS - Simple Vertical Stack */
+/* FLOATING BUTTONS – horizontal, small gap */
 .float-btn {
   position: fixed;
-  right: 1rem;
+  bottom: 1rem;          /* all on the same baseline        */
   padding: .6rem 1.1rem;
   font-weight: bold;
   border: 2px outset #c0c0c0;
@@ -408,16 +408,16 @@ footer {
   font-size: 1.05rem;
 }
 
-/* Simple hover effect that works on desktop and doesn't break anything on mobile */
+/* hover stays as-is */
 .float-btn:hover {
   background-color: var(--bg-col);
   border-color: var(--link);
 }
 
-/* Button positions in vertical stack */
-#toggleDark { bottom: 1rem; }
-#sketchBtn { bottom: 4.5rem; }
-#codeBtn { bottom: 8rem; }
+/* bump each one leftward by ≈ button-width + 0.8 rem gap */
+#toggleDark { right: 1rem; }      /* 🌙 */
+#sketchBtn  { right: 5.2rem; }    /* ✍️  (1 + 4.2)  */
+#codeBtn    { right: 9.4rem; }    /* ⌨️  (1 + 2×4.2) */
 
 /* QUICK LINKS */
 .quick-links {
