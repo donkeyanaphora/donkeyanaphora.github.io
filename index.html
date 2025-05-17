@@ -210,18 +210,18 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    "A cage went in search of a bird"
+                <!-- <td>
+                    "Hot ice / wondrous strange snow"
                 </td>
                 <td>
-                    <code>□ₚ ¬Search(c) ∧ ◇ₘ Search(c)</code>
+                    <code>□ₚ ¬(Ice∧Hot) ∧ ◇ₘ (Ice∧Hot)</code>
                 </td>
                 <td>
-                    Physically impossible · Allegorically possible
-                </td>
+                    Oppressions pursues freedom
+                </td> -->
             </tr>
           </table>
-          <p>I think the literary devices could be described as a jarring literal semantic violation followed by a long‑range metaphysical coherence</p>
+          <p>I think the literary devices could be described as any utterance whose literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.</p>
           <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(P) ≡ □ₚ P ∧ (□ₘ ¬P or ◇ₘ P)</p>
           <p>where</p>
           <ul>
@@ -239,19 +239,22 @@
             <li><a href="https://arxiv.org/pdf/2406.13892">Constrained Generation (Ctrl-G)</a></li>
           </ul>
 
+          <h4>Open Problems</h4>
+          <ol>
+            <li><strong>Detection.</strong> Can we learn a reliable anomaly-coherence metric from corpora annotated for ExO instances?</li>
+            <li><strong>Evaluation.</strong> What rubric separates these contradictions from plain nonsense and whre is the cutoff?</li>
+            <li><strong>Generation control.</strong> Beyond temperature, how do we tune a model along an anomoly-coherence axis?</li>
+          </ol>
+
           <h4>Closing Thoughts</h4>
-          <p>There's still a good bit of work to be done in identifying how exactly to find or generate these instances and what sort of rubric we'd need to consider examples worthy. Currently
-            the formalizations given is likely under-specified, and our descriptions of the metaphysical or allegorical coherence either over-explain the poetic tension or collapse back into banal prose. 
-          </p>
           <p>
             It's hard not to think of Wittgenstein's elucidation of private pain or propositions like 
             "what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence."
             Hand-wavey metaphysical insights aside, maybe we can define these extra-ordinary utterances in purely distributional terms. 
-            The JL Austin brute force approach: want to understand a linguistic phenomenon? Read through countless examples of it BEFORE you generalize (continental philosophers take note; data before theory). 
+            The JL Austin brute force approach: want to understand a linguistic phenomenon? 
+            Read through countless examples and then formalize. 
           </p>
-            Anyway, if we can formalize it and depending on the nature of that formalization maybe we could guide more interesting generations for language models.
-            A fully specified formalization could let us tune generation not just by temperature but by an anomaly–coherence trade‑off, opening new creative possibilities 🤷‍♂️.
-          </p>
+          <p>The hope is to improve on generation to guide it towards something extra-ordinary, something that is <strong><em>“wondrous strange snow.”</em></strong></p>
           <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example. And shoutout to Henry too for the great convos and thoughts on diffusion based approaches</em></p>
         </div>
       </div>
