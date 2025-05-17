@@ -115,7 +115,7 @@ $$
 | aroma        | –3.5         | –3.8        | –3.5 + 0.2 $\times$ (–3.8) = –4.26 |
 
 
-*Note: The numbers are illustrative. In practice additional context and scaling would favor the correct token "melanoma"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
+> *Note: The numbers are illustrative. In practice additional context and scaling would favor the correct token "melanoma"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
 
 "melanoma" now has the highest combined score.
 
