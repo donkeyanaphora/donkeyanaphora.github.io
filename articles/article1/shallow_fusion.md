@@ -1,7 +1,7 @@
 # AI Integration Beyond the Buzz: A Technical Exploration through Shallow Fusion  
 
-**Collins Westnedge**  
-*April 16, 2025*
+**COLLINS WESTNEDGE**  
+*APRIL 16, 2025*
 
 ## Introduction
 AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption. 
