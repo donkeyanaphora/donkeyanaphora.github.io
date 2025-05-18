@@ -12,6 +12,21 @@
   <!-- site look & feel -->
   <link rel="stylesheet" href="../../assets/css/main.css"/>
 
+    <!-- ── MathJax config: no indent + fix \text{} baseline ─────────── -->
+  <script>
+    window.MathJax = {
+      /* remove default –0.25 em display indent and keep left-aligned   */
+      tex:   { displayIndent: '0em',  displayAlign: 'left' },
+
+      /* inherit the surrounding page font for \text{…} so the baseline
+         matches math italic on hi-DPI screens (stops 1-px jog)        */
+      /* chtml: { mtextInheritFont: true } */
+      /*  ▸ If you prefer a fixed font instead, swap the line above for
+         chtml: { mtextFont: 'Times' } */
+         chtml: { mtextFont: 'Times' }
+    };
+  </script>
+  
   <!-- MathJax -->
   <script defer id="MathJax-script"
           src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
