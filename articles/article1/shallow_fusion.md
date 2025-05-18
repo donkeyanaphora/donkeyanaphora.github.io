@@ -43,7 +43,7 @@ The idea is that the ASR model understands phonetics and language in a general s
 Reference: [Kannan et al. 2017](https://arxiv.org/pdf/1712.01996)
 
 #### In Practice
-In the workflow that I dive into, token prediction is implemented in stages. Early on we rely solely on the ASR model and then gradually introduce the language model as more context becomes available. For example:
+In the workflow that I dive into, token prediction is implemented in stages. Early on we rely solely on the ASR (the listening expert) model and then gradually introduce the language model (the domaine xpert) as more context becomes available. For example:
 
 **Token Selection at Step \(t\)**
 
@@ -67,7 +67,7 @@ $$
 This piecewise approach allows the system to build confidence from the raw audio transcription initially before incorporating the domain expert corrections, namely because our starting point should be conditionalized on something observed e.g. we gotta start somewhere. 
 
 ## Case Study in Transcription: A Concrete Example
-For our models let's take Whisper to be our ASR model and GTP2 to be our LM. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford 2.2](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
+For our models let's take Whisper to be our listening expert and GTP2 to be our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford 2.2](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
 **Input Audio (Ground Truth):**  
 "The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
