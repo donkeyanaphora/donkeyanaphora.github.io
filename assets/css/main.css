@@ -648,10 +648,3 @@ main.content,                 /* article pages                           */
 footer{
   flex-shrink:0;
 }
-
-
-/* ─── Flush-left every display equation ─────────────────────────── */
-article.markdown-body mjx-container.MathJax[display="block"]{
-  margin-left:0 !important;   /* cancels MathJax’s –0.25 em indent */
-  padding-left:0 !important;  /* (safety for older MathJax builds) */
-}
