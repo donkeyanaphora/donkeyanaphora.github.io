@@ -568,11 +568,6 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
   border-radius: 2px;
 }
 
-/* Flush-left all display equations (kills the –0.25 em indent) */
-article.markdown-body mjx-container.MathJax[display="block"] > * {
-  margin-left: 0 !important;
-}
-
 /* Make article text slightly larger on mobile */
 @media screen and (max-device-width: 480px) {
   article.markdown-body {

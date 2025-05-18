@@ -14,7 +14,7 @@ In contrast to the popular narrative, my day-to-day experience has shown me that
 
 But first, what is shallow fusion? Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing. 
 
-Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to. With this analogy we can now formally describe this process. In the example below think of $P_{\text{ASR}}$ as the person listening to the audio and $P_{\text{LM}}$ as the domain expert that is hard of hearing but deeply understands the context. 
+Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to. With this analogy we can now formally describe this process. In the example below think of $P_{\mathrm{ASR}}$ as the person listening to the audio and $P_{\mathrm{LM}}$ as the domain expert that is hard of hearing but deeply understands the context. 
 
 #### Mathematical Formulation
 
@@ -23,9 +23,9 @@ At each decoding step for some audio input, we select the most probable token $y
 $$
 y^* = \arg\max_{y_t}\;
 \left[
-\log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
+\log P_{\mathrm{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
 \;+\;
-\lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+\lambda\,\log P_{\mathrm{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
 \right]
 $$
 
@@ -33,7 +33,7 @@ where:
 - $t$ is the decoding step (0-based).  
 - $y_t$ is the chosen token at step $t$ and $y_{\lt  t}$ are previously generated tokens.  
 - $x$ represents the acoustic features (e.g. raw audio input).  
-- $P_{\text{ASR}}$ depends on both $x$ and $y_{\lt  t}$, while $P_{\text{LM}}$ depends on $y_{\lt  t}$ only.  
+- $P_{\mathrm{ASR}}$ depends on both $x$ and $y_{\lt  t}$, while $P_{\mathrm{LM}}$ depends on $y_{\lt  t}$ only.  
 - $\lambda$ is the weighting factor to determine the language model's influence.
 
 The idea is that the ASR model understands phonetics and language in a general sense while the LM model understands the specialized domain in its written form, but has no access to the audio signal. Just like in the analogy from earlier by fusing their predictions, we combine phonetic understand with domain expertise, leading to more accurate transcriptions for our domain. Without careful integration or synergy between the two, both models carry major limitations.
@@ -52,15 +52,15 @@ $$
 \begin{cases}
 \displaystyle
 \operatorname*{arg\,max}\limits_{y_t}\;
-      \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right),
-      & t < \text{initial-steps},\\[0.75em]
+      \log P_{\mathrm{ASR}}\!\left(y_t \mid x,\; y_{<t}\right),
+      & t < \mathrm{initial-steps},\\[0.75em]
 \displaystyle
 \operatorname*{arg\,max}\limits_{y_t}\;
       \Bigl[
-        \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right)
-        + \lambda\,\log P_{\text{LM}}\!\left(y_t \mid y_{<t}\right)
+        \log P_{\mathrm{ASR}}\!\left(y_t \mid x,\; y_{<t}\right)
+        + \lambda\,\log P_{\mathrm{LM}}\!\left(y_t \mid y_{<t}\right)
       \Bigr],
-      & t \ge \text{initial-steps}.
+      & t \ge \mathrm{initial-steps}.
 \end{cases}
 $$
 
@@ -103,9 +103,9 @@ At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits b
 We combine each model's logits using a weighted sum in the following way:
 
 $$
-\log P_{\text{combined}}(y_t)=
-\log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-+\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+\log P_{\mathrm{combined}}(y_t)=
+\log P_{\mathrm{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
++\lambda\,\log P_{\mathrm{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
 $$
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score where $\lambda$ = 0.2|
