@@ -568,6 +568,42 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
   border-radius: 2px;
 }
 
+/* Fix for misaligned text in MathJax \text{} commands */
+mjx-container mjx-texatom[texclass="ORD"] {
+  vertical-align: baseline !important;
+}
+
+/* Ensure MathJax text nodes align properly with math */
+mjx-container mjx-text {
+  line-height: normal !important;
+  font-size: 100% !important;
+  vertical-align: baseline !important;
+}
+
+/* Fix for each character alignment within text nodes */
+mjx-container mjx-text > * {
+  display: inline-block;
+  line-height: 0;
+  padding-top: 0.5em;
+}
+
+/* Enhanced text rendering in MathJax */
+mjx-math {
+  text-rendering: optimizeLegibility;
+}
+
+/* Fix specific text node vertical positioning */
+mjx-text[space="1"] {
+  margin-left: 0.17em;
+  margin-right: 0.17em;
+}
+
+/* Fix character spacing in MathJax text */
+mjx-container mjx-mtext {
+  font-family: inherit !important;
+  letter-spacing: normal !important;
+}
+
 /* Make article text slightly larger on mobile */
 @media screen and (max-device-width: 480px) {
   article.markdown-body {
