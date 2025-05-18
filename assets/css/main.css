@@ -602,7 +602,7 @@ article.markdown-body mjx-container.MathJax[display="block"]::-webkit-scrollbar-
   /* Give more space to equation containers */
   .MathJax_Display, 
   .math-display,
-  mjx-container[jax="CHTML"][display="true"] {
+  mjx-container[jax="CHTML"][display="block"] {
     margin: 1.5em 0 !important;
   }
 }
