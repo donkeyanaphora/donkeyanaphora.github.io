@@ -547,7 +547,7 @@ article.markdown-body img {
 /* EQUATION HANDLING FOR ARTICLE PAGES */
 .MathJax_Display, 
 .math-display,
-mjx-container[jax="CHTML"][display="true"] {
+mjx-container[jax="CHTML"][display="block"] {
   overflow-x: auto;
   max-width: 100%;
   padding-bottom: 5px; /* Space for scrollbar */
@@ -557,13 +557,13 @@ mjx-container[jax="CHTML"][display="true"] {
 /* Style scrollbars for equations */
 .MathJax_Display::-webkit-scrollbar,
 .math-display::-webkit-scrollbar,
-mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
+mjx-container[jax="CHTML"][display="block"]::-webkit-scrollbar {
   height: 4px;
 }
 
 .MathJax_Display::-webkit-scrollbar-thumb,
 .math-display::-webkit-scrollbar-thumb,
-mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
+mjx-container[jax="CHTML"][display="block"]::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 2px;
 }
