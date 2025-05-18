@@ -554,21 +554,6 @@ mjx-container[jax="CHTML"][display="true"] {
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
-article.markdown-body mjx-container[jax="CHTML"][display="true"],
-article.markdown-body .MathJax_Display {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding-left: 0 !important;
-  box-sizing: border-box;
-}
-
-@media (max-width: 480px) {
-  article.markdown-body mjx-container[jax="CHTML"][display="true"],
-  article.markdown-body .MathJax_Display {
-    padding-bottom: 0 !important;
-  }
-}
-
 /* Style scrollbars for equations */
 .MathJax_Display::-webkit-scrollbar,
 .math-display::-webkit-scrollbar,
@@ -581,6 +566,11 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
 mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 2px;
+}
+
+article.markdown-body mjx-container[display="true"] > mjx-math,
+article.markdown-body mjx-container[display="true"] > svg {
+  margin-left: 0 !important;
 }
 
 /* Make article text slightly larger on mobile */
