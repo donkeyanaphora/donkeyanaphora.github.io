@@ -211,10 +211,15 @@
             <tr>
               <td>"A cage went in search of a bird"</td>
               <td>
-                <code>Search(e, cage, bird)<br>
-                            ∧ ReqAnim(cage)<br>
-                            ∧ ¬Animate(cage)
-                </code>
+                <code>
+                # literal read – type clash
+                Search(e,cage,bird)<br>
+                ∧ ReqAnim(cage)<br>
+                ∧ ¬Animate(cage) ⊢ ⊥<br><br>
+
+                # allegorical repair<br>
+                Search(e, oppression, freedom)
+                  </code>
               </td>
               <td>Oppression pursues freedom</td>
             </tr>
@@ -223,17 +228,28 @@
           <p>I think the literary devices could be described as any utterance whose literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.</p>
           <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)</p>
           <p>where</p>
-          <ul>
-            <li><code>□ = necessary</code></li>
-            <li><code>◇ = possible</code></li>
-            <li><code>¬ = not</code>, <code>∧ = and</code></li>
-            <li><code>□ₚ / ◇ₚ = physical modality</code></li>
-            <li><code>□ₘ / ◇ₘ = metaphysical / allegorical modality</code></li>
-            <li><code>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ</code></li>
-            <li><code>MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ</code></li>
-            <li><code>TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥</code>&nbsp;<!-- selectional-restriction clash --></li>
-          </ul>
-          
+          <dl>
+
+            <dt><code>□ / ◇</code></dt>
+            <dd><code>□ = necessary  ◇ = possible</code></dd>
+
+            <dt><code>□ₚ / ◇ₚ</code></dt>
+            <dd><code> physical-world modality</code></dd>
+
+            <dt><code>□ₘ / ◇ₘ</code></dt>
+            <dd><code>metaphysical / allegorical modality</code></dd>
+
+            <dt><code>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ</code></dt>
+            <dd><code>Modal Contradiction — truth flips across worlds</code></dd>
+
+            <dt><code>MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ</code></dt>
+            <dd><code>Modal Projection — impossible here, merely possible there</code></dd>
+
+            <dt><code>TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥</code></dt>
+            <dd><code>Type Clash — presupposition + assertion entail a contradiction</code></dd>
+
+          </dl>
+                    
           <h4>Some Probabilistic Approaches</h4>
           <ul>
             <li><a href="https://arxiv.org/pdf/2412.10193">Classifier-based guidance for discrete diffusion</a></li>
