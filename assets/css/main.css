@@ -568,8 +568,8 @@ mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
   border-radius: 2px;
 }
 
-article.markdown-body mjx-container[display="true"] > mjx-math,
-article.markdown-body mjx-container[display="true"] > svg {
+/* Flush-left all display equations (kills the –0.25 em indent) */
+article.markdown-body mjx-container.MathJax[display="block"] > * {
   margin-left: 0 !important;
 }
 
