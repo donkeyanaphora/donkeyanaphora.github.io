@@ -545,30 +545,26 @@ article.markdown-body img {
 }
 
 /* EQUATION HANDLING FOR ARTICLE PAGES */
-/* ─── EQUATION HANDLING FOR ARTICLE PAGES ────────────────────────── */
-article.markdown-body mjx-container.MathJax[display="block"],
-.MathJax_Display,
-.math-display {
-  /* 1 ▸ show a bar only when the equation is wider than its box      */
+.MathJax_Display, 
+.math-display,
+mjx-container[jax="CHTML"][display="true"] {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;   /* smooth swipe on iOS         */
   max-width: 100%;
-  padding-bottom: 5px;                 /* breathing room for the bar  */
-
-  /* 2 ▸ kill MathJax’s built-in –0.25 em indent                      */
-  margin-left: 0 !important;
+  padding-bottom: 5px; /* Space for scrollbar */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
-/* slim, neutral-grey thumb (optional—drop if you like default) */
-article.markdown-body mjx-container.MathJax[display="block"]::-webkit-scrollbar,
+/* Style scrollbars for equations */
 .MathJax_Display::-webkit-scrollbar,
-.math-display::-webkit-scrollbar {
+.math-display::-webkit-scrollbar,
+mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
   height: 4px;
 }
-article.markdown-body mjx-container.MathJax[display="block"]::-webkit-scrollbar-thumb,
+
 .MathJax_Display::-webkit-scrollbar-thumb,
-.math-display::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.2);
+.math-display::-webkit-scrollbar-thumb,
+mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
   border-radius: 2px;
 }
 
@@ -602,7 +598,7 @@ article.markdown-body mjx-container.MathJax[display="block"]::-webkit-scrollbar-
   /* Give more space to equation containers */
   .MathJax_Display, 
   .math-display,
-  mjx-container[jax="CHTML"][display="block"] {
+  mjx-container[jax="CHTML"][display="true"] {
     margin: 1.5em 0 !important;
   }
 }
