@@ -81,12 +81,10 @@
       each person’s expertise to offset the errors of one another and
       bridge modalities the other does not have access to. With this
       analogy we can now formally describe this process. In the example
-      below think of <span
-      class="math inline">\(P_{\mathrm{ASR}}\)</span> as the person
-      listening to the audio and <span
-      class="math inline">\(P_{\mathrm{LM}}\)</span> as the domain
-      expert that is hard of hearing but deeply understands the
-      context.</p>
+      below think of <span class="math inline">\(P_{\text{ASR}}\)</span>
+      as the person listening to the audio and <span
+      class="math inline">\(P_{\text{LM}}\)</span> as the domain expert
+      that is hard of hearing but deeply understands the context.</p>
       <h4 id="mathematical-formulation">Mathematical Formulation</h4>
       <p>At each decoding step for some audio input, we select the most
       probable token <span class="math inline">\(y_{t}\)</span> using
@@ -95,9 +93,9 @@
       <p><span class="math display">\[
       y^* = \arg\max_{y_t}\;
       \left[
-      \log P_{\mathrm{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
+      \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
       \;+\;
-      \lambda\,\log P_{\mathrm{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+      \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
       \right]
       \]</span></p>
       <p>where:<br />
@@ -109,10 +107,10 @@
       tokens.<br />
       - <span class="math inline">\(x\)</span> represents the acoustic
       features (e.g. raw audio input).<br />
-      - <span class="math inline">\(P_{\mathrm{ASR}}\)</span> depends on
+      - <span class="math inline">\(P_{\text{ASR}}\)</span> depends on
       both <span class="math inline">\(x\)</span> and <span
       class="math inline">\(y_{\lt  t}\)</span>, while <span
-      class="math inline">\(P_{\mathrm{LM}}\)</span> depends on <span
+      class="math inline">\(P_{\text{LM}}\)</span> depends on <span
       class="math inline">\(y_{\lt  t}\)</span> only.<br />
       - <span class="math inline">\(\lambda\)</span> is the weighting
       factor to determine the language model’s influence.</p>
@@ -139,17 +137,16 @@
       \begin{cases}
       \displaystyle
       \operatorname*{arg\,max}\limits_{y_t}\;
-            \log P_{\mathrm{ASR}}\!\left(y_t \mid x,\; y_{&lt;t}\right),
-            &amp; t &lt; \mathrm{initial-steps},\\[0.75em]
+            \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{&lt;t}\right),
+            &amp; t &lt; \text{initial_steps},\\[0.75em]
       \displaystyle
       \operatorname*{arg\,max}\limits_{y_t}\;
             \Bigl[
-              \log P_{\mathrm{ASR}}\!\left(y_t \mid x,\;
-      y_{&lt;t}\right)
-              + \lambda\,\log P_{\mathrm{LM}}\!\left(y_t \mid
+              \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{&lt;t}\right)
+              + \lambda\,\log P_{\text{LM}}\!\left(y_t \mid
       y_{&lt;t}\right)
             \Bigr],
-            &amp; t \ge \mathrm{initial-steps}.
+            &amp; t \ge \text{initial_steps}.
       \end{cases}
       \]</span></p>
       <p>This piecewise approach allows the system to build confidence
@@ -232,9 +229,9 @@
       <p>We combine each model’s logits using a weighted sum in the
       following way:</p>
       <p><span class="math display">\[
-      \log P_{\mathrm{combined}}(y_t)=
-      \log P_{\mathrm{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-      +\lambda\,\log P_{\mathrm{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+      \log P_{\text{combined}}(y_t)=
+      \log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
+      +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
       \]</span></p>
       <table>
       <colgroup>
