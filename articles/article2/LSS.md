@@ -18,11 +18,11 @@ work so well. The focus of this article is show how ordinary least squares offer
 
 | Formula                                | Intuitive Role                                                                                   | Visual Cue                           |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| $X^{+} = (X^{\!\top}X)^{-1}X^{\!\top}$ | **Recipe for weights.** Solves $\min_\beta\|y - X\beta\|_2^2$.                                   | “How much of each arrow do I need?”  |
-| $\hat{\beta}=X^{+}y$                   | **Coordinates along the arrows.** Scalar steps to reach the closest point.                       | Labels on the subspace axes.         |
-| $P_X = X\,X^{+}$                       | **Snap-to-span operator.** Orthogonal projector: symmetric, idempotent.                          | Elevator lowering you to the sheet.  |
-| $\hat y = P_X\,y = X\hat{\beta}$       | **Foot of the perpendicular.** Unique point in $\mathrm{span}\{X\}$ minimizing $\|y - \hat y\|$. | Black dot where the plumb-line hits. |
-| $r = y-\hat y = (I-P_X)\,y$            | **Residual vector.** Always orthogonal to every column of $X$ ($X^{\!\top}r=0$).                 | Red straight-down arrow.             |
+| $X^{+} = (X^{\!\top}X)^{-1}X^{\!\top}$ | Recipe for weights. Solves $\min_\beta\|y - X\beta\|_2^2$.                                   | “How much of each arrow do I need?”  |
+| $\hat{\beta}=X^{+}y$                   | Coordinates along the arrows. Scalar steps to reach the closest point.                       | Labels on the subspace axes.         |
+| $P_X = X\,X^{+}$                       | Snap-to-span operator. Orthogonal projector: symmetric, idempotent.                          | Elevator lowering you to the sheet.  |
+| $\hat y = P_X\,y = X\hat{\beta}$       | Foot of the perpendicular. Unique point in $\mathrm{span}\{X\}$ minimizing $\|y - \hat y\|$. | Black dot where the plumb-line hits. |
+| $r = y-\hat y = (I-P_X)\,y$            | Residual vector. Always orthogonal to every column of $X$ ($X^{\!\top}r=0$).                 | Red straight-down arrow.             |
 
 ### Theorems
 
