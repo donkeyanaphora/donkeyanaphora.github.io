@@ -68,6 +68,12 @@ html, body {
   padding: 0;
 }
 
+/* ── NEW: stop iOS/Chrome-on-iOS from auto-zooming table text ── */
+html {
+  -webkit-text-size-adjust: 100%;   /* Safari & Chrome on iPhone */
+  text-size-adjust: 100%;           /* unprefixed fall-back      */
+}
+
 /* iOS status bar fix */
 @supports (-webkit-touch-callout: none) {
   /* iOS specific styles */

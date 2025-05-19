@@ -1,8 +1,15 @@
 /* ─────────── Article / Markdown pages only ─────────── */
 
 /* Container */
-article.markdown-body,
-details.section{          /* keep identical look for collapsibles inside articles */
+/* article.markdown-body,
+details.section{
+  border:3px double var(--section-border);
+  background:var(--passage-bg);
+  padding:1rem;
+} */
+
+/* Container */
+article.markdown-body{
   border:3px double var(--section-border);
   background:var(--passage-bg);
   padding:1rem;
