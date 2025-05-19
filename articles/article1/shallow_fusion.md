@@ -108,7 +108,7 @@ $$
 +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
 $$
 
-| Next Token   | Whisper Score | GPT-2 Score | Combined Score where $\lambda$ = 0.2|
+| Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|
 |--------------|--------------|-------------|----------------|
 | **melanoma** | **–1.8**     | **–0.3**    | **–1.8 + 0.2 $\times$ (–0.3) = –1.86** |
 | diploma      | –1.0         | –5.0        | –1.0 + 0.2 $\times$ (–5.0) = –2.0 |
