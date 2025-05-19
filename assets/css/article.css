@@ -58,7 +58,10 @@ mjx-container{           /* undo global centring from body{text-align:center} */
   line-height:1.3;
 }
 article.markdown-body th mjx-container,
-article.markdown-body td mjx-container{white-space:normal;}
+article.markdown-body td mjx-container{
+  white-space:normal;
+  font-size:1em !important;   /* ensure equations match surrounding text */
+}
 
 /* ───── Responsive tables ───── */
 article.markdown-body table{
@@ -78,14 +81,7 @@ article.markdown-body td{
   white-space:nowrap;
   vertical-align:middle;
 }
-@media (max-width:480px){
-  article.markdown-body th,
-  article.markdown-body td{font-size:.9rem;}
-
-  /* make MathJax equations shrink with text */
-  article.markdown-body th mjx-container,
-  article.markdown-body td mjx-container{font-size:inherit;}
-}
+/*  NOTE: removed the 0.9rem shrink rule so text and math stay same size */
 
 /* ───── Mobile typography tweaks ───── */
 @media screen and (max-device-width:480px){
