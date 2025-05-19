@@ -84,11 +84,11 @@ article.markdown-body td{
 }
 
 /* ───── Mobile typography tweaks ───── */
-@media screen and (max-device-width:480px){
+/* @media screen and (max-device-width:480px){
   article.markdown-body{
     font-size:1.15rem;
     line-height:1.6;
-  }
+  } */
   article.markdown-body h1{font-size:2.1em;}
   article.markdown-body h2{font-size:1.7em;}
   article.markdown-body a{padding:.1em 0;display:inline-block;}
