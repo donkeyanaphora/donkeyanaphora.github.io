@@ -648,3 +648,26 @@ main.content,                 /* article pages                           */
 footer{
   flex-shrink:0;
 }
+
+/* ── MathJax integration fixes ─────────────────────── */
+mjx-container {               /* undo global centring */
+  text-align: left !important;
+  line-height: 1.3;           /* tighter vertical rhythm */
+}
+
+article.markdown-body table th,
+article.markdown-body table td {
+  vertical-align: middle;     /* keep text & math on the same baseline */
+}
+
+article.markdown-body th mjx-container,
+article.markdown-body td mjx-container {
+  white-space: normal;        /* allow equations to break/wrap */
+}
+
+article.markdown-body table {
+  /* optional: keep native table grid but still allow scrolling */
+  display: inline-block;      /* or simply delete the display override */
+  overflow-x: auto;           /* brings back horizontal scroll when really needed */
+  -webkit-overflow-scrolling: touch;
+}
