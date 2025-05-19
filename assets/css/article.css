@@ -1,0 +1,98 @@
+/* ─────────── Article / Markdown pages only ─────────── */
+
+/* Container */
+article.markdown-body,
+details.section{          /* keep identical look for collapsibles inside articles */
+  border:3px double var(--section-border);
+  background:var(--passage-bg);
+  padding:1rem;
+}
+
+/* Layout + text flow */
+article.markdown-body{
+  margin:0 auto;
+  max-width:42em;
+  width:100%;
+  text-align:left;
+  font-family:"Palatino Linotype","Book Antiqua",Palatino,serif;
+  font-size:1.0625rem;
+  line-height:1.55;
+}
+
+/* Pandoc-style heading / list rhythm */
+article.markdown-body p             {margin:0 0 1.1em;}
+article.markdown-body h1            {font-size:2em;   margin:1.2em 0 .6em;}
+article.markdown-body h2            {font-size:1.6em; margin:1.1em 0 .5em;}
+article.markdown-body h3            {font-size:1.3em; margin:1em   0 .5em;}
+article.markdown-body h4,
+article.markdown-body h5,
+article.markdown-body h6            {margin:.8em 0 .4em;}
+article.markdown-body ul,
+article.markdown-body ol            {margin:0 0 1em 1.5em;}
+
+/* Code & images */
+article.markdown-body code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  font-size:.95em;
+  background:rgba(127,127,127,.08);
+  padding:.05em .3em;border-radius:3px;
+}
+article.markdown-body pre code{display:block;padding:.9em 1em;overflow-x:auto;}
+article.markdown-body img{
+  max-width:50%;
+  height:auto;
+  display:block;
+  margin:.5rem auto;
+}
+
+/* ───── Equation & MathJax handling ───── */
+.MathJax_Display,
+mjx-container[jax="CHTML"][display="true"]{
+  overflow-x:auto;
+  max-width:100%;
+  padding-bottom:5px;
+  -webkit-overflow-scrolling:touch;
+}
+mjx-container{           /* undo global centring from body{text-align:center} */
+  text-align:left!important;
+  line-height:1.3;
+}
+article.markdown-body th mjx-container,
+article.markdown-body td mjx-container{white-space:normal;}
+
+/* ───── Responsive tables ───── */
+article.markdown-body table{
+  display:inline-block;          /* keeps native table grid */
+  width:max-content;
+  max-width:100%;
+  margin:0 auto;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-collapse:collapse;
+}
+article.markdown-body th,
+article.markdown-body td{
+  padding:.45em .65em;
+  text-align:left;
+  border:1px solid var(--section-border);
+  white-space:nowrap;
+  vertical-align:middle;
+}
+@media (max-width:480px){
+  article.markdown-body th,
+  article.markdown-body td{font-size:.9rem;}
+}
+
+/* ───── Mobile typography tweaks ───── */
+@media screen and (max-device-width:480px){
+  article.markdown-body{
+    font-size:1.15rem;
+    line-height:1.6;
+  }
+  article.markdown-body h1{font-size:2.1em;}
+  article.markdown-body h2{font-size:1.7em;}
+  article.markdown-body a{padding:.1em 0;display:inline-block;}
+  article.markdown-body p{margin-bottom:1.3em;}
+  .MathJax_Display,
+  mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
+}

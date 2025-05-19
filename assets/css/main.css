@@ -449,58 +449,6 @@ footer {
 .quick-links a.uc:hover { background: var(--uc-bg); }
 
 
-/* ─── ARTICLE / MARKDOWN PAGES ───────────────────────────── */
-details.section,
-article.markdown-body {
-  border: 3px double var(--section-border);
-  background: var(--passage-bg);
-  padding: 1rem;
-}
-
-/*––– POSITION + TEXT FLOW ––––––––––––––––––––––––––––––– */
-article.markdown-body {
-  margin-left: auto;   /* centers the whole box */
-  margin-right: auto;
-  text-align: left;     /* overrides body { text-align:center } */
-  
-  /* (everything below can stay or be adjusted to taste) */
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  font-size: 1.0625rem;
-  line-height: 1.55;
-  max-width: 42em;
-  width: 100%; /* Fill the container */
-}
-
-/* ❸–––  PANDOC-STYLE TYPE DETAILS  –––––––––––––––––––––––– */
-article.markdown-body p             { margin: 0 0 1.1em; }
-article.markdown-body h1            { font-size: 2em;  margin: 1.2em 0 0.6em; }
-article.markdown-body h2            { font-size: 1.6em; margin: 1.1em 0 0.5em; }
-article.markdown-body h3            { font-size: 1.3em; margin: 1em   0 0.5em; }
-article.markdown-body h4,
-article.markdown-body h5,
-article.markdown-body h6            { margin: 0.8em 0 0.4em; }
-article.markdown-body ul,
-article.markdown-body ol            { margin: 0 0 1em 1.5em; }
-
-article.markdown-body code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.95em;
-  background: rgba(127,127,127,0.08);
-  padding: 0.05em 0.3em;
-  border-radius: 3px;
-}
-article.markdown-body pre code {
-  display: block;
-  padding: 0.9em 1em;
-  overflow-x: auto;
-}
-article.markdown-body img {
-  max-width: 50%;   /* scales down to the width of the article box */
-  height: auto;      /* keeps aspect ratio */
-  display: block;    /* removes stray inline gap */
-  margin: 0.5rem auto;   /* centers it nicely */
-}
-
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .modal-content { 
@@ -544,93 +492,6 @@ article.markdown-body img {
   }
 }
 
-/* EQUATION HANDLING FOR ARTICLE PAGES */
-.MathJax_Display, 
-.math-display,
-mjx-container[jax="CHTML"][display="true"] {
-  overflow-x: auto;
-  max-width: 100%;
-  padding-bottom: 5px; /* Space for scrollbar */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-
-/* Style scrollbars for equations */
-.MathJax_Display::-webkit-scrollbar,
-.math-display::-webkit-scrollbar,
-mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
-  height: 4px;
-}
-
-.MathJax_Display::-webkit-scrollbar-thumb,
-.math-display::-webkit-scrollbar-thumb,
-mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 2px;
-}
-
-/* Make article text slightly larger on mobile */
-@media screen and (max-device-width: 480px) {
-  article.markdown-body {
-    font-size: 1.15rem; /* Slightly larger text */
-    line-height: 1.6;   /* More spacing between lines */
-  }
-  
-  /* Adjust heading sizes */
-  article.markdown-body h1 { 
-    font-size: 2.1em; 
-  }
-  
-  article.markdown-body h2 { 
-    font-size: 1.7em; 
-  }
-  
-  /* Make links more tappable */
-  article.markdown-body a {
-    padding: 0.1em 0;
-    display: inline-block;
-  }
-  
-  /* Increase spacing between paragraphs slightly */
-  article.markdown-body p {
-    margin-bottom: 1.3em;
-  }
-  
-  /* Give more space to equation containers */
-  .MathJax_Display, 
-  .math-display,
-  mjx-container[jax="CHTML"][display="true"] {
-    margin: 1.5em 0 !important;
-  }
-}
-
-/* ──────────────────────────────────────────────── */
-/*  TABLE RESPONSIVENESS (applies to all articles)  */
-/* ──────────────────────────────────────────────── */
-article.markdown-body table {
-  display: block;
-  /* ✂️  remove   width:100%;        */
-  width: max-content;           /* ⬅️ let the table size itself      */
-  max-width: 100%;              /*    but never exceed the article   */
-  margin: 0 auto;          /* ← NEW: centres the table horizontally */
-  overflow-x: auto;             /*    and scroll if it does          */
-  -webkit-overflow-scrolling: touch;
-  border-collapse: collapse;
-}
-
-article.markdown-body th,
-article.markdown-body td {
-  padding: .45em .65em;
-  text-align: left;
-  border: 1px solid var(--section-border);
-  white-space: nowrap;          /* ⬅️ keep each cell on one line     */
-}
-
-/* optional small-phone font tweak */
-@media (max-width: 480px) {
-  article.markdown-body th,
-  article.markdown-body td { font-size: 0.9rem; }
-}
-
 /* ── PAGE-LEVEL FLEX LAYOUT  ▸ keeps footer at window bottom ───────── */
 body{
   display:flex;              /* turn the <body> into a vertical stack  */
@@ -647,27 +508,4 @@ main.content,                 /* article pages                           */
 /* footer never shrinks and therefore sits at the very end */
 footer{
   flex-shrink:0;
-}
-
-/* ── MathJax integration fixes ─────────────────────── */
-mjx-container {               /* undo global centring */
-  text-align: left !important;
-  line-height: 1.3;           /* tighter vertical rhythm */
-}
-
-article.markdown-body table th,
-article.markdown-body table td {
-  vertical-align: middle;     /* keep text & math on the same baseline */
-}
-
-article.markdown-body th mjx-container,
-article.markdown-body td mjx-container {
-  white-space: normal;        /* allow equations to break/wrap */
-}
-
-article.markdown-body table {
-  /* optional: keep native table grid but still allow scrolling */
-  display: inline-block;      /* or simply delete the display override */
-  overflow-x: auto;           /* brings back horizontal scroll when really needed */
-  -webkit-overflow-scrolling: touch;
 }
