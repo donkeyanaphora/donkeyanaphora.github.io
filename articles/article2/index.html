@@ -63,102 +63,65 @@
       <h3 id="key-formulas">Key Formulas</h3>
       <table>
       <colgroup>
-      <col style="width: 22%" />
-      <col style="width: 56%" />
-      <col style="width: 21%" />
+      <col style="width: 33%" />
+      <col style="width: 33%" />
+      <col style="width: 33%" />
       </colgroup>
       <thead>
       <tr>
       <th>Formula</th>
-      <th>Intuitive Role</th>
-      <th>Visual Cue</th>
+      <th>Intuitive role</th>
+      <th>Visual cue</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-      <td><span class="math inline">\(X^{+} =
-      (X^{\!\top}X)^{-1}X^{\!\top}\)</span></td>
-      <td>Recipe for weights. Solves <span
-      class="math inline">\(\min_\beta\|y - X\beta\|_2^2\)</span>.</td>
+      <td>(X^{+} = (X<sup>{!}X)</sup>{-1}X^{!})</td>
+      <td>Recipe for weights — solves (_{}y - X_2^{,2}).</td>
       <td>“How much of each arrow do I need?”</td>
       </tr>
       <tr>
-      <td><span class="math inline">\(\hat{\beta}=X^{+}y\)</span></td>
-      <td>Coordinates along the arrows. Scalar steps to reach the
-      closest point.</td>
-      <td>Labels on the subspace axes.</td>
+      <td>(=X^{+}y)</td>
+      <td>Coordinates along the arrows (scalar steps to reach the
+      closest point).</td>
+      <td>Labels on the sub-space axes.</td>
       </tr>
       <tr>
-      <td><span class="math inline">\(P_X = X\,X^{+}\)</span></td>
-      <td>Snap-to-span operator. Orthogonal projector: symmetric,
-      idempotent.</td>
+      <td>(P_X = X,X^{+})</td>
+      <td>Snap-to-span operator. Orthogonal projector (symmetric,
+      idempotent).</td>
       <td>Elevator lowering you to the sheet.</td>
       </tr>
       <tr>
-      <td><span class="math inline">\(\hat y = P_X\,y =
-      X\hat{\beta}\)</span></td>
-      <td>Foot of the perpendicular. Unique point in <span
-      class="math inline">\(\mathrm{span}\{X\}\)</span> minimizing <span
-      class="math inline">\(\|y - \hat y\|\)</span>.</td>
+      <td>(=P_X,y = X)</td>
+      <td>Foot of the perpendicular: the unique point in ((X))
+      minimizing (y-_2).</td>
       <td>Black dot where the plumb-line hits.</td>
       </tr>
       <tr>
-      <td><span class="math inline">\(r = y-\hat y =
-      (I-P_X)\,y\)</span></td>
-      <td>Residual vector. Always orthogonal to every column of <span
-      class="math inline">\(X\)</span> (<span
-      class="math inline">\(X^{\!\top}r=0\)</span>).</td>
+      <td>(r = y- = (I-P_X),y)</td>
+      <td>Residual vector, always orthogonal to every column of (X)
+      ((X^{!}r=0)).</td>
       <td>Red straight-down arrow.</td>
       </tr>
       </tbody>
       </table>
       <h3 id="theorems">Theorems</h3>
-      <p><strong>Best Approximation Theorem</strong> Let <span
-      class="math inline">\(W\)</span> be a subspace of <span
-      class="math inline">\(\mathbb{R}^n\)</span>, <span
-      class="math inline">\(y\in\mathbb{R}^n\)</span>, and <span
-      class="math inline">\(\widehat y = \mathrm{proj}_W(y)\)</span> its
-      orthogonal projection onto <span class="math inline">\(W\)</span>.
-      Then</p>
-      <p><span class="math display">\[
-      \|y - \widehat{y}\|_2 \;&lt;\; \|y - v\|_2
-      \quad\text{for all }v\in W,\;v\neq \widehat{y}.
-      \]</span></p>
-      <blockquote>
-      <p><em>From this it follows that the “remainder” <span
-      class="math inline">\(y - \widehat{y}\)</span> lies in <span
-      class="math inline">\(W^\perp\)</span> and is the closest point in
-      that orthogonal complement to <span
-      class="math inline">\(y\)</span>.</em></p>
-      </blockquote>
-      <h3 id="takeaway-corollary">Takeaway Corollary</h3>
-      <p>If <span class="math inline">\(\mathbf{u}_{\text{proj}} =
-      \mathrm{proj}_V(\mathbf{u})\)</span>, then</p>
-      <p><span class="math display">\[
-      \mathbf{u}_{\mathrm{new}}
-      \;=\;\mathbf{u} - \mathbf{u}_{\text{proj}}
-      \;\in\;V^\perp
-      \]</span></p>
-      <p>is the closest-possible embedding to <span
-      class="math inline">\(\mathbf{u}\)</span> that’s perfectly
-      orthogonal to <span class="math inline">\(V\)</span>.</p>
-      <h4 id="tldr">TLDR</h4>
-      <p>Define</p>
-      <p><span class="math display">\[
-      \mathbf{u}_{\mathrm{new}}
-      \;=\;\arg\min_{w\in V^\perp}\|\mathbf{u}-w\|
-      \;=\;\mathrm{proj}_{V^\perp}(\mathbf{u}).
-      \]</span></p>
+      <p><strong>Best Approximation Theorem</strong><br />
+      Let (W^n), (y^n), and (=_W(y)). Then [ y-_2 ;&lt;; y-v_2, ,vW,;v.
+      ] Hence (y-W^{}) and is the closest vector in (W^{}) to (y).</p>
+      <h3 id="take-away-corollary">Take-away Corollary</h3>
+      <p>If (<em>{} = <em>V()), then [ </em>{} ;=; - </em>{} ;;V^{} ] is
+      the closest-possible embedding to () that is perfectly orthogonal
+      to (V).</p>
+      <h4 id="tldr">TL;DR</h4>
+      <p>Define [ <em>{} ;=; </em>{wV^{}}-w ;=; _{V^{}}(). ]</p>
       <ol type="1">
-      <li><strong>Minimal distortion</strong> <span
-      class="math inline">\(\mathbf{u}_{\mathrm{new}}\in
-      V^\perp\)</span> is the closest vector in <span
-      class="math inline">\(V^\perp\)</span> to <span
-      class="math inline">\(\mathbf{u}\)</span>.</li>
-      <li><strong>Guaranteed orthogonality</strong> <span
-      class="math inline">\(\langle \mathbf{u}_{\mathrm{new}},\,v\rangle
-      = 0\)</span> for every <span class="math inline">\(v\in
-      V\)</span>.</li>
+      <li><strong>Minimal distortion:</strong> (_{}) is the closest
+      vector in (V^{}) to ().<br />
+      </li>
+      <li><strong>Guaranteed orthogonality:</strong> (_{},v= 0) for
+      every (vV).</li>
       </ol>
       <h2 id="visual-intuition">Visual Intuition</h2>
       <h2 id="mean-subtraction-vs.-projection-residuals">Mean
