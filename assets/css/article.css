@@ -104,39 +104,7 @@ article.markdown-body td{
   mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
 }
 
-/* ───── ARTICLE-SPECIFIC FLOATING BUTTONS (HORIZONTAL) ───── */
-/* Position Back button to the left of the dark‑mode toggle, mirroring main page spacing */
+/* ───── Article floating Back button positioning only ───── */
 .back-btn{
-  position: fixed;            /* match other float buttons */
-  bottom: 1rem;               /* on the same baseline */
-  right: 5.2rem;              /* one slot left of the dark‑mode toggle */
-  padding: .6rem 1.1rem;      /* identical box size */
-  font-size: 1.05rem;
-  line-height: 1.2;           /* prevent article’s 1.55 multiplier */
-  font-weight: bold;
-  border: 2px outset #c0c0c0;
-  background: var(--nav-bg);
-  color: var(--txt);
-  text-decoration: none;
-  cursor: pointer;
-  z-index: 900;
-}
-
-.back-btn:hover{
-  background-color: var(--bg-col);
-  border-color: var(--link);
-  color: var(--txt);
-}
-
-/* Dark mode stays in its default position from main.css */
-#toggleDark{
-  right: 1rem;
-}
-
-/* Mobile: keep same horizontal layout */
-@media screen and (max-device-width:480px){
-  .back-btn{
-    right: 5.2rem;
-    bottom: 1rem;
-  }
+  right: 5.2rem; /* positioned left of dark mode toggle */
 }
