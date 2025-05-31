@@ -515,3 +515,32 @@ main.content,                 /* article pages                           */
 footer{
   flex-shrink:0;
 }
+
+
+/* Align every button on the same bottom-right anchor */
+#menuBtn,
+#toggleDark,
+#sketchBtn,
+#codeBtn,
+.back-btn            { right: 1rem; }
+
+/* Hide everything except the menu button */
+#toggleDark,
+#sketchBtn,
+#codeBtn,
+.back-btn {
+  opacity: 0;
+  transform: translateY(0);
+  pointer-events: none;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+/* Fan upwards in 1-button steps when menu is open */
+body.menu-open #toggleDark { transform: translateY(-4.4rem); opacity: 1; pointer-events: auto; }
+body.menu-open #sketchBtn  { transform: translateY(-8.8rem); opacity: 1; pointer-events: auto; }
+body.menu-open #codeBtn    { transform: translateY(-13.2rem);opacity: 1; pointer-events: auto; }
+body.menu-open .back-btn   { transform: translateY(-4.4rem); opacity: 1; pointer-events: auto; } /* article pages */
+
+/* Feedback: turn ➕ into × */
+#menuBtn { right: 1rem; }                 /* anchor the FAB itself */
+body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; }

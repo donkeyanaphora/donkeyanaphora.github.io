@@ -254,3 +254,8 @@ function updateCanvasBackground () {}
     });
   })();
 })();
+
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () =>
+  document.body.classList.toggle('menu-open')
+);

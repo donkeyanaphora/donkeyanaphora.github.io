@@ -30,3 +30,8 @@ const $ = s => document.querySelector(s);
     updateCanvasBackground();               // noop if no canvas yet
   });
 })();
+
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () =>
+  document.body.classList.toggle('menu-open')
+);
