@@ -32,10 +32,8 @@
 </head>
 
 <body class="article">
-  <!-- dark-mode toggle -->
-  <nav class="article-nav">
-    <a href="../../" class="back-link">← Home</a>
-  </nav>
+  <!-- floating buttons -->
+  <a href="../../" class="float-btn back-btn" aria-label="Back to home">🏡</a>
   <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
 
   <!-- Markdown content -->
@@ -382,7 +380,7 @@
     </article>
   </main>
 
-  <!-- site JS -->
-  <script defer src="../../assets/js/site.js"></script>
+  <!-- article JS (dark mode only) -->
+  <script defer src="../../assets/js/article.js"></script>
 </body>
 </html>
