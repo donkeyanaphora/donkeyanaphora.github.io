@@ -90,24 +90,17 @@ article.markdown-body td{
 }
 /*  NOTE: removed the 0.9rem shrink rule so text and math stay same size */
 
-/* ───── ARTICLE-SPECIFIC FLOATING BUTTONS (STACKED) ───── */
-/* Back button - stacked above dark mode toggle */
+/* ───── ARTICLE-SPECIFIC FLOATING BUTTONS ───── */
+/* Back button positioning - sits to the left of dark mode toggle */
 .back-btn {
-  right: 1rem;        /* same horizontal position as dark mode */
-  bottom: 5.2rem;     /* stacked above dark mode button - matches main page spacing */
-  text-decoration: none;
+  right: 5.2rem;  /* positioned left of the dark mode toggle */
+  text-decoration: none;  /* remove underline from link */
 }
 
 .back-btn:hover {
   background-color: var(--bg-col);
   border-color: var(--link);
-  color: var(--txt);
-}
-
-/* Dark mode stays in its default position from main.css */
-#toggleDark { 
-  right: 1rem;        /* same as back button */
-  bottom: 1rem;       /* bottom position (default) */
+  color: var(--txt);  /* ensure text color stays consistent */
 }
 
 /* ───── Mobile typography tweaks ───── */
@@ -123,8 +116,10 @@ article.markdown-body td{
   .MathJax_Display,
   mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
   
-  /* Keep buttons stacked but slightly closer on mobile */
+  /* Stack floating buttons vertically on mobile for better usability */
   .back-btn {
-    bottom: 4.2rem;     /* maintain proportional spacing on mobile */
+    right: 1rem;
+    bottom: 5rem;  /* stack above dark mode toggle */
   }
 }
+
