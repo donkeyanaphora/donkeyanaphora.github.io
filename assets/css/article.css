@@ -109,6 +109,7 @@ article.markdown-body td{
   right: 1rem;        /* same horizontal position as dark mode */
   bottom: 4.2rem;     /* stacked above dark mode button - now matches main page spacing */
   text-decoration: none;
+  line-height: 1;     /* match height to other buttons on main page */
 }
 
 .back-btn:hover {
