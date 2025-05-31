@@ -104,7 +104,9 @@ article.markdown-body td{
   mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
 }
 
-/* ───── Article floating Back button positioning only ───── */
+/* ───── Article floating Back button - stacked above other buttons ───── */
 .back-btn{
-  right: 5.2rem; /* positioned left of dark mode toggle */
+  /* right: 5.2rem; */
+  right: 1rem;  
+  bottom: 4.2rem;
 }
