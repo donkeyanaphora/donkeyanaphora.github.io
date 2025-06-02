@@ -158,158 +158,16 @@
     <div>
       <div class="mood-item">
         <h3>🎭 Extra‑Ordinary Language</h3>
-        <div class="scroll-pane">
           <p>
             I've been thinking a lot about a chat I had with a former colleague about language that breaks semantic expectations. 
             The conversation then veered into causal language models and their various generation parameters like temperature.
             What interests me in particular is unexpected or anomalous usage with clear intention where semantic violations in the form of absurdities or paradoxes are packed with metaphysical depth.
           </p>
+          <p>
             In this post, I'm dog-earing these thoughts to revisit later. 
             The aim here is to examine the specific forms these expressions take and explore how we might capture their tension and their coherence in a computational framework.
           </p>
-          
-          <h4>Literary Examples</h4>
-          
-          <blockquote>
-            <p>
-              So they lov'd, as love in twain<br>
-              Had the essence but in one;<br>
-              Two distincts, division none:<br>
-              Number there in love was slain.<br><br>
-              
-              Hearts remote, yet not asunder;<br>
-              Distance and no space was seen<br>
-              Twixt this Turtle and his queen
-            </p>
-            <span class="attribution">— Shakespeare, <em>The Phoenix and the Turtle</em></span>
-          </blockquote>
-          
-          <blockquote>
-            <p>
-              A cage went in search of a bird.
-            </p>
-            <span class="attribution">— Kafka, <em>Aphorisms</em></span>
-          </blockquote>
-          
-          <blockquote>
-            <p>
-              Merry and tragical! Tedious and brief!<br>
-              That is, hot ice and wondrous strange snow.<br>
-              How shall we find the concord of this discord?
-            </p>
-            <span class="attribution">— Shakespeare, <em>A Midsummer Night's Dream</em></span>
-          </blockquote>
-          
-          <h4>Pseudo-Formalizations</h4>
-          <p>
-            Because of their intentionality and depth I'm going to call these violations of "ordinary use" "extra-ordinary use" (a bit gimmicky).
-            They don't obscure meaning but instead elucidate by way of contradiction. Now the question is how to formalize them?
-          </p>
-          <table border="1">
-            <tr>
-              <th>Passage</th>
-              <th>Logical sketch</th>
-              <th>English</th>
-            </tr>
-
-            <!-- Modal-Contradiction (MC) -->
-            <tr>
-              <td>"Two distincts, division none"</td>
-              <td><code>□ₚ Distinct(a,b) ∧ □ₘ ¬Distinct(a,b)</code></td>
-              <td>Bodies: two + Souls: one</td>
-            </tr>
-            <tr>
-              <td>"Hearts remote, yet not asunder"</td>
-              <td><code>□ₚ Remote(a,b) ∧ □ₘ ¬Remote(a,b)</code></td>
-              <td>Spatially apart + Spiritually united</td>
-            </tr>
-
-            <!-- Modal-Projection (MP) -->
-            <tr>
-              <td>"Hot ice / wondrous strange snow"<a id="fn1-cue" href="#fn1"><sup>1</sup></a></td>
-              <td><code>□ₚ ¬(Ice ∧ Hot) ∧ ◇ₘ (Ice ∧ Hot)</code></td>
-              <td>Hot ice -> imagined as natural wonder</td>
-            </tr>
-
-            <!-- Type-Clash (TC) -->
-            <tr>
-              <td>"A cage went in search of a bird"</td>
-              <td>
-                <code>
-                # literal read – type clash
-                Search(e,cage,bird)<br>
-                ∧ ReqAnim(cage)<br>
-                ∧ ¬Animate(cage) ⊢ ⊥<br><br>
-
-                # allegorical repair<br>
-                Search(e, oppression, freedom)
-                  </code>
-              </td>
-              <td>Oppression pursues freedom</td>
-            </tr>
-          </table>
-          <p>It seems like these literary devices can be described as any utterance whose literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.</p>
-          <p style="text-align: center; font-family: monospace; font-size: 1.1em; overflow-wrap: break-word; max-width: 100%;">ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)</p>
-          <p>where</p>
-          <!-- 2 ── Mid-level templates -->
-          <dl>
-            <dt><code>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ</code></dt>
-            <dd><code>Modal Contradiction — the same claim flips truth between worlds</code></dd>
-
-            <dt><code>MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ</code></dt>
-            <dd><code>Modal Projection — impossible here, merely possible there</code></dd>
-
-            <dt><code>TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥</code></dt>
-            <dd><code>Type Clash — presupposition + assertion yield a contradiction</code></dd>
-
-            <dt><code>□ / ◇</code></dt>
-            <dd><code>□ = necessary  ◇ = possible</code></dd>
-
-            <dt><code>□ₚ / ◇ₚ</code></dt>
-            <dd><code>physical-world modality</code></dd>
-
-            <dt><code>□ₘ / ◇ₘ</code></dt>
-            <dd><code>metaphysical / allegorical modality</code></dd>
-          </dl>
-                    
-          <h4>Some Probabilistic Approaches</h4>
-          <ul>
-            <li><a href="https://arxiv.org/pdf/2308.10248">ActAdd</a></li>
-            <li><a href="https://arxiv.org/pdf/2312.06681">Contrastive Activation Steering</a></li>
-            <li><a href="https://arxiv.org/pdf/2412.10193">Classifier-based guidance for discrete diffusion</a></li>
-            <li><a href="https://arxiv.org/pdf/2504.18535">TRACE</a></li>
-            <li><a href="https://arxiv.org/pdf/2406.13892">Constrained Generation (Ctrl-G)</a></li>
-          </ul>
-
-          <h4>Open Problems</h4>
-          <ol>
-            <li><strong>Detection.</strong> Can we learn a reliable anomaly-coherence metric from corpora annotated for ExO instances?</li>
-            <li><strong>Evaluation.</strong> What rubric separates these contradictions from plain nonsense and whre is the cutoff?</li>
-            <li><strong>Generation control.</strong> Beyond temperature, how do we tune a model along an anomoly-coherence axis?</li>
-          </ol>
-
-          <h4>Closing Thoughts</h4>
-          <p>
-            It's hard not to think of Wittgenstein's elucidation of private pain or propositions like 
-            "what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence."
-            Hand-wavey metaphysical insights aside, maybe we can define these extra-ordinary utterances in purely distributional terms. 
-            The JL Austin brute force approach: want to understand a linguistic phenomenon? 
-            Read through countless examples and then formalize. 
-          </p>
-          <p>Ultimately, the hope is to improve on generation to guide it towards extra-ordinary usage, language that is <strong><em>“wondrous strange snow.”</em></strong></p>
-          <hr>
-          <p id="fn1">
-            <sup>1</sup><em>
-              Theseus sets up an open contradiction <strong>hot</strong> + <strong>ice</strong> only to
-              “resolve” it with the sneering flourish <q>wondrous strange snow.</q>
-              The oxymoron stays physically impossible, but the new name lets the
-              audience picture it for a moment as an imaginable marvel. I think this imaginative license would still make it a
-              Modal-Projection (MP).
-            </em>
-            <a href="#fn1-cue" aria-label="Back to reference">↩︎</a>
-          </p>
-          <p><em>*Shoutout to my good friend Joshua for the stimulating convo and amazing Midsummer example. And shoutout to Henry too for the great convos and thoughts on diffusion based approaches</em></p>
-        </div>
+          <p><a href="articles/article3/index.html"> Continue&nbsp;reading&nbsp;&raquo;</a></p>
       </div>
 
       <div class="mood-item">
@@ -322,7 +180,7 @@
 
       <div class="mood-item">
         <h3>🤕 On Bad Conscience</h3>
-        <div class="scroll-pane">
+        <!-- <div class="scroll-pane"> -->
           <blockquote>
             <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
             <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
@@ -331,7 +189,7 @@
             <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
             <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
           </blockquote>
-        </div>
+        <!-- </div> -->
       </div>
 
       <div class="mood-item">

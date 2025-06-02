@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- mobile layout -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <title></title>
+
+  <!-- site look & feel -->
+  <link rel="stylesheet" href="../../assets/css/main.css"/>
+  <link rel="stylesheet" href="../../assets/css/article.css"/>
+
+    <!-- ── MathJax config: no indent + fix \text{} baseline ─────────── -->
+  <script>
+    window.MathJax = {
+      /* remove default –0.25 em display indent and keep left-aligned   */
+      tex:   { displayIndent: '0em',  displayAlign: 'left' },
+
+      /* inherit the surrounding page font for \text{…} so the baseline
+         matches math italic on hi-DPI screens (stops 1-px jog)        */
+      /* chtml: { mtextInheritFont: true } */
+         chtml: { mtextFont: 'Times' }
+    };
+  </script>
+  
+  <!-- MathJax -->
+  <script defer id="MathJax-script"
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+</head>
+
+<body class="article">
+  <!-- floating buttons -->
+  <button id="menuBtn" class="float-btn" aria-label="Open menu">🧰</button>
+  <button class="float-btn back-btn" onclick="window.location.href='../../'" aria-label="Back to home">🏡</button>
+  <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
+
+  <!-- Markdown content -->
+  <main class="content">
+    <article class="markdown-body">
+      <h2 id="extra-ordinary-language">🎭 Extra-Ordinary Language</h2>
+      <p>I’ve been thinking a lot about a chat I had with a former
+      colleague about language that breaks semantic expectations.<br />
+      The conversation then veered into causal language models and their
+      various generation parameters like temperature.<br />
+      What interests me in particular is unexpected or anomalous usage
+      with clear intention where semantic violations in the form of
+      absurdities or paradoxes are packed with metaphysical depth.</p>
+      <p>In this post, I’m dog-earing these thoughts to revisit
+      later.<br />
+      The aim here is to examine the specific forms these expressions
+      take and explore how we might capture their tension and their
+      coherence in a computational framework.</p>
+      <h3 id="literary-examples">Literary Examples</h3>
+      <blockquote>
+      <p>So they lov’d, as love in twain<br />
+      Had the essence but in one;<br />
+      Two distincts, division none:<br />
+      Number there in love was slain.</p>
+      <p>Hearts remote, yet not asunder;<br />
+      Distance and no space was seen<br />
+      Twixt this Turtle and his queen</p>
+      <p>— <em>Shakespeare, <strong>The Phoenix and the
+      Turtle</strong></em></p>
+      </blockquote>
+      <blockquote>
+      <p>A cage went in search of a bird.</p>
+      <p>— <em>Kafka, <strong>Aphorisms</strong></em></p>
+      </blockquote>
+      <blockquote>
+      <p>Merry and tragical! Tedious and brief!<br />
+      That is, hot ice and wondrous strange snow.<br />
+      How shall we find the concord of this discord?</p>
+      <p>— <em>Shakespeare, <strong>A Midsummer Night’s
+      Dream</strong></em></p>
+      </blockquote>
+      <h3 id="pseudo-formalizations">Pseudo-Formalizations</h3>
+      <p>Because of their intentionality and depth I’m going to call
+      these violations of “ordinary use” <strong>extra-ordinary
+      use</strong> (a bit gimmicky).<br />
+      They don’t obscure meaning but instead elucidate by way of
+      contradiction. Now the question is: <strong>how to formalize
+      them?</strong></p>
+      <table>
+      <colgroup>
+      <col style="width: 27%" />
+      <col style="width: 45%" />
+      <col style="width: 27%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Passage</th>
+      <th>Logical sketch</th>
+      <th>English</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><em>“Two distincts, division none”</em></td>
+      <td>□ₚ Distinct(a,b) ∧ □ₘ ¬Distinct(a,b)</td>
+      <td>Bodies: two + Souls: one</td>
+      </tr>
+      <tr>
+      <td><em>“Hearts remote, yet not asunder”</em></td>
+      <td>□ₚ Remote(a,b) ∧ □ₘ ¬Remote(a,b)</td>
+      <td>Spatially apart + Spiritually united</td>
+      </tr>
+      <tr>
+      <td><em>“Hot ice / wondrous strange snow”</em><a href="#fn1"
+      class="footnote-ref" id="fnref1"
+      role="doc-noteref"><sup>1</sup></a></td>
+      <td>□ₚ ¬(Ice ∧ Hot) ∧ ◇ₘ (Ice ∧ Hot)</td>
+      <td>Physically impossible → imaginatively possible</td>
+      </tr>
+      <tr>
+      <td><em>“A cage went in search of a bird”</em></td>
+      <td>Search(e,cage,bird) ∧ ReqAnim(cage) ∧ ¬Animate(cage) ⊢ ⊥;
+      <br><br>allegory → Search(e, oppression, freedom)</td>
+      <td>Oppression pursues freedom</td>
+      </tr>
+      </tbody>
+      </table>
+      <p>It seems like these literary devices can be described as any
+      utterance whose <strong>literal semantic model fails in the
+      physical world yet remains interpretable (and often profound) once
+      we flip modality, type, or world-knowledge layer.</strong></p>
+      <p>ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)</p>
+      <p>where</p>
+      <ul>
+      <li>MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ — <strong>Modal Contradiction</strong> —
+      the same claim flips truth between worlds<br />
+      </li>
+      <li>MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ — <strong>Modal Projection</strong> —
+      impossible here, merely possible there<br />
+      </li>
+      <li>TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥ — <strong>Type Clash</strong> —
+      presupposition + assertion yield a contradiction<br />
+      </li>
+      <li>□ / ◇ — □ = necessary, ◇ = possible<br />
+      </li>
+      <li>□ₚ / ◇ₚ — physical-world modality<br />
+      </li>
+      <li>□ₘ / ◇ₘ — metaphysical / allegorical modality</li>
+      </ul>
+      <h3 id="some-probabilistic-approaches">Some Probabilistic
+      Approaches</h3>
+      <ul>
+      <li><a href="https://arxiv.org/pdf/2308.10248">ActAdd</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2312.06681">Contrastive
+      Activation Steering</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2412.10193">Classifier-based
+      guidance for discrete diffusion</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2504.18535">TRACE</a><br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2406.13892">Constrained
+      Generation (Ctrl-G)</a></li>
+      </ul>
+      <h3 id="open-problems">Open Problems</h3>
+      <ol type="1">
+      <li><strong>Detection.</strong> Can we learn a reliable
+      anomaly-coherence metric from corpora annotated for ExO
+      instances?<br />
+      </li>
+      <li><strong>Evaluation.</strong> What rubric separates these
+      contradictions from plain nonsense and where is the cutoff?<br />
+      </li>
+      <li><strong>Generation control.</strong> Beyond temperature, how
+      do we tune a model along an anomaly-coherence axis?</li>
+      </ol>
+      <h3 id="closing-thoughts">Closing Thoughts</h3>
+      <p>It’s hard not to think of Wittgenstein’s elucidation of private
+      pain or propositions like<br />
+      “what can be said at all can be said clearly, and what we cannot
+      talk about we must pass over in silence.”<br />
+      Hand-wavey metaphysical insights aside, maybe we can define these
+      extra-ordinary utterances in purely distributional terms.<br />
+      The J. L. Austin brute-force approach: <strong>want to understand
+      a linguistic phenomenon? Read through countless examples and then
+      formalize.</strong></p>
+      <p>Ultimately, the hope is to improve generation so we can guide
+      it toward extra-ordinary usage, language that is <em>“wondrous
+      strange snow.”</em></p>
+      <hr />
+      <p><em>Shout-out to my good friend Joshua for the stimulating
+      convo and amazing <strong>Midsummer</strong> example. And
+      shout-out to Henry too for the great convos and thoughts on
+      diffusion-based approaches.</em></p>
+      <section id="footnotes"
+      class="footnotes footnotes-end-of-document" role="doc-endnotes">
+      <hr />
+      <ol>
+      <li id="fn1"><p><em>Theseus sets up an open contradiction
+      <strong>hot</strong> + <strong>ice</strong> only to “resolve” it
+      with the sneering flourish “wondrous strange snow.”<br />
+      The oxymoron stays physically impossible, but the new name lets
+      the audience picture it for a moment as an imaginable
+      marvel.<br />
+      I think this imaginative license would still make it a
+      Modal-Projection (MP).</em><a href="#fnref1" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      </ol>
+      </section>
+    </article>
+  </main>
+
+  <!-- article JS (dark mode only) -->
+  <script defer src="../../assets/js/article.js"></script>
+</body>
+</html>
