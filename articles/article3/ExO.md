@@ -53,12 +53,9 @@ where
 * **MP(ϕ)** $:= \Box_{\,\mathrm{p}}\,\lnot ϕ \;\land\; \Diamond_{\,\mathrm{m}}\,ϕ$ — *Modal Projection*  
 * **TC(ϕ)** $:= (\,ϕ \land \text{Presup}(ϕ)\,) \;\vdash\; \bot$ — *Type Clash*
 
-
-
-
-$\Box$, $\Diamond$ = necessity / possibility  
-$\Box_{\!p}$, $\Diamond_{\!p}$ = physical-world modality  
-$\Box_{\!m}$, $\Diamond_{\!m}$ = metaphysical / allegorical modality
+$\Box$, $\Diamond$ — necessity / possibility  
+$\Box_{\,\mathrm{p}}$, $\Diamond_{\,\mathrm{p}}$ — physical-world modality  
+$\Box_{\,\mathrm{m}}$, $\Diamond_{\,\mathrm{m}}$ — metaphysical / allegorical modality
 
 
 ### Some Probabilistic Approaches
