@@ -147,9 +147,9 @@ In the example above we demonstrated how the integration looks in practice, but 
 - articulate each model’s strength and weakness, emphasizing how each model hits its own data wall separately:  
   - Whisper (generalist): broadly trained acoustic-to-text model, struggles with specialized terminology.  
   - GPT-2 (specialist): trained in a self-supervised way solely on textual domain data, rich in domain-specific vocabulary but blind to acoustic signals.  
-- reiterate how useless these models are without deliberate and challenging integration steps e.g. adapting GPT-2 to your domain  
+- dive into fusion related setbacks/metrics as well as possible future directions
+- dive into fusion related improvements and qualitative benefits
 - illustrate how this process extends or relates to broader trends within AI e.g. Ensemble Architectures like Mixture of Experts, multimodal integration, domain adaptation and evolution of fusion techniques (cold & deep).  
-- End with a note about out-of-the-box plug-and-play solutions not being competitive because it’s low-hanging fruit and everyone has the same boring RAG systems. 
 
 ## Resources
 
