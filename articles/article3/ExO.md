@@ -37,23 +37,29 @@ They don't obscure meaning but instead elucidate by way of contradiction. Now th
 
 | Passage | Logical sketch | English |
 |---------|---------------|---------|
-| *“Two distincts, division none”* | □ₚ Distinct(a,b) ∧ □ₘ ¬Distinct(a,b) | Bodies: two + Souls: one |
-| *“Hearts remote, yet not asunder”* | □ₚ Remote(a,b) ∧ □ₘ ¬Remote(a,b) | Spatially apart + Spiritually united |
-| *“Hot ice / wondrous strange snow”*[^1] | □ₚ ¬(Ice ∧ Hot) ∧ ◇ₘ (Ice ∧ Hot) | Physically impossible → imaginatively possible |
-| *“A cage went in search of a bird”* | Search(e,cage,bird) ∧ ReqAnim(cage) ∧ ¬Animate(cage) ⊢ ⊥; <br><br>allegory → Search(e, oppression, freedom) | Oppression pursues freedom |
+| *“Two distincts, division none”* | $\Box_{\,\mathrm{p}}\,\text{Distinct}(a,b) \;\land\; \Box_{\,\mathrm{m}}\,\lnot\text{Distinct}(a,b)$ | $\text{Bodies: two + Souls: one}$ |
+| *“Hearts remote, yet not asunder”* | $\Box_{\,\mathrm{p}}\,\text{Remote}(a,b) \;\land\; \Box_{\,\mathrm{m}}\,\lnot\text{Remote}(a,b)$ | $\text{Spatially apart + Spiritually united}$ |
+| *“Hot ice / wondrous strange snow”*[^1] | $\Box_{\,\mathrm{p}}\,\lnot(\text{Ice}\land\text{Hot}) \;\land\; \Diamond_{\,\mathrm{m}}\,(\text{Ice}\land\text{Hot})$ | $\text{Physically impossible → imaginatively possible}$ |
+| *“A cage went in search of a bird”* | $\text{Search}(e,\text{cage},\text{bird}) \;\land\; \text{ReqAnim}(\text{cage}) \;\land\; \lnot\text{Animate}(\text{cage}) \;\vdash\; \bot$<br><br>$\text{allegory} \;\to\; \text{Search}(e,\text{oppression},\text{freedom})$ | $\text{Oppression pursues freedom}$ |
+
 
 It seems like these literary devices can be described as any utterance whose **literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.**
 
-ExO(φ) ≡ MC(φ) ∨ MP(φ) ∨ TC(φ)
+ExO($\varphi$) $\;\equiv\;$ MC($\varphi$) $\;\lor\;$ MP($\varphi$) $\;\lor\;$ TC($\varphi$)
 
 where  
 
-* MC(φ) ≔ □ₚ φ ∧ □ₘ ¬φ — **Modal Contradiction** — the same claim flips truth between worlds  
-* MP(φ) ≔ □ₚ ¬φ ∧ ◇ₘ φ — **Modal Projection** — impossible here, merely possible there  
-* TC(φ) ≔ (φ ∧ Presup(φ)) ⊢ ⊥ — **Type Clash** — presupposition + assertion yield a contradiction  
-* □ / ◇ — □ = necessary, ◇ = possible  
-* □ₚ / ◇ₚ — physical-world modality  
-* □ₘ / ◇ₘ — metaphysical / allegorical modality  
+* **MC(ϕ)** $:= \Box_{\,\mathrm{p}}\,ϕ \;\land\; \Box_{\,\mathrm{m}}\,\lnot ϕ$ — *Modal Contradiction*  
+* **MP(ϕ)** $:= \Box_{\,\mathrm{p}}\,\lnot ϕ \;\land\; \Diamond_{\,\mathrm{m}}\,ϕ$ — *Modal Projection*  
+* **TC(ϕ)** $:= (\,ϕ \land \text{Presup}(ϕ)\,) \;\vdash\; \bot$ — *Type Clash*
+
+
+
+
+$\Box$, $\Diamond$ = necessity / possibility  
+$\Box_{\!p}$, $\Diamond_{\!p}$ = physical-world modality  
+$\Box_{\!m}$, $\Diamond_{\!m}$ = metaphysical / allegorical modality
+
 
 ### Some Probabilistic Approaches
 
