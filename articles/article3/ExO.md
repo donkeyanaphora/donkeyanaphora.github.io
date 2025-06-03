@@ -1,8 +1,6 @@
 ## 🎭 Extra-Ordinary Language
 
-I've been thinking a lot about a chat I had with a former colleague about language that breaks semantic expectations.  
-The conversation then veered into causal language models and their various generation parameters like temperature.  
-What interests me in particular is unexpected or anomalous usage with clear intention where semantic violations in the form of absurdities or paradoxes are packed with metaphysical depth.
+I've been thinking a lot about a chat I had with a former colleague about language that breaks semantic expectations. The conversation then veered into causal language models and their various generation parameters like temperature. What interests me in particular is unexpected or anomalous usage with clear intention where semantic violations in the form of absurdities or paradoxes are packed with metaphysical depth.
 
 In this post, I'm dog-earing these thoughts to revisit later.  
 The aim here is to examine the specific forms these expressions take and explore how we might capture their tension and their coherence in a computational framework.
