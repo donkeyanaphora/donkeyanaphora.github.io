@@ -18,7 +18,7 @@ article.markdown-body{
 /* Layout + text flow */
 article.markdown-body{
   margin:0 auto;
-  max-width:42em;
+  /* max-width:42em; */
   width:100%;
   text-align:left;
   font-family:"Palatino Linotype","Book Antiqua",Palatino,serif;

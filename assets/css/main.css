@@ -130,17 +130,17 @@ h2 {
 
 /* ========== LAYOUT ========== */
 #wrapper {
-  width: 90%;
+  width: 70%;
   margin: 0 auto;
   text-align: left;
-  max-width: 800px;
+  /* max-width: 800px; */
 }
 
 /* ARTICLE CONTENT CONTAINER - Match wrapper styling */
 main.content {
-  width: 90%; /* Match landing page wrapper width */
+  width: 70%; /* Match landing page wrapper width */
   margin: 1rem auto;
-  max-width: 800px;
+  /* max-width: 800px; */
 }
 
 /* ========== COLLAPSIBLE SECTIONS ========== */
