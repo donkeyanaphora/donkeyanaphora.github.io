@@ -31,7 +31,7 @@ The aim here is to examine the specific forms these expressions take and explore
 ### Pseudo-Formalizations
 
 Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use** (a bit gimmicky).  
-They don't obscure meaning but instead elucidate by way of contradiction. Now the question is: **how to formalize them?**
+They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now the question is: **how to formalize them?**
 
 | Passage | Logical sketch | English |
 |---------|---------------|---------|
@@ -58,17 +58,30 @@ $\Box_{\,\mathrm{m}}$, $\Diamond_{\,\mathrm{m}}$ — metaphysical / allegorical 
 
 ### Some Probabilistic Approaches
 
+Here as some resources on controllable generation these could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language, but I think to truly address this task there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out of distribution tasks (hence the Francois Chollet paper). 
+
+- [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
 - [ActAdd](https://arxiv.org/pdf/2308.10248)  
 - [Contrastive Activation Steering](https://arxiv.org/pdf/2312.06681)  
 - [Classifier-based guidance for discrete diffusion](https://arxiv.org/pdf/2412.10193)  
 - [TRACE](https://arxiv.org/pdf/2504.18535)  
 - [Constrained Generation (Ctrl-G)](https://arxiv.org/pdf/2406.13892)  
 
+
 ### Open Problems
 
-1. **Detection.** Can we learn a reliable anomaly-coherence metric from corpora annotated for ExO instances?  
+<!-- 1. **Representation.** How do we encode the “anomalous-yet-coherent” instances that mark ExO language? 
 2. **Evaluation.** What rubric separates these contradictions from plain nonsense and where is the cutoff?  
-3. **Generation control.** Beyond temperature, how do we tune a model along an anomaly-coherence axis?  
+3. **Generation control.** Beyond temperature, how do we tune a model along an anomaly-coherence axis and in a more critical sense can we capture the generative faculty behind ExO language?   -->
+
+1. **Refinement:** Can we formally bound the space of ExO language? Our current modal framework offers a logical sketch but most likely lacks sufficient coverage or the rigidity needed for identification, representation and evaluation. We need clearer boundaries: When does poetic contradiction become noise and what is the true scope of these instances of linguistic novelty. 
+
+2. **Epistemic Requirements:** What cognitive capacities underlie ExO understanding and can models develop analogues of them and critically, will this require efforts that extend beyond emulation and pattern matching, toward fluid intelligence, e.g. adaptive generalization to out of distribution tasks. Additionally, what role does ExO language play in the broader arc of intelligence? Could it serve as a diagnostic for flexible reasoning or abstract linguistic intelligence?
+
+3. **Evaluation:** Can we develop metrics that reward semantic dissonance under control e.g. language that violates expectations but remains interpretable and meaningful? Effective evaluation depends on a rigorous definition of ExO. Without clearly defined formal properties semantic, modal, etc we cannot design benchmarks that identify interpretive tension, modality shifts, or allegorical coherence as measurable features. 
+
+4. **Generation Control:** How do we tune a model along an anomaly-coherence axis and in a more critical sense can we capture the generative faculty behind ExO language?
+
 
 ### Closing Thoughts
 
