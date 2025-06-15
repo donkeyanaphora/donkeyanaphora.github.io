@@ -70,10 +70,6 @@ Here as some resources on controllable generation these could offer a good start
 
 ### Open Problems
 
-<!-- 1. **Representation.** How do we encode the “anomalous-yet-coherent” instances that mark ExO language? 
-2. **Evaluation.** What rubric separates these contradictions from plain nonsense and where is the cutoff?  
-3. **Generation control.** Beyond temperature, how do we tune a model along an anomaly-coherence axis and in a more critical sense can we capture the generative faculty behind ExO language?   -->
-
 1. **Refinement:** Can we formally bound the space of ExO language? Our current modal framework offers a logical sketch but most likely lacks sufficient coverage or the rigidity needed for identification, representation and evaluation. We need clearer boundaries: When does poetic contradiction become noise and what is the true scope of these instances of linguistic novelty. 
 
 2. **Epistemic Requirements:** What cognitive capacities underlie ExO understanding and can models develop analogues of them and critically, will this require efforts that extend beyond emulation and pattern matching, toward fluid intelligence, e.g. adaptive generalization to out of distribution tasks. Additionally, what role does ExO language play in the broader arc of intelligence? Could it serve as a diagnostic for flexible reasoning or abstract linguistic intelligence?
