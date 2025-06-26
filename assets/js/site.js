@@ -139,7 +139,26 @@ function updateCanvasBackground () {}
   }
 
   function pos(e){const r=canvas.getBoundingClientRect(),c=e.touches?e.touches[0]:e;return{x:c.clientX-r.left,y:c.clientY-r.top};}
-  function begin(e){e.preventDefault();isDrawing=true;const {x,y}=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x, y);ctx.stroke()}
+  // function begin(e){e.preventDefault();isDrawing=true;const {x,y}=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x, y);ctx.stroke()}
+  function begin(e) {
+    e.preventDefault();
+    isDrawing = true;
+    const {x, y} = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    
+    // For single taps/touches, draw a small circle to make it visible
+    ctx.save();
+    ctx.fillStyle = isEraser ? '#ffffff' : currentColor;
+    ctx.beginPath();
+    ctx.arc(x, y, ctx.lineWidth / 2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.restore();
+    
+    // Start a new path for potential dragging
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  }
   function draw(e){ if(!isDrawing)return; e.preventDefault();const {x,y}=pos(e);ctx.lineTo(x,y);ctx.stroke();}
   function end(){isDrawing=false;}
 
