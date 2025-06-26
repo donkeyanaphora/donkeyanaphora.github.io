@@ -103,7 +103,9 @@ function updateCanvasBackground () {}
     document.body.style.overflow=isFS?'hidden':'';
     requestAnimationFrame(initCanvas);
   });
-
+  window.addEventListener('resize', () => {
+    if (modal.style.display === 'block') initCanvas();
+  });
   /* ── canvas helpers ─────────────────────────────────────────────── */
   function resetStrokeStyle(){
     const size = strokeSlider ? +strokeSlider.value : (isEraser?20:2);
