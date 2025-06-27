@@ -318,24 +318,6 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   flex-direction: column;
   overflow: hidden;
 }
-/* .sketch-container {
-  text-align: center;
-  user-select: none;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.sketch-canvas {
-  border: 2px solid var(--section-border);
-  background: #fff;
-  cursor: crosshair;
-  touch-action: none;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-.theme-dark .sketch-canvas { background: #222; } */
 
 .sketch-container {
   text-align: center;

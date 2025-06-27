@@ -188,7 +188,7 @@ function updateCanvasBackground () {}
   }
   
   function pos(e){const r=canvas.getBoundingClientRect(),c=e.touches?e.touches[0]:e;return{x:c.clientX-r.left,y:c.clientY-r.top};}
-  // function begin(e){e.preventDefault();isDrawing=true;const {x,y}=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x, y);ctx.stroke()}
+
   function begin(e) {
     e.preventDefault();
     isDrawing = true;
@@ -210,18 +210,6 @@ function updateCanvasBackground () {}
   }
   function draw(e){ if(!isDrawing)return; e.preventDefault();const {x,y}=pos(e);ctx.lineTo(x,y);ctx.stroke();}
   function end(){isDrawing=false;}
-
-  // function attachCanvasListeners(){
-  //   if(canvas.dataset.wired) return; canvas.dataset.wired='yes';
-  //   canvas.addEventListener('mousedown',begin);
-  //   canvas.addEventListener('mousemove',draw);
-  //   canvas.addEventListener('mouseup',end);
-  //   canvas.addEventListener('mouseout',end);
-
-  //   canvas.addEventListener('touchstart',begin,{passive:false});
-  //   canvas.addEventListener('touchmove',draw,{passive:false});
-  //   canvas.addEventListener('touchend',end);
-  // }
 
   function attachUiListeners(){
     $$('.color-btn').forEach(btn=>{
