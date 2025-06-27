@@ -103,9 +103,14 @@ function updateCanvasBackground () {}
     document.body.style.overflow=isFS?'hidden':'';
     requestAnimationFrame(initCanvas);
   });
+
+  /* RESIZE HANDLER */
   window.addEventListener('resize', () => {
-    if (modal.style.display === 'block') initCanvas();
+    if (modal.style.display === 'block') {
+      setTimeout(initCanvas, 100);
+    }
   });
+
   /* ── canvas helpers ─────────────────────────────────────────────── */
   function resetStrokeStyle(){
     const size = strokeSlider ? +strokeSlider.value : (isEraser?20:2);
@@ -123,23 +128,65 @@ function updateCanvasBackground () {}
     ctx.restore();
   };
 
-  /* init / resize */
   function initCanvas(){
     ctx = canvas.getContext('2d');
-    const r=canvas.parentElement.getBoundingClientRect();
-    const hCtrl=$('.sketch-controls').offsetHeight;
-    const W=Math.round(r.width), H=Math.max(100,Math.round(r.height-hCtrl-20));
-    if(canvas.width!==W||canvas.height!==H){
-      const copy=document.createElement('canvas');
-      copy.width=canvas.width; copy.height=canvas.height;
-      copy.getContext('2d').drawImage(canvas,0,0);
-      canvas.width=W; canvas.height=H;
-      ctx.drawImage(copy,0,0);
+    
+    // Detect mobile and use appropriate canvas size
+    const isMobile = window.innerWidth <= 768;
+    const CANVAS_WIDTH = isMobile ? 800 : 1600;   
+    const CANVAS_HEIGHT = isMobile ? 600 : 1200;  
+    
+    // Only set size if it needs to change - preserve existing content
+    if (canvas.width !== CANVAS_WIDTH || canvas.height !== CANVAS_HEIGHT) {
+      const copy = document.createElement('canvas');
+      copy.width = canvas.width; 
+      copy.height = canvas.height;
+      if (ctx) copy.getContext('2d').drawImage(canvas, 0, 0);
+      
+      canvas.width = CANVAS_WIDTH;
+      canvas.height = CANVAS_HEIGHT;
+      
+      if (copy.width > 0) ctx.drawImage(copy, 0, 0);
     }
-    updateCanvasBackground(); resetStrokeStyle();
-    attachCanvasListeners(); attachUiListeners();
+    
+    updateCanvasBackground(); 
+    resetStrokeStyle();
+    attachCanvasListeners(); 
+    attachUiListeners();
   }
+  // Add this to your canvas touch handling (optional enhancement)
 
+  // Improve mobile touch experience
+  function attachCanvasListeners(){
+    if(canvas.dataset.wired) return; 
+    canvas.dataset.wired='yes';
+    
+    // Desktop events
+    canvas.addEventListener('mousedown',begin);
+    canvas.addEventListener('mousemove',draw);
+    canvas.addEventListener('mouseup',end);
+    canvas.addEventListener('mouseout',end);
+
+    // Mobile touch events with better handling
+    canvas.addEventListener('touchstart', (e) => {
+      // Prevent scrolling while drawing
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        begin(e);
+      }
+    }, {passive: false});
+    
+    canvas.addEventListener('touchmove', (e) => {
+      // Only prevent scrolling if we're actively drawing
+      if (e.touches.length === 1 && isDrawing) {
+        e.preventDefault();
+        draw(e);
+      }
+    }, {passive: false});
+    
+    canvas.addEventListener('touchend', end);
+  }
+  
   function pos(e){const r=canvas.getBoundingClientRect(),c=e.touches?e.touches[0]:e;return{x:c.clientX-r.left,y:c.clientY-r.top};}
   // function begin(e){e.preventDefault();isDrawing=true;const {x,y}=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x, y);ctx.stroke()}
   function begin(e) {
@@ -164,17 +211,17 @@ function updateCanvasBackground () {}
   function draw(e){ if(!isDrawing)return; e.preventDefault();const {x,y}=pos(e);ctx.lineTo(x,y);ctx.stroke();}
   function end(){isDrawing=false;}
 
-  function attachCanvasListeners(){
-    if(canvas.dataset.wired) return; canvas.dataset.wired='yes';
-    canvas.addEventListener('mousedown',begin);
-    canvas.addEventListener('mousemove',draw);
-    canvas.addEventListener('mouseup',end);
-    canvas.addEventListener('mouseout',end);
+  // function attachCanvasListeners(){
+  //   if(canvas.dataset.wired) return; canvas.dataset.wired='yes';
+  //   canvas.addEventListener('mousedown',begin);
+  //   canvas.addEventListener('mousemove',draw);
+  //   canvas.addEventListener('mouseup',end);
+  //   canvas.addEventListener('mouseout',end);
 
-    canvas.addEventListener('touchstart',begin,{passive:false});
-    canvas.addEventListener('touchmove',draw,{passive:false});
-    canvas.addEventListener('touchend',end);
-  }
+  //   canvas.addEventListener('touchstart',begin,{passive:false});
+  //   canvas.addEventListener('touchmove',draw,{passive:false});
+  //   canvas.addEventListener('touchend',end);
+  // }
 
   function attachUiListeners(){
     $$('.color-btn').forEach(btn=>{

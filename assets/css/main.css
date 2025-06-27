@@ -318,7 +318,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   flex-direction: column;
   overflow: hidden;
 }
-.sketch-container {
+/* .sketch-container {
   text-align: center;
   user-select: none;
   flex: 1;
@@ -335,7 +335,68 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   width: 100%;
   min-height: 0;
 }
-.theme-dark .sketch-canvas { background: #222; }
+.theme-dark .sketch-canvas { background: #222; } */
+
+.sketch-container {
+  text-align: center;
+  user-select: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden; /* Prevent container from growing */
+}
+
+/* NEW: Scrollable viewport for the canvas */
+.canvas-viewport {
+  flex: 1;
+  overflow: auto; /* Makes the canvas scrollable */
+  border: 2px solid var(--section-border);
+  background: var(--section-border); /* Shows as border when scrolled */
+  padding: 0;
+  position: relative;
+  min-height: 0;
+}
+
+.sketch-canvas {
+  display: block;
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+  /* Remove the responsive border - viewport provides it */
+  border: none;
+  /* Fixed size - never changes */
+  width: 1600px !important;
+  height: 1200px !important;
+  /* Remove flex properties */
+}
+
+.theme-dark .sketch-canvas { 
+  background: #222; 
+}
+
+/* Style the scrollbars for better UX */
+.canvas-viewport::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.canvas-viewport::-webkit-scrollbar-track {
+  background: var(--nav-bg);
+}
+
+.canvas-viewport::-webkit-scrollbar-thumb {
+  background: var(--section-border);
+  border-radius: 6px;
+}
+
+.canvas-viewport::-webkit-scrollbar-thumb:hover {
+  background: var(--link);
+}
+
+.canvas-viewport::-webkit-scrollbar-corner {
+  background: var(--nav-bg);
+}
 
 /* ─────────────────────────────────────────────────────────── */
 /*  WHITEBOARD CONTROLS                                       */
@@ -483,18 +544,48 @@ footer {
   main.content {
     width: 95%; /* Match landing page mobile wrapper width */
   }
-  
+
   .sketch-controls { 
     gap: 0.8rem; 
     padding: var(--controls-padding-y) 0; 
   }
+  
   .sketch-controls button { 
     padding: 0.8rem 1.2rem; 
     font-size: 1rem; 
   }
+
   .color-btn { 
     width: 40px; 
     height: 40px; 
+  }
+
+  .modal-content { 
+    width: 98%; 
+    height: 95%; 
+  }
+  
+  /* Better mobile scrollbars */
+  .canvas-viewport::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* Smaller canvas on mobile for less scrolling */
+  .sketch-canvas {
+    width: 800px !important;  /* Half size on mobile */
+    height: 600px !important;
+  }
+  
+  /* Prevent page scrolling when using whiteboard */
+  .modal {
+    position: fixed;
+    overflow: hidden;
+  }
+  
+  /* Better touch targets */
+  .sketch-controls button { 
+    min-height: 44px; /* iOS recommended touch target */
   }
 }
 
