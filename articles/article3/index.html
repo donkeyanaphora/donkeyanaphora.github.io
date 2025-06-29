@@ -41,18 +41,24 @@
   <main class="content">
     <article class="markdown-body">
       <h2 id="extra-ordinary-language">🎭 Extra-Ordinary Language</h2>
-      <p>I’ve been thinking a lot about a chat I had with a former
-      colleague about language that breaks semantic expectations. The
-      conversation then veered into causal language models and their
-      various generation parameters like temperature. What interests me
-      in particular is unexpected or anomalous usage with clear
-      intention where semantic violations in the form of absurdities or
-      paradoxes are packed with metaphysical depth.</p>
-      <p>In this post, I’m dog-earing these thoughts to revisit
-      later.<br />
-      The aim here is to examine the specific forms these expressions
-      take and explore how we might capture their tension and their
-      coherence in a computational framework.</p>
+      <p>I’ve been revisiting a conversation with a former colleague
+      about language that deliberately flies in the face of ordinary
+      usage e.g. expressions that violate the statistical expectations
+      of language itself and yet still carry high degrees of
+      intentionality and philosophical weight.</p>
+      <!-- I call this phenomenon **extra-ordinary language**. -->
+      <p>Expressions like “A cage went in search of a bird” epitomizes
+      this and when Kafka wrote this, he created something that
+      contemporary AI rarely produces, a semantic impossibility that
+      somehow makes perfect sense.</p>
+      <p>In this post, I’m dog-earing these thoughts to revisit later.
+      The aim here is to understand what makes these expressions work,
+      and understand how they maintain coherence through contradiction
+      or linguistic violation and more critically, why this matters for
+      how we think about intelligence. Along the way, I’ll attempt some
+      preliminary formalizations and speculate about why current AI
+      systems struggle with this capacity.</p>
+      <!-- In this post, I'm dog-earing these thoughts to revisit later. The aim here is to examine these linguistic anomalies more closely and ask a question that's been nagging at me: if this type of expression represents a distinct form of intelligence, why don't we have any benchmarks for it? -->
       <h3 id="literary-examples">Literary Examples</h3>
       <blockquote>
       <p>So they lov’d, as love in twain<br />
@@ -81,8 +87,9 @@
       these violations of “ordinary use” <strong>extra-ordinary
       use</strong> (a bit gimmicky).<br />
       They don’t obscure meaning but instead elucidate by way of
-      contradiction or a violation of expectations. Now the question is:
-      <strong>how to formalize them?</strong></p>
+      contradiction or a violation of expectations. Now the question is
+      can we formalize some of them and what does it say about what
+      makes these instances special?</p>
       <table>
       <colgroup>
       <col style="width: 27%" />
@@ -175,16 +182,60 @@
       <span class="math inline">\(\Box_{\,\mathrm{m}}\)</span>, <span
       class="math inline">\(\Diamond_{\,\mathrm{m}}\)</span> —
       metaphysical / allegorical modality</p>
+      <h3 id="why-might-current-ai-struggle-here">Why Might Current AI
+      Struggle Here?</h3>
+      <p>This is more of a fan theory at this point but it feels like
+      examples of profound language may have surfaced in the models
+      pretraining google books though by definition of novel writing it
+      is likely under represented, additionally from a causal language
+      model base training perspective this is less about encoding the
+      abstract concepts or deep intentionality these examples are made
+      up of and more so about emulation of style and prose at this point
+      in the training. Sure larger models like GPT-3 especially with
+      sufficient examples of this type of text may begin to exhibit some
+      few shot behavior or ability to encode more abstract concepts
+      about this sort of language, but overall I would be surprised if
+      the casual base training paradigm gets us the level of reasoning
+      and intelligence necessary to truly exhibit novel prose.</p>
+      <p>As the models are further optimized on higher level tasks such
+      as instruction following there is probably an absence of task
+      types that push the model to learn this behavior and to be quite
+      frankly from a later RLHF perspective I doubt anyone wants to do a
+      full blown Harold bloom literary analysis of the models output to
+      give a preference rating so I wouldnt be surprised if this step as
+      well beats any sort of literary device capabilities out of the
+      model. In short I dont think many people would favor a Joycean
+      take on XYZ topic over an accessible and informative wikipedia
+      style entry on the matter. Anyway this is all hearsay.</p>
+      <p>The more I examine instances of impactful prose e.g. utterances
+      packed with intentionality and metaphysical depth and try to
+      formally capture their distinctive features, the more convinced I
+      become that modeling such language necessitates a type of fluid
+      literary intelligence. Ultimately, this exploration leads to
+      deeper epistemic questions: what precisely constitutes literary
+      novelty, and how can we recognize and evaluate it computationally,
+      and lastly are there no benchmarks on par with ARC that touch on
+      this axis of intelligence?</p>
+      <p>Also, if we had 20 Harold blooms doing RLHF or composing
+      benchmarks made up of curated instances of ExO language then I
+      truly believe we could optimize models to exhibit this type of
+      intelligence. And RL scales if we got from GPT3 to ChatGPT with
+      10,000 samples maybe we can just have a handful of Harold Bloom
+      for models. Also could this not generalize to other creative tasks
+      as well? AND historically I believe reasoning tasks/benchmarks
+      have too heavily focused on verifiable tasks such as coding and
+      mathematical reasoning.</p>
       <h3 id="some-probabilistic-approaches">Some Probabilistic
       Approaches</h3>
       <p>Here as some resources on controllable generation these could
       offer a good starting point in terms of guiding models to emulate
-      instances or traces of extra-ordinary language, but I think to
-      truly address this task there will be a need to address deeper
-      epistemic questions, questions about creativity, novelty, fluid
-      intelligence, and in machine learning terms adaptive
-      generalization to out of distribution tasks (hence the Francois
-      Chollet paper).</p>
+      instances or traces of extra-ordinary language they could even
+      help showcase whether such latent reprentations even exist for the
+      task in these models, but I think to truly address this task there
+      will be a need to address deeper epistemic questions, questions
+      about creativity, novelty, fluid intelligence, and in machine
+      learning terms adaptive generalization to out of distribution
+      tasks (hence the Francois Chollet paper).</p>
       <ul>
       <li><a href="https://arxiv.org/abs/1911.01547">On the Measure of
       Intelligence</a></li>
