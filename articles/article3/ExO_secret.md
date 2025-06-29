@@ -33,8 +33,7 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 
 ### Pseudo-Formalizations
 
-Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use** (a bit gimmicky).  
-They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now the question is can we formalize some of them and what does it say about what makes these instances special?
+Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use** (a bit gimmicky). They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now the question is what makes them so unique?
 
 | Passage | Logical sketch | English |
 |---------|---------------|---------|
