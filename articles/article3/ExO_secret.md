@@ -1,10 +1,8 @@
 ## 🎭 Extra-Ordinary Language
 
-I’ve been revisiting a conversation with a former colleague about language that deliberately flies in the face of ordinary usage e.g. expressions that violate the statistical expectations of language itself and yet still carry high degrees of intentionality and philosophical weight. 
+I’ve been revisiting a conversation with a former colleague about language that deliberately flies in the face of ordinary usage e.g. expressions that violate the statistical expectations of language itself and yet still carry high degrees of intentionality and philosophical weight. Expressions like "A cage went in search of a bird" epitomizes this and when Kafka wrote this, he created something that contemporary AI rarely produces, a semantic impossibility that somehow makes perfect sense. 
 
 <!-- I call this phenomenon **extra-ordinary language**. -->
-
-Expressions like "A cage went in search of a bird" epitomizes this and when Kafka wrote this, he created something that contemporary AI rarely produces, a semantic impossibility that somehow makes perfect sense. 
 
 In this post, I'm dog-earing these thoughts to revisit later. The aim here is to understand what makes these expressions work, and understand how they maintain coherence through contradiction or linguistic violation and more critically, why this matters for how we think about intelligence. Along the way, I'll attempt some preliminary formalizations and speculate about why current AI systems struggle with this capacity.
 
