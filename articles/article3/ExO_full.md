@@ -59,7 +59,7 @@ $\Box_{\,\mathrm{m}}$, $\Diamond_{\,\mathrm{m}}$ — metaphysical / allegorical 
 
 
 ### Why Might Current AI Struggle Here?
-Current language models face several systematic barriers to producing ExO language at this point many of these are my own speculation/fan theory than concrete fact, but nevertheless here they are: 
+Current language models face several systematic barriers to producing ExO language; at this point many of these are my own speculation or fan theory than concrete fact, but nevertheless here they are: 
 
 #### Data Scarcity in Pretraining
 Though profound literature exists in pretraining corpora (Google Books, etc.), it's statistically underrepresented. By definition, novel writing is rare, and easily-licensed conventional text dominates the training mix. Even within Pulizer Prize winning articles/books etc the instances of truly profound prose/ExO language (as impactful as they may be) are few and far between. 
@@ -93,7 +93,7 @@ Also, if we had 20 Harold blooms doing RLHF or composing benchmarks made up of c
 
 ### Some Probabilistic Approaches
 
-Here as some resources on controllable generation these could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language they could even help showcase whether such latent reprentations even exist for within the model for such tasks, but I think to truly address the difficulty of producing ExO language there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out of distribution tasks (hence the Francois Chollet paper). 
+Here as some resources on controllable generation. These could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language they could even help showcase whether such latent reprentations even exist within the model. However, I think to truly address the difficulty of producing ExO language there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out-of-distribution tasks (hence the Francois Chollet paper). 
 
 - [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
 - [ActAdd](https://arxiv.org/pdf/2308.10248)  
@@ -111,11 +111,11 @@ Here as some resources on controllable generation these could offer a good start
 
 **Sample Efficiency**: How many expert annotations would we actually need? If RLHF worked with 10K of samples for ChatGPT, maybe we only need hundreds of expert literary judgments to see significant improvement in creative output.
 
-**A broken clock is right twice a day**: Is there a meaningful difference between "turning up randomness and filtering with experts" versus "genuine creative intelligence"? Could high-temperature generation + expert filtering approximate the cognitive processes behind ExO language?
+**A broken clock is right twice a day**: Is there a meaningful difference between "turning up randomness and filtering with experts" versus "genuine creative intelligence"? Could high-temperature generation coupled with expert filtering approximate the cognitive processes behind ExO language?
 
-**Expert Agreement:** This one is personal because I see it all the time in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. Is Citizen Kane actually one of the greatest films of all time or was it just the introduction of depth of field that won audiences and the academy over?
+**Expert Agreement:** This one is personal because I see it all the time in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. Is Citizen Kane actually one of the greatest films of all time or was it just the introduction of depth of field that won audiences and the Academy over?
 
-**Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000. They then write 1000, 1004, 1008, 1012. The pupil claims they have been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step the pupil took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization. 
+**Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000 and then writes 1000, 1004, 1008, 1012. The pupil claims they have been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step the pupil took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization.
 
 <!-- "measuring skill at any given task falls short of measuring intelligence, because skill is heavily modulated by prior knowledge and experience" -->
 
