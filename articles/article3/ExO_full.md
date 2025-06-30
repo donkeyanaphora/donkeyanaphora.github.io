@@ -136,4 +136,4 @@ Ultimately, the hope is to improve generation so we can guide it toward extra-or
       The oxymoron stays physically impossible, but the new name lets the audience picture it for a moment as an imaginable marvel.  
       I think this imaginative license would still make it a Modal-Projection (MP).*
 
-*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos and thoughts on diffusion-based approaches.*
+*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
