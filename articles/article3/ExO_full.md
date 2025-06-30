@@ -115,7 +115,9 @@ Here as some resources on controllable generation these could offer a good start
 
 **Expert Agreement:** This one is personal because I see it all the time in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. Is Citizen Kane actually one of the greatest films of all time or was it just the introduction of depth of field that won audiences and the academy over?
 
-**Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000. The pupil then writes 1000, 1004, 1008, 1012. The pupil claims he has been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step he took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization.
+**Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000. They then write 1000, 1004, 1008, 1012. The pupil claims they have been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step the pupil took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization. 
+
+<!-- "measuring skill at any given task falls short of measuring intelligence, because skill is heavily modulated by prior knowledge and experience" -->
 
 <!-- As Wittgenstein states in PI "Must I understand an order before I can act on it? - Certainly, otherwise you wouldn't know what you had to do! - But from knowing to doing is surely a further step!" -->
 
@@ -136,4 +138,4 @@ Ultimately, the hope is to improve generation so we can guide it toward extra-or
       The oxymoron stays physically impossible, but the new name lets the audience picture it for a moment as an imaginable marvel.  
       I think this imaginative license would still make it a Modal-Projection (MP).*
 
-*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
+*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos on AGI/ARC and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
