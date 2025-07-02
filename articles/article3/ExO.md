@@ -1,16 +1,14 @@
 ## 🎭 Extra-Ordinary Language
 
-I’ve been revisiting a conversation with a former colleague about language that deliberately flies in the face of ordinary usage e.g. expressions that violate the statistical expectations of language itself and yet still carry high degrees of intentionality and philosophical weight. 
+I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically expressions that violate the statistical expectations of language and yet cary high degrees of intentionality and depth. 
 
-<!-- I call this phenomenon **extra-ordinary language**. -->
+When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
 
-Expressions like "A cage went in search of a bird" epitomizes this and when Kafka wrote this, he created something that contemporary AI rarely produces, a semantic impossibility that somehow makes perfect sense. 
+In this post, I'm dog-earing these thoughts to revisit later. The aim here is to understand what makes these expressions work and more critically, the implications this has on how we measure and evaluate model intelligence. 
 
-In this post, I'm dog-earing these thoughts to revisit later. The aim here is to understand what makes these expressions work, and understand how they maintain coherence through contradiction or linguistic violation and more critically, why this matters for how we think about intelligence. Along the way, I'll attempt some preliminary formalizations and speculate about why current AI systems struggle with this capacity.
+<!-- Along the way, I'll attempt some preliminary formalizations and speculate about why current AI systems struggle with this capacity. -->
 
-<!-- In this post, I'm dog-earing these thoughts to revisit later. The aim here is to examine these linguistic anomalies more closely and ask a question that's been nagging at me: if this type of expression represents a distinct form of intelligence, why don't we have any benchmarks for it? -->
-
-### Literary Examples
+### Semantic Impossibilities That Work
 
 > So they lov'd, as love in twain  
 > Had the essence but in one;  
@@ -33,10 +31,9 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 >   
 > — *Shakespeare, **A Midsummer Night’s Dream***
 
-### Pseudo-Formalizations
+### Logical Sketches of ExO Language
 
-Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use** (a bit gimmicky).  
-They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now the question is can we formalize some of them and what does it say about what makes these instances special?
+Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use** (ExO). They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now, the question is what makes them so unique?
 
 | Passage | Logical sketch | English |
 |---------|---------------|---------|
@@ -45,31 +42,78 @@ They don't obscure meaning but instead elucidate by way of contradiction or a vi
 | *“Hot ice / wondrous strange snow”*[^1] | $\Box_{\,\mathrm{p}}\,\lnot(\text{Ice}\land\text{Hot}) \;\land\; \Diamond_{\,\mathrm{m}}\,(\text{Ice}\land\text{Hot})$ | $\text{Physically impossible → imaginatively possible}$ |
 | *“A cage went in search of a bird”* | $\text{Search}(e,\text{cage},\text{bird}) \;\land\; \text{ReqAnim}(\text{cage})$<br> $\;\land\; \lnot\text{Animate}(\text{cage}) \;\vdash\; \bot$<br><br>$\text{allegory} \;\to\; \text{Search}(e,\text{oppression},\text{freedom})$ | $\text{Oppression pursues freedom}$ |
 
+#### What Makes them Interesting?
+These literary devices can be characterized as utterances whose **literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer**. Essentially, they present a **literal semantic failure** in one domain that creates insightful or profound resonance in another domain (metaphorical, allegorical, or abstract).
 
-It seems like these literary devices can be described as any utterance whose **literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer.**
+From the examples above **Extra-Ordinary (ExO)** could be represented as:
 
-ExO($\varphi$) $\;\equiv\;$ MC($\varphi$) $\;\lor\;$ MP($\varphi$) $\;\lor\;$ TC($\varphi$)
+$$
+\text{ExO}(\varphi) \equiv \text{MC}(\varphi) \lor \text{MP}(\varphi) \lor \text{TC}(\varphi)
+$$
 
-where  
+Where:
 
-* **MC(ϕ)** $:= \Box_{\,\mathrm{p}}\,ϕ \;\land\; \Box_{\,\mathrm{m}}\,\lnot ϕ$ — *Modal Contradiction*  
-* **MP(ϕ)** $:= \Box_{\,\mathrm{p}}\,\lnot ϕ \;\land\; \Diamond_{\,\mathrm{m}}\,ϕ$ — *Modal Projection*  
-* **TC(ϕ)** $:= (\,ϕ \land \text{Presup}(ϕ)\,) \;\vdash\; \bot$ — *Type Clash*
+* **MC(ϕ)** *(Modal Contradiction)*: $\Box_{\,\mathrm{p}}\,ϕ \;\land\; \Box_{\,\mathrm{m}}\,\lnot ϕ$
+
+*(Necessarily false physically, but necessarily true metaphorically/allegorically, or vice versa.)*
+
+* **MP(ϕ)** *(Modal Projection)*: $\Box_{\,\mathrm{p}}\,\lnot ϕ \;\land\; \Diamond_{\,\mathrm{m}}\,ϕ$
+
+*(Physically impossible yet imaginable or metaphorically possible.)*
+
+* **TC(ϕ)** *(Type Clash)*: $(ϕ \land \text{Presup}(ϕ)) \vdash \bot$
+
+*(Utterance that, together with its presupposition, leads to logical impossibility or category error.)*
+
+**Key:**
 
 $\Box$, $\Diamond$ — necessity / possibility  
 $\Box_{\,\mathrm{p}}$, $\Diamond_{\,\mathrm{p}}$ — physical-world modality  
 $\Box_{\,\mathrm{m}}$, $\Diamond_{\,\mathrm{m}}$ — metaphysical / allegorical modality
 
+<!-- This formalization isn’t meant to provide a any sort of definition of literary novelty or creativity. Rather, it’s intended as an exploratory, informal framework for understanding linguistic expressions that deliberately violate ordinary usage. The aim is not to reduce literary novelty to logical formulas but to provide a starting point or probe for exploring language models—specifically to understand why current AI models, despite their analytical and literary fluency, rarely generate such innovative or profound language spontaneously.
+
+This exploration might help pinpoint limitations in how AI models capture deep intentionality and creativity, and thus inform better evaluation methods and benchmarks that emphasize the creative dimension of linguistic intelligence. -->
+
+#### Scope & Caveats
+This formalization isn't a definition of literary novelty or creativity. Rather, it's an exploratory framework for analyzing expressions that deliberately violate ordinary usage. The goal isn't to reduce literary innovation to logic, but to probe why current language models rarely generate such creative or profound language spontaneously. Understanding these limitations may inform better evaluation methods that emphasize creativity in linguistic intelligence
+
 ### Why Might Current AI Struggle Here?
-This is more of a fan theory at this point but it feels like examples of profound language may have surfaced in the models pretraining google books though by definition of novel writing it is likely under represented, additionally from a causal language model base training perspective this is less about encoding the abstract concepts or deep intentionality these examples are made up of and more so about emulation of style and prose at this point in the training, sure larger models like gpt3 especially with sufficient examples of this type of text may begin to exhibit some few shot behavior or ability to encode more abstract concepts about this sort of language, but overall I would be surprised if the casual base training paradigm gets us the level of reasoning and intelligence necessary to truly exhibit novel prose. As the models are further optimized on higher level tasks such as instruction following there is probably an absence of task types that push the model to learn this behavior and to be quite frankly from a later RLHF perspective I doubt anyone wants to do a full blown Harold bloom literary analysis of the models output to give a preference rating so I wouldnt be surprised if this step as well beats any sort of literary device capabilities out of the model. In short I dont think many people would favor a Joycean take on XYZ topic over an accessible and informative wikipedia style entry on the matter. Anyway this is all hearsay. 
+Current language models face several systematic barriers to producing ExO language; at this point many of these are my own speculation or fan theory than concrete fact, but nevertheless here they are: 
+
+#### Data Scarcity in Pretraining
+Though profound literature exists in pretraining corpora (Google Books, etc.), it's statistically underrepresented. By definition, novel writing is rare, and easily-licensed conventional text dominates the training mix. Even within Pulizer Prize winning articles/books etc the instances of truly profound prose/ExO language (as impactful as they may be) are few and far between. 
+
+#### Objective Mismatch
+From a causal language modeling perspective, next token prediction is less about encoding the abstract concepts or deep intentionality these examples are made up of and more so about emulation of style and prose. At this phase models learn to reproduce surface features without encoding the abstract concepts that necessarily drive literary innovation. Even though large causal models like GPT-3 begin to exhibit some few-shot behavior with sufficient examples, it seems unlikely that the causal training paradigm alone gets us the reasoning necessary for truly novel language.
+
+#### Task Absence During Fine-tuning
+When models are optimized for instruction following, there's likely an absence of tasks that push them to not just learn ExO behavior, but more importantly exhibit it. The training emphasizes practical capabilities over creative linguistic reasoning. Though literary analysis and reading comprehension are a big part of this phase they are somewhat distinct from the task of exhibiting and producing novel prose. In short, there are more analyses of great works than great works, and the reading comprehension/literary analysis task itself aligns more intuitively with how we quantify intelligence in school.
+
+#### RLHF Optimization Pressure
+This one is fun to think about. From a preference learning perspective, I doubt anyone wants to do full-blown Harold Bloom literary analysis to rate model outputs. Most annotators would favor accessible, Wikipedia-style entries over Joycean explorations of any topic. This optimization pressure likely eliminates whatever literary capabilities emerge during pretraining.
+
+#### The Deeper Issue: Fluid Literary Intelligence
+The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what I'd call fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks.
+
+#### Missing Benchmarks
+This leads to deeper questions: What constitutes literary novelty computationally? Why are there no benchmarks on par with ARC that touch this axis of intelligence? Current reasoning evaluation has heavily favored verifiable tasks (coding, math) over creative reasoning. 
+
+#### There is Hope?
+Even if this does require some deeper literary understanding, if we had 20 Harold Blooms doing RLHF or composing benchmarks of curated ExO instances, I believe we could optimize models toward this intelligence. Reinforcement learning scales. If we went from GPT-3 to ChatGPT with thousands of samples, maybe we need just a handful of literary experts. Additionaly, this approach could even generalize to other creative domains.
+
+
+<!-- This is more of a fan theory at this point but it feels like examples of profound language may have surfaced in the models pretraining google books though by definition of novel writing it is likely under represented, additionally from a causal language model base training perspective this is less about encoding the abstract concepts or deep intentionality these examples are made up of and more so about emulation of style and prose at this point in the training. Sure larger models like GPT-3 especially with sufficient examples of this type of text may begin to exhibit some few shot behavior or ability to encode more abstract concepts about this sort of language, but overall I would be surprised if the casual base training paradigm gets us the level of reasoning and intelligence necessary to truly exhibit novel prose. 
+
+As the models are further optimized on higher level tasks such as instruction following there is probably an absence of task types that push the model to learn this behavior and to be quite frankly from a later RLHF perspective I doubt anyone wants to do a full blown Harold bloom literary analysis of the models output to give a preference rating so I wouldnt be surprised if this step as well beats any sort of literary device capabilities out of the model. In short I dont think many people would favor a Joycean take on XYZ topic over an accessible and informative wikipedia style entry on the matter. Anyway this is all hearsay. 
 
 The more I examine instances of impactful prose e.g. utterances packed with intentionality and metaphysical depth and try to formally capture their distinctive features, the more convinced I become that modeling such language necessitates a type of fluid literary intelligence. Ultimately, this exploration leads to deeper epistemic questions: what precisely constitutes literary novelty, and how can we recognize and evaluate it computationally, and lastly are there no benchmarks on par with ARC that touch on this axis of intelligence? 
 
-Also if we had 20 Harold blooms doing RLHF or composing benchmarks made up of curated instances of what I’m calling Extra-Ordinary language then I truly believe we could optimize models to exhibit this type of intelligence. And RL scales if we got from GPT3 to ChatGPT with 10,000 samples maybe we can just have a handful of Harold blooms for models. Also could this not generalize to other creative tasks as well? AND historically I believe reasoning tasks/benchmarks have too heavily focused on verifiable tasks such as coding and mathematical reasoning. 
+Also, if we had 20 Harold blooms doing RLHF or composing benchmarks made up of curated instances of ExO language then I truly believe we could optimize models to exhibit this type of intelligence. And RL scales if we got from GPT3 to ChatGPT with 10,000 samples maybe we can just have a handful of Harold Bloom for models. Also could this not generalize to other creative tasks as well? AND historically I believe reasoning tasks/benchmarks have too heavily focused on verifiable tasks such as coding and mathematical reasoning.  -->
 
 ### Some Probabilistic Approaches
 
-Here as some resources on controllable generation these could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language they could even help showcase whether such latent reprentations even exist for the task in these models, but I think to truly address this task there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out of distribution tasks (hence the Francois Chollet paper). 
+Here as some resources on controllable generation. These could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language they could even help showcase whether such latent reprentations even exist within the model. However, I think to truly address the difficulty of producing ExO language there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out-of-distribution tasks (hence the Francois Chollet paper). 
 
 - [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
 - [ActAdd](https://arxiv.org/pdf/2308.10248)  
@@ -81,23 +125,32 @@ Here as some resources on controllable generation these could offer a good start
 
 ### Open Problems
 
-1. **Refinement:** Can we formally bound the space of ExO language? Our current modal framework offers a logical sketch but most likely lacks sufficient coverage or the rigidity needed for identification, representation and evaluation. We need clearer boundaries: When does poetic contradiction become noise and what is the true scope of these instances of linguistic novelty. 
+**Empirical Approach**: Can we just crank up the temperature and RLHF against literary critics? Is the solution as simple as generating more varied outputs and having 20 Harold Blooms rank them? Or does this require deeper architectural changes?
 
-2. **Epistemic Requirements:** What cognitive capacities underlie ExO understanding and can models develop analogues of them and critically, will this require efforts that extend beyond emulation and pattern matching, toward fluid intelligence, e.g. adaptive generalization to out of distribution tasks. Additionally, what role does ExO language play in the broader arc of intelligence? Could it serve as a diagnostic for flexible reasoning or abstract linguistic intelligence?
+**Rules vs. Intuition**: Do models need to deeply formalize the rules of language to meaningfully break them? Or can expert preference data teach the patterns directly without explicit rule-learning? This gets at whether ExO generation is about systematic reasoning or learned aesthetic judgment.
 
-3. **Evaluation:** Can we develop metrics that reward semantic dissonance under control e.g. language that violates expectations but remains interpretable and meaningful? Effective evaluation depends on a rigorous definition of ExO. Without clearly defined formal properties semantic, modal, etc we cannot design benchmarks that identify interpretive tension, modality shifts, or allegorical coherence as measurable features. 
+**Sample Efficiency**: How many expert annotations would we actually need? If RLHF worked with 10K of samples for ChatGPT, maybe we only need hundreds of expert literary judgments to see significant improvement in creative output.
 
-4. **Generation Control:** How do we tune a model along an anomaly-coherence axis and in a more critical sense can we capture the generative faculty behind ExO language?
+**A broken clock is right twice a day**: Is there a meaningful difference between "turning up randomness and filtering with experts" versus "genuine creative intelligence"? Could high-temperature generation coupled with expert filtering approximate the cognitive processes behind ExO language?
+
+**Expert Agreement:** This one is personal because I see it all the time in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. Is Citizen Kane actually one of the greatest films of all time or was it just the introduction of depth of field that won audiences and the Academy over?
+
+**Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000 and then writes 1000, 1004, 1008, 1012. The pupil claims they have been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step the pupil took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization.
+
+<!-- "measuring skill at any given task falls short of measuring intelligence, because skill is heavily modulated by prior knowledge and experience" -->
+
+<!-- As Wittgenstein states in PI "Must I understand an order before I can act on it? - Certainly, otherwise you wouldn't know what you had to do! - But from knowing to doing is surely a further step!" -->
+
+<!-- 
+A pupil is learning a geometric series the pupil has been tested on examples up to 1000 then they get the pupil to continue the series (+2) he writes 1000, 1004, 1008, 1012. The pupil claims he has been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step he took in training was perfectly compatible with this alternative rule. I think this relates to a deeper question posed by arc dataset and apple paper  -->
 
 
 ### Closing Thoughts
 
-It's hard not to think of Wittgenstein's elucidation of private pain or propositions like  
-“what can be said at all can be said clearly, and what we cannot talk about we must pass over in silence.”  
-Hand-wavey metaphysical insights aside, maybe we can define these extra-ordinary utterances in purely distributional terms.  
-The J. L. Austin brute-force approach: **want to understand a linguistic phenomenon? Read through countless examples and then formalize.**
+Just because anyone can write poetry doesn't mean they should. Similarly, just because models can exhibit surprisal or violate semantic expectations doesn't always mean they possess the ability to do so meaningfully. Ultimately, the goal is to understand whether machines can develop the kind of flexible, creative intelligence that ExO language represents—and to build evaluation frameworks that recognize this intelligence when it emerges. In short, we need benchmarks that reward "wondrous strange snow."
 
-Ultimately, the hope is to improve generation so we can guide it toward extra-ordinary usage, language that is *“wondrous strange snow.”*
+<!-- 
+Ultimately, the hope is to improve generation so we can guide it toward extra-ordinary usage, language that is *“wondrous strange snow.”* -->
 
 ---
 
@@ -105,4 +158,4 @@ Ultimately, the hope is to improve generation so we can guide it toward extra-or
       The oxymoron stays physically impossible, but the new name lets the audience picture it for a moment as an imaginable marvel.  
       I think this imaginative license would still make it a Modal-Projection (MP).*
 
-*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos and thoughts on diffusion-based approaches.*
+*Shout-out to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos on AGI/ARC and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
