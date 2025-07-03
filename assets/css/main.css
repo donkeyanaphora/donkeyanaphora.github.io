@@ -498,25 +498,6 @@ footer {
 .quick-links a.uc:hover { background: var(--uc-bg); }
 
 
-/* ---------- Touch devices (phones & tablets) ---------- */
-@media (hover: none) and (pointer: coarse) {
-  #wrapper,
-  main.content {
-    width: 100%;          /* as wide as the visual viewport            */
-    max-width: 48rem;     /* ≈ 768 px – keeps lines readable            */
-    margin: 0 auto;       /* stays centred when room allows            */
-    padding-inline: 1rem; /* slim gutters on very small screens        */
-  }
-
-  /* Make MathJax boxes as wide as the column ⟶ consistent zoom */
-  mjx-container {
-    display: block !important;
-    width: 100% !important;
-    text-align: center;
-    overflow-x: auto;     /* long equations can scroll instead of wrap */
-  }
-}
-
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .modal-content { 
@@ -537,13 +518,14 @@ footer {
   h1 { 
     font-size: 1.8rem; 
   }
-  /* #wrapper { 
+  #wrapper { 
     width: 95%; 
   }
   
+  /* Apply the same wrapper style as the landing page to article */
   main.content {
-    width: 95%; 
-  } */
+    width: 95%; /* Match landing page mobile wrapper width */
+  }
 
   .sketch-controls { 
     gap: 0.8rem; 
