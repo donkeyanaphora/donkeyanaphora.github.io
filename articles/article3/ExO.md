@@ -5,7 +5,7 @@
 
 ## Introduction
 
-I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically expressions that violate the statistical expectations of language and yet cary high degrees of intentionality and depth. 
+I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically expressions that violate the [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) of language and yet cary high degrees of intentionality and depth. 
 
 When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
 
