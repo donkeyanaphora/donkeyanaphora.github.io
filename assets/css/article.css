@@ -110,3 +110,9 @@ article.markdown-body td{
   right: 1rem;  
   bottom: 5.2rem;
 }
+
+/* ── iOS double-tap fix for *inline* equations ───────────────────────── */
+article.markdown-body mjx-container:not([display="true"]) {
+  pointer-events: none;        /* Safari now targets the surrounding <p>   */
+  touch-action: manipulation;  /* disables only dbl-tap-to-zoom on the span */
+}
