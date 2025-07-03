@@ -497,6 +497,15 @@ footer {
 }
 .quick-links a.uc:hover { background: var(--uc-bg); }
 
+/* ---------- Tablet layouts (portrait & small landscape) ---------- */
+@media (max-width: 1024px) {
+  #wrapper,
+  main.content {
+    width: 90%;        /* grow to nearly full-width on iPad-size screens */
+    max-width: 48rem;  /* keeps line-length comfortable */
+    padding: 0 1rem;   /* a little breathing room at the edges */
+  }
+}
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
