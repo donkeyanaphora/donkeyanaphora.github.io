@@ -57,6 +57,70 @@ html.theme-dark{
   --apple-status-bar: black;
 }
 
+/* ===== MOBILE TOUCH & ZOOM FIXES ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in articles */
+article.markdown-body,
+article.markdown-body p,
+article.markdown-body h1,
+article.markdown-body h2,
+article.markdown-body h3,
+article.markdown-body h4,
+article.markdown-body h5,
+article.markdown-body h6,
+article.markdown-body li,
+article.markdown-body blockquote {
+  -webkit-user-select: text;
+  user-select: text;
+  touch-action: manipulation;
+}
+
+/* Fix MathJax zoom issues */
+.MathJax_Display,
+mjx-container[jax="CHTML"][display="true"],
+mjx-container:not([display="true"]) {
+  touch-action: manipulation !important;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.MathJax_Display *,
+mjx-container[jax="CHTML"][display="true"] *,
+mjx-container:not([display="true"]) * {
+  pointer-events: auto;
+  touch-action: manipulation !important;
+}
+
+/* Images */
+article.markdown-body img {
+  touch-action: manipulation;
+  pointer-events: none;
+}
+
+/* Interactive elements */
+a, button, input, textarea, select,
+.float-btn, .sketch-controls button,
+details summary {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  min-height: 44px;
+  min-width: 44px;
+}
+
 /* Global box sizing for more predictable layouts */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -66,12 +130,6 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-/* ── NEW: stop iOS/Chrome-on-iOS from auto-zooming table text ── */
-html {
-  -webkit-text-size-adjust: 100%;   /* Safari & Chrome on iPhone */
-  text-size-adjust: 100%;           /* unprefixed fall-back      */
 }
 
 /* iOS status bar fix */
@@ -93,6 +151,17 @@ html {
   /* Ensure main content starts below the status bar */
   main.content {
     margin-top: 10px;
+  }
+  
+  /* Enhanced iOS touch fixes */
+  * {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Re-enable for text content */
+  article.markdown-body {
+    -webkit-touch-callout: default;
   }
 }
 
@@ -257,6 +326,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.5);
+  touch-action: manipulation;
 }
 .modal-content {
   background-color: var(--card-bg);
@@ -268,6 +338,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   top: 50%;
   transform: translate(-50%,-50%);
   overflow: hidden;
+  touch-action: manipulation;
 }
 .modal-content.fullscreen {
   width: 100%;
@@ -338,13 +409,14 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   padding: 0;
   position: relative;
   min-height: 0;
+  touch-action: pan-x pan-y; /* Allow scrolling only */
 }
 
 .sketch-canvas {
   display: block;
   background: #fff;
   cursor: crosshair;
-  touch-action: none;
+  touch-action: none !important; /* Allow drawing gestures */
   /* Remove the responsive border - viewport provides it */
   border: none;
   /* Fixed size - never changes */
@@ -498,6 +570,17 @@ footer {
 .quick-links a.uc:hover { background: var(--uc-bg); }
 
 
+/* TABLET RESPONSIVE - Wider content on iPads */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #wrapper {
+    width: 85%; /* Wider than default 70% */
+  }
+  
+  main.content {
+    width: 85%; /* Match wrapper width for articles */
+  }
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .modal-content { 
@@ -535,6 +618,7 @@ footer {
   .sketch-controls button { 
     padding: 0.8rem 1.2rem; 
     font-size: 1rem; 
+    min-height: 44px; /* Better touch targets */
   }
 
   .color-btn { 
@@ -565,9 +649,35 @@ footer {
     overflow: hidden;
   }
   
-  /* Better touch targets */
-  .sketch-controls button { 
-    min-height: 44px; /* iOS recommended touch target */
+  /* Better touch targets for all buttons */
+  .float-btn {
+    padding: 0.8rem 1.2rem;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent zoom on form inputs */
+  input[type="text"],
+  input[type="email"], 
+  input[type="search"],
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+  
+  /* Better equation display on mobile */
+  .MathJax_Display,
+  mjx-container[jax="CHTML"][display="true"] {
+    margin: 1em 0 !important;
+    font-size: 0.9em !important;
+  }
+  
+  /* Prevent horizontal scroll issues */
+  article.markdown-body {
+    overflow-x: hidden;
+  }
+  
+  article.markdown-body table {
+    font-size: 0.85em;
   }
 }
 
