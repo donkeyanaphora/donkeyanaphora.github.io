@@ -214,14 +214,14 @@ function updateCanvasBackground () {
 
       // Platform flags
       const isIPad    = /iPad/.test(navigator.userAgent)
-                      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                      || (navigator.NavigatorID.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
                         .test(navigator.userAgent);
 
       // Init Fabric canvas
       fabricCanvas = new fabric.Canvas('sketchpad', {
         allowTouchScrolling:    false,
-        enablePointerEvents:     true,
+        enablePointerEvents:    false,
         enableRetinaScaling:    isIPad || isDesktop,
         renderOnAddRemove:      true,
         skipTargetFind:         true,
@@ -274,10 +274,10 @@ function updateCanvasBackground () {
         fabricCanvas.requestRenderAll();
       };
 
-      // Listen to standard pointermove
-      upper.addEventListener('pointermove', replay, { passive: true });
-      // **New**: listen to high-frequency raw updates for Apple Pencil
-      upper.addEventListener('pointerrawupdate', replay, { passive: true });
+      // // Listen to standard pointermove
+      // upper.addEventListener('pointermove', replay, { passive: true });
+      // // **New**: listen to high-frequency raw updates for Apple Pencil
+      // upper.addEventListener('pointerrawupdate', replay, { passive: true });
 
       // Optimize each new path
       fabricCanvas.on('path:created', e => {
