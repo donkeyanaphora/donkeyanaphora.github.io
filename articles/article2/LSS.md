@@ -1,11 +1,11 @@
 ---
 title: "Using Linear Models in Modern Applications"
-author: "Collins Westnedge"
-date: "2025-05-16"
 description: "A closer look at how using least squares projection can offer a stable alternative to semantic filtering."
 slug: "article2"
+date: "2025-05-16"
 draft: true
---- 
+image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
+---
 
 # 📐 Using Linear Models in Modern Applications
 

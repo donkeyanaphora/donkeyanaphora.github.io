@@ -12,10 +12,11 @@
   <!-- SEO essentials -->
   <meta name="google-site-verification" content="hmW81pKLkPLJXY0kFe-I1vNXno-xD9XbEWyZyGfz-SA" />
   <meta name="description" content="$if(description)$$description$$else$An article by Collins Westnedge exploring data science, philosophy, and machine learning.$endif$">
+  <meta name="author" content="Collins Westnedge">
   <link rel="canonical" href="https://donkeyanaphora.github.io/articles/$if(slug)$$slug$$else$article$endif$/">
   
-  <!-- Author -->
-  <meta name="author" content="Collins Westnedge">
+  <!-- Hide drafts from search engines -->
+  $if(draft)$<meta name="robots" content="noindex, nofollow">$endif$
 
   <!-- Site look & feel -->
   <link rel="stylesheet" href="../../assets/css/main.css"/>
@@ -31,7 +32,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://donkeyanaphora.github.io/articles/$if(slug)$$slug$$else$article$endif$/">
   <meta property="og:title" content="$title$">
-  <meta property="og:description" content="$if(description)$$description$$else$An article by Collins Westnedge exploring data science, philosophy, and machine learning.$endif$">
+  <meta property="og:description" content="$if(description)$$description$$else$An article by Collins Westnedge.$endif$">
   <meta property="og:image" content="$if(image)$$image$$else$https://donkeyanaphora.github.io/assets/images/thumbnail.png$endif$">
   <meta property="og:site_name" content="The Latent Realm">
   <meta property="article:author" content="Collins Westnedge">
@@ -44,16 +45,11 @@
   <meta name="twitter:description" content="$if(description)$$description$$else$An article by Collins Westnedge exploring data science, philosophy, and machine learning.$endif$">
   <meta name="twitter:image" content="$if(image)$$image$$else$https://donkeyanaphora.github.io/assets/images/thumbnail.png$endif$">
 
-  <!-- MathJax config: no indent + fix \text{} baseline -->
+  <!-- MathJax config -->
   <script>
     window.MathJax = {
-      /* remove default –0.25 em display indent and keep left-aligned   */
       tex:   { displayIndent: '0em',  displayAlign: 'left' },
-
-      /* inherit the surrounding page font for \text{…} so the baseline
-         matches math italic on hi-DPI screens (stops 1-px jog)        */
-      /* chtml: { mtextInheritFont: true } */
-         chtml: { mtextFont: 'Times' }
+      chtml: { mtextFont: 'Times' }
     };
   </script>
   

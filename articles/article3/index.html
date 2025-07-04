@@ -13,10 +13,11 @@
   <meta name="google-site-verification" content="hmW81pKLkPLJXY0kFe-I1vNXno-xD9XbEWyZyGfz-SA" />
   <meta name="description" content="An exploration of literary and
 creative intelligence and things I wish language models did better.">
+  <meta name="author" content="Collins Westnedge">
   <link rel="canonical" href="https://donkeyanaphora.github.io/articles/article3/">
   
-  <!-- Author -->
-  <meta name="author" content="Collins Westnedge">
+  <!-- Hide drafts from search engines -->
+  <meta name="robots" content="noindex, nofollow">
 
   <!-- Site look & feel -->
   <link rel="stylesheet" href="../../assets/css/main.css"/>
@@ -49,16 +50,11 @@ and creative intelligence and things I wish language models did
 better.">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
-  <!-- MathJax config: no indent + fix \text{} baseline -->
+  <!-- MathJax config -->
   <script>
     window.MathJax = {
-      /* remove default –0.25 em display indent and keep left-aligned   */
       tex:   { displayIndent: '0em',  displayAlign: 'left' },
-
-      /* inherit the surrounding page font for \text{…} so the baseline
-         matches math italic on hi-DPI screens (stops 1-px jog)        */
-      /* chtml: { mtextInheritFont: true } */
-         chtml: { mtextFont: 'Times' }
+      chtml: { mtextFont: 'Times' }
     };
   </script>
   
