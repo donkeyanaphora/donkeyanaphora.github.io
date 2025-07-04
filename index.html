@@ -12,6 +12,9 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
 
+  <!-- external whiteboard -->
+  
+
   <!-- ✨ Favicons ✨ -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -48,22 +51,22 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- Stroke‑size slider inside whiteboard -->
       <div class="sketch-container">
         <div class="canvas-viewport">
           <canvas id="sketchpad" class="sketch-canvas"></canvas>
         </div>
         <div class="sketch-controls">
-          <div class="slider-wrapper">
+          <div class="slider-group">
             <label for="strokeSizeSlider">✏️</label>
-            <input id="strokeSizeSlider" type="range" min="1" max="20" value="2">
+            <input id="strokeSizeSlider" type="range" min="1" max="20" value="5">
           </div>
           <button class="color-btn active" data-color="#000000" style="background:#000" aria-label="Black"></button>
           <button class="color-btn" data-color="#ff0000" style="background:#f00" aria-label="Red"></button>
           <button class="color-btn" data-color="#0000ff" style="background:#00f" aria-label="Blue"></button>
           <button class="color-btn" data-color="#00ff00" style="background:#0f0" aria-label="Green"></button>
-          <button class="color-btn" data-color="eraser" style="background:#fff;border-color:#000" aria-label="Eraser">⌫</button>
+          <button class="eraser-btn" aria-label="Eraser">⌫</button>
           <button id="clearBtn" aria-label="Clear drawing">🧹</button>
+          <button id="undoBtn" aria-label="Undo">↶</button>
         </div>
       </div>
     </div>
@@ -167,7 +170,7 @@
       <div class="mood-item">
         <h3>🎭 Extra‑Ordinary Language</h3>
 <blockquote>
-      <p>So they lov’d, as love in twain<br />
+      <p>So they lov'd, as love in twain<br />
       Had the essence but in one;<br />
       Two distincts, division none:<br />
       Number there in love was slain.</p>
@@ -185,7 +188,7 @@
       <p>Merry and tragical! Tedious and brief!<br />
       That is, hot ice and wondrous strange snow.<br />
       How shall we find the concord of this discord?</p>
-      <p>— <em>Shakespeare, <strong>A Midsummer Night’s
+      <p>— <em>Shakespeare, <strong>A Midsummer Night's
       Dream</strong></em></p>
       </blockquote>
       </div>
@@ -231,7 +234,7 @@
      where abandoned or neglected ideas will go to rest
   </p>
 </div>
-    <!-- each “failed” project is just another .card, like in Articles / Work -->
+    <!-- each "failed" project is just another .card, like in Articles / Work -->
 
 
     <!-- add more cards the same way -->
@@ -249,11 +252,11 @@
     <summary>⭐️ Website Reviews</summary>
       <div class="card">
         <p>Best text editor I've ever used, no fluff.</p>
-        <span class="attribution">— Noel</span>
+        <span class="attribution">— Noel</span>
       </div>
       <div class="card">
         <p>Love the whiteboard 10/10 would recommend.</p>
-        <span class="attribution">— Noel</span>
+        <span class="attribution">— Noel</span>
       </div>
 <h4>
   <a href="mailto:cwestnedge@gmail.com
@@ -272,6 +275,8 @@
 </div>
 
 <footer>&copy; 2025 Donkey Anaphora. All rights reserved.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+ <!-- <script src="https://unpkg.com/fabric@5.3.0/dist/fabric.min.js"></script> -->
 <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

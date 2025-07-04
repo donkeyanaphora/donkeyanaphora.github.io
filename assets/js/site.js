@@ -8,10 +8,16 @@
    Helper utilities
 ---------------------------------------------------------------------- */
 const $  = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
+const $$ = s => Array.from(document.querySelectorAll(s));  // Convert to Array for forEach compatibility
 
 /* no-op: gets redefined by whiteboard if canvas exists */
-function updateCanvasBackground () {}
+function updateCanvasBackground () {
+  if (window.fabricCanvas) {
+    const isDark = document.documentElement.classList.contains('theme-dark');
+    window.fabricCanvas.backgroundColor = isDark ? '#222' : '#ffffff';
+    window.fabricCanvas.renderAll();
+  }
+}
 
 /* ----------------------------------------------------------------------
    1.  Quote rotator (landing page only)
@@ -50,189 +56,322 @@ function updateCanvasBackground () {}
   });
 })();
 
+
 /* ----------------------------------------------------------------------
-   3.  Whiteboard modal (landing page only)
+   3.  Whiteboard modal with Fabric.js (landing page only)
 ---------------------------------------------------------------------- */
 (function () {
   const sketchButton = $('#sketchBtn');
-  if (!sketchButton) return;                // skip on article pages
+  if (!sketchButton) return;
 
   const modal        = $('#sketchModal');
   const modalContent = $('#modalContent');
   const closeButton  = $('.close');
   const fullscreenBtn= $('#fullscreenBtn');
-  const canvas       = $('#sketchpad');
-  const strokeSlider = $('#strokeSizeSlider');
 
-  /* 3-state */
-  let ctx, isDrawing=false, isEraser=false, currentColor='#000000';
-  let lastFocus=null, isFS=false;
+  let fabricCanvas = null;
+  let isFS = false;
+  
+  // Make fabricCanvas globally accessible for updateCanvasBackground
+  window.fabricCanvas = null;
 
-  /* ── slider live preview ────────────────────────────────────────── */
-  if (strokeSlider) strokeSlider.addEventListener('input', () => { if (ctx) resetStrokeStyle(); });
-
-  /* ── open / close helpers ───────────────────────────────────────── */
-  function openModal () {
-    modal.style.display='block';
-    modal.setAttribute('aria-hidden','false');
-    lastFocus = document.activeElement;
-    modalContent.focus();
+  // Open/close helpers
+  function openModal() {
+    modal.style.display = 'block';
     initCanvas();
+    
+    // Add keyboard shortcuts when modal is open
+    window.addEventListener('keydown', handleKeyboardShortcuts);
   }
-  function closeModal(){
-    modal.style.display='none';
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    lastFocus?.focus();
+
+  function closeModal() {
+    modal.style.display = 'none';
+    
+    // Remove keyboard shortcuts when modal is closed
+    window.removeEventListener('keydown', handleKeyboardShortcuts);
+  }
+  
+  // Keyboard shortcuts handler
+  function handleKeyboardShortcuts(e) {
+    // Close modal: Escape
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+    
+    // Undo: Cmd/Ctrl + Z
+    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      if (fabricCanvas) {
+        const objects = fabricCanvas.getObjects();
+        if (objects.length > 0) {
+          const lastObject = objects[objects.length - 1];
+          fabricCanvas.remove(lastObject);
+          fabricCanvas.renderAll();
+        }
+      }
+    }
   }
 
   sketchButton.addEventListener('click', openModal);
-  closeButton  .addEventListener('click', closeModal);
-  window.addEventListener('keydown', e => { if(e.key==='Escape'&&modal.style.display==='block') closeModal(); });
+  closeButton.addEventListener('click', closeModal);
 
-  /* backdrop click */
-  let backPress=false;
-  modal.addEventListener('pointerdown',e=>{backPress=(e.target===modal);});
-  modal.addEventListener('pointerup',e=>{if(backPress&&e.target===modal)closeModal();backPress=false;});
-
-  /* fullscreen toggle */
-  fullscreenBtn.addEventListener('click',()=>{
-    isFS=!isFS;
-    modalContent.classList.toggle('fullscreen',isFS);
-    fullscreenBtn.textContent=isFS?'⛌':'⛶';
-    document.body.style.overflow=isFS?'hidden':'';
-    requestAnimationFrame(initCanvas);
-  });
-
-  /* RESIZE HANDLER */
-  window.addEventListener('resize', () => {
-    if (modal.style.display === 'block') {
-      setTimeout(initCanvas, 100);
+  // Fullscreen toggle
+  fullscreenBtn.addEventListener('click', () => {
+    isFS = !isFS;
+    modalContent.classList.toggle('fullscreen', isFS);
+    fullscreenBtn.textContent = isFS ? '⛌' : '⛶';
+    
+    // Resize canvas after fullscreen toggle
+    if (fabricCanvas) {
+      setTimeout(() => {
+        const container = modalContent.querySelector('.canvas-container-wrapper');
+        if (container) {
+          const rect = container.getBoundingClientRect();
+          const newWidth = Math.floor(rect.width - 4);  // Subtract border
+          const newHeight = Math.floor(rect.height - 4);
+          
+          fabricCanvas.setDimensions({
+            width: newWidth,
+            height: newHeight
+          });
+          fabricCanvas.renderAll();
+          
+          console.log('Resized canvas for fullscreen:', newWidth, 'x', newHeight);
+        }
+      }, 300); // Wait for CSS transition
     }
   });
 
-  /* ── canvas helpers ─────────────────────────────────────────────── */
-  function resetStrokeStyle(){
-    const size = strokeSlider ? +strokeSlider.value : (isEraser?20:2);
-    ctx.lineWidth=size;
-    ctx.lineCap='round'; ctx.lineJoin='round';
-    ctx.strokeStyle=isEraser?'#ffffff':currentColor;
-  }
+  // Canvas initialization
+  function initCanvas() {
+    if (fabricCanvas) return;
 
-  updateCanvasBackground = function (){
-    if(!ctx) return;
-    ctx.save();
-    ctx.globalCompositeOperation='destination-over';
-    ctx.fillStyle='#ffffff';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.restore();
-  };
-
-  function initCanvas(){
-    ctx = canvas.getContext('2d');
+    // Get elements
+    const modalBody = modal.querySelector('.modal-body');
     
-    // Detect mobile and use appropriate canvas size
-    const isMobile = window.innerWidth <= 768;
-    const CANVAS_WIDTH = isMobile ? 800 : 1600;   
-    const CANVAS_HEIGHT = isMobile ? 600 : 1200;  
+    // Clear and rebuild the modal body
+    modalBody.innerHTML = '';
+    modalBody.style.padding = '10px';
     
-    // Only set size if it needs to change - preserve existing content
-    if (canvas.width !== CANVAS_WIDTH || canvas.height !== CANVAS_HEIGHT) {
-      const copy = document.createElement('canvas');
-      copy.width = canvas.width; 
-      copy.height = canvas.height;
-      if (ctx) copy.getContext('2d').drawImage(canvas, 0, 0);
+    // Create sketch container
+    const sketchContainer = document.createElement('div');
+    sketchContainer.className = 'sketch-container';
+    sketchContainer.style.cssText = `
+      text-align: center;
+      user-select: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    `;
+    
+    // Create a simple container for the canvas (no viewport scrolling)
+    const canvasContainer = document.createElement('div');
+    canvasContainer.className = 'canvas-container-wrapper';
+    canvasContainer.style.cssText = `
+      flex: 1;
+      position: relative;
+      border: 2px solid var(--section-border);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+    `;
+    
+    // Create the canvas element
+    const canvas = document.createElement('canvas');
+    canvas.id = 'sketchpad';
+    canvas.style.cssText = `
+      display: block;
+      border: none;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    `;
+    
+    // Add canvas directly to container
+    canvasContainer.appendChild(canvas);
+    sketchContainer.appendChild(canvasContainer);
+    
+    // Recreate controls
+    const controlsHTML = `
+      <div class="sketch-controls">
+        <div class="slider-group">
+          <label for="strokeSizeSlider">✏️</label>
+          <input id="strokeSizeSlider" type="range" min="1" max="20" value="5">
+        </div>
+        <button class="color-btn active" data-color="#000000" style="background:#000" aria-label="Black"></button>
+        <button class="color-btn" data-color="#ff0000" style="background:#f00" aria-label="Red"></button>
+        <button class="color-btn" data-color="#0000ff" style="background:#00f" aria-label="Blue"></button>
+        <button class="color-btn" data-color="#00ff00" style="background:#0f0" aria-label="Green"></button>
+        <button class="eraser-btn" aria-label="Eraser">⌫</button>
+        <button id="clearBtn" aria-label="Clear drawing">🧹</button>
+        <button id="undoBtn" aria-label="Undo">↶</button>
+      </div>
+    `;
+    sketchContainer.insertAdjacentHTML('beforeend', controlsHTML);
+    
+    modalBody.appendChild(sketchContainer);
+    
+    // Wait a moment for DOM to settle, then size canvas to container
+    setTimeout(() => {
+      // Get the actual size of the container
+      const rect = canvasContainer.getBoundingClientRect();
+      const canvasWidth = Math.floor(rect.width - 4);  // Subtract border width
+      const canvasHeight = Math.floor(rect.height - 4);
       
-      canvas.width = CANVAS_WIDTH;
-      canvas.height = CANVAS_HEIGHT;
+      // Set canvas dimensions
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
       
-      if (copy.width > 0) ctx.drawImage(copy, 0, 0);
-    }
-    
-    updateCanvasBackground(); 
-    resetStrokeStyle();
-    attachCanvasListeners(); 
-    attachUiListeners();
-  }
-  // Add this to your canvas touch handling (optional enhancement)
-
-  // Improve mobile touch experience
-  function attachCanvasListeners(){
-    if(canvas.dataset.wired) return; 
-    canvas.dataset.wired='yes';
-    
-    // Desktop events
-    canvas.addEventListener('mousedown',begin);
-    canvas.addEventListener('mousemove',draw);
-    canvas.addEventListener('mouseup',end);
-    canvas.addEventListener('mouseout',end);
-
-    // Mobile touch events with better handling
-    canvas.addEventListener('touchstart', (e) => {
-      // Prevent scrolling while drawing
-      if (e.touches.length === 1) {
-        e.preventDefault();
-        begin(e);
+      console.log('Canvas container size:', rect.width, 'x', rect.height);
+      console.log('Setting canvas size:', canvasWidth, 'x', canvasHeight);
+      
+      // Initialize Fabric canvas
+      fabricCanvas = new fabric.Canvas('sketchpad', {
+        // Enable touch events for Apple Pencil support
+        allowTouchScrolling: false,
+        enablePointerEvents: true
+      });
+      
+      // Set the internal canvas dimensions to match
+      fabricCanvas.setWidth(canvasWidth);
+      fabricCanvas.setHeight(canvasHeight);
+      
+      // Set background
+      fabricCanvas.backgroundColor = 'white';
+      
+      // Enable drawing
+      fabricCanvas.isDrawingMode = true;
+      fabricCanvas.selection = false;
+      
+      // Configure brush
+      fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
+      fabricCanvas.freeDrawingBrush.width = 5;
+      fabricCanvas.freeDrawingBrush.color = '#000000';
+      fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
+      fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
+      
+      // Enable pressure sensitivity for Apple Pencil (if supported)
+      if (fabricCanvas.freeDrawingBrush.onMouseMove) {
+        const originalMouseMove = fabricCanvas.freeDrawingBrush.onMouseMove;
+        fabricCanvas.freeDrawingBrush.onMouseMove = function(pointer, options) {
+          // Check for pressure data from pointer events
+          if (options && options.e && options.e.pressure !== undefined) {
+            // Adjust brush width based on pressure (0.1 to 1.0)
+            const baseBrushWidth = parseInt(document.querySelector('#strokeSizeSlider').value);
+            this.width = baseBrushWidth * (0.5 + options.e.pressure * 0.5);
+          }
+          return originalMouseMove.call(this, pointer, options);
+        };
       }
-    }, {passive: false});
-    
-    canvas.addEventListener('touchmove', (e) => {
-      // Only prevent scrolling if we're actively drawing
-      if (e.touches.length === 1 && isDrawing) {
-        e.preventDefault();
-        draw(e);
-      }
-    }, {passive: false});
-    
-    canvas.addEventListener('touchend', end);
+      
+      // Make it globally accessible
+      window.fabricCanvas = fabricCanvas;
+      
+      fabricCanvas.renderAll();
+      
+      // Path handler - ensure paths are preserved
+      fabricCanvas.on('path:created', function(e) {
+        if (e.path) {
+          e.path.set({
+            selectable: false,
+            evented: false,
+            perPixelTargetFind: false
+          });
+          fabricCanvas.renderAll();
+          console.log('Path created, total objects:', fabricCanvas.getObjects().length);
+        }
+      });
+      
+      // Re-attach control event listeners
+      setupControlListeners();
+      
+      console.log('Whiteboard initialized successfully');
+      console.log('Canvas actual size:', fabricCanvas.width, 'x', fabricCanvas.height);
+    }, 100);
   }
   
-  function pos(e){const r=canvas.getBoundingClientRect(),c=e.touches?e.touches[0]:e;return{x:c.clientX-r.left,y:c.clientY-r.top};}
+  // Separate function to set up control listeners
+  function setupControlListeners() {
+    const strokeSlider = document.querySelector('#strokeSizeSlider');
+    if (strokeSlider) {
+      strokeSlider.addEventListener('input', () => {
+        if (fabricCanvas) {
+          fabricCanvas.freeDrawingBrush.width = parseInt(strokeSlider.value);
+        }
+      });
+    }
 
-  function begin(e) {
-    e.preventDefault();
-    isDrawing = true;
-    const {x, y} = pos(e);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    
-    // For single taps/touches, draw a small circle to make it visible
-    ctx.save();
-    ctx.fillStyle = isEraser ? '#ffffff' : currentColor;
-    ctx.beginPath();
-    ctx.arc(x, y, ctx.lineWidth / 2, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.restore();
-    
-    // Start a new path for potential dragging
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  }
-  function draw(e){ if(!isDrawing)return; e.preventDefault();const {x,y}=pos(e);ctx.lineTo(x,y);ctx.stroke();}
-  function end(){isDrawing=false;}
-
-  function attachUiListeners(){
-    $$('.color-btn').forEach(btn=>{
-      if(btn.dataset.wired) return;
-      btn.dataset.wired='yes';
-      btn.addEventListener('click',ev=>{
-        $$('.color-btn.active').forEach(b=>b.classList.remove('active'));
+    const colorButtons = document.querySelectorAll('.color-btn');
+    colorButtons.forEach(btn => {
+      btn.addEventListener('click', ev => {
+        const color = ev.currentTarget.dataset.color;
+        if (fabricCanvas) {
+          fabricCanvas.freeDrawingBrush.color = color;
+        }
+        // Update active state
+        colorButtons.forEach(b => b.classList.remove('active'));
         ev.currentTarget.classList.add('active');
-        const c=ev.currentTarget.dataset.color;
-        isEraser=(c==='eraser'); if(!isEraser) currentColor=c;
-        resetStrokeStyle();
       });
     });
 
-    const clearBtn=$('#clearBtn');
-    if(!clearBtn.dataset.wired){
-      clearBtn.dataset.wired='yes';
-      clearBtn.addEventListener('click',()=>{
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        updateCanvasBackground();
+    const clearBtn = document.querySelector('#clearBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (fabricCanvas) {
+          fabricCanvas.clear();
+          fabricCanvas.backgroundColor = document.documentElement.classList.contains('theme-dark') ? '#222' : '#ffffff';
+          fabricCanvas.renderAll();
+        }
+      });
+    }
+    
+    // Undo button functionality
+    const undoBtn = document.querySelector('#undoBtn');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', () => {
+        if (fabricCanvas) {
+          const objects = fabricCanvas.getObjects();
+          if (objects.length > 0) {
+            // Remove the last object (most recent path)
+            const lastObject = objects[objects.length - 1];
+            fabricCanvas.remove(lastObject);
+            fabricCanvas.renderAll();
+            console.log('Undo: removed last stroke');
+          }
+        }
+      });
+    }
+    
+    // Eraser button functionality
+    const eraserBtn = document.querySelector('.eraser-btn');
+    if (eraserBtn) {
+      eraserBtn.addEventListener('click', () => {
+        if (fabricCanvas) {
+          // Toggle eraser mode by setting brush color to background color
+          const isErasing = fabricCanvas.freeDrawingBrush.color === fabricCanvas.backgroundColor;
+          if (isErasing) {
+            // Switch back to last selected color
+            const activeColorBtn = document.querySelector('.color-btn.active');
+            const color = activeColorBtn ? activeColorBtn.dataset.color : '#000000';
+            fabricCanvas.freeDrawingBrush.color = color;
+            eraserBtn.style.background = 'var(--nav-bg)';
+          } else {
+            // Switch to eraser (background color)
+            fabricCanvas.freeDrawingBrush.color = fabricCanvas.backgroundColor;
+            eraserBtn.style.background = 'var(--link)';
+          }
+        }
       });
     }
   }
+
+  // Basic controls - these are not needed anymore as they're handled in setupControlListeners
 })();
 
 /* ----------------------------------------------------------------------

@@ -326,23 +326,29 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.5);
-  touch-action: manipulation;
+  touch-action: none; /* Prevent scrolling when modal is open */
 }
+
 .modal-content {
   background-color: var(--card-bg);
   position: fixed;
   border: 3px double var(--section-border);
-  width: 600px;
-  height: 400px;
+  width: 90%;
+  max-width: 1200px;
+  height: 80%;
+  max-height: 800px;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
   overflow: hidden;
-  touch-action: manipulation;
+  touch-action: none;
 }
+
 .modal-content.fullscreen {
   width: 100%;
   height: 100%;
+  max-width: none;
+  max-height: none;
   top: 0;
   left: 0;
   right: 0;
@@ -352,9 +358,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   border: none;
   border-radius: 0;
 }
-.modal-content.fullscreen .modal-body {
-  height: calc(100% - var(--modal-header-height));
-}
+
 .modal-header {
   height: var(--modal-header-height);
   padding: 10px;
@@ -367,6 +371,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   position: relative;
 }
 .modal-header h2 { margin: 0; font-size: 1.2rem; text-align: center; }
+
 .window-controls {
   display: flex;
   gap: 10px;
@@ -380,8 +385,11 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   font-size: 1.2rem;
   color: var(--txt);
   padding: 0 5px;
+  min-width: 30px;
+  min-height: 30px;
 }
 .window-controls button:hover { color: var(--link); }
+
 .modal-body {
   padding: 10px;
   height: calc(100% - var(--modal-header-height));
@@ -390,6 +398,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   overflow: hidden;
 }
 
+/* ========== WHITEBOARD CANVAS CONTAINER ========== */
 .sketch-container {
   text-align: center;
   user-select: none;
@@ -397,64 +406,55 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden; /* Prevent container from growing */
+  overflow: hidden;
 }
 
-/* NEW: Scrollable viewport for the canvas */
-.canvas-viewport {
+/* Canvas wrapper (created dynamically) */
+.canvas-container-wrapper {
   flex: 1;
-  overflow: auto; /* Makes the canvas scrollable */
-  border: 2px solid var(--section-border);
-  background: var(--section-border); /* Shows as border when scrolled */
-  padding: 0;
   position: relative;
+  border: 2px solid var(--section-border);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   min-height: 0;
-  touch-action: pan-x pan-y; /* Allow scrolling only */
 }
 
-.sketch-canvas {
-  display: block;
-  background: #fff;
-  cursor: crosshair;
-  touch-action: none !important; /* Allow drawing gestures */
-  /* Remove the responsive border - viewport provides it */
-  border: none;
-  /* Fixed size - never changes */
-  width: 1600px !important;
-  height: 1200px !important;
-  /* Remove flex properties */
+.theme-dark .canvas-container-wrapper {
+  background: #222;
 }
 
-.theme-dark .sketch-canvas { 
-  background: #222; 
+/* Fabric.js canvas wrapper styles */
+.canvas-container {
+  position: relative !important;
+  display: block !important;
+  margin: 0 auto;
 }
 
-/* Style the scrollbars for better UX */
-.canvas-viewport::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+/* Fabric.js canvas elements */
+.canvas-container canvas {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
-.canvas-viewport::-webkit-scrollbar-track {
-  background: var(--nav-bg);
+/* Upper canvas (drawing layer) should be on top */
+.upper-canvas {
+  z-index: 2;
+  cursor: crosshair !important;
 }
 
-.canvas-viewport::-webkit-scrollbar-thumb {
-  background: var(--section-border);
-  border-radius: 6px;
+/* Lower canvas (objects layer) */
+.lower-canvas {
+  z-index: 1;
 }
 
-.canvas-viewport::-webkit-scrollbar-thumb:hover {
-  background: var(--link);
-}
-
-.canvas-viewport::-webkit-scrollbar-corner {
-  background: var(--nav-bg);
-}
-
-/* ─────────────────────────────────────────────────────────── */
-/*  WHITEBOARD CONTROLS                                       */
-/* ─────────────────────────────────────────────────────────── */
+/* ========== WHITEBOARD CONTROLS ========== */
 .sketch-controls {
   display: flex;
   align-items: center;
@@ -462,11 +462,11 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   gap: var(--controls-gap);
   flex-wrap: wrap;
   padding: var(--controls-padding-y) 0;
-  min-height: 40px;
+  min-height: 50px;
   position: relative;
 }
 
-/* pin slider group left */
+/* Slider group positioning */
 .slider-group {
   position: absolute;
   left: 0.75rem;
@@ -483,6 +483,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   cursor: ew-resize;
 }
 
+/* Control buttons */
 .sketch-controls button {
   padding: 0.3rem 0.8rem;
   border: 2px outset #c0c0c0;
@@ -490,23 +491,60 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   font-family: inherit;
   cursor: pointer;
   font-weight: bold;
+  min-width: 44px;
+  min-height: 35px;
+  transition: background-color 0.2s;
 }
-.sketch-controls button:active { border-style: inset; }
+
+.sketch-controls button:hover {
+  background: var(--card-bg);
+}
+
+.sketch-controls button:active {
+  border-style: inset;
+}
+
+/* Color buttons */
 .color-btn {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 0 !important;
   border: 2px outset #c0c0c0;
+  border-radius: 4px;
 }
-.color-btn.active { border-style: inset; }
 
-/* Pseudo‑code textarea dark theme */
+.color-btn.active {
+  border-style: inset;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+}
+
+/* Eraser button */
+.eraser-btn {
+  color: var(--txt);
+}
+
+.eraser-btn.active {
+  background: var(--link) !important;
+  color: white;
+}
+
+/* Undo button */
+#undoBtn {
+  color: var(--txt);
+}
+
+/* ========== CODE MODAL ========== */
+#codeArea {
+  background: white;
+  color: black;
+}
+
 html.theme-dark #codeArea {
   background: #222;
   color: #e0e0e0;
 }
 
-/* FOOTER */
+/* ========== FOOTER ========== */
 footer {
   margin-top: auto;
   border-top: 2px solid #000;
@@ -515,10 +553,10 @@ footer {
   background: var(--footer-bg);
 }
 
-/* FLOATING BUTTONS – horizontal, small gap */
+/* ========== FLOATING BUTTONS ========== */
 .float-btn {
   position: fixed;
-  bottom: 1rem;          /* all on the same baseline        */
+  bottom: 1rem;
   padding: .6rem 1.1rem;
   font-weight: bold;
   border: 2px outset #c0c0c0;
@@ -529,185 +567,19 @@ footer {
   font-size: 1.05rem;
 }
 
-/* hover stays as-is */
 .float-btn:hover {
   background-color: var(--bg-col);
   border-color: var(--link);
 }
 
-/* bump each one leftward by ≈ button-width + 0.8 rem gap */
-#toggleDark { right: 1rem; }      /* 🌙 */
-#sketchBtn  { right: 5.2rem; }    /* ✍️  (1 + 4.2)  */
-#codeBtn    { right: 9.4rem; }    /* ⌨️  (1 + 2×4.2) */
-
-/* QUICK LINKS */
-.quick-links {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-}
-.quick-links a {
-  padding: .5rem 1rem;
-  border: 2px outset #c0c0c0;
-  background: var(--nav-bg);
-  text-decoration: none;
-}
-
-/* Quick‑link placeholders */
-.quick-links a.disabled {
-  pointer-events: none;
-  cursor: default;
-  opacity: .9;
-}
-
-/* allow uc styling inside quick links */
-.quick-links a.uc {
-  border: 3px dashed var(--uc-border);
-  background: var(--uc-bg);
-}
-.quick-links a.uc:hover { background: var(--uc-bg); }
-
-
-/* TABLET RESPONSIVE - Wider content on iPads */
-@media (min-width: 769px) and (max-width: 1024px) {
-  #wrapper {
-    width: 85%; /* Wider than default 70% */
-  }
-  
-  main.content {
-    width: 85%; /* Match wrapper width for articles */
-  }
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-  .modal-content { 
-    width: 95%; 
-    height: 85%; 
-  }
-  .mood-image img { 
-    max-width: 100%; 
-    width: 100%; 
-    height: auto; 
-  }
-  .mood-item { 
-    padding: 0.5rem; 
-  }
-  .mood-image { 
-    padding: 0.5rem; 
-  }
-  h1 { 
-    font-size: 1.8rem; 
-  }
-  #wrapper { 
-    width: 95%; 
-  }
-  
-  /* Apply the same wrapper style as the landing page to article */
-  main.content {
-    width: 95%; /* Match landing page mobile wrapper width */
-  }
-
-  .sketch-controls { 
-    gap: 0.8rem; 
-    padding: var(--controls-padding-y) 0; 
-  }
-  
-  .sketch-controls button { 
-    padding: 0.8rem 1.2rem; 
-    font-size: 1rem; 
-    min-height: 44px; /* Better touch targets */
-  }
-
-  .color-btn { 
-    width: 40px; 
-    height: 40px; 
-  }
-
-  .modal-content { 
-    width: 98%; 
-    height: 95%; 
-  }
-  
-  /* Better mobile scrollbars */
-  .canvas-viewport::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  /* Smaller canvas on mobile for less scrolling */
-  .sketch-canvas {
-    width: 800px !important;  /* Half size on mobile */
-    height: 600px !important;
-  }
-  
-  /* Prevent page scrolling when using whiteboard */
-  .modal {
-    position: fixed;
-    overflow: hidden;
-  }
-  
-  /* Better touch targets for all buttons */
-  .float-btn {
-    padding: 0.8rem 1.2rem;
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Prevent zoom on form inputs */
-  input[type="text"],
-  input[type="email"], 
-  input[type="search"],
-  textarea {
-    font-size: 16px !important; /* Prevents iOS zoom on focus */
-  }
-  
-  /* Better equation display on mobile */
-  .MathJax_Display,
-  mjx-container[jax="CHTML"][display="true"] {
-    margin: 1em 0 !important;
-    font-size: 0.9em !important;
-  }
-  
-  /* Prevent horizontal scroll issues */
-  article.markdown-body {
-    overflow-x: hidden;
-  }
-  
-  article.markdown-body table {
-    font-size: 0.85em;
-  }
-}
-
-/* ── PAGE-LEVEL FLEX LAYOUT  ▸ keeps footer at window bottom ───────── */
-body{
-  display:flex;              /* turn the <body> into a vertical stack  */
-  flex-direction:column;
-  /* height:100% is already set earlier, so nothing else to add here   */
-}
-
-/* whichever element holds the bulk of the page-content */
-main.content,                 /* article pages                           */
-#wrapper{                     /* landing page                            */
-  flex:1 0 auto;              /* grow to fill leftover space,            */
-}
-
-/* footer never shrinks and therefore sits at the very end */
-footer{
-  flex-shrink:0;
-}
-
-
-/* Align every button on the same bottom-right anchor */
+/* Menu button positioning */
 #menuBtn,
 #toggleDark,
 #sketchBtn,
 #codeBtn,
-.back-btn            { right: 1rem; }
+.back-btn { right: 1rem; }
 
-/* Hide everything except the menu button */
+/* Hide buttons by default */
 #toggleDark,
 #sketchBtn,
 #codeBtn,
@@ -718,12 +590,151 @@ footer{
   transition: transform .25s ease, opacity .25s ease;
 }
 
-/* Fan upwards in 1-button steps when menu is open */
+/* Show buttons when menu is open */
 body.menu-open #toggleDark { transform: translateY(-4.4rem); opacity: 1; pointer-events: auto; }
 body.menu-open #sketchBtn  { transform: translateY(-8.8rem); opacity: 1; pointer-events: auto; }
-body.menu-open #codeBtn    { transform: translateY(-13.2rem);opacity: 1; pointer-events: auto; }
-body.menu-open .back-btn   { transform: translateY(-4.4rem); opacity: 1; pointer-events: auto; } /* article pages */
+body.menu-open #codeBtn    { transform: translateY(-13.2rem); opacity: 1; pointer-events: auto; }
+body.menu-open .back-btn   { transform: translateY(-4.4rem); opacity: 1; pointer-events: auto; }
 
-/* Feedback: turn ➕ into × */
-#menuBtn { right: 1rem; }                 /* anchor the FAB itself */
+/* Menu button rotation */
+#menuBtn { right: 1rem; }
 body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; }
+
+/* ========== QUICK LINKS ========== */
+.quick-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.quick-links a {
+  padding: .5rem 1rem;
+  border: 2px outset #c0c0c0;
+  background: var(--nav-bg);
+  text-decoration: none;
+}
+
+.quick-links a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .9;
+}
+
+.quick-links a.uc {
+  border: 3px dashed var(--uc-border);
+  background: var(--uc-bg);
+}
+
+.quick-links a.uc:hover { background: var(--uc-bg); }
+
+/* ========== RESPONSIVE DESIGN ========== */
+/* Tablet - Wider content on iPads */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #wrapper,
+  main.content {
+    width: 85%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  
+  #wrapper,
+  main.content {
+    width: 95%;
+  }
+  
+  /* Modal adjustments */
+  .modal-content {
+    width: 98%;
+    height: 90%;
+  }
+  
+  /* Mood board */
+  .mood-item,
+  .mood-image {
+    padding: 0.5rem;
+  }
+  
+  .mood-image img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Whiteboard controls */
+  .sketch-controls {
+    gap: 0.4rem;
+    padding: var(--controls-padding-y) 0;
+  }
+  
+  .sketch-controls button {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+  
+  .color-btn {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .slider-group {
+    position: static;
+    transform: none;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Better touch targets */
+  .float-btn,
+  .eraser-btn,
+  #undoBtn {
+    padding: 0.8rem 1.2rem;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent iOS zoom on inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Math display */
+  .MathJax_Display,
+  mjx-container[jax="CHTML"][display="true"] {
+    margin: 1em 0 !important;
+    font-size: 0.9em !important;
+  }
+  
+  /* Prevent horizontal scroll */
+  article.markdown-body {
+    overflow-x: hidden;
+  }
+  
+  article.markdown-body table {
+    font-size: 0.85em;
+  }
+}
+
+/* ========== PAGE LAYOUT - Footer at bottom ========== */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main.content,
+#wrapper {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
