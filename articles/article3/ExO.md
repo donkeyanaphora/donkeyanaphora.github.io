@@ -1,3 +1,11 @@
+---
+title: "🎭 Extra-Ordinary Language"
+author: "Collins Westnedge"
+date: "2025-07-02"
+description: "An exploration of literary and creative intelligence and things I wish language models did better."
+slug: "article3"
+---
+
 # 🎭 Extra-Ordinary Language 
 
 **COLLINS WESTNEDGE**  
