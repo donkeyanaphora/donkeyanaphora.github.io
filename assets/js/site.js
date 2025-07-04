@@ -65,8 +65,6 @@ function updateCanvasBackground () {
 })();
 
 
-// Replace the whiteboard section (section 3) in your site.js with this optimized version:
-
 /* ----------------------------------------------------------------------
    3.  Whiteboard modal with Fabric.js (landing page only)
 ---------------------------------------------------------------------- */
@@ -81,11 +79,6 @@ function updateCanvasBackground () {
 
   let fabricCanvas = null;
   let isFS = false;
-  
-  // Performance optimization variables
-  let isApplePencil = false;
-  let rafId = null;
-  let pendingRender = false;
   
   // Make fabricCanvas globally accessible for updateCanvasBackground
   window.fabricCanvas = null;
@@ -104,12 +97,6 @@ function updateCanvasBackground () {
     
     // Remove keyboard shortcuts when modal is closed
     window.removeEventListener('keydown', handleKeyboardShortcuts);
-    
-    // Cancel any pending renders
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
     
     // Clean up cached values
     window.cachedBrushWidth = 5;
@@ -202,17 +189,6 @@ function updateCanvasBackground () {
     resizeCanvas();
   });
 
-  // Optimized render function
-  function scheduleRender() {
-    if (!pendingRender && fabricCanvas) {
-      pendingRender = true;
-      rafId = requestAnimationFrame(() => {
-        fabricCanvas.renderAll();
-        pendingRender = false;
-      });
-    }
-  }
-
   // Canvas initialization
   function initCanvas() {
     if (fabricCanvas) return;
@@ -250,8 +226,8 @@ function updateCanvasBackground () {
         // Enable touch events for Apple Pencil support
         allowTouchScrolling: false,
         enablePointerEvents: true,
-        enableRetinaScaling: true,
-        renderOnAddRemove: false, // We'll handle rendering manually
+        enableRetinaScaling: isDesktop && !isIPad,  // Disable on iPad for better performance
+        renderOnAddRemove: true,
         skipTargetFind: true,
         // Performance optimizations
         perPixelTargetFind: false,
@@ -260,15 +236,12 @@ function updateCanvasBackground () {
         hasBorders: false,
         enableSelection: false,
         preserveObjectStacking: true,
+        // Reduce canvas update frequency for better performance
         renderTop: false,
-        // Disable features we don't need
+        // Disable gestures we don't need
         fireRightClick: false,
         stopContextMenu: true,
-        uniformScaling: false,
-        // iPad-specific optimizations
-        stateful: false,
-        // Use passive event listeners for better performance
-        interactive: isIPad ? false : true
+        uniformScaling: false
       });
       
       // Set the internal canvas dimensions to match
@@ -283,23 +256,16 @@ function updateCanvasBackground () {
       fabricCanvas.isDrawingMode = true;
       fabricCanvas.selection = false;
       
-      // Use a simpler brush for better performance
-      const brush = new fabric.PencilBrush(fabricCanvas);
-      brush.width = 5;
-      brush.color = '#000000';
-      brush.strokeLineCap = 'round';
-      brush.strokeLineJoin = 'round';
+      // Configure brush with performance in mind
+      fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
+      fabricCanvas.freeDrawingBrush.width = 5;
+      fabricCanvas.freeDrawingBrush.color = '#000000';
+      fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
+      fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
+      // No decimation for better capture of fast strokes
+      fabricCanvas.freeDrawingBrush.decimate = 0;
       
-      // Disable decimation for maximum accuracy
-      brush.decimate = 0;
-      
-      // Additional optimizations for smooth drawing
-      brush.strokeMiterLimit = 10;
-      brush.shadow = null; // No shadows for performance
-      
-      fabricCanvas.freeDrawingBrush = brush;
-      
-      // Ensure canvas handles touch properly
+      // Ensure canvas handles touch properly without custom handlers
       const upperCanvas = fabricCanvas.upperCanvasEl;
       if (upperCanvas) {
         upperCanvas.style.touchAction = 'none';
@@ -309,33 +275,31 @@ function updateCanvasBackground () {
         // Force GPU acceleration
         upperCanvas.style.willChange = 'transform';
         
-        // Use native pointer events for better performance
+        // Add pointer event listeners for better Apple Pencil support
         upperCanvas.addEventListener('pointerdown', handlePointerDown, { passive: false });
         upperCanvas.addEventListener('pointermove', handlePointerMove, { passive: false });
         upperCanvas.addEventListener('pointerup', handlePointerUp, { passive: false });
         upperCanvas.addEventListener('pointercancel', handlePointerUp, { passive: false });
-        upperCanvas.addEventListener('pointerleave', handlePointerUp, { passive: false });
       }
       
       // Make it globally accessible
       window.fabricCanvas = fabricCanvas;
       window.cachedBrushWidth = 5;
       
-      fabricCanvas.renderAll();
+      fabricCanvas.requestRenderAll();
       
-      // Optimized path handler
+      // Path handler - ensure paths are preserved
       fabricCanvas.on('path:created', function(e) {
         if (e.path) {
-          // Only set absolutely necessary properties
+          // Only set critical properties
           e.path.set({
             selectable: false,
-            evented: false
+            evented: false,
+            perPixelTargetFind: false,
+            objectCaching: true,
+            strokeUniform: true,
+            noScaleCache: false
           });
-          
-          // Render immediately on iPad for responsiveness
-          if (isIPad) {
-            scheduleRender();
-          }
         }
       });
       
@@ -344,31 +308,13 @@ function updateCanvasBackground () {
     });
   }
   
-  // Simplified pointer event handlers for better performance
-  let activePointerId = null;
-  
+  // Pointer event handlers for Apple Pencil support
   function handlePointerDown(e) {
-    // Only track one pointer at a time
-    if (activePointerId !== null && e.pointerId !== activePointerId) {
-      e.preventDefault();
-      return;
-    }
-    
-    // Only allow pen or mouse
+    // Simple check: pen or mouse can draw, touch cannot
     if (e.pointerType === 'pen' || e.pointerType === 'mouse') {
-      activePointerId = e.pointerId;
-      isApplePencil = e.pointerType === 'pen';
-      
-      // Ensure drawing mode is on
       fabricCanvas.isDrawingMode = true;
-      
-      // Set initial pressure
-      if (isApplePencil && e.pressure > 0) {
-        const baseWidth = window.cachedBrushWidth || 5;
-        fabricCanvas.freeDrawingBrush.width = Math.max(1, baseWidth * (0.3 + e.pressure * 0.7));
-      }
     } else {
-      // Reject touch input
+      // Prevent palm/finger from drawing
       e.preventDefault();
       e.stopPropagation();
       fabricCanvas.isDrawingMode = false;
@@ -376,27 +322,12 @@ function updateCanvasBackground () {
   }
   
   function handlePointerMove(e) {
-    // Only process if it's the active pointer
-    if (e.pointerId !== activePointerId) return;
-    
-    // Update pressure for Apple Pencil
-    if (isApplePencil && e.pressure > 0) {
-      const baseWidth = window.cachedBrushWidth || 5;
-      fabricCanvas.freeDrawingBrush.width = Math.max(1, baseWidth * (0.3 + e.pressure * 0.7));
-    }
+    // Keep empty - no pressure sensitivity for better performance
   }
   
   function handlePointerUp(e) {
-    if (e.pointerId === activePointerId) {
-      activePointerId = null;
-      isApplePencil = false;
-      
-      // Reset brush width
-      fabricCanvas.freeDrawingBrush.width = window.cachedBrushWidth || 5;
-      
-      // Keep drawing mode on
-      fabricCanvas.isDrawingMode = true;
-    }
+    // Always ready for next stroke
+    fabricCanvas.isDrawingMode = true;
   }
   
   // Separate function to set up control listeners
@@ -419,6 +350,8 @@ function updateCanvasBackground () {
         const color = ev.currentTarget.dataset.color;
         if (fabricCanvas) {
           fabricCanvas.freeDrawingBrush.color = color;
+          // Ensure brush width is correct
+          fabricCanvas.freeDrawingBrush.width = window.cachedBrushWidth || 5;
         }
         // Update active state
         colorButtons.forEach(b => b.classList.remove('active'));
@@ -439,7 +372,7 @@ function updateCanvasBackground () {
         if (fabricCanvas) {
           fabricCanvas.clear();
           fabricCanvas.backgroundColor = document.documentElement.classList.contains('theme-dark') ? '#222' : '#ffffff';
-          fabricCanvas.renderAll();
+          fabricCanvas.requestRenderAll();
           
           // Reset eraser if it was active
           const eraserBtn = document.querySelector('.eraser-btn');
@@ -463,9 +396,10 @@ function updateCanvasBackground () {
         if (fabricCanvas) {
           const objects = fabricCanvas.getObjects();
           if (objects.length > 0) {
+            // Remove the last object without re-rendering everything
             const lastObject = objects[objects.length - 1];
             fabricCanvas.remove(lastObject);
-            fabricCanvas.renderAll();
+            fabricCanvas.requestRenderAll();
           }
         }
       });
@@ -476,6 +410,7 @@ function updateCanvasBackground () {
     if (eraserBtn) {
       eraserBtn.addEventListener('click', () => {
         if (fabricCanvas) {
+          // Toggle eraser mode by setting brush color to background color
           const isErasing = eraserBtn.classList.contains('active');
           if (isErasing) {
             // Switch back to last selected color
@@ -484,6 +419,8 @@ function updateCanvasBackground () {
             fabricCanvas.freeDrawingBrush.color = color;
             eraserBtn.classList.remove('active');
             eraserBtn.style.background = 'var(--nav-bg)';
+            // Restore brush width
+            fabricCanvas.freeDrawingBrush.width = window.cachedBrushWidth || 5;
           } else {
             // Switch to eraser (background color)
             fabricCanvas.freeDrawingBrush.color = fabricCanvas.backgroundColor;
