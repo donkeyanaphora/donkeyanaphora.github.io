@@ -492,6 +492,8 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* Ensure the viewport respects its boundaries */
   isolation: isolate;
   transition: background-color .25s ease, border-color .25s ease;
+  /* Critical for Apple Pencil */
+  touch-action: none !important;
 }
 
 .theme-dark .canvas-viewport {
@@ -530,6 +532,8 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* Ensure container respects viewport bounds */
   max-width: 100%;
   max-height: 100%;
+  /* Critical for Apple Pencil support */
+  touch-action: none !important;
 }
 
 /* Fabric.js canvas elements */
@@ -548,15 +552,29 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   max-height: 100%;
 }
 
-/* Upper canvas (drawing layer) should be on top */
+/* Upper canvas (drawing layer) - Enhanced for Apple Pencil */
 .upper-canvas {
   z-index: 2;
   cursor: crosshair !important;
+  /* Critical for Apple Pencil support */
+  touch-action: none !important;
+  -webkit-touch-callout: none !important;
+  pointer-events: auto !important;
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  /* iOS optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Lower canvas (objects layer) */
 .lower-canvas {
   z-index: 1;
+  /* Also needs touch-action for consistency */
+  touch-action: none !important;
+  pointer-events: none !important;
 }
 
 /* ========== WHITEBOARD CONTROLS ========== */
@@ -858,7 +876,7 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   }
 }
 
-/* iOS specific fixes - Enhanced for orientation changes */
+/* iOS specific fixes - Enhanced for orientation changes and Apple Pencil */
 @supports (-webkit-touch-callout: none) {
   /* iOS Safari specific styles */
   .modal-content {
@@ -893,9 +911,13 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
     position: relative;
     width: 100%;
     height: 100%;
+    /* Critical for preventing unwanted scrolling */
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto !important;
   }
   
-  /* Force GPU acceleration for canvases */
+  /* Force GPU acceleration for all canvas elements */
   .sketch-canvas,
   .upper-canvas,
   .lower-canvas,
@@ -905,6 +927,23 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     perspective: 1000;
+    /* Prevent any touch scrolling */
+    touch-action: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  /* Enhanced touch handling for Apple Pencil */
+  .upper-canvas {
+    /* Ensure the drawing canvas always accepts pointer events */
+    pointer-events: auto !important;
+    /* Prevent drag behavior */
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    /* High-performance rendering */
+    will-change: transform;
+    contain: layout style paint;
   }
   
   /* iOS landscape mode fixes */

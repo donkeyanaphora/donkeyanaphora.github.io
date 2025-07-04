@@ -79,6 +79,8 @@ function updateCanvasBackground () {
 
   let fabricCanvas = null;
   let isFS = false;
+  let isDrawingWithPencil = false;
+  let currentPointerType = 'mouse';
   
   // Make fabricCanvas globally accessible for updateCanvasBackground
   window.fabricCanvas = null;
@@ -262,8 +264,8 @@ function updateCanvasBackground () {
       fabricCanvas.freeDrawingBrush.color = '#000000';
       fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
       fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
-      // Reduce path complexity for better performance (more aggressive on mobile)
-      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 2.5 : (isDesktop ? 2 : 4);
+      // Reduce decimation for better capture of fast strokes
+      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 0.5 : (isDesktop ? 1 : 2);
       
       // Ensure canvas handles touch properly without custom handlers
       const upperCanvas = fabricCanvas.upperCanvasEl;
@@ -274,14 +276,17 @@ function updateCanvasBackground () {
         upperCanvas.style.userSelect = 'none';
         // Force GPU acceleration
         upperCanvas.style.willChange = 'transform';
+        
+        // Add pointer event listeners for better Apple Pencil support
+        upperCanvas.addEventListener('pointerdown', handlePointerDown, { passive: false });
+        upperCanvas.addEventListener('pointermove', handlePointerMove, { passive: false });
+        upperCanvas.addEventListener('pointerup', handlePointerUp, { passive: false });
+        upperCanvas.addEventListener('pointercancel', handlePointerUp, { passive: false });
       }
-      
-      // REMOVED: Pressure sensitivity code for Apple Pencil
-      // The brush width will now only be controlled by the slider
       
       // Make it globally accessible
       window.fabricCanvas = fabricCanvas;
-      window.cachedBrushWidth = 5;  // Still cache for consistency
+      window.cachedBrushWidth = 5;
       
       fabricCanvas.requestRenderAll();
       
@@ -317,6 +322,49 @@ function updateCanvasBackground () {
       // Set up control event listeners
       setupControlListeners();
     });
+  }
+  
+  // Pointer event handlers for Apple Pencil support
+  function handlePointerDown(e) {
+    currentPointerType = e.pointerType;
+    
+    // Only draw with pen/pencil or mouse, not touch
+    if (e.pointerType === 'pen' || e.pointerType === 'mouse' || 
+        (e.pointerType === 'touch' && e.isPrimary && !e.radiusX)) {
+      isDrawingWithPencil = true;
+      
+      // Apply pressure if available (Apple Pencil)
+      if (e.pressure && e.pointerType === 'pen') {
+        const baseWidth = window.cachedBrushWidth || 5;
+        // Smoother pressure curve
+        const pressureWidth = Math.max(1, Math.round(baseWidth * (0.3 + e.pressure * 0.7)));
+        fabricCanvas.freeDrawingBrush.width = pressureWidth;
+      }
+    } else {
+      // Prevent palm/finger from drawing
+      e.preventDefault();
+      e.stopPropagation();
+      fabricCanvas.isDrawingMode = false;
+    }
+  }
+  
+  function handlePointerMove(e) {
+    // Update pressure during drawing with Apple Pencil
+    if (isDrawingWithPencil && e.pressure && e.pointerType === 'pen') {
+      const baseWidth = window.cachedBrushWidth || 5;
+      const pressureWidth = Math.max(1, Math.round(baseWidth * (0.3 + e.pressure * 0.7)));
+      fabricCanvas.freeDrawingBrush.width = pressureWidth;
+    }
+  }
+  
+  function handlePointerUp(e) {
+    if (currentPointerType === e.pointerType) {
+      isDrawingWithPencil = false;
+      // Re-enable drawing mode
+      fabricCanvas.isDrawingMode = true;
+      // Reset brush width to slider value
+      fabricCanvas.freeDrawingBrush.width = window.cachedBrushWidth || 5;
+    }
   }
   
   // Separate function to set up control listeners
