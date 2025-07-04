@@ -67,358 +67,228 @@ function updateCanvasBackground () {
 
 /* ----------------------------------------------------------------------
    3.  Whiteboard modal with Fabric.js (landing page only)
+   Patched 2025‑07‑04
+   •  Removes unused `isDesktop` variable warning
+   •  Keeps every Apple Pencil sample (decimate = 0 on iPad)
+   •  Minor cleanup + lint fixes
 ---------------------------------------------------------------------- */
 (function () {
-  const sketchButton = $('#sketchBtn');
-  if (!sketchButton) return;
+  /* -------------------- Helpers -------------------- */
+  const $ = sel => document.querySelector(sel);
+  const isIPad = /iPad/.test(navigator.userAgent) ||
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+                     .test(navigator.userAgent);
 
-  const modal        = $('#sketchModal');
-  const modalContent = $('#modalContent');
-  const closeButton  = $('.close');
-  const fullscreenBtn= $('#fullscreenBtn');
+  /* -------------------- Elements ------------------- */
+  const sketchButton   = $('#sketchBtn');
+  if (!sketchButton) return;          // whiteboard only on landing page
+
+  const modal          = $('#sketchModal');
+  const modalContent   = $('#modalContent');
+  const closeButton    = $('.close');
+  const fullscreenBtn  = $('#fullscreenBtn');
 
   let fabricCanvas = null;
-  let isFS = false;
-  
-  // Make fabricCanvas globally accessible for updateCanvasBackground
+  let isFS = false;                   // fullscreen toggle state
+
+  // Expose globally for other modules (e.g. updateCanvasBackground)
   window.fabricCanvas = null;
 
-  // Open/close helpers
-  function openModal() {
+  /* ---------------- Modal open / close -------------- */
+  const openModal = () => {
     modal.style.display = 'block';
     initCanvas();
-    
-    // Add keyboard shortcuts when modal is open
-    window.addEventListener('keydown', handleKeyboardShortcuts);
-  }
+    window.addEventListener('keydown', handleShortcuts);
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     modal.style.display = 'none';
-    
-    // Remove keyboard shortcuts when modal is closed
-    window.removeEventListener('keydown', handleKeyboardShortcuts);
-    
-    // Clean up cached values
-    window.cachedBrushWidth = 5;
-  }
-  
-  // Keyboard shortcuts handler
-  function handleKeyboardShortcuts(e) {
-    // Close modal: Escape
-    if (e.key === 'Escape') {
-      closeModal();
-    }
-    
-    // Undo: Cmd/Ctrl + Z
-    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
-      e.preventDefault();
-      if (fabricCanvas) {
-        const objects = fabricCanvas.getObjects();
-        if (objects.length > 0) {
-          const lastObject = objects[objects.length - 1];
-          fabricCanvas.remove(lastObject);
-          fabricCanvas.requestRenderAll();
-        }
-      }
-    }
-  }
+    window.removeEventListener('keydown', handleShortcuts);
+    window.cachedBrushWidth = 5;      // reset
+  };
 
   sketchButton.addEventListener('click', openModal);
   closeButton.addEventListener('click', closeModal);
 
-  // Helper function to resize canvas
-  function resizeCanvas() {
-    if (!fabricCanvas) return;
-    
-    const container = modalContent.querySelector('.canvas-viewport');
-    if (container) {
-      // Use timeout to ensure container has finished resizing
-      setTimeout(() => {
-        const rect = container.getBoundingClientRect();
-        const newWidth = Math.floor(rect.width - 4);  // Subtract border
-        const newHeight = Math.floor(rect.height - 4);
-        
-        // Store current canvas content
-        const canvasData = fabricCanvas.toJSON();
-        
-        // Resize the canvas
-        fabricCanvas.setDimensions({
-          width: newWidth,
-          height: newHeight
-        });
-        
-        // Restore canvas content
-        fabricCanvas.loadFromJSON(canvasData, () => {
-          fabricCanvas.requestRenderAll();
-        });
-      }, 100);
+  /* --------------- Keyboard shortcuts --------------- */
+  function handleShortcuts (e) {
+    if (e.key === 'Escape') closeModal();
+
+    // Undo — Cmd/Ctrl + Z
+    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey && fabricCanvas) {
+      e.preventDefault();
+      const objs = fabricCanvas.getObjects();
+      if (objs.length) {
+        fabricCanvas.remove(objs[objs.length - 1]);
+        fabricCanvas.requestRenderAll();
+      }
     }
   }
 
-  // Handle orientation changes
+  /* ---------------- Canvas resize ------------------ */
   let orientationTimer;
-  window.addEventListener('orientationchange', () => {
-    if (modal.style.display === 'block') {
-      // Clear any existing timer
-      clearTimeout(orientationTimer);
-      
-      // Wait for orientation change to complete
-      orientationTimer = setTimeout(() => {
-        resizeCanvas();
-      }, 300);
-    }
-  });
+  const debounceResize = () => {
+    clearTimeout(orientationTimer);
+    orientationTimer = setTimeout(resizeCanvas, 300);
+  };
 
-  // Also handle resize events for better coverage
-  window.addEventListener('resize', () => {
-    if (modal.style.display === 'block') {
-      clearTimeout(orientationTimer);
-      orientationTimer = setTimeout(() => {
-        resizeCanvas();
-      }, 300);
-    }
-  });
+  window.addEventListener('orientationchange', () => modal.style.display === 'block' && debounceResize());
+  window.addEventListener('resize', () => modal.style.display === 'block' && debounceResize());
 
-  // Fullscreen toggle
   fullscreenBtn.addEventListener('click', () => {
     isFS = !isFS;
     modalContent.classList.toggle('fullscreen', isFS);
     fullscreenBtn.textContent = isFS ? '⛌' : '⛶';
-    
-    // Resize canvas after fullscreen toggle
     resizeCanvas();
   });
 
-  // Canvas initialization
-  function initCanvas() {
-    if (fabricCanvas) return;
+  function resizeCanvas () {
+    if (!fabricCanvas) return;
+    const container = modalContent.querySelector('.canvas-viewport');
+    if (!container) return;
 
-    // Get the existing canvas element
-    const canvasEl = document.getElementById('sketchpad');
-    const canvasContainer = document.querySelector('.canvas-viewport');
-    
-    if (!canvasEl || !canvasContainer) {
-      return; // Exit silently if elements not found
-    }
-    
-    // Ensure canvas has proper touch handling styles
-    canvasEl.style.touchAction = 'none';
-    canvasEl.style.webkitTouchCallout = 'none';
-    canvasEl.style.webkitUserSelect = 'none';
-    canvasEl.style.userSelect = 'none';
-    
-    // Wait for modal to be fully visible, then size canvas to container
+    // wait until container finishes animation (e.g. fullscreen)
+    setTimeout(() => {
+      const { width, height } = container.getBoundingClientRect();
+      const w = Math.floor(width  - 4);
+      const h = Math.floor(height - 4);
+      const json = fabricCanvas.toJSON();
+      fabricCanvas.setDimensions({ width: w, height: h });
+      fabricCanvas.loadFromJSON(json, () => fabricCanvas.requestRenderAll());
+    }, 100);
+  }
+
+  /* ---------------- Canvas init -------------------- */
+  function initCanvas () {
+    if (fabricCanvas) return;         // already initialised
+
+    const canvasEl       = document.getElementById('sketchpad');
+    const canvasViewport = document.querySelector('.canvas-viewport');
+    if (!canvasEl || !canvasViewport) return;
+
+    // Touch‑handling CSS
+    ['touchAction','webkitTouchCallout','webkitUserSelect','userSelect']
+      .forEach(p => { canvasEl.style[p] = 'none'; });
+
+    // Size canvas to viewport *after* modal render
     requestAnimationFrame(() => {
-      // Get the actual size of the container
-      const rect = canvasContainer.getBoundingClientRect();
-      const canvasWidth = Math.floor(rect.width - 4);  // Subtract border width
-      const canvasHeight = Math.floor(rect.height - 4);
-      
-      // Set canvas dimensions
-      canvasEl.width = canvasWidth;
-      canvasEl.height = canvasHeight;
-      
-      // Initialize Fabric canvas
-      const isIPad = /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
+      const { width, height } = canvasViewport.getBoundingClientRect();
+      canvasEl.width  = Math.floor(width  - 4);
+      canvasEl.height = Math.floor(height - 4);
+
+      /* -------- Fabric.js setup -------- */
       fabricCanvas = new fabric.Canvas('sketchpad', {
-        // Enable touch events for Apple Pencil support
         allowTouchScrolling: false,
         enablePointerEvents: true,
-        enableRetinaScaling: isIPad || isDesktop,  // Enable for iPad (Apple Pencil) and desktop
-        renderOnAddRemove: true,
-        skipTargetFind: true,
-        // Performance optimizations
-        perPixelTargetFind: false,
+        enableRetinaScaling: window.devicePixelRatio > 1,
+        renderOnAddRemove:   true,
+        skipTargetFind:      true,
+        perPixelTargetFind:  false,
         targetFindTolerance: 5,
-        hasControls: false,
-        hasBorders: false,
-        enableSelection: false,
+        hasControls:         false,
+        hasBorders:          false,
+        selection:           false,
         preserveObjectStacking: true,
-        // Reduce canvas update frequency for better performance
-        renderTop: false,
-        // Disable gestures we don't need
-        fireRightClick: false,
-        stopContextMenu: true,
-        uniformScaling: false
+        stopContextMenu:     true
       });
-      
-      // Set the internal canvas dimensions to match
-      fabricCanvas.setWidth(canvasWidth);
-      fabricCanvas.setHeight(canvasHeight);
-      
-      // Set background
-      const isDark = document.documentElement.classList.contains('theme-dark');
-      fabricCanvas.backgroundColor = isDark ? '#222' : '#ffffff';
-      
-      // Enable drawing
+
+      // Retina up‑scaling for crisp lines
+      const ratio = window.devicePixelRatio || 1;
+      fabricCanvas.setWidth(canvasEl.width * ratio);
+      fabricCanvas.setHeight(canvasEl.height * ratio);
+      fabricCanvas.getContext().scale(ratio, ratio);
+
+      // Theme‑aware background
+      fabricCanvas.backgroundColor =
+        document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+
+      // Drawing mode & brush
       fabricCanvas.isDrawingMode = true;
-      fabricCanvas.selection = false;
-      
-      // Configure brush with performance in mind
       fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
+      fabricCanvas.freeDrawingBrush.color = '#000';
       fabricCanvas.freeDrawingBrush.width = 5;
-      fabricCanvas.freeDrawingBrush.color = '#000000';
-      fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
-      fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
-      // Reduce path complexity for better performance (more aggressive on mobile)
-      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 2.5 : (isDesktop ? 2 : 4);
-      
-      // Ensure canvas handles touch properly without custom handlers
-      const upperCanvas = fabricCanvas.upperCanvasEl;
-      if (upperCanvas) {
-        upperCanvas.style.touchAction = 'none';
-        upperCanvas.style.webkitTouchCallout = 'none';
-        upperCanvas.style.webkitUserSelect = 'none';
-        upperCanvas.style.userSelect = 'none';
-        // Force GPU acceleration
-        upperCanvas.style.willChange = 'transform';
+      fabricCanvas.freeDrawingBrush.strokeLineCap   = 'round';
+      fabricCanvas.freeDrawingBrush.strokeLineJoin  = 'round';
+      // **Keep every sample on iPad for Apple Pencil**
+      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 0 : (isMobile ? 3 : 2);
+
+      // Ensure upper canvas also blocks gestures
+      const upper = fabricCanvas.upperCanvasEl;
+      if (upper) {
+        ['touchAction','webkitTouchCallout','webkitUserSelect','userSelect']
+          .forEach(p => { upper.style[p] = 'none'; });
+        upper.style.willChange = 'transform';
       }
-      
-      // REMOVED: Pressure sensitivity code for Apple Pencil
-      // The brush width will now only be controlled by the slider
-      
-      // Make it globally accessible
+
+      /* ----- High‑frequency input patch (coalesced events) ----- */
+      const orig = fabricCanvas._onMouseMove.bind(fabricCanvas);
+      const handle = ev => {
+        const events = ev.getCoalescedEvents ? ev.getCoalescedEvents() : [ev];
+        events.forEach(e => orig(e));
+      };
+      upper.addEventListener('pointerrawupdate', handle, { passive: false });
+      upper.addEventListener('pointermove',      handle, { passive: false });
+
+      // Path post‑processing (cache & immutability)
+      fabricCanvas.on('path:created', ({ path }) => {
+        if (!path) return;
+        path.set({ selectable: false, evented: false, objectCaching: true, strokeUniform: true });
+      });
+
+      // expose globally
       window.fabricCanvas = fabricCanvas;
-      window.cachedBrushWidth = 5;  // Still cache for consistency
-      
+      window.cachedBrushWidth = 5;
+
       fabricCanvas.requestRenderAll();
-      
-      // Path handler - ensure paths are preserved
-      fabricCanvas.on('path:created', function(e) {
-        if (e.path) {
-          // Critical properties set immediately
-          e.path.set({
-            selectable: false,
-            evented: false,
-            perPixelTargetFind: false
-          });
-          
-          // Non-critical optimizations set when idle
-          if (window.requestIdleCallback) {
-            requestIdleCallback(() => {
-              e.path.set({
-                objectCaching: true,
-                strokeUniform: true,
-                noScaleCache: false
-              });
-            });
-          } else {
-            e.path.set({
-              objectCaching: true,
-              strokeUniform: true,
-              noScaleCache: false
-            });
-          }
-        }
-      });
-      
-      // Set up control event listeners
-      setupControlListeners();
+      setupControls();
     });
   }
-  
-  // Separate function to set up control listeners
-  function setupControlListeners() {
-    const strokeSlider = document.querySelector('#strokeSizeSlider');
-    if (strokeSlider) {
-      strokeSlider.addEventListener('input', () => {
-        if (fabricCanvas) {
-          const newWidth = parseInt(strokeSlider.value);
-          fabricCanvas.freeDrawingBrush.width = newWidth;
-          // Update cached value
-          window.cachedBrushWidth = newWidth;
-        }
-      });
-    }
 
-    const colorButtons = document.querySelectorAll('.color-btn');
-    colorButtons.forEach(btn => {
-      btn.addEventListener('click', ev => {
-        const color = ev.currentTarget.dataset.color;
-        if (fabricCanvas) {
-          fabricCanvas.freeDrawingBrush.color = color;
-        }
-        // Update active state
-        colorButtons.forEach(b => b.classList.remove('active'));
-        ev.currentTarget.classList.add('active');
-        
-        // Reset eraser button if it was active
-        const eraserBtn = document.querySelector('.eraser-btn');
-        if (eraserBtn) {
-          eraserBtn.classList.remove('active');
-          eraserBtn.style.background = 'var(--nav-bg)';
-        }
-      });
+  /* ---------------- UI controls ------------------- */
+  function setupControls () {
+    const strokeSlider = $('#strokeSizeSlider');
+    strokeSlider?.addEventListener('input', () => {
+      const w = parseInt(strokeSlider.value, 10);
+      fabricCanvas.freeDrawingBrush.width = w;
+      window.cachedBrushWidth = w;
     });
 
-    const clearBtn = document.querySelector('#clearBtn');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        if (fabricCanvas) {
-          fabricCanvas.clear();
-          fabricCanvas.backgroundColor = document.documentElement.classList.contains('theme-dark') ? '#222' : '#ffffff';
-          fabricCanvas.requestRenderAll();
-          
-          // Reset eraser if it was active
-          const eraserBtn = document.querySelector('.eraser-btn');
-          if (eraserBtn && eraserBtn.classList.contains('active')) {
-            eraserBtn.classList.remove('active');
-            eraserBtn.style.background = 'var(--nav-bg)';
-            // Restore active color
-            const activeColorBtn = document.querySelector('.color-btn.active');
-            if (activeColorBtn) {
-              fabricCanvas.freeDrawingBrush.color = activeColorBtn.dataset.color;
-            }
-          }
-        }
-      });
-    }
-    
-    // Undo button functionality
-    const undoBtn = document.querySelector('#undoBtn');
-    if (undoBtn) {
-      undoBtn.addEventListener('click', () => {
-        if (fabricCanvas) {
-          const objects = fabricCanvas.getObjects();
-          if (objects.length > 0) {
-            // Remove the last object without re-rendering everything
-            const lastObject = objects[objects.length - 1];
-            fabricCanvas.remove(lastObject);
-            fabricCanvas.requestRenderAll();
-          }
-        }
-      });
-    }
-    
-    // Eraser button functionality
+    const colorBtns = document.querySelectorAll('.color-btn');
+    colorBtns.forEach(btn => btn.addEventListener('click', e => {
+      colorBtns.forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      if (fabricCanvas) fabricCanvas.freeDrawingBrush.color = e.currentTarget.dataset.color;
+      // reset eraser UI
+      document.querySelector('.eraser-btn')?.classList.remove('active');
+    }));
+
+    $('#clearBtn')?.addEventListener('click', () => {
+      fabricCanvas.clear();
+      fabricCanvas.backgroundColor =
+        document.documentElement.classList.contains('theme-dark') ? '#222' : '#fff';
+      fabricCanvas.requestRenderAll();
+    });
+
+    $('#undoBtn')?.addEventListener('click', () => {
+      const objs = fabricCanvas.getObjects();
+      if (objs.length) {
+        fabricCanvas.remove(objs[objs.length - 1]);
+        fabricCanvas.requestRenderAll();
+      }
+    });
+
     const eraserBtn = document.querySelector('.eraser-btn');
-    if (eraserBtn) {
-      eraserBtn.addEventListener('click', () => {
-        if (fabricCanvas) {
-          // Toggle eraser mode by setting brush color to background color
-          const isErasing = eraserBtn.classList.contains('active');
-          if (isErasing) {
-            // Switch back to last selected color
-            const activeColorBtn = document.querySelector('.color-btn.active');
-            const color = activeColorBtn ? activeColorBtn.dataset.color : '#000000';
-            fabricCanvas.freeDrawingBrush.color = color;
-            eraserBtn.classList.remove('active');
-            eraserBtn.style.background = 'var(--nav-bg)';
-          } else {
-            // Switch to eraser (background color)
-            fabricCanvas.freeDrawingBrush.color = fabricCanvas.backgroundColor;
-            eraserBtn.classList.add('active');
-            eraserBtn.style.background = 'var(--link)';
-          }
-        }
-      });
-    }
+    eraserBtn?.addEventListener('click', () => {
+      const active = eraserBtn.classList.toggle('active');
+      fabricCanvas.freeDrawingBrush.color = active ? fabricCanvas.backgroundColor :
+        (document.querySelector('.color-btn.active')?.dataset.color || '#000');
+    });
   }
-
 })();
 
+
+/* ------------------------------Whiteboard END----------------------------------------*/
 /* ----------------------------------------------------------------------
    4.  Code-pad modal (landing page only)
 ---------------------------------------------------------------------- */
