@@ -213,11 +213,11 @@ body {
       Tahoma,
       sans-serif;
   text-align: center;
-  transition: .4s all;
+  transition: background-color .25s ease, color .25s ease;
   overflow-x: hidden; /* Prevent horizontal scrollbar */
 }
 
-a { color: var(--link); }
+a { color: var(--link); transition: color .15s ease, background-color .15s ease; }
 a:visited { color: var(--visited); }
 a:hover { background: var(--h1-shadow); }
 
@@ -226,11 +226,13 @@ h1 {
   font-size: 2.5rem;
   color: var(--h1);
   text-shadow: 2px 2px 0 var(--h1-shadow);
+  transition: color .25s ease, text-shadow .25s ease;
 }
 h2 {
   margin: 0 0 .5em;
   font-size: 1.5rem;
   color: var(--link);
+  transition: color .25s ease;
 }
 
 /* ========== LAYOUT ========== */
@@ -254,6 +256,7 @@ details.section {
   border: 3px double var(--section-border);
   background: var(--passage-bg);
   padding: 1rem;
+  transition: background-color .25s ease, border-color .25s ease;
 }
 details.section summary {
   cursor: pointer;
@@ -261,6 +264,7 @@ details.section summary {
   color: var(--link);
   font-size: 1.25rem;
   padding: .5rem 0;
+  transition: color .25s ease;
 }
 details.section summary::-webkit-details-marker { display: none; }
 details.section summary::before {
@@ -277,8 +281,9 @@ details.section > div { margin-top: 1rem; }
   background: var(--card-bg);
   padding: 1rem;
   margin: 1rem 0;
+  transition: background-color .25s ease, border-color .25s ease;
 }
-.card h3 { margin-top: 0; color: var(--card-border); }
+.card h3 { margin-top: 0; color: var(--card-border); transition: color .25s ease; }
 
 /* ========== UNDER CONSTRUCTION ========== */
 .uc {
@@ -293,6 +298,7 @@ details.section > div { margin-top: 1rem; }
   color: inherit;
   text-decoration: none;
   border-radius: 6px;
+  transition: background-color .15s ease, border-color .15s ease;
 }
 .uc img { flex: 0 0 auto; }
 .uc:hover { background: var(--uc-bg); cursor: default; }
@@ -303,12 +309,14 @@ blockquote {
   padding-left: 1.5rem;
   border-left: 4px solid var(--section-border);
   font-style: italic;
+  transition: border-color .25s ease;
 }
 .attribution {
   text-align: right;
   font-style: normal;
   margin-top: 1rem;
   color: var(--visited);
+  transition: color .25s ease;
 }
 
 /* ========== MOOD BOARD ========== */
@@ -318,8 +326,9 @@ blockquote {
   padding: 1rem;
   margin: 1.5rem 0;
   text-align: left;
+  transition: background-color .25s ease, border-color .25s ease;
 }
-.mood-item h3 { margin-top: 0; color: var(--card-border); font-size: 1.1rem; }
+.mood-item h3 { margin-top: 0; color: var(--card-border); font-size: 1.1rem; transition: color .25s ease; }
 .mood-image { text-align: center; padding: 1rem; }
 .mood-image img {
   max-width: 100%;
@@ -330,6 +339,7 @@ blockquote {
   border: 1px solid var(--section-border);
   display: block;
   margin: 0 auto;
+  transition: border-color .25s ease;
 }
 
 /* ========== MOOD BOARD – Scrollable long posts ========== */
@@ -339,6 +349,7 @@ blockquote {
   border-left: 4px solid var(--card-border);   /* matches cards */
   padding-left: 0.75rem;
   margin: 0.5rem 0 1.25rem;
+  transition: border-color .25s ease;
 }
 
 /* optional: nicer dark-mode scrollbar (WebKit/Blink) */
@@ -384,7 +395,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   transform: translate(-50%,-50%);
   overflow: hidden;
   touch-action: none;
-  transition: width 0.2s ease-out, height 0.2s ease-out, max-width 0.2s ease-out, max-height 0.2s ease-out;
+  transition: width 0.2s ease-out, height 0.2s ease-out, max-width 0.2s ease-out, max-height 0.2s ease-out, background-color .25s ease, border-color .25s ease;
 }
 
 /* iOS-specific modal fixes */
@@ -421,6 +432,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   border-bottom: 2px solid var(--section-border);
   user-select: none;
   position: relative;
+  transition: background-color .25s ease, border-color .25s ease;
 }
 .modal-header h2 { margin: 0; font-size: 1.2rem; text-align: center; }
 
@@ -479,6 +491,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   contain: strict;
   /* Ensure the viewport respects its boundaries */
   isolation: isolate;
+  transition: background-color .25s ease, border-color .25s ease;
 }
 
 .theme-dark .canvas-viewport {
@@ -585,7 +598,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   font-weight: bold;
   min-width: 44px;
   min-height: 35px;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .sketch-controls button:hover {
@@ -619,7 +632,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
 /* Eraser button */
 .eraser-btn {
   color: var(--txt);
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .eraser-btn.active {
@@ -631,12 +644,14 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
 /* Undo button */
 #undoBtn {
   color: var(--txt);
+  transition: color .15s ease;
 }
 
 /* ========== CODE MODAL ========== */
 #codeArea {
   background: white;
   color: black;
+  transition: background-color .25s ease, color .25s ease;
 }
 
 html.theme-dark #codeArea {
@@ -651,6 +666,7 @@ footer {
   padding: 1rem;
   font-size: .9rem;
   background: var(--footer-bg);
+  transition: background-color .25s ease;
 }
 
 /* ========== FLOATING BUTTONS ========== */
@@ -665,6 +681,7 @@ footer {
   cursor: pointer;
   z-index: 900;
   font-size: 1.05rem;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 }
 
 .float-btn:hover {
@@ -714,6 +731,7 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   border: 2px outset #c0c0c0;
   background: var(--nav-bg);
   text-decoration: none;
+  transition: background-color .15s ease, border-color .15s ease;
 }
 
 .quick-links a.disabled {
@@ -725,6 +743,7 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
 .quick-links a.uc {
   border: 3px dashed var(--uc-border);
   background: var(--uc-bg);
+  transition: background-color .15s ease, border-color .15s ease;
 }
 
 .quick-links a.uc:hover { background: var(--uc-bg); }

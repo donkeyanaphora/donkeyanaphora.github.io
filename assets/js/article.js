@@ -23,16 +23,24 @@ function updateCanvasBackground() {
 
   const root = document.documentElement;
   const KEY  = 'theme';
+  let isToggling = false;  // Debounce flag
+  
   try { if (localStorage.getItem(KEY) === 'dark') root.classList.add('theme-dark'); } catch {}
 
   const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙'; };
   syncIcon();
 
   btn.addEventListener('click', () => {
+    if (isToggling) return;  // Prevent spam clicking
+    isToggling = true;
+    
     root.classList.toggle('theme-dark');
     syncIcon();
     try { localStorage.setItem(KEY, root.classList.contains('theme-dark') ? 'dark' : 'light'); } catch {}
     updateCanvasBackground();               // noop since no canvas on article pages
+    
+    // Reset debounce after transition completes
+    setTimeout(() => { isToggling = false; }, 300);
   });
 })();
 
