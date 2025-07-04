@@ -67,6 +67,7 @@ function updateCanvasBackground () {
 
 /* ----------------------------------------------------------------------
    3.  Whiteboard modal with Fabric.js (landing page only)
+   ENHANCED WITH APPLE PENCIL SUPPORT
 ---------------------------------------------------------------------- */
 (function () {
   const sketchButton = $('#sketchBtn');
@@ -189,117 +190,117 @@ function updateCanvasBackground () {
     resizeCanvas();
   });
 
-  // Canvas initialization
+  // Canvas initialization - ENHANCED FOR APPLE PENCIL
   function initCanvas() {
     if (fabricCanvas) return;
 
-    // Grab elements
-    const canvasEl        = document.getElementById('sketchpad');
+    // Get the existing canvas element
+    const canvasEl = document.getElementById('sketchpad');
     const canvasContainer = document.querySelector('.canvas-viewport');
-    if (!canvasEl || !canvasContainer) return;
-
-    // Disable native gestures on the <canvas>
-    canvasEl.style.touchAction        = 'none';
+    
+    if (!canvasEl || !canvasContainer) {
+      return; // Exit silently if elements not found
+    }
+    
+    // Ensure canvas has proper touch handling styles
+    canvasEl.style.touchAction = 'none';
     canvasEl.style.webkitTouchCallout = 'none';
-    canvasEl.style.webkitUserSelect   = 'none';
-    canvasEl.style.userSelect         = 'none';
-
+    canvasEl.style.webkitUserSelect = 'none';
+    canvasEl.style.userSelect = 'none';
+    
+    // Wait for modal to be fully visible, then size canvas to container
     requestAnimationFrame(() => {
-      // Size to container
-      const rect         = canvasContainer.getBoundingClientRect();
-      const canvasWidth  = Math.floor(rect.width  - 4);
+      // Get the actual size of the container
+      const rect = canvasContainer.getBoundingClientRect();
+      const canvasWidth = Math.floor(rect.width - 4);  // Subtract border width
       const canvasHeight = Math.floor(rect.height - 4);
-      canvasEl.width     = canvasWidth;
-      canvasEl.height    = canvasHeight;
-
-      // Platform flags
-      const isIPad    = /iPad/.test(navigator.userAgent)
-                      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-                        .test(navigator.userAgent);
-
-      // Init Fabric canvas
+      
+      // Set canvas dimensions
+      canvasEl.width = canvasWidth;
+      canvasEl.height = canvasHeight;
+      
+      // Initialize Fabric canvas
+      const isIPad = /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
       fabricCanvas = new fabric.Canvas('sketchpad', {
-        allowTouchScrolling:    false,
-        enablePointerEvents:    false,
-        enableRetinaScaling:    isIPad || isDesktop,
-        renderOnAddRemove:      true,
-        skipTargetFind:         true,
-        perPixelTargetFind:     false,
-        targetFindTolerance:    5,
-        hasControls:            false,
-        hasBorders:             false,
-        enableSelection:        false,
+        // Enable touch events for Apple Pencil support
+        allowTouchScrolling: false,
+        enablePointerEvents: false,  // FALSE is the key - true breaks drawing!
+        enableRetinaScaling: isIPad || isDesktop,  // Enable for iPad (Apple Pencil) and desktop
+        renderOnAddRemove: true,
+        skipTargetFind: true,
+        // Performance optimizations
+        perPixelTargetFind: false,
+        targetFindTolerance: 5,
+        hasControls: false,
+        hasBorders: false,
+        enableSelection: false,
         preserveObjectStacking: true,
-        fireRightClick:         false,
-        stopContextMenu:        true,
-        uniformScaling:         false
+        // Reduce canvas update frequency for better performance
+        renderTop: false,
+        // Disable gestures we don't need
+        fireRightClick: false,
+        stopContextMenu: true,
+        uniformScaling: false
       });
+      
+      // Set the internal canvas dimensions to match
       fabricCanvas.setWidth(canvasWidth);
       fabricCanvas.setHeight(canvasHeight);
-
-      // Background color
-      fabricCanvas.backgroundColor = document.documentElement.classList.contains('theme-dark')
-        ? '#222'
-        : '#fff';
-
-      // Free drawing mode
+      
+      // Set background
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      fabricCanvas.backgroundColor = isDark ? '#222' : '#ffffff';
+      
+      // Enable drawing
       fabricCanvas.isDrawingMode = true;
-      fabricCanvas.selection     = false;
-
-      // Configure PencilBrush
+      fabricCanvas.selection = false;
+      
+      // Configure brush with performance in mind
       fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
-      fabricCanvas.freeDrawingBrush.width         = 5;
-      fabricCanvas.freeDrawingBrush.color         = '#000';
+      fabricCanvas.freeDrawingBrush.width = 5;
+      fabricCanvas.freeDrawingBrush.color = '#000000';
       fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
-      fabricCanvas.freeDrawingBrush.strokeLineJoin= 'round';
-      // —— NO POINT FILTERING ——
+      fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
+      // NO POINT FILTERING - critical for Apple Pencil
       fabricCanvas.freeDrawingBrush.decimate = 0;
-
-      // Disable gestures on upper canvas
-      const upper = fabricCanvas.upperCanvasEl;
-      upper.style.touchAction        = 'none';
-      upper.style.webkitTouchCallout = 'none';
-      upper.style.webkitUserSelect   = 'none';
-      upper.style.userSelect         = 'none';
-      upper.style.willChange         = 'transform';
-
-      // Utility to feed Fabric every sub-event
-      // const replay = evt => {
-      //   if (!fabricCanvas.isDrawingMode) return;
-      //   const evts = evt.getCoalescedEvents ? evt.getCoalescedEvents() : [evt];
-      //   for (const e of evts) {
-      //     fabricCanvas._onMouseMove(e);
-      //   }
-      //   fabricCanvas.requestRenderAll();
-      // };
-
-      // // Listen to standard pointermove
-      // upper.addEventListener('pointermove', replay, { passive: true });
-      // // **New**: listen to high-frequency raw updates for Apple Pencil
-      // upper.addEventListener('pointerrawupdate', replay, { passive: true });
-
-      // Optimize each new path
-      fabricCanvas.on('path:created', e => {
-        if (!e.path) return;
-        e.path.set({ selectable: false, evented: false, perPixelTargetFind: false });
-        const optimize = () => e.path.set({
-          objectCaching: true,
-          strokeUniform:  true,
-          noScaleCache:   false
-        });
-        window.requestIdleCallback ? requestIdleCallback(optimize) : optimize();
-      });
-
-      // Expose globally & wire controls
-      window.fabricCanvas     = fabricCanvas;
+      
+      // Ensure canvas handles touch properly
+      const upperCanvas = fabricCanvas.upperCanvasEl;
+      if (upperCanvas) {
+        upperCanvas.style.touchAction = 'none';
+        upperCanvas.style.webkitTouchCallout = 'none';
+        upperCanvas.style.webkitUserSelect = 'none';
+        upperCanvas.style.userSelect = 'none';
+        // Force GPU acceleration
+        upperCanvas.style.willChange = 'transform';
+      }
+      
+      // Make it globally accessible
+      window.fabricCanvas = fabricCanvas;
       window.cachedBrushWidth = 5;
-      setupControlListeners();
+      
       fabricCanvas.requestRenderAll();
+      
+      // Path created handler - ensure paths are optimized
+      fabricCanvas.on('path:created', function(e) {
+        if (e.path) {
+          e.path.set({
+            selectable: false,
+            evented: false,
+            objectCaching: true,
+            strokeUniform: true,
+            noScaleCache: false,
+            perPixelTargetFind: false
+          });
+        }
+      });
+      
+      // Set up control event listeners
+      setupControlListeners();
     });
-}
-
-
+  }
   
   // Separate function to set up control listeners
   function setupControlListeners() {
