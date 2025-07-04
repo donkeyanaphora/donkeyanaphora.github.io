@@ -15,7 +15,7 @@ function updateCanvasBackground () {
   if (window.fabricCanvas) {
     const isDark = document.documentElement.classList.contains('theme-dark');
     window.fabricCanvas.backgroundColor = isDark ? '#222' : '#ffffff';
-    window.fabricCanvas.renderAll();
+    window.fabricCanvas.requestRenderAll();
   }
 }
 
@@ -89,6 +89,9 @@ function updateCanvasBackground () {
     
     // Remove keyboard shortcuts when modal is closed
     window.removeEventListener('keydown', handleKeyboardShortcuts);
+    
+    // Clean up cached values
+    window.cachedBrushWidth = 5;
   }
   
   // Keyboard shortcuts handler
@@ -106,7 +109,7 @@ function updateCanvasBackground () {
         if (objects.length > 0) {
           const lastObject = objects[objects.length - 1];
           fabricCanvas.remove(lastObject);
-          fabricCanvas.renderAll();
+          fabricCanvas.requestRenderAll();
         }
       }
     }
@@ -134,11 +137,9 @@ function updateCanvasBackground () {
             width: newWidth,
             height: newHeight
           });
-          fabricCanvas.renderAll();
-          
-          console.log('Resized canvas for fullscreen:', newWidth, 'x', newHeight);
+          fabricCanvas.requestRenderAll();
         }
-      }, 300); // Wait for CSS transition
+      }, 200); // Reduced wait for faster response
     }
   });
 
@@ -151,8 +152,7 @@ function updateCanvasBackground () {
     const canvasContainer = document.querySelector('.canvas-viewport');
     
     if (!canvasEl || !canvasContainer) {
-      console.error('Canvas elements not found!');
-      return;
+      return; // Exit silently if elements not found
     }
     
     // Ensure canvas has proper touch handling styles
@@ -162,7 +162,7 @@ function updateCanvasBackground () {
     canvasEl.style.userSelect = 'none';
     
     // Wait for modal to be fully visible, then size canvas to container
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       // Get the actual size of the container
       const rect = canvasContainer.getBoundingClientRect();
       const canvasWidth = Math.floor(rect.width - 4);  // Subtract border width
@@ -172,23 +172,30 @@ function updateCanvasBackground () {
       canvasEl.width = canvasWidth;
       canvasEl.height = canvasHeight;
       
-      console.log('Canvas container size:', rect.width, 'x', rect.height);
-      console.log('Setting canvas size:', canvasWidth, 'x', canvasHeight);
-      
       // Initialize Fabric canvas
+      const isIPad = /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
       fabricCanvas = new fabric.Canvas('sketchpad', {
         // Enable touch events for Apple Pencil support
         allowTouchScrolling: false,
         enablePointerEvents: true,
-        enableRetinaScaling: true,
+        enableRetinaScaling: isIPad || isDesktop,  // Enable for iPad (Apple Pencil) and desktop
         renderOnAddRemove: true,
         skipTargetFind: true,
-        // Ensure drawing mode works with touch
+        // Performance optimizations
         perPixelTargetFind: false,
         targetFindTolerance: 5,
-        // Force Fabric to use pointer events on iOS
         hasControls: false,
-        hasBorders: false
+        hasBorders: false,
+        enableSelection: false,
+        preserveObjectStacking: true,
+        // Reduce canvas update frequency for better performance
+        renderTop: false,
+        // Disable gestures we don't need
+        fireRightClick: false,
+        stopContextMenu: true,
+        uniformScaling: false
       });
       
       // Set the internal canvas dimensions to match
@@ -203,12 +210,14 @@ function updateCanvasBackground () {
       fabricCanvas.isDrawingMode = true;
       fabricCanvas.selection = false;
       
-      // Configure brush
+      // Configure brush with performance in mind
       fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
       fabricCanvas.freeDrawingBrush.width = 5;
       fabricCanvas.freeDrawingBrush.color = '#000000';
       fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
       fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
+      // Reduce path complexity for better performance (more aggressive on mobile)
+      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 2.5 : (isDesktop ? 2 : 4);
       
       // Ensure canvas handles touch properly without custom handlers
       const upperCanvas = fabricCanvas.upperCanvasEl;
@@ -217,19 +226,24 @@ function updateCanvasBackground () {
         upperCanvas.style.webkitTouchCallout = 'none';
         upperCanvas.style.webkitUserSelect = 'none';
         upperCanvas.style.userSelect = 'none';
+        // Force GPU acceleration
+        upperCanvas.style.willChange = 'transform';
       }
       
-      // Enable pressure sensitivity for Apple Pencil (if supported)
+      // Optimized pressure sensitivity for Apple Pencil
+      let lastPressureUpdate = 0;
+      const PRESSURE_UPDATE_INTERVAL = 16; // ~60fps
+      window.cachedBrushWidth = 5;  // Make it accessible to slider
+      
       const originalOnMouseMove = fabricCanvas.freeDrawingBrush.onMouseMove;
       fabricCanvas.freeDrawingBrush.onMouseMove = function(pointer, options) {
-        // Check for pressure data from pointer events
-        if (options && options.e) {
-          const evt = options.e;
-          if (evt.pressure !== undefined && evt.pressure > 0 && evt.pointerType === 'pen') {
-            // Adjust brush width based on pressure (0.1 to 1.0)
-            const baseBrushWidth = parseInt(document.querySelector('#strokeSizeSlider').value);
-            this.width = Math.max(1, baseBrushWidth * (0.3 + evt.pressure * 0.7));
-          }
+        // Throttle pressure updates for performance
+        const now = Date.now();
+        if (options && options.e && options.e.pointerType === 'pen' && 
+            options.e.pressure !== undefined && options.e.pressure > 0 &&
+            now - lastPressureUpdate > PRESSURE_UPDATE_INTERVAL) {
+          this.width = Math.max(1, Math.round(window.cachedBrushWidth * (0.3 + options.e.pressure * 0.7)));
+          lastPressureUpdate = now;
         }
         return originalOnMouseMove.call(this, pointer, options);
       };
@@ -237,39 +251,40 @@ function updateCanvasBackground () {
       // Make it globally accessible
       window.fabricCanvas = fabricCanvas;
       
-      fabricCanvas.renderAll();
+      fabricCanvas.requestRenderAll();
       
       // Path handler - ensure paths are preserved
       fabricCanvas.on('path:created', function(e) {
         if (e.path) {
+          // Critical properties set immediately
           e.path.set({
             selectable: false,
             evented: false,
             perPixelTargetFind: false
           });
-          fabricCanvas.renderAll();
-          console.log('Path created, total objects:', fabricCanvas.getObjects().length);
+          
+          // Non-critical optimizations set when idle
+          if (window.requestIdleCallback) {
+            requestIdleCallback(() => {
+              e.path.set({
+                objectCaching: true,
+                strokeUniform: true,
+                noScaleCache: false
+              });
+            });
+          } else {
+            e.path.set({
+              objectCaching: true,
+              strokeUniform: true,
+              noScaleCache: false
+            });
+          }
         }
       });
       
       // Set up control event listeners
       setupControlListeners();
-      
-      console.log('Whiteboard initialized successfully');
-      console.log('Canvas actual size:', fabricCanvas.width, 'x', fabricCanvas.height);
-      
-      // Log input device support
-      console.log('Touch support:', 'ontouchstart' in window);
-      console.log('Pointer events support:', 'onpointerdown' in window);
-      console.log('Apple device:', /iPad|iPhone|iPod/.test(navigator.userAgent));
-      
-      // Add a listener to detect what type of input is being used
-      if (fabricCanvas.upperCanvasEl) {
-        fabricCanvas.upperCanvasEl.addEventListener('pointerdown', function(e) {
-          console.log('Input detected - Type:', e.pointerType, 'Pressure:', e.pressure);
-        }, { once: true });
-      }
-    }, 100);
+    });
   }
   
   // Separate function to set up control listeners
@@ -278,7 +293,12 @@ function updateCanvasBackground () {
     if (strokeSlider) {
       strokeSlider.addEventListener('input', () => {
         if (fabricCanvas) {
-          fabricCanvas.freeDrawingBrush.width = parseInt(strokeSlider.value);
+          const newWidth = parseInt(strokeSlider.value);
+          fabricCanvas.freeDrawingBrush.width = newWidth;
+          // Update cached value if it exists
+          if (window.cachedBrushWidth !== undefined) {
+            window.cachedBrushWidth = newWidth;
+          }
         }
       });
     }
@@ -309,7 +329,19 @@ function updateCanvasBackground () {
         if (fabricCanvas) {
           fabricCanvas.clear();
           fabricCanvas.backgroundColor = document.documentElement.classList.contains('theme-dark') ? '#222' : '#ffffff';
-          fabricCanvas.renderAll();
+          fabricCanvas.requestRenderAll();
+          
+          // Reset eraser if it was active
+          const eraserBtn = document.querySelector('.eraser-btn');
+          if (eraserBtn && eraserBtn.classList.contains('active')) {
+            eraserBtn.classList.remove('active');
+            eraserBtn.style.background = 'var(--nav-bg)';
+            // Restore active color
+            const activeColorBtn = document.querySelector('.color-btn.active');
+            if (activeColorBtn) {
+              fabricCanvas.freeDrawingBrush.color = activeColorBtn.dataset.color;
+            }
+          }
         }
       });
     }
@@ -321,11 +353,10 @@ function updateCanvasBackground () {
         if (fabricCanvas) {
           const objects = fabricCanvas.getObjects();
           if (objects.length > 0) {
-            // Remove the last object (most recent path)
+            // Remove the last object without re-rendering everything
             const lastObject = objects[objects.length - 1];
             fabricCanvas.remove(lastObject);
-            fabricCanvas.renderAll();
-            console.log('Undo: removed last stroke');
+            fabricCanvas.requestRenderAll();
           }
         }
       });
@@ -337,7 +368,7 @@ function updateCanvasBackground () {
       eraserBtn.addEventListener('click', () => {
         if (fabricCanvas) {
           // Toggle eraser mode by setting brush color to background color
-          const isErasing = fabricCanvas.freeDrawingBrush.color === fabricCanvas.backgroundColor;
+          const isErasing = eraserBtn.classList.contains('active');
           if (isErasing) {
             // Switch back to last selected color
             const activeColorBtn = document.querySelector('.color-btn.active');
@@ -356,7 +387,6 @@ function updateCanvasBackground () {
     }
   }
 
-  // Basic controls - these are not needed anymore as they're handled in setupControlListeners
 })();
 
 /* ----------------------------------------------------------------------

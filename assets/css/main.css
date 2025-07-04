@@ -360,6 +360,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* Prevent iOS rubber-band scrolling */
   overscroll-behavior: none;
   -webkit-overflow-scrolling: auto;
+  /* Optimize rendering */
+  will-change: opacity;
+  contain: layout style paint;
 }
 
 .modal-content {
@@ -375,6 +378,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   transform: translate(-50%,-50%);
   overflow: hidden;
   touch-action: none;
+  transition: width 0.2s ease-out, height 0.2s ease-out, max-width 0.2s ease-out, max-height 0.2s ease-out;
 }
 
 .modal-content.fullscreen {
@@ -456,6 +460,8 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* Prevent iOS bounce and ensure touch events work */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
+  /* Optimize rendering */
+  contain: layout size paint;
 }
 
 .theme-dark .canvas-viewport {
@@ -472,6 +478,12 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   -webkit-user-select: none;
   user-select: none;
   touch-action: none;
+  /* Performance optimizations */
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Fabric.js canvas wrapper styles */
@@ -479,6 +491,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   position: relative !important;
   display: block !important;
   margin: 0 auto;
+  /* GPU acceleration */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Fabric.js canvas elements */
@@ -489,6 +504,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   touch-action: none !important;
   user-select: none !important;
   -webkit-user-select: none !important;
+  /* Optimize rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* Upper canvas (drawing layer) should be on top */
@@ -541,7 +559,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   font-weight: bold;
   min-width: 44px;
   min-height: 35px;
-  transition: background-color 0.2s;
+  transition: background-color 0.15s ease;
 }
 
 .sketch-controls button:hover {
