@@ -263,7 +263,10 @@ function updateCanvasBackground () {
       fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
       fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
       // Reduce path complexity for better performance (more aggressive on mobile)
-      fabricCanvas.freeDrawingBrush.decimate = isIPad ? 2.5 : (isDesktop ? 2 : 4);
+      // fabricCanvas.freeDrawingBrush.decimate = isIPad ? 2.5 : (isDesktop ? 2 : 4);
+      fabricCanvas.freeDrawingBrush.decimate = 0;
+      // And record every tiny movement
+      fabricCanvas.freeDrawingBrush.minDistance = 0;
       
       // Ensure canvas handles touch properly without custom handlers
       const upperCanvas = fabricCanvas.upperCanvasEl;
