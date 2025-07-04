@@ -214,7 +214,7 @@ function updateCanvasBackground () {
 
       // Platform flags
       const isIPad    = /iPad/.test(navigator.userAgent)
-                      || (navigator.NavigatorID.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
                         .test(navigator.userAgent);
 
@@ -265,14 +265,14 @@ function updateCanvasBackground () {
       upper.style.willChange         = 'transform';
 
       // Utility to feed Fabric every sub-event
-      const replay = evt => {
-        if (!fabricCanvas.isDrawingMode) return;
-        const evts = evt.getCoalescedEvents ? evt.getCoalescedEvents() : [evt];
-        for (const e of evts) {
-          fabricCanvas._onMouseMove(e);
-        }
-        fabricCanvas.requestRenderAll();
-      };
+      // const replay = evt => {
+      //   if (!fabricCanvas.isDrawingMode) return;
+      //   const evts = evt.getCoalescedEvents ? evt.getCoalescedEvents() : [evt];
+      //   for (const e of evts) {
+      //     fabricCanvas._onMouseMove(e);
+      //   }
+      //   fabricCanvas.requestRenderAll();
+      // };
 
       // // Listen to standard pointermove
       // upper.addEventListener('pointermove', replay, { passive: true });
