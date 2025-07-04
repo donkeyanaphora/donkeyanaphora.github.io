@@ -1,5 +1,5 @@
 ---
-title: "AI Integration Beyond the Buzz: A Technical Exploration through Shallow Fusion"
+title: "🔗 Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges"
 author: "Collins Westnedge"
 date: "2025-04-16"
 description: "A minor rant about 'AI adoption' and exploration of shallow fusion as a method to address data scarcity and integration in specialized domains."
