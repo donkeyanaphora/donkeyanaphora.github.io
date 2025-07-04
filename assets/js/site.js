@@ -118,6 +118,59 @@ function updateCanvasBackground () {
   sketchButton.addEventListener('click', openModal);
   closeButton.addEventListener('click', closeModal);
 
+  // Helper function to resize canvas
+  function resizeCanvas() {
+    if (!fabricCanvas) return;
+    
+    const container = modalContent.querySelector('.canvas-viewport');
+    if (container) {
+      // Use timeout to ensure container has finished resizing
+      setTimeout(() => {
+        const rect = container.getBoundingClientRect();
+        const newWidth = Math.floor(rect.width - 4);  // Subtract border
+        const newHeight = Math.floor(rect.height - 4);
+        
+        // Store current canvas content
+        const canvasData = fabricCanvas.toJSON();
+        
+        // Resize the canvas
+        fabricCanvas.setDimensions({
+          width: newWidth,
+          height: newHeight
+        });
+        
+        // Restore canvas content
+        fabricCanvas.loadFromJSON(canvasData, () => {
+          fabricCanvas.requestRenderAll();
+        });
+      }, 100);
+    }
+  }
+
+  // Handle orientation changes
+  let orientationTimer;
+  window.addEventListener('orientationchange', () => {
+    if (modal.style.display === 'block') {
+      // Clear any existing timer
+      clearTimeout(orientationTimer);
+      
+      // Wait for orientation change to complete
+      orientationTimer = setTimeout(() => {
+        resizeCanvas();
+      }, 300);
+    }
+  });
+
+  // Also handle resize events for better coverage
+  window.addEventListener('resize', () => {
+    if (modal.style.display === 'block') {
+      clearTimeout(orientationTimer);
+      orientationTimer = setTimeout(() => {
+        resizeCanvas();
+      }, 300);
+    }
+  });
+
   // Fullscreen toggle
   fullscreenBtn.addEventListener('click', () => {
     isFS = !isFS;
@@ -125,22 +178,7 @@ function updateCanvasBackground () {
     fullscreenBtn.textContent = isFS ? '⛌' : '⛶';
     
     // Resize canvas after fullscreen toggle
-    if (fabricCanvas) {
-      setTimeout(() => {
-        const container = modalContent.querySelector('.canvas-viewport');
-        if (container) {
-          const rect = container.getBoundingClientRect();
-          const newWidth = Math.floor(rect.width - 4);  // Subtract border
-          const newHeight = Math.floor(rect.height - 4);
-          
-          fabricCanvas.setDimensions({
-            width: newWidth,
-            height: newHeight
-          });
-          fabricCanvas.requestRenderAll();
-        }
-      }, 200); // Reduced wait for faster response
-    }
+    resizeCanvas();
   });
 
   // Canvas initialization
@@ -230,26 +268,12 @@ function updateCanvasBackground () {
         upperCanvas.style.willChange = 'transform';
       }
       
-      // Optimized pressure sensitivity for Apple Pencil
-      let lastPressureUpdate = 0;
-      const PRESSURE_UPDATE_INTERVAL = 16; // ~60fps
-      window.cachedBrushWidth = 5;  // Make it accessible to slider
-      
-      const originalOnMouseMove = fabricCanvas.freeDrawingBrush.onMouseMove;
-      fabricCanvas.freeDrawingBrush.onMouseMove = function(pointer, options) {
-        // Throttle pressure updates for performance
-        const now = Date.now();
-        if (options && options.e && options.e.pointerType === 'pen' && 
-            options.e.pressure !== undefined && options.e.pressure > 0 &&
-            now - lastPressureUpdate > PRESSURE_UPDATE_INTERVAL) {
-          this.width = Math.max(1, Math.round(window.cachedBrushWidth * (0.3 + options.e.pressure * 0.7)));
-          lastPressureUpdate = now;
-        }
-        return originalOnMouseMove.call(this, pointer, options);
-      };
+      // REMOVED: Pressure sensitivity code for Apple Pencil
+      // The brush width will now only be controlled by the slider
       
       // Make it globally accessible
       window.fabricCanvas = fabricCanvas;
+      window.cachedBrushWidth = 5;  // Still cache for consistency
       
       fabricCanvas.requestRenderAll();
       
@@ -295,10 +319,8 @@ function updateCanvasBackground () {
         if (fabricCanvas) {
           const newWidth = parseInt(strokeSlider.value);
           fabricCanvas.freeDrawingBrush.width = newWidth;
-          // Update cached value if it exists
-          if (window.cachedBrushWidth !== undefined) {
-            window.cachedBrushWidth = newWidth;
-          }
+          // Update cached value
+          window.cachedBrushWidth = newWidth;
         }
       });
     }

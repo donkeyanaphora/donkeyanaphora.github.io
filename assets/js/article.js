@@ -9,6 +9,11 @@
 ---------------------------------------------------------------------- */
 const $ = s => document.querySelector(s);
 
+/* no-op: article pages don't have canvas, but function is called by dark mode toggle */
+function updateCanvasBackground() {
+  // No canvas on article pages, so this does nothing
+}
+
 /* ----------------------------------------------------------------------
    Dark-/light-mode toggle (works if toggle button present)
 ---------------------------------------------------------------------- */
@@ -27,7 +32,7 @@ const $ = s => document.querySelector(s);
     root.classList.toggle('theme-dark');
     syncIcon();
     try { localStorage.setItem(KEY, root.classList.contains('theme-dark') ? 'dark' : 'light'); } catch {}
-    updateCanvasBackground();               // noop if no canvas yet
+    updateCanvasBackground();               // noop since no canvas on article pages
   });
 })();
 

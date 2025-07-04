@@ -61,6 +61,12 @@
   
   /* iOS status bar */
   --apple-status-bar: default;
+  
+  /* Safe area insets for iOS */
+  --safe-area-inset-top: env(safe-area-inset-top, 0);
+  --safe-area-inset-right: env(safe-area-inset-right, 0);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0);
+  --safe-area-inset-left: env(safe-area-inset-left, 0);
 }
 html.theme-dark{
   --bg-img: none;
@@ -381,6 +387,15 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   transition: width 0.2s ease-out, height 0.2s ease-out, max-width 0.2s ease-out, max-height 0.2s ease-out;
 }
 
+/* iOS-specific modal fixes */
+@supports (-webkit-touch-callout: none) {
+  .modal-content {
+    /* Account for safe areas on all sides */
+    width: calc(90% - var(--safe-area-inset-left) - var(--safe-area-inset-right));
+    height: calc(80% - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+  }
+}
+
 .modal-content.fullscreen {
   width: 100%;
   height: 100%;
@@ -446,7 +461,7 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   overflow: hidden;
 }
 
-/* Canvas viewport */
+/* Canvas viewport - Updated for better iOS handling */
 .canvas-viewport {
   flex: 1;
   position: relative;
@@ -461,7 +476,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
   /* Optimize rendering */
-  contain: layout size paint;
+  contain: strict;
+  /* Ensure the viewport respects its boundaries */
+  isolation: isolate;
 }
 
 .theme-dark .canvas-viewport {
@@ -484,6 +501,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  /* Ensure canvas doesn't overflow */
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Fabric.js canvas wrapper styles */
@@ -494,6 +514,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* GPU acceleration */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  /* Ensure container respects viewport bounds */
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Fabric.js canvas elements */
@@ -507,6 +530,9 @@ html.theme-dark .scroll-pane::-webkit-scrollbar-thumb {
   /* Optimize rendering */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
+  /* Ensure canvases don't exceed container */
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Upper canvas (drawing layer) should be on top */
@@ -712,7 +738,7 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   }
 }
 
-  /* Mobile */
+/* Mobile - Enhanced iOS handling */
 @media (max-width: 768px) {
   h1 { font-size: 1.8rem; }
   
@@ -721,10 +747,13 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
     width: 95%;
   }
   
-  /* Modal adjustments */
+  /* Modal adjustments with safe area handling */
   .modal-content {
     width: 98%;
     height: 90%;
+    /* Account for safe areas on mobile */
+    width: calc(98% - var(--safe-area-inset-left) - var(--safe-area-inset-right));
+    height: calc(90% - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
   }
   
   /* Mood board */
@@ -810,7 +839,7 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   }
 }
 
-/* iOS specific fixes */
+/* iOS specific fixes - Enhanced for orientation changes */
 @supports (-webkit-touch-callout: none) {
   /* iOS Safari specific styles */
   .modal-content {
@@ -819,20 +848,53 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
     height: -webkit-fill-available;
   }
   
+  /* Fullscreen modal on iOS */
+  .modal-content.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: -webkit-fill-available !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+  }
+  
+  /* Canvas viewport iOS optimization */
   .canvas-viewport {
     /* Fix iOS rendering issues */
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    /* Ensure proper sizing */
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
   
+  /* Force GPU acceleration for canvases */
   .sketch-canvas,
   .upper-canvas,
-  .lower-canvas {
-    /* Force hardware acceleration */
+  .lower-canvas,
+  .canvas-container {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000;
+  }
+  
+  /* iOS landscape mode fixes */
+  @media (orientation: landscape) {
+    .modal-content {
+      /* Account for notch and safe areas in landscape */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
   }
 }
 
