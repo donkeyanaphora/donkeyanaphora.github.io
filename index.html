@@ -12,16 +12,13 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
 
-  <!-- external whiteboard -->
-  
-
   <!-- ✨ Favicons ✨ -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
 
-  <!-- Open Graph / Twitter (unchanged) -->
+  <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Collins Westnedge 𓆏">
   <meta property="og:description" content="Fragments, experiments, and structures just beneath the surface (a place for things of interest—articles, projects, and posts).">
   <meta property="og:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
@@ -44,7 +41,7 @@
 <div id="sketchModal" class="modal" aria-hidden="true">
   <div class="modal-content" id="modalContent" role="dialog" aria-modal="true" aria-label="Whiteboard">
     <div class="modal-header">
-      <h2>✎WHITEBOARD</h2>
+      <h2>✎ WHITEBOARD</h2>
       <div class="window-controls">
         <button id="fullscreenBtn" aria-label="Toggle fullscreen">⛶</button>
         <button class="close" aria-label="Close whiteboard">&times;</button>
@@ -53,7 +50,7 @@
     <div class="modal-body">
       <div class="sketch-container">
         <div class="canvas-viewport">
-          <canvas id="sketchpad" class="sketch-canvas"></canvas>
+          <canvas id="sketchpad" class="sketch-canvas" style="touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"></canvas>
         </div>
         <div class="sketch-controls">
           <div class="slider-group">
@@ -64,6 +61,8 @@
           <button class="color-btn" data-color="#ff0000" style="background:#f00" aria-label="Red"></button>
           <button class="color-btn" data-color="#0000ff" style="background:#00f" aria-label="Blue"></button>
           <button class="color-btn" data-color="#00ff00" style="background:#0f0" aria-label="Green"></button>
+          <button class="color-btn" data-color="#ffff00" style="background:#ff0" aria-label="Yellow"></button>
+          <button class="color-btn" data-color="#ffffff" style="background:#fff; border-color: #888;" aria-label="White"></button>
           <button class="eraser-btn" aria-label="Eraser">⌫</button>
           <button id="clearBtn" aria-label="Clear drawing">🧹</button>
           <button id="undoBtn" aria-label="Undo">↶</button>
@@ -73,10 +72,9 @@
   </div>
 </div>
 
-<!-- Pseudo‑code Keyboard Modal -->
+<!-- Code Editor Modal -->
 <div id="codeModal" class="modal" aria-hidden="true">
-  <div id="codeContent" class="modal-content" role="dialog"
-       aria-modal="true" aria-label="text editor">
+  <div id="codeContent" class="modal-content" role="dialog" aria-modal="true" aria-label="text editor">
     <div class="modal-header">
       <h2>⌨️ TEXT EDITOR</h2>
       <div class="window-controls">
@@ -84,10 +82,9 @@
         <button class="code-close" aria-label="Close code pad">&times;</button>
       </div>
     </div>
-
     <div class="modal-body" style="padding:0">
       <textarea id="codeArea" spellcheck="false" autocapitalize="false" 
-          autocorrect="false" autocomplete="false" enterkeyhint="false" inputmode="verbatim"
+          autocorrect="false" autocomplete="false" enterkeyhint="done" inputmode="text"
         style="flex:1;width:100%;height:100%;border:0;resize:none;
                font:1rem/1.4 monospace;padding:12px;box-sizing:border-box;">
       </textarea>
@@ -99,12 +96,10 @@
 <p id="quip" style="font-style:italic;margin:1rem 0;">"Man is something that shall be overcome"</p>
 
 <div id="wrapper">
-    <div class="quick-links">
+  <div class="quick-links">
     <a href="https://www.linkedin.com/in/collins-westnedge/" target="_blank">LinkedIn</a>
     <a href="https://github.com/donkeyanaphora" target="_blank">GitHub</a>
     <a href="https://huggingface.co/cwestnedge" target="_blank">HuggingFace</a>
-    <!-- disabled CV button -->
-    <!-- <a href="cv.pdf" target="_blank">CV</a> -->
     <a class="disabled uc" aria-label="CV coming soon">🚧 CV —COMING SOON</a>
   </div>
 
@@ -112,21 +107,18 @@
     <summary>🗺️ About</summary>
     <div>
       <p>Hi, I'm Collins. I work as a Senior Data Scientist. My background is in philosophy, specifically in the philosophy of language, where my studies focused on various phenomena in natural language and the ways in which these phenomena can be formalized. This interest eventually led me to explore probabilistic approaches to language, and in turn the field of data science and machine learning as a whole.</p>
-      <p>Anyway, follow me on my journey through data, philosophy, and ML in the pursuit of bending AI to the will of human-kind (hopefully). Also, checkout my articles below and lets connect on Linkedin!</p>
+      <p>Anyway, follow me on my journey through data, philosophy, and ML in the pursuit of bending AI to the will of human-kind (hopefully). Also, checkout my articles below and let's connect on LinkedIn!</p>
     </div>
   </details>
 
   <details class="section">
     <summary>🛠️ Articles / Work</summary>
-
     <div>
       <div class="card">
         <h3>🎭 Extra‑Ordinary Language</h3>
-          <p>An exploration of literary and creative intelligence and things I wish language models did better.</p>
-          <!-- <p><a href="articles/article3/index.html"> Continue&nbsp;reading&nbsp;&raquo;</a></p> -->
+        <p>An exploration of literary and creative intelligence and things I wish language models did better.</p>
         <p>
-          <a href="articles/article3/index.html">Read Article</a> 
-          <!-- · <a href="projects/project2.html" target="_blank">Demo</a> -->
+          <a href="articles/article3/index.html">Read Article</a>
         </p>
       </div>
 
@@ -134,7 +126,6 @@
         <h3>Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges</h3>
         <p>A minor rant about "AI adoption" and exploration of shallow fusion as a method to address data scarcity and integration in specialized domains.</p>
         <p>
-
           <span>⏳ <a href="articles/article1/index.html">Rough Draft</a></span> | 
           <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION" target="_blank">GPT2 Pipeline</a> | 
           <a href="https://colab.research.google.com/drive/1D6cxd1brWWuKvmCbT18eCT1RmV3EK1yf?usp=sharing" target="_blank">Demo</a>
@@ -144,9 +135,10 @@
       <div class="card">
         <h3>Using Linear Models in Modern Applications</h3>
         <p>A closer look at how using least squares projection can offer a stable alternative to semantic filtering.</p>
-        <span>⏳ <a href="articles/article2/index.html">Very Rough Draft</a></span> | 
-        <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE" target="_blank">Demo/Eval</a>
-        <!-- <p><a href="articles/LSS.html">Read Article</a> · <a href="projects/project2.html" target="_blank">Demo</a></p> -->
+        <p>
+          <span>⏳ <a href="articles/article2/index.html">Very Rough Draft</a></span> | 
+          <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE" target="_blank">Demo/Eval</a>
+        </p>
       </div>
     </div>
   </details>
@@ -169,28 +161,26 @@
     <div>
       <div class="mood-item">
         <h3>🎭 Extra‑Ordinary Language</h3>
-<blockquote>
-      <p>So they lov'd, as love in twain<br />
-      Had the essence but in one;<br />
-      Two distincts, division none:<br />
-      Number there in love was slain.</p>
-      <p>Hearts remote, yet not asunder;<br />
-      Distance and no space was seen<br />
-      Twixt this Turtle and his queen</p>
-      <p>— <em>Shakespeare, <strong>The Phoenix and the
-      Turtle</strong></em></p>
-      </blockquote>
-      <blockquote>
-      <p>A cage went in search of a bird.</p>
-      <p>— <em>Kafka, <strong>Aphorisms</strong></em></p>
-      </blockquote>
-      <blockquote>
-      <p>Merry and tragical! Tedious and brief!<br />
-      That is, hot ice and wondrous strange snow.<br />
-      How shall we find the concord of this discord?</p>
-      <p>— <em>Shakespeare, <strong>A Midsummer Night's
-      Dream</strong></em></p>
-      </blockquote>
+        <blockquote>
+          <p>So they lov'd, as love in twain<br />
+          Had the essence but in one;<br />
+          Two distincts, division none:<br />
+          Number there in love was slain.</p>
+          <p>Hearts remote, yet not asunder;<br />
+          Distance and no space was seen<br />
+          Twixt this Turtle and his queen</p>
+          <p>— <em>Shakespeare, <strong>The Phoenix and the Turtle</strong></em></p>
+        </blockquote>
+        <blockquote>
+          <p>A cage went in search of a bird.</p>
+          <p>— <em>Kafka, <strong>Aphorisms</strong></em></p>
+        </blockquote>
+        <blockquote>
+          <p>Merry and tragical! Tedious and brief!<br />
+          That is, hot ice and wondrous strange snow.<br />
+          How shall we find the concord of this discord?</p>
+          <p>— <em>Shakespeare, <strong>A Midsummer Night's Dream</strong></em></p>
+        </blockquote>
       </div>
 
       <div class="mood-item">
@@ -203,53 +193,38 @@
 
       <div class="mood-item">
         <h3>🤕 On Bad Conscience</h3>
-        <!-- <div class="scroll-pane"> -->
-          <blockquote>
-            <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
-            <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
-            <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
-            <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
-            <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
-            <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
-          </blockquote>
-        <!-- </div> -->
+        <blockquote>
+          <p>At this point I can no longer avoid giving a first, preliminary expression to my own theory on the origin of <em>bad conscience</em>: it is not easy to get a hearing for this hypothesis, and it needs to be pondered, watched, and slept on.</p>
+          <p>I look on bad conscience as a serious illness to which man was forced to succumb by the pressure of the most fundamental of all changes which he experienced— that change whereby he finally found himself imprisoned within the confines of society and peace.</p>
+          <p>It must have been no different for these semi-animals, happily adapted to the wilderness, war, the wandering life and adventure, than it was for the sea animals when they were forced to either become land animals or perish—at one go, all instincts were devalued and <em>suspended</em>.</p>
+          <p>Now they had to walk on their feet and "carry themselves," whereas they had been carried by the water up till then: a terrible heaviness bore down on them. They felt clumsy at performing the simplest task; they no longer had their familiar guide in this new, unknown world—those regulating impulses that had unconsciously led them to safety.</p>
+          <p>The poor creatures were reduced to relying on thinking, inference, calculation, and the connecting of cause with effect—in other words, to relying on their <em>consciousness</em>, that most impoverished and error-prone organ! I do not think there has ever been such a feeling of misery on earth, such a leaden discomfort—and meanwhile, the old instincts had not suddenly ceased to make their demands!</p>
+          <span class="attribution">— Friedrich Nietzsche, On the Genealogy of Morals, Second Essay, §16</span>
+        </blockquote>
       </div>
 
       <div class="mood-item">
         <h3>It is complicated</h3>
         <div class="mood-image">
-          <img src="assets/images/bitter.jpg" alt="Quiet Please — Machines Are Learning" />
+          <img src="assets/images/bitter.jpg" alt="It is complicated" />
           <p style="margin-top: 0.5rem; font-style: italic;">I think I might be the one on the left.</p>
         </div>
       </div>
-      
     </div>
   </details>
 
   <details class="section">
     <summary>🚧 Coming Soon</summary>
-
-<div class="uc" style="text-align:center;">
-  <p><strong>🪦 A Monument to My Failures</strong> - 
-     where abandoned or neglected ideas will go to rest
-  </p>
-</div>
-    <!-- each "failed" project is just another .card, like in Articles / Work -->
-
-
-    <!-- add more cards the same way -->
-    <!--
-    <div class="card">
-      <h3>Another Abandoned Project</h3>
-      <p>One-line description of what it was meant to do.</p>
-      <p>🚧 <em>Under construction – check back soon!</em></p>
+    <div class="uc" style="text-align:center;">
+      <p><strong>🪦 A Monument to My Failures</strong> - 
+         where abandoned or neglected ideas will go to rest
+      </p>
     </div>
-    -->
   </details>
-
 
   <details class="section">
     <summary>⭐️ Website Reviews</summary>
+    <div>
       <div class="card">
         <p>Best text editor I've ever used, no fluff.</p>
         <span class="attribution">— Noel</span>
@@ -258,15 +233,13 @@
         <p>Love the whiteboard 10/10 would recommend.</p>
         <span class="attribution">— Noel</span>
       </div>
-<h4>
-  <a href="mailto:cwestnedge@gmail.com
-           ?subject=Website%20feedback
-           &body=Hi%20Collins%2C%0A%0AI%20wanted%20to%20share%20some%20thoughts%20about%20your%20site…"
-     >Send me feedback ✉️</a>
-</h4>
-  </details>  
+      <h4>
+        <a href="mailto:cwestnedge@gmail.com?subject=Website%20feedback&body=Hi%20Collins%2C%0A%0AI%20wanted%20to%20share%20some%20thoughts%20about%20your%20site…">Send me feedback ✉️</a>
+      </h4>
+    </div>
+  </details>
 
-  <details class="section", id="contactSection">
+  <details class="section" id="contactSection">
     <summary>✉️ Contact</summary>
     <div>
       <p>Email: <a href="mailto:cwestnedge@gmail.com">cwestnedge@gmail.com</a></p>
@@ -276,7 +249,6 @@
 
 <footer>&copy; 2025 Donkey Anaphora. All rights reserved.</footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
- <!-- <script src="https://unpkg.com/fabric@5.3.0/dist/fabric.min.js"></script> -->
 <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

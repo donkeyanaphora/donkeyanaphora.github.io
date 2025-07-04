@@ -124,7 +124,7 @@ function updateCanvasBackground () {
     // Resize canvas after fullscreen toggle
     if (fabricCanvas) {
       setTimeout(() => {
-        const container = modalContent.querySelector('.canvas-container-wrapper');
+        const container = modalContent.querySelector('.canvas-viewport');
         if (container) {
           const rect = container.getBoundingClientRect();
           const newWidth = Math.floor(rect.width - 4);  // Subtract border
@@ -146,78 +146,22 @@ function updateCanvasBackground () {
   function initCanvas() {
     if (fabricCanvas) return;
 
-    // Get elements
-    const modalBody = modal.querySelector('.modal-body');
+    // Get the existing canvas element
+    const canvasEl = document.getElementById('sketchpad');
+    const canvasContainer = document.querySelector('.canvas-viewport');
     
-    // Clear and rebuild the modal body
-    modalBody.innerHTML = '';
-    modalBody.style.padding = '10px';
+    if (!canvasEl || !canvasContainer) {
+      console.error('Canvas elements not found!');
+      return;
+    }
     
-    // Create sketch container
-    const sketchContainer = document.createElement('div');
-    sketchContainer.className = 'sketch-container';
-    sketchContainer.style.cssText = `
-      text-align: center;
-      user-select: none;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      overflow: hidden;
-    `;
+    // Ensure canvas has proper touch handling styles
+    canvasEl.style.touchAction = 'none';
+    canvasEl.style.webkitTouchCallout = 'none';
+    canvasEl.style.webkitUserSelect = 'none';
+    canvasEl.style.userSelect = 'none';
     
-    // Create a simple container for the canvas (no viewport scrolling)
-    const canvasContainer = document.createElement('div');
-    canvasContainer.className = 'canvas-container-wrapper';
-    canvasContainer.style.cssText = `
-      flex: 1;
-      position: relative;
-      border: 2px solid var(--section-border);
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      min-height: 0;
-    `;
-    
-    // Create the canvas element
-    const canvas = document.createElement('canvas');
-    canvas.id = 'sketchpad';
-    canvas.style.cssText = `
-      display: block;
-      border: none;
-      touch-action: none;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    `;
-    
-    // Add canvas directly to container
-    canvasContainer.appendChild(canvas);
-    sketchContainer.appendChild(canvasContainer);
-    
-    // Recreate controls
-    const controlsHTML = `
-      <div class="sketch-controls">
-        <div class="slider-group">
-          <label for="strokeSizeSlider">✏️</label>
-          <input id="strokeSizeSlider" type="range" min="1" max="20" value="5">
-        </div>
-        <button class="color-btn active" data-color="#000000" style="background:#000" aria-label="Black"></button>
-        <button class="color-btn" data-color="#ff0000" style="background:#f00" aria-label="Red"></button>
-        <button class="color-btn" data-color="#0000ff" style="background:#00f" aria-label="Blue"></button>
-        <button class="color-btn" data-color="#00ff00" style="background:#0f0" aria-label="Green"></button>
-        <button class="eraser-btn" aria-label="Eraser">⌫</button>
-        <button id="clearBtn" aria-label="Clear drawing">🧹</button>
-        <button id="undoBtn" aria-label="Undo">↶</button>
-      </div>
-    `;
-    sketchContainer.insertAdjacentHTML('beforeend', controlsHTML);
-    
-    modalBody.appendChild(sketchContainer);
-    
-    // Wait a moment for DOM to settle, then size canvas to container
+    // Wait for modal to be fully visible, then size canvas to container
     setTimeout(() => {
       // Get the actual size of the container
       const rect = canvasContainer.getBoundingClientRect();
@@ -225,8 +169,8 @@ function updateCanvasBackground () {
       const canvasHeight = Math.floor(rect.height - 4);
       
       // Set canvas dimensions
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
+      canvasEl.width = canvasWidth;
+      canvasEl.height = canvasHeight;
       
       console.log('Canvas container size:', rect.width, 'x', rect.height);
       console.log('Setting canvas size:', canvasWidth, 'x', canvasHeight);
@@ -235,7 +179,16 @@ function updateCanvasBackground () {
       fabricCanvas = new fabric.Canvas('sketchpad', {
         // Enable touch events for Apple Pencil support
         allowTouchScrolling: false,
-        enablePointerEvents: true
+        enablePointerEvents: true,
+        enableRetinaScaling: true,
+        renderOnAddRemove: true,
+        skipTargetFind: true,
+        // Ensure drawing mode works with touch
+        perPixelTargetFind: false,
+        targetFindTolerance: 5,
+        // Force Fabric to use pointer events on iOS
+        hasControls: false,
+        hasBorders: false
       });
       
       // Set the internal canvas dimensions to match
@@ -243,7 +196,8 @@ function updateCanvasBackground () {
       fabricCanvas.setHeight(canvasHeight);
       
       // Set background
-      fabricCanvas.backgroundColor = 'white';
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      fabricCanvas.backgroundColor = isDark ? '#222' : '#ffffff';
       
       // Enable drawing
       fabricCanvas.isDrawingMode = true;
@@ -256,19 +210,29 @@ function updateCanvasBackground () {
       fabricCanvas.freeDrawingBrush.strokeLineCap = 'round';
       fabricCanvas.freeDrawingBrush.strokeLineJoin = 'round';
       
+      // Ensure canvas handles touch properly without custom handlers
+      const upperCanvas = fabricCanvas.upperCanvasEl;
+      if (upperCanvas) {
+        upperCanvas.style.touchAction = 'none';
+        upperCanvas.style.webkitTouchCallout = 'none';
+        upperCanvas.style.webkitUserSelect = 'none';
+        upperCanvas.style.userSelect = 'none';
+      }
+      
       // Enable pressure sensitivity for Apple Pencil (if supported)
-      if (fabricCanvas.freeDrawingBrush.onMouseMove) {
-        const originalMouseMove = fabricCanvas.freeDrawingBrush.onMouseMove;
-        fabricCanvas.freeDrawingBrush.onMouseMove = function(pointer, options) {
-          // Check for pressure data from pointer events
-          if (options && options.e && options.e.pressure !== undefined) {
+      const originalOnMouseMove = fabricCanvas.freeDrawingBrush.onMouseMove;
+      fabricCanvas.freeDrawingBrush.onMouseMove = function(pointer, options) {
+        // Check for pressure data from pointer events
+        if (options && options.e) {
+          const evt = options.e;
+          if (evt.pressure !== undefined && evt.pressure > 0 && evt.pointerType === 'pen') {
             // Adjust brush width based on pressure (0.1 to 1.0)
             const baseBrushWidth = parseInt(document.querySelector('#strokeSizeSlider').value);
-            this.width = baseBrushWidth * (0.5 + options.e.pressure * 0.5);
+            this.width = Math.max(1, baseBrushWidth * (0.3 + evt.pressure * 0.7));
           }
-          return originalMouseMove.call(this, pointer, options);
-        };
-      }
+        }
+        return originalOnMouseMove.call(this, pointer, options);
+      };
       
       // Make it globally accessible
       window.fabricCanvas = fabricCanvas;
@@ -288,11 +252,23 @@ function updateCanvasBackground () {
         }
       });
       
-      // Re-attach control event listeners
+      // Set up control event listeners
       setupControlListeners();
       
       console.log('Whiteboard initialized successfully');
       console.log('Canvas actual size:', fabricCanvas.width, 'x', fabricCanvas.height);
+      
+      // Log input device support
+      console.log('Touch support:', 'ontouchstart' in window);
+      console.log('Pointer events support:', 'onpointerdown' in window);
+      console.log('Apple device:', /iPad|iPhone|iPod/.test(navigator.userAgent));
+      
+      // Add a listener to detect what type of input is being used
+      if (fabricCanvas.upperCanvasEl) {
+        fabricCanvas.upperCanvasEl.addEventListener('pointerdown', function(e) {
+          console.log('Input detected - Type:', e.pointerType, 'Pressure:', e.pressure);
+        }, { once: true });
+      }
     }, 100);
   }
   
@@ -317,6 +293,13 @@ function updateCanvasBackground () {
         // Update active state
         colorButtons.forEach(b => b.classList.remove('active'));
         ev.currentTarget.classList.add('active');
+        
+        // Reset eraser button if it was active
+        const eraserBtn = document.querySelector('.eraser-btn');
+        if (eraserBtn) {
+          eraserBtn.classList.remove('active');
+          eraserBtn.style.background = 'var(--nav-bg)';
+        }
       });
     });
 
@@ -360,10 +343,12 @@ function updateCanvasBackground () {
             const activeColorBtn = document.querySelector('.color-btn.active');
             const color = activeColorBtn ? activeColorBtn.dataset.color : '#000000';
             fabricCanvas.freeDrawingBrush.color = color;
+            eraserBtn.classList.remove('active');
             eraserBtn.style.background = 'var(--nav-bg)';
           } else {
             // Switch to eraser (background color)
             fabricCanvas.freeDrawingBrush.color = fabricCanvas.backgroundColor;
+            eraserBtn.classList.add('active');
             eraserBtn.style.background = 'var(--link)';
           }
         }
