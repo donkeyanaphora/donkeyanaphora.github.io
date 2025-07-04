@@ -6,7 +6,7 @@ description: "A minor rant about 'AI adoption' and exploration of shallow fusion
 slug: "article1"
 ---
 
-# Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges 
+# 🔗 Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges 
 
 **COLLINS WESTNEDGE**  
 *APRIL 16, 2025*

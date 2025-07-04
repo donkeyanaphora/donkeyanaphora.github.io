@@ -7,7 +7,7 @@ slug: "article2"
 draft: true
 --- 
 
-# Using Linear Models in Modern Applications
+# 📐 Using Linear Models in Modern Applications
 
 **COLLINS WESTNEDGE**  
 *MAY 16, 2025*
