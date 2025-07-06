@@ -128,7 +128,7 @@ article.markdown-body blockquote {
 mjx-container[jax="CHTML"][display="true"],
 mjx-container:not([display="true"]) {
   touch-action: manipulation !important;
-  pointer-events: none;
+  /* pointer-events: none; */
   -webkit-user-select: none;
   user-select: none;
 }

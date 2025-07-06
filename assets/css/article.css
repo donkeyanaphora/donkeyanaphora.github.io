@@ -60,23 +60,6 @@ mjx-container[jax="CHTML"][display="true"]{
   padding-bottom:5px;
   -webkit-overflow-scrolling:touch;
 }
-/* ─── Wide-equation scrolling (same trick you use for tables) ─── */
-article.markdown-body .MathJax_Display,
-article.markdown-body mjx-container[jax="CHTML"][display="true"]{
-  /* shrink to the equation’s *real* width so it can overflow */
-  display:inline-block;
-
-  /* cross-browser “content-wide” width */
-  width:-webkit-max-content;   /* old Safari */
-  width:-moz-max-content;      /* Firefox */
-  width:max-content;           /* everyone else */
-
-  /* these lines are already in your sheet but keep them if you copy-paste */
-  max-width:100%;
-  overflow-x:auto;             /* show horizontal scrollbar if needed */
-  -webkit-overflow-scrolling:touch;  /* momentum scroll on iOS */
-}
-
 mjx-container{           /* undo global centring from body{text-align:center} */
   text-align:left!important;
   line-height:1.3;
