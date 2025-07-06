@@ -858,6 +858,38 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   }
 }
 
+/* ---- Phones in LANDSCAPE ------------------------------------ */
+/* Treat short, touch devices like the portrait/mobile layout    */
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
+  /* reuse your portrait control‑bar layout */
+  .sketch-controls {
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* put the slider on its own row so it never covers the colours */
+  .slider-group {
+    position: static;
+    transform: none;
+    order: -1;                 /* first row */
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  #strokeSizeSlider {
+    width: 60%;
+    max-width: 200px;
+  }
+
+  /* keep the white canvas border clear of the notch / home bar */
+  .canvas-viewport {
+    margin-left:  env(safe-area-inset-left);
+    margin-right: env(safe-area-inset-right);
+  }
+}
+
 /* iOS specific fixes - Enhanced for orientation changes */
 @supports (-webkit-touch-callout: none) {
   /* iOS Safari specific styles */
