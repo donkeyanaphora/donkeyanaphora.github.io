@@ -57,7 +57,7 @@ scarcity and integration in specialized domains">
   <!-- MathJax config -->
   <script>
     window.MathJax = {
-      tex:   { displayIndent: '0em',  displayAlign: 'left' },
+      tex:   { displayIndent: '0em',  displayAlign: 'center' },
       chtml: { mtextFont: 'Times' }
     };
   </script>
@@ -291,9 +291,9 @@ scarcity and integration in specialized domains">
       <p>We combine each model’s logits using a weighted sum in the
       following way:</p>
       <p><span class="math display">\[
-      \log P_{\text{combined}}(y_t)=
-      \log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-      +\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+      \log P_{\mathrm{combined}}\bigl(y_t\bigr)
+        = \log P_{\mathrm{Whisper}}\bigl(y_t \mid x,\, y_{&lt;t}\bigr)
+        + \lambda\,\log P_{\mathrm{GPT2}}\bigl(y_t \mid y_{&lt;t}\bigr)
       \]</span></p>
       <table>
       <colgroup>

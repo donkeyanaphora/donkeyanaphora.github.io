@@ -118,9 +118,9 @@ At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits b
 We combine each model's logits using a weighted sum in the following way:
 
 $$
-\log P_{\text{combined}}(y_t)=
-\log P_{\text{Whisper}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-+\lambda\,\log P_{\text{GPT2}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+\log P_{\mathrm{combined}}\bigl(y_t\bigr)
+  = \log P_{\mathrm{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr)
+  + \lambda\,\log P_{\mathrm{GPT2}}\bigl(y_t \mid y_{<t}\bigr)
 $$
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|
