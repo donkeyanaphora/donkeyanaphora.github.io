@@ -65,18 +65,19 @@ $$
 \mathbf{F}(x,t)=
 \begin{cases}
 \displaystyle
-\operatorname*{arg\,max}\limits_{y_t}\;
-      \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right),
-      & t < \text{n-steps,}\\[0.75em]
+\underset{y_t}{\operatorname{arg\,max}}\,
+      \log P_{\text{ASR}}\!\bigl(y_t\mid x,\,y_{<t}\bigr),
+      & t < \text{n-steps}\\[0.75em]
 \displaystyle
-\operatorname*{arg\,max}\limits_{y_t}\;
+\underset{y_t}{\operatorname{arg\,max}}\,
       \Bigl[
-        \log P_{\text{ASR}}\!\left(y_t \mid x,\; y_{<t}\right)
-        + \lambda\,\log P_{\text{LM}}\!\left(y_t \mid y_{<t}\right)
-      \Bigr],
+        \log P_{\text{ASR}}\!\bigl(y_t\mid x,\,y_{<t}\bigr)
+        + \lambda\,\log P_{\text{LM}}\!\bigl(y_t\mid y_{<t}\bigr)
+      \Bigr],\;
       & t \ge \text{n-steps.}
 \end{cases}
 $$
+
 
 This piecewise approach allows the system to build confidence from the raw audio transcription initially before incorporating the domain expert corrections, namely because our starting point should be conditionalized on something observed e.g. we gotta start somewhere. 
 
