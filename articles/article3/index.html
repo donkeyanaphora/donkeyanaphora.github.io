@@ -117,27 +117,25 @@ better.">
       Dream</strong></em></p>
       </blockquote>
       <h2 id="pseudo-formalizations">Pseudo Formalizations</h2>
-      <p>Literary language often achieves its most profound effects
-      through deliberate violations of ordinary usage. These violations
-      don’t obscure meaning—they illuminate through contradiction and
-      violated expectations. I call this phenomenon
-      <strong>extra-ordinary use</strong>.</p>
-      <p>To explore how these linguistic violations work, I’ll borrow
-      notation from formal logic as a thinking tool. This isn’t meant as
-      rigorous formalization, but rather as a way to highlight patterns
-      in creative language use.</p>
+      <p>Because of their intentionality and depth I’m going to call
+      these violations of “ordinary use” <strong>extra-ordinary
+      use</strong>. They don’t obscure meaning but instead elucidate by
+      way of contradiction or a violation of expectations. To explore
+      how these linguistic violations work, I’ll borrow notation from
+      formal logic. This isn’t meant as rigorous formalization, but
+      rather as tool to highlight the syntactic and semantic patterns
+      that make these expressions interesting.</p>
       <h3 id="two-models-of-interpretation">Two Models of
       Interpretation</h3>
-      <p>Consider how statements behave across two interpretive
-      models:</p>
+      <p>First, it’s helpful to think about how these statements behave
+      across two interpretive models:</p>
       <ul>
       <li><strong>M<sub>phys</sub></strong>: Physical/literal
       interpretation (common sense, ordinary meaning)</li>
       <li><strong>M<sub>interp</sub></strong>: Creative interpretation
       (metaphor, allegory, imagination)</li>
       </ul>
-      <p>The tension between these models reveals what makes certain
-      utterances feel “extra-ordinary.”</p>
+      <!-- The tension between these models reveals what makes certain utterances feel "extra-ordinary." -->
       <h3 id="examples-and-analysis">Examples and Analysis</h3>
       <table>
       <colgroup>
@@ -182,15 +180,17 @@ better.">
       </table>
       <h3 id="core-characteristics">Core Characteristics</h3>
       <p>These literary examples share a unifying feature: they present
-      a <strong>literal semantic failure in one domain that creates
-      insightful or profound resonance in another domain (metaphorical,
-      allegorical, or abstract)</strong>. We can identify three rough
-      patterns in how extra-ordinary language creates its effects:</p>
+      a <strong>literal semantic failure</strong> in one domain that
+      creates insightful or profound resonance in another domain
+      (metaphorical, allegorical, or abstract).</p>
+      <p>From the examples above we can <em>loosely group</em> these
+      failures into three heuristic patterns:</p>
       <p><span class="math display">\[
-      \text{ExO}(\varphi) \equiv \text{MC}(\varphi) \lor
-      \text{MP}(\varphi) \lor \text{TC}(\varphi)
+      \text{ExO}(\varphi)\; \approx\; \text{MC}(\varphi)\; \lor\;
+      \text{MP}(\varphi)\; \lor\; \text{TC}(\varphi)
       \]</span></p>
-      <p>Where: <br><br></p>
+      <p>Where</p>
+      <p><br><br></p>
       <table>
       <colgroup>
       <col style="width: 26%" />
@@ -227,34 +227,15 @@ better.">
       </tr>
       </tbody>
       </table>
-      <h3 id="implications">Implications</h3>
-      <p>Extra-ordinary language achieves its power through strategic
-      semantic failure—statements that break in one domain to create
-      meaning in another. This framework helps us understand:</p>
-      <ol type="1">
-      <li>Why certain literary expressions feel profound despite (or
-      because of) their logical impossibility</li>
-      <li>How creative language exploits the gap between literal and
-      interpretive models</li>
-      <li>What distinguishes truly innovative language from mere
-      semantic errors</li>
-      </ol>
       <h3 id="scope-and-purpose">Scope and Purpose</h3>
-      <p>This framework is exploratory, not definitive. It’s not meant
-      to reduce literary creativity to logical formulas, but rather
-      to:</p>
-      <ul>
-      <li>Illuminate patterns in creative language use</li>
-      <li>Provide tools for thinking about linguistic innovation</li>
-      <li>Probe why current AI models, despite their fluency, rarely
-      generate such profound violations spontaneously</li>
-      </ul>
-      <p>Understanding these patterns may help us develop better
-      evaluation methods that emphasize the creative dimension of
-      linguistic intelligence methods that recognize not just
-      grammatical correctness or semantic coherence, but the deliberate,
-      meaningful violation of ordinary use that characterizes compelling
-      literary expressions.</p>
+      <p>The logic sketch is strictly exploratory. It shows how an
+      expression can fracture under a literal reading yet resolve in an
+      imaginative one, and it supplies shorthand—MC, MP, TC—for that
+      move. Making the break explicit clarifies how objectives rooted in
+      the distributional hypothesis e.g. next-token prediction and RLHF
+      tuned for coherence could steer models away from ExO language. If
+      we want systems that embrace deliberate, meaningful rule-bending,
+      we’ll need benchmarks that reward it.</p>
       <h2 id="why-might-current-ai-struggle-here">Why Might Current AI
       Struggle Here?</h2>
       <p>Current language models face several systematic barriers to

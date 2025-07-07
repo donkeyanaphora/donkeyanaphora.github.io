@@ -48,18 +48,16 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 
 ## Pseudo Formalizations
 
-Literary language often achieves its most profound effects through deliberate violations of ordinary usage. These violations don't obscure meaning—they illuminate through contradiction and violated expectations. I call this phenomenon **extra-ordinary use**.
-
-To explore how these linguistic violations work, I'll borrow notation from formal logic as a thinking tool. This isn't meant as rigorous formalization, but rather as a way to highlight patterns in creative language use.
+Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use**. They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. To explore how these linguistic violations work, I'll borrow notation from formal logic. This isn't meant as rigorous formalization, but rather as tool to highlight the syntactic and semantic patterns that make these expressions interesting.
 
 ### Two Models of Interpretation
 
-Consider how statements behave across two interpretive models:
+First, it's helpful to think about how these statements behave across two interpretive models:
 
 - **M<sub>phys</sub>**: Physical/literal interpretation (common sense, ordinary meaning)
 - **M<sub>interp</sub>**: Creative interpretation (metaphor, allegory, imagination)
 
-The tension between these models reveals what makes certain utterances feel "extra-ordinary."
+<!-- The tension between these models reveals what makes certain utterances feel "extra-ordinary." -->
 
 ### Examples and Analysis
 
@@ -71,16 +69,17 @@ The tension between these models reveals what makes certain utterances feel "ext
 | *“A cage went in search of a bird”* | M<sub>phys</sub> ⊨ ¬Animate(cage) ∧ Search(e, cage, bird) ⇒ ⊥<br><br>M<sub>interp</sub> ⊨ Search(e, oppression, freedom) | An inanimate **cage** can’t be a seeker (type clash); metaphorically, oppression pursues freedom. |
 
 
-
-
 ### Core Characteristics
-These literary examples share a unifying feature: they present a **literal semantic failure in one domain that creates insightful or profound resonance in another domain (metaphorical, allegorical, or abstract)**. We can identify three rough patterns in how extra-ordinary language creates its effects:
+These literary examples share a unifying feature: they present a **literal semantic failure** in one domain that creates insightful or profound resonance in another domain (metaphorical, allegorical, or abstract).
+
+From the examples above we can *loosely group* these failures into three heuristic patterns:
 
 $$
-\text{ExO}(\varphi) \equiv \text{MC}(\varphi) \lor \text{MP}(\varphi) \lor \text{TC}(\varphi)
+\text{ExO}(\varphi)\; \approx\; \text{MC}(\varphi)\; \lor\; \text{MP}(\varphi)\; \lor\; \text{TC}(\varphi)
 $$
 
-Where:
+Where  
+
 <br><br>
 
 | Pattern | Formal Sketch | Intuition |
@@ -89,24 +88,8 @@ Where:
 | Modal Projection **(MP)** | M<sub>phys</sub> ⊭ φ **but** M<sub>interp</sub> renders φ conceivable | Physical world disallows φ; imagination projects consistent scenario |
 | Type Clash **(TC)** | φ forces type contradiction in M<sub>phys</sub> | Category mismatch (e.g., animate actions for inanimate objects) resolved through reinterpretation |
 
-### Implications
-
-Extra-ordinary language achieves its power through strategic semantic failure—statements that break in one domain to create meaning in another. This framework helps us understand:
-
-1. Why certain literary expressions feel profound despite (or because of) their logical impossibility
-2. How creative language exploits the gap between literal and interpretive models
-3. What distinguishes truly innovative language from mere semantic errors
-
 ### Scope and Purpose
-
-This framework is exploratory, not definitive. It's not meant to reduce literary creativity to logical formulas, but rather to:
-
-- Illuminate patterns in creative language use
-- Provide tools for thinking about linguistic innovation
-- Probe why current AI models, despite their fluency, rarely generate such profound violations spontaneously
-
-Understanding these patterns may help us develop better evaluation methods that emphasize the creative dimension of linguistic intelligence methods that recognize not just grammatical correctness or semantic coherence, but the deliberate, meaningful violation of ordinary use that characterizes compelling literary expressions.
-
+The logic sketch is strictly exploratory. It shows how an expression can fracture under a literal reading yet resolve in an imaginative one, and it supplies shorthand—MC, MP, TC—for that move. Making the break explicit clarifies how objectives rooted in the distributional hypothesis e.g. next-token prediction and RLHF tuned for coherence could steer models away from ExO language. If we want systems that embrace deliberate, meaningful rule-bending, we’ll need benchmarks that reward it.  
 
 ## Why Might Current AI Struggle Here?
 Current language models face several systematic barriers to producing ExO language; at this point many of these are my own speculation or fan theory than concrete fact, but nevertheless here they are: 
