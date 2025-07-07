@@ -45,58 +45,70 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 >   
 > — *Shakespeare, **A Midsummer Night’s Dream***
 
+
 ## Pseudo Formalizations
 
-Because of their intentionality and depth I'm going to call these violations of “ordinary use” **extra-ordinary use**. They don't obscure meaning but instead elucidate by way of contradiction or a violation of expectations. Now, the question is what makes them so unique?
+Literary language often achieves its most profound effects through deliberate violations of ordinary usage. These violations don't obscure meaning—they illuminate through contradiction and violated expectations. I call this phenomenon **extra-ordinary use**.
 
-### Examples & Logical Sketches
-| Passage | Logical sketch | English |
-|---------|---------------|---------|
-| *“Two distincts, division none”* | $\Box_{\,\mathrm{p}}\,\text{Distinct}(a,b) \;\land\; \Box_{\,\mathrm{m}}\,\lnot\text{Distinct}(a,b)$ | $\text{Bodies: two + Souls: one}$ |
-| *“Hearts remote, yet not asunder”* | $\Box_{\,\mathrm{p}}\,\text{Remote}(a,b) \;\land\; \Box_{\,\mathrm{m}}\,\lnot\text{Remote}(a,b)$ | $\text{Spatially apart + Spiritually united}$ |
-| *“Hot ice / wondrous strange snow”*[^1] | $\Box_{\,\mathrm{p}}\,\lnot(\text{Ice}\land\text{Hot}) \;\land\; \Diamond_{\,\mathrm{m}}\,(\text{Ice}\land\text{Hot})$ | $\text{Physically impossible → imaginatively possible}$ |
-| *“A cage went in search of a bird”* | $\text{Search}(e,\text{cage},\text{bird}) \;\land\; \text{ReqAnim}(\text{cage})$<br> $\;\land\; \lnot\text{Animate}(\text{cage}) \;\vdash\; \bot$<br><br>$\text{allegory} \;\to\; \text{Search}(e,\text{oppression},\text{freedom})$ | $\text{Oppression pursues freedom}$ |
+To explore how these linguistic violations work, I'll borrow notation from formal logic as a thinking tool. This isn't meant as rigorous formalization, but rather as a way to highlight patterns in creative language use.
 
-### Characteristics
-These literary devices can be characterized as utterances whose **literal semantic model fails in the physical world yet remains interpretable (and often profound) once we flip modality, type, or world-knowledge layer**. Essentially, they present a **literal semantic failure** in one domain that creates insightful or profound resonance in another domain (metaphorical, allegorical, or abstract).
+### Two Models of Interpretation
 
-From the examples above **Extra-Ordinary (ExO)** could be represented as:
+Consider how statements behave across two interpretive models:
+
+- **M<sub>phys</sub>**: Physical/literal interpretation (common sense, ordinary meaning)
+- **M<sub>interp</sub>**: Creative interpretation (metaphor, allegory, imagination)
+
+The tension between these models reveals what makes certain utterances feel "extra-ordinary."
+
+### Examples and Analysis
+
+| Passage | Formal Notation | Plain English |
+|---------|----------------|---------------|
+| *"Two distincts, division none"* | M<sub>phys</sub> ⊨ Distinct(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Distinct(a,b) | Two bodies, one soul |
+| *"Hearts remote, yet not asunder"* | M<sub>phys</sub> ⊨ Remote(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Remote(a,b) | Spatially apart, spiritually united |
+| *"Hot ice / wondrous strange snow"*¹ | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) **and**<br>M<sub>interp</sub> ⊨ (Ice ∧ Hot) | Physically impossible → imaginatively vivid |
+| *"A cage went in search of a bird"* | M<sub>phys</sub> ⊨ Inanimate(cage)<br>∧ AgentRequired(Search) → ⊥<br><br>M<sub>interp</sub> ⊨ Search(e, oppression, freedom) | Literal impossibility resolved through metaphorical reinterpretation |
+
+### Core Characteristics
+These literary examples share a unifying feature: they present a **literal semantic failure in one domain that creates insightful or profound resonance in another domain (metaphorical, allegorical, or abstract)**. We can identify three rough patterns in how extra-ordinary language creates its effects:
 
 $$
 \text{ExO}(\varphi) \equiv \text{MC}(\varphi) \lor \text{MP}(\varphi) \lor \text{TC}(\varphi)
 $$
 
 Where:
+<br><br>
 
-* **MC(ϕ)** *(Modal Contradiction)*: $\Box_{\,\mathrm{p}}\,ϕ \;\land\; \Box_{\,\mathrm{m}}\,\lnot ϕ$
+| Pattern | Formal Sketch | Intuition |
+|---------|--------------|-----------|
+| Modal Clash **(MC)** | M<sub>phys</sub> ⊨ ¬φ **and** M<sub>interp</sub> ⊨ φ | Statement fails in physical model but holds in interpretive model |
+| Modal Projection **(MP)** | M<sub>phys</sub> ⊭ φ **but** M<sub>interp</sub> renders φ conceivable | Physical world disallows φ; imagination projects consistent scenario |
+| Type Clash **(TC)** | φ forces type contradiction in M<sub>phys</sub> | Category mismatch (e.g., animate actions for inanimate objects) resolved through reinterpretation |
 
-*(Necessarily false physically, but necessarily true metaphorically/allegorically, or vice versa.)*
+### Implications
 
-* **MP(ϕ)** *(Modal Projection)*: $\Box_{\,\mathrm{p}}\,\lnot ϕ \;\land\; \Diamond_{\,\mathrm{m}}\,ϕ$
+Extra-ordinary language achieves its power through strategic semantic failure—statements that break in one domain to create meaning in another. This framework helps us understand:
 
-*(Physically impossible yet imaginable or metaphorically possible.)*
+1. Why certain literary expressions feel profound despite (or because of) their logical impossibility
+2. How creative language exploits the gap between literal and interpretive models
+3. What distinguishes truly innovative language from mere semantic errors
 
-* **TC(ϕ)** *(Type Clash)*: $(ϕ \land \text{Presup}(ϕ)) \vdash \bot$
+### Scope and Purpose
 
-*(Utterance that, together with its presupposition, leads to logical impossibility or category error.)*
+This framework is exploratory, not definitive. It's not meant to reduce literary creativity to logical formulas, but rather to:
 
-**Key:**
+- Illuminate patterns in creative language use
+- Provide tools for thinking about linguistic innovation
+- Probe why current AI models, despite their fluency, rarely generate such profound violations spontaneously
 
-$\Box$, $\Diamond$ — necessity / possibility  
-$\Box_{\,\mathrm{p}}$, $\Diamond_{\,\mathrm{p}}$ — physical-world modality  
-$\Box_{\,\mathrm{m}}$, $\Diamond_{\,\mathrm{m}}$ — metaphysical / allegorical modality
+Understanding these patterns may help us develop better evaluation methods that emphasize the creative dimension of linguistic intelligence methods that recognize not just grammatical correctness or semantic coherence, but the deliberate, meaningful violation of ordinary use that characterizes compelling literary expressions.
 
-<!-- This formalization isn’t meant to provide a any sort of definition of literary novelty or creativity. Rather, it’s intended as an exploratory, informal framework for understanding linguistic expressions that deliberately violate ordinary usage. The aim is not to reduce literary novelty to logical formulas but to provide a starting point or probe for exploring language models—specifically to understand why current AI models, despite their analytical and literary fluency, rarely generate such innovative or profound language spontaneously.
-
-This exploration might help pinpoint limitations in how AI models capture deep intentionality and creativity, and thus inform better evaluation methods and benchmarks that emphasize the creative dimension of linguistic intelligence. -->
-
-### Scope & Caveats
-This formalization isn't a definition of literary novelty or creativity. Rather, it's an exploratory framework for analyzing expressions that deliberately violate ordinary usage. The goal isn't to reduce literary innovation to logic, but to probe why current language models rarely generate such creative or profound language spontaneously. Understanding these limitations may inform better evaluation methods that emphasize creativity in linguistic intelligence
 
 ## Why Might Current AI Struggle Here?
 Current language models face several systematic barriers to producing ExO language; at this point many of these are my own speculation or fan theory than concrete fact, but nevertheless here they are: 
 
-**Data Scarcity in Pretraining**: Though profound literature exists in pretraining corpora (Google Books, etc.), it's statistically underrepresented. By definition, novel writing is rare, and easily-licensed conventional text dominates the training mix. Even within Pulizer Prize winning articles/books etc the instances of truly profound prose/ExO language (as impactful as they may be) are few and far between. 
+**Data Scarcity in Pretraining**: Though profound literature exists in pretraining corpora (Google Books, etc.), it's statistically underrepresented. By definition, novel writing is rare, and easily-licensed conventional text dominates the training mix. Even within Pulitzer Prize winning articles/books etc the instances of truly profound prose/ExO language (as impactful as they may be) are few and far between. 
 
 **Objective Mismatch**: From a causal language modeling perspective, next token prediction is less about encoding the abstract concepts or deep intentionality these examples are made up of and more so about emulation of style and prose. At this phase models learn to reproduce surface features without encoding the abstract concepts that necessarily drive literary innovation. Even though large causal models like GPT-3 begin to exhibit some few-shot behavior with sufficient examples, it seems unlikely that the causal training paradigm alone gets us the reasoning necessary for truly novel language.
 
@@ -104,7 +116,7 @@ Current language models face several systematic barriers to producing ExO langua
 
 **RLHF Optimization Pressure**: This one is fun to think about. From a preference learning perspective, I doubt anyone wants to do full-blown Harold Bloom literary analysis to rate model outputs. Most annotators would favor accessible, Wikipedia-style entries over Joycean explorations of any topic. This optimization pressure likely eliminates whatever literary capabilities emerge during pretraining.
 
-**The Deeper Issue: Fluid Literary Intelligence**:The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what I'd call fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks.
+**The Deeper Issue: Fluid Literary Intelligence**: The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what I'd call fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks.
 
 **Missing Benchmarks**: This leads to deeper questions: What constitutes literary novelty computationally? Why are there no benchmarks on par with ARC that touch this axis of intelligence? Current reasoning evaluation has heavily favored verifiable tasks (coding, math) over creative reasoning. 
 
@@ -141,7 +153,16 @@ Here as some resources on controllable generation. These could offer a good star
 
 **A broken clock is right twice a day**: Is there a meaningful difference between "turning up randomness and filtering with experts" versus "genuine creative intelligence"? Could high-temperature generation coupled with expert filtering approximate the cognitive processes behind ExO language?
 
-**Expert Agreement:** This one is personal because I see it all the time in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. Is Citizen Kane actually one of the greatest films of all time or was it just the introduction of depth of field that won audiences and the Academy over?
+**Expert Agreement:** This one is common in business problems. Would literary critics even agree on what constitutes good ExO language? The subjectivity of literary judgment might make this approach messier than mathematical reasoning tasks. 
+
+<!-- discuss francios chollets reliability rating as condition for measuring xyz -->
+
+**Socialogical Influence**: How do we account for the way social and historical contexts shape judgments of novelty and creativity and is it a moving target?   
+
+Novelty and creativity are often historically and socially situated. A good deal of what constitutes creatvity and novelty is dependent on the historical context in which artistic expressions are judged. Citizen Kane, for example, is often cited as one of the greatest films of all time due to its innovative cinematography and storytelling. However, the cinematic innovations that define this film, such as Toland's use of depth of field, is now a staple in most introductory film courses. Fashion often follows a similar arc, innovative and fresh designs that mark the runway one season saturate the shelves of fast-fashion retailers the next.
+
+Though judgements about creativity and artistic merit are heavily influenced by the social and historical factors there is still a sense in which great works are able to stand the test of time. When evaluating creative intelligence, we must consider how social and historical contexts shape our aesthetic judgments and distinguish between those that are fleeting and those that endure.
+
 
 **Generalization Limits**: If we optimize models toward specific critic preferences, do we get genuine creative capability or just better mimicry of those critics' tastes? I think of Wittgensteins example of mimicry and rule following. A pupil is learning a geometric series: The pupil has been tested on examples of counting by +2 up to 1000. The pupil is then asked to continue the task on numbers above 1000 and then writes 1000, 1004, 1008, 1012. The pupil claims they have been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step the pupil took in training was perfectly compatible with this alternative rule. Most intelligence tasks are about fluid and adaptive generalization.
 
