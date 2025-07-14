@@ -133,7 +133,7 @@ better.">
       <li><strong>M<sub>phys</sub></strong>: Physical/literal
       interpretation (common sense, ordinary meaning)</li>
       <li><strong>M<sub>interp</sub></strong>: Creative interpretation
-      (metaphor, allegory, imagination)</li>
+      (metaphor, allegory, other figurative readings)</li>
       </ul>
       <!-- The tension between these models reveals what makes certain utterances feel "extra-ordinary." -->
       <h3 id="examples-and-analysis">Examples and Analysis</h3>
@@ -164,10 +164,12 @@ better.">
       <td>Spatially apart, spiritually united</td>
       </tr>
       <tr>
-      <td><em>“Hot ice / wondrous strange snow”</em>¹</td>
+      <td><em>“Hot ice / wondrous strange snow”</em><a href="#fn1"
+      class="footnote-ref" id="fnref1"
+      role="doc-noteref"><sup>1</sup></a></td>
       <td>M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot)
       <strong>and</strong><br>M<sub>interp</sub> ⊨ (Ice ∧ Hot)</td>
-      <td>Physically impossible → imaginatively vivid</td>
+      <td>Physically impossible, imaginatively possible</td>
       </tr>
       <tr>
       <td><em>“A cage went in search of a bird”</em></td>
@@ -303,34 +305,48 @@ better.">
       The more I examine instances of impactful prose e.g. utterances packed with intentionality and metaphysical depth and try to formally capture their distinctive features, the more convinced I become that modeling such language necessitates a type of fluid literary intelligence. Ultimately, this exploration leads to deeper epistemic questions: what precisely constitutes literary novelty, and how can we recognize and evaluate it computationally, and lastly are there no benchmarks on par with ARC that touch on this axis of intelligence? 
 
       Also, if we had 20 Harold blooms doing RLHF or composing benchmarks made up of curated instances of ExO language then I truly believe we could optimize models to exhibit this type of intelligence. And RL scales if we got from GPT3 to ChatGPT with 10,000 samples maybe we can just have a handful of Harold Bloom for models. Also could this not generalize to other creative tasks as well? AND historically I believe reasoning tasks/benchmarks have too heavily focused on verifiable tasks such as coding and mathematical reasoning.  -->
-      <h2 id="some-probabilistic-approaches">Some Probabilistic
-      Approaches</h2>
-      <p>Here as some resources on controllable generation. These could
-      offer a good starting point in terms of guiding models to emulate
-      instances or traces of extra-ordinary language they could even
-      help showcase whether such latent reprentations even exist within
-      the model. However, I think to truly address the difficulty of
-      producing ExO language there will be a need to address deeper
-      epistemic questions, questions about creativity, novelty, fluid
-      intelligence, and in machine learning terms adaptive
-      generalization to out-of-distribution tasks (hence the Francois
-      Chollet paper).</p>
+      <h2 id="key-readings">Key Readings</h2>
+      <p>These papers and essays collectively help explore
+      <strong>extra‑ordinary (ExO) language</strong>:
+      controllable‑generation techniques expose rare linguistic traces,
+      RLHF studies detail how reward shaping affects diversity,
+      Chollet’s work addresses fluid intelligence and
+      out‑of‑distribution generalization, and the SEP entries offer
+      foundational perspectives on metaphor and contradiction—concepts
+      central to creativity and nuanced language use.</p>
+      <h3 id="controllable-generation">Controllable Generation</h3>
       <ul>
-      <li><a href="https://arxiv.org/abs/1911.01547">On the Measure of
-      Intelligence</a></li>
-      <li><a href="https://arxiv.org/pdf/2308.10248">ActAdd</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/2312.06681">Contrastive
-      Activation Steering</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/2412.10193">Classifier-based
-      guidance for discrete diffusion</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/2504.18535">TRACE</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/2406.13892">Constrained
-      Generation (Ctrl-G)</a></li>
+      <li><strong>ActAdd</strong> — <a
+      href="https://arxiv.org/pdf/2308.10248">PDF</a></li>
+      <li><strong>Contrastive Activation Steering</strong> — <a
+      href="https://arxiv.org/pdf/2312.06681">PDF</a></li>
       </ul>
+      <h3
+      id="rlhf-on-mode-collapse-output-diversity">RLHF on Mode Collapse &amp; Output Diversity</h3>
+      <ul>
+      <li><strong>Effects of RLHF on Diversity &amp; Generalization</strong>
+      — <a href="https://arxiv.org/pdf/2310.06452">PDF</a></li>
+      <li><strong>RLHF Effects on Conceptual Diversity</strong> — <a
+      href="https://aclanthology.org/2025.naacl-long.561.pdf">PDF</a></li>
+      </ul>
+      <h3 id="fluid-intelligence">Fluid Intelligence</h3>
+      <ul>
+      <li><strong>On the Measure of Intelligence</strong> — <a
+      href="https://arxiv.org/abs/1911.01547">PDF</a></li>
+      </ul>
+      <h3
+      id="philosophy-of-language-logic">Philosophy of Language &amp; Logic</h3>
+      <ul>
+      <li><strong>Metaphor</strong>
+      (Stanford Encyclopedia of Philosophy) — <a
+      href="https://plato.stanford.edu/entries/metaphor/">https://plato.stanford.edu/entries/metaphor/</a></li>
+      <li><strong>Contradiction</strong>
+      (Stanford Encyclopedia of Philosophy) — <a
+      href="https://plato.stanford.edu/entries/contradiction/">https://plato.stanford.edu/entries/contradiction/</a></li>
+      </ul>
+      <!-- - [Classifier-based guidance for discrete diffusion](https://arxiv.org/pdf/2412.10193)  
+      - [TRACE](https://arxiv.org/pdf/2504.18535)  
+      - [Constrained Generation (Ctrl-G)](https://arxiv.org/pdf/2406.13892)   -->
       <h2 id="open-problems">Open Problems</h2>
       <p><strong>Empirical Approach</strong>: Can we just crank up the
       temperature and RLHF against literary critics? Is the solution as
@@ -395,14 +411,13 @@ better.">
       <!-- 
       A pupil is learning a geometric series the pupil has been tested on examples up to 1000 then they get the pupil to continue the series (+2) he writes 1000, 1004, 1008, 1012. The pupil claims he has been following the rule all along: “Up to 1000 I add 2; from 1000 onward I add 4.” Every step he took in training was perfectly compatible with this alternative rule. I think this relates to a deeper question posed by arc dataset and apple paper  -->
       <h2 id="closing-thoughts">Closing Thoughts</h2>
-      <p>Just because anyone can write poetry doesn’t mean they should.
-      Similarly, just because models can exhibit surprisal or violate
-      semantic expectations doesn’t always mean they possess the ability
-      to do so meaningfully. Ultimately, the goal is to understand
-      whether machines can develop the kind of flexible, creative
-      intelligence that ExO language represents—and to build evaluation
-      frameworks that recognize this intelligence when it emerges. In
-      short, we need benchmarks that reward “wondrous strange snow.”</p>
+      <p>Just because models can exhibit surprisal or violate semantic
+      expectations doesn’t always mean they possess the ability to do so
+      meaningfully. Ultimately, the goal is to understand whether
+      machines can develop the kind of flexible, creative intelligence
+      that ExO language represents—and to build evaluation frameworks
+      that recognize this intelligence when it emerges. In short, we
+      need benchmarks that reward “wondrous strange snow.”</p>
       <!-- 
       Ultimately, the hope is to improve generation so we can guide it toward extra-ordinary usage, language that is *“wondrous strange snow.”* -->
       <hr />
@@ -412,6 +427,21 @@ better.">
       thoughts on diffusion-based and RL approaches. And last but not
       least shoutout to Noel for her core contributions on aesthetics
       and philosophical insights on creativity and intelligence</em></p>
+      <section id="footnotes"
+      class="footnotes footnotes-end-of-document" role="doc-endnotes">
+      <hr />
+      <ol>
+      <li id="fn1"><p><em>Theseus sets up an open contradiction
+      <strong>hot</strong> + <strong>ice</strong> only to “resolve” it
+      with the sneering flourish “wondrous strange snow.”<br />
+      The oxymoron stays physically impossible, but the new name lets
+      the audience picture it for a moment as an imaginable
+      marvel.<br />
+      I think this imaginative license would still make it a
+      Modal-Projection (MP).</em><a href="#fnref1" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      </ol>
+      </section>
     </article>
   </main>
 

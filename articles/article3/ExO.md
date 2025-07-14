@@ -55,7 +55,7 @@ Because of their intentionality and depth I'm going to call these violations of 
 First, it's helpful to think about how these statements behave across two interpretive models:
 
 - **M<sub>phys</sub>**: Physical/literal interpretation (common sense, ordinary meaning)
-- **M<sub>interp</sub>**: Creative interpretation (metaphor, allegory, imagination)
+- **M<sub>interp</sub>**: Creative interpretation (metaphor, allegory, other figurative readings)
 
 <!-- The tension between these models reveals what makes certain utterances feel "extra-ordinary." -->
 
@@ -65,7 +65,7 @@ First, it's helpful to think about how these statements behave across two interp
 |---------|----------------|---------------|
 | *"Two distincts, division none"* | M<sub>phys</sub> ⊨ Distinct(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Distinct(a,b) | Two bodies, one soul |
 | *"Hearts remote, yet not asunder"* | M<sub>phys</sub> ⊨ Remote(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Remote(a,b) | Spatially apart, spiritually united |
-| *"Hot ice / wondrous strange snow"*¹ | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) **and**<br>M<sub>interp</sub> ⊨ (Ice ∧ Hot) | Physically impossible → imaginatively vivid |
+| *"Hot ice / wondrous strange snow"*[^1] | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) **and**<br>M<sub>interp</sub> ⊨ (Ice ∧ Hot) | Physically impossible,  imaginatively possible |
 | *“A cage went in search of a bird”* | M<sub>phys</sub> ⊨ ¬Animate(cage) ∧ Search(e, cage, bird) ⇒ ⊥<br><br>M<sub>interp</sub> ⊨ Search(e, oppression, freedom) | An inanimate **cage** can’t be a seeker (type clash); metaphorically, oppression pursues freedom. |
 
 
@@ -117,17 +117,32 @@ The more I examine instances of impactful prose e.g. utterances packed with inte
 
 Also, if we had 20 Harold blooms doing RLHF or composing benchmarks made up of curated instances of ExO language then I truly believe we could optimize models to exhibit this type of intelligence. And RL scales if we got from GPT3 to ChatGPT with 10,000 samples maybe we can just have a handful of Harold Bloom for models. Also could this not generalize to other creative tasks as well? AND historically I believe reasoning tasks/benchmarks have too heavily focused on verifiable tasks such as coding and mathematical reasoning.  -->
 
-## Some Probabilistic Approaches
+## Key Readings
 
-Here as some resources on controllable generation. These could offer a good starting point in terms of guiding models to emulate instances or traces of extra-ordinary language they could even help showcase whether such latent reprentations even exist within the model. However, I think to truly address the difficulty of producing ExO language there will be a need to address deeper epistemic questions, questions about creativity, novelty, fluid intelligence, and in machine learning terms adaptive generalization to out-of-distribution tasks (hence the Francois Chollet paper). 
+These papers and essays collectively help explore **extra‑ordinary (ExO) language**: controllable‑generation techniques expose rare linguistic traces, RLHF studies detail how reward shaping affects diversity, Chollet’s work addresses fluid intelligence and out‑of‑distribution generalization, and the SEP entries offer foundational perspectives on metaphor and contradiction—concepts central to creativity and nuanced language use.
 
-- [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
-- [ActAdd](https://arxiv.org/pdf/2308.10248)  
-- [Contrastive Activation Steering](https://arxiv.org/pdf/2312.06681)  
-- [Classifier-based guidance for discrete diffusion](https://arxiv.org/pdf/2412.10193)  
+### Controllable Generation
+
+* **ActAdd** — [PDF](https://arxiv.org/pdf/2308.10248)
+* **Contrastive Activation Steering** — [PDF](https://arxiv.org/pdf/2312.06681)
+
+### RLHF on Mode Collapse & Output Diversity
+
+* **Effects of RLHF on Diversity & Generalization** — [PDF](https://arxiv.org/pdf/2310.06452)
+* **RLHF Effects on Conceptual Diversity** — [PDF](https://aclanthology.org/2025.naacl-long.561.pdf)
+
+### Fluid Intelligence
+
+* **On the Measure of Intelligence** — [PDF](https://arxiv.org/abs/1911.01547)
+
+### Philosophy of Language & Logic
+
+* **Metaphor** (Stanford Encyclopedia of Philosophy) — [https://plato.stanford.edu/entries/metaphor/](https://plato.stanford.edu/entries/metaphor/)
+* **Contradiction** (Stanford Encyclopedia of Philosophy) — [https://plato.stanford.edu/entries/contradiction/](https://plato.stanford.edu/entries/contradiction/)
+
+<!-- - [Classifier-based guidance for discrete diffusion](https://arxiv.org/pdf/2412.10193)  
 - [TRACE](https://arxiv.org/pdf/2504.18535)  
-- [Constrained Generation (Ctrl-G)](https://arxiv.org/pdf/2406.13892)  
-
+- [Constrained Generation (Ctrl-G)](https://arxiv.org/pdf/2406.13892)   -->
 
 ## Open Problems
 
