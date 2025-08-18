@@ -116,6 +116,7 @@ scarcity and integration in specialized domains">
       datasets on specialized domains are becoming more common but their
       volume and variety remain too limited, keeping them
       out-of-distribution for many business use cases.</p>
+      <!-- this would be a good place to talk about the existing community and how others have done shallow fusion as a way to address this problem (not just me) -->
       <p>This distribution gap motivated me to explore the concept of
       <strong>shallow fusion</strong>: combining general-purpose ASR
       model with domain-specific language models during inference.
@@ -126,9 +127,16 @@ scarcity and integration in specialized domains">
       text meaningfully improve speech-to-text transcription accuracy
       within an adjacent domain? And critically, what are the failure
       modes associated with this type of integration?</p>
-      <!-- In contrast to the popular narrative, my day-to-day experience has shown me that these discussions routinely overlook the many technical challenges mentioned above. As someone stuck in the generalist specialist divide, it's hard not to feel frustration when leaders boast an AI integration victory that is nothing more than an API call. This disconnect motivated me to develop a case study leveraging **shallow fusion** in order to mitigate data-distribution shifts and the shortage of structured training data in Automatic Speech Recognition (ASR). In this write-up, I introduce shallow fusion and ask: Can a language model trained on a domain-specific corpus meaningfully improve speech-to-text transcription within that domain and to what extent can the text be detached? -->
-      <h2 id="a-formal-example-shallow-fusion">A Formal Example: Shallow
-      Fusion</h2>
+      <h2 id="background-existing-approaches">Background &amp; Existing
+      Approaches</h2>
+      <p>This section is about discussing how the community has used ASR
+      to overcome domain mismatch in ASR</p>
+      <ul>
+      <li>Discuss problems current research has addressed</li>
+      <li>Discuss types of fusion, cold, deep, shallow</li>
+      <li>Discuss methodologies high level</li>
+      </ul>
+      <h2 id="shallow-fusion-explained">Shallow Fusion Explained</h2>
       <p>But first, what is shallow fusion? Consider for example, a
       person listening to audio of a phone call with a customer and
       customer service agent at an insurance claims calls center. The
@@ -147,7 +155,7 @@ scarcity and integration in specialized domains">
       as the person listening to the audio and <span
       class="math inline">\(P_{\text{LM}}\)</span> as the domain expert
       that is hard of hearing but deeply understands the context.</p>
-      <h4 id="mathematical-formulation">Mathematical Formulation</h4>
+      <h3 id="mathematical-formulation">Mathematical Formulation</h3>
       <p>At each decoding step for some audio input, we select the most
       probable token <span class="math inline">\(y_{t}\)</span> using
       information from the Automatic Speech Recognition model (ASR) and
@@ -180,46 +188,15 @@ scarcity and integration in specialized domains">
       language in a general sense while the LM model understands the
       specialized domain in its written form, but has no access to the
       audio signal. Just like in the analogy from earlier by fusing
-      their predictions, we combine phonetic understand with domain
-      expertise, leading to more accurate transcriptions for our domain.
-      Without careful integration or synergy between the two, both
-      models carry major limitations.</p>
+      their predictions, we combine phonetic understanding with domain
+      expertise, leading to more accurate transcriptions for domain
+      specific terms. Without careful integration or synergy between the
+      two, both models can carry major limitations.</p>
       <h4 id="process-diagram">Process Diagram:</h4>
       <p><img src="assets/viz.png" alt="diagram" /> Reference: <a
       href="https://arxiv.org/pdf/1712.01996">Kannan et al. 2017</a></p>
-      <h4 id="in-practice">In Practice</h4>
-      <p>In the workflow that I dive into, token prediction is
-      implemented in stages. Early on we rely solely on the ASR (the
-      listening expert) model and then gradually introduce the language
-      model (the domaine xpert) as more context becomes available. For
-      example:</p>
-      <p><strong>Token Selection at Step (t)</strong></p>
-      <p><span class="math display">\[
-      \mathbf{F}(x,t)=
-      \begin{cases}
-      \displaystyle
-      \underset{y_t}{\operatorname{arg\,max}}\,
-            \log P_{\text{ASR}}\!\bigl(y_t\mid x,\,y_{&lt;t}\bigr),
-            &amp; t &lt; \text{n-steps}\\[0.75em]
-      \displaystyle
-      \underset{y_t}{\operatorname{arg\,max}}\,
-            \Bigl[
-              \log P_{\text{ASR}}\!\bigl(y_t\mid x,\,y_{&lt;t}\bigr)
-              + \lambda\,\log P_{\text{LM}}\!\bigl(y_t\mid
-      y_{&lt;t}\bigr)
-            \Bigr],\;
-            &amp; t \ge \text{n-steps.}
-      \end{cases}
-      \]</span></p>
-      <p>This piecewise approach allows the system to build confidence
-      from the raw audio transcription initially before incorporating
-      the domain expert corrections, namely because our starting point
-      should be conditionalized on something observed e.g. we gotta
-      start somewhere.</p>
-      <h2 id="case-study-in-transcription-a-concrete-example">Case Study
-      in Transcription: A Concrete Example</h2>
-      <p>For our models let’s take Whisper to be our listening expert
-      and GTP2 to be our domain-language expert. In practice these
+      <p>Consider an example where Whisper serves as our listening
+      expert and GTP2 as our domain-language expert. In practice these
       models share a tokenizer making the process of integrating their
       predictions fairly seamless at least for the english version of
       Whisper (<a href="https://arxiv.org/pdf/2212.04356">Radford
@@ -341,35 +318,36 @@ scarcity and integration in specialized domains">
       the intuition remains the same.</em></p>
       </blockquote>
       <p>“melanoma” now has the highest combined score.</p>
-      <h4 id="final-corrected-output"><strong>Final Corrected
-      Output:</strong></h4>
-      <p>“The procedure was medically necessary for the treatment of
+      <p><strong>Final Corrected Output:</strong><br />
+      “The procedure was medically necessary for the treatment of
       claimant’s <code>melanoma</code>.”✔️</p>
-      <h4 id="key-takeaway">Key Takeaway:</h4>
-      <ul>
-      <li><strong>Without GPT-2:</strong> The model misrecognized
-      domain-specific terms.<br />
-      </li>
-      <li><strong>With shallow fusion:</strong> The external domain LM
-      (GPT-2) provided strong guidance toward the correct
-      domain-specific vocabulary, correcting Whisper’s initial
-      mistakes.</li>
-      </ul>
       <p>This demonstrates how <strong>domain-aware shallow
       fusion</strong> can significantly improve ASR output in
       specialized contexts.</p>
-      <h2 id="overcoming-the-data-wall">Overcoming the Data Wall</h2>
-      <p>In the example above we demonstrated how the integration looks
-      in practice, but we also assumed the language model (GPT-2) in our
-      case has already been adapted to the appropriate domain. In
-      practice we can fairly assume that out-of-the-box ASR models
-      perform poorly on …</p>
+      <h2 id="our-methodology">Our Methodology</h2>
+      <ul>
+      <li>Fusing GPT2 and Whisper</li>
+      <li>Train GPT2 on PubMed (keep Whisper Tokenizer)</li>
+      <li>Build Fusion Pipeline</li>
+      <li>Evaluation Framework</li>
+      </ul>
+      <h2 id="findings">Findings</h2>
+      <ul>
+      <li>WER increases explained by:
+      <ul>
+      <li>early terminations,</li>
+      <li>stylistic domain mismatches (punctuation abbreviations
+      centimeters -&gt; cmm)</li>
+      </ul></li>
+      <li>Decreases WER on medical terminology</li>
+      <li>Discuss gating mechanism/dynamic lambda and various generation
+      params</li>
+      </ul>
       <h2 id="reflection-and-future-directions">Reflection and Future
       Directions</h2>
       <ul>
-      <li>learnable or dynamic <span
-      class="math inline">\(\lambda\)</span><br />
-      </li>
+      <li>Learnable or dynamic <span
+      class="math inline">\(\lambda\)</span></li>
       <li>MoE<br />
       </li>
       <li>Cold Fusion<br />
