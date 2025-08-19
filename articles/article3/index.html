@@ -24,10 +24,10 @@ creative intelligence and things I wish language models did better.">
   <link rel="stylesheet" href="../../assets/css/article.css"/>
   
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
-  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
@@ -51,16 +51,24 @@ better.">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
   <!-- MathJax config -->
-  <script>
+  <!-- <script>
     window.MathJax = {
       tex:   { displayIndent: '0em',  displayAlign: 'center' },
       chtml: { mtextFont: 'Times' }
     };
-  </script>
+  </script> -->
   
+  <script>
+    window.MathJax = {
+      tex:   { displayIndent: '0em', displayAlign: 'center' },
+      chtml: { matchFontHeight: false, mtextInheritFont: false }
+    };
+  </script>
+
   <!-- MathJax -->
   <script defer id="MathJax-script"
-          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js">
+  </script>
 </head>
 
 <body class="article">

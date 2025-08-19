@@ -41,11 +41,9 @@ Shallow fusion can be thought of as a process of integrating each person's exper
 At each decoding step for some audio input, we select the most probable token $y_{t}$ using information from the Automatic Speech Recognition model (ASR) and the Language Model (LM)
 
 $$
-y^* = \arg\max_{y_t}\;
-\left[
-\log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-\;+\;
-\lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+y^* = \arg\max_{y_t}\!\left[
+\log P_{\mathrm{ASR}}(y_t \mid x, y_{<t})
++ \lambda\,\log P_{\mathrm{LM}}(y_t \mid y_{<t})
 \right]
 $$
 
@@ -97,9 +95,9 @@ At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits b
 We combine each model's logits using a weighted sum in the following way:
 
 $$
-\log P_{\text{combined}}\bigl(y_t\bigr)
-  = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr)
-  + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)
+\log P_{\mathrm{combined}}(y_t)
+= \log P_{\mathrm{Whisper}}(y_t \mid x, y_{<t})
++ \lambda \,\log P_{\mathrm{GPT\!2}}(y_t \mid y_{<t})
 $$
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|

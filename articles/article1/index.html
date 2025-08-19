@@ -26,10 +26,10 @@ integration in specialized domains">
   <link rel="stylesheet" href="../../assets/css/article.css"/>
   
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
-  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
@@ -55,16 +55,24 @@ scarcity and integration in specialized domains">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
   <!-- MathJax config -->
-  <script>
+  <!-- <script>
     window.MathJax = {
       tex:   { displayIndent: '0em',  displayAlign: 'center' },
       chtml: { mtextFont: 'Times' }
     };
-  </script>
+  </script> -->
   
+  <script>
+    window.MathJax = {
+      tex:   { displayIndent: '0em', displayAlign: 'center' },
+      chtml: { matchFontHeight: false, mtextInheritFont: false }
+    };
+  </script>
+
   <!-- MathJax -->
   <script defer id="MathJax-script"
-          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js">
+  </script>
 </head>
 
 <body class="article">
@@ -161,11 +169,9 @@ scarcity and integration in specialized domains">
       information from the Automatic Speech Recognition model (ASR) and
       the Language Model (LM)</p>
       <p><span class="math display">\[
-      y^* = \arg\max_{y_t}\;
-      \left[
-      \log P_{\text{ASR}}\!\bigl(y_t \mid x,\, y_{\lt t}\bigr)
-      \;+\;
-      \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{\lt t}\bigr)
+      y^* = \arg\max_{y_t}\!\left[
+      \log P_{\mathrm{ASR}}(y_t \mid x, y_{&lt;t})
+      + \lambda\,\log P_{\mathrm{LM}}(y_t \mid y_{&lt;t})
       \right]
       \]</span></p>
       <p>where:<br />
@@ -268,9 +274,9 @@ scarcity and integration in specialized domains">
       <p>We combine each model’s logits using a weighted sum in the
       following way:</p>
       <p><span class="math display">\[
-      \log P_{\text{combined}}\bigl(y_t\bigr)
-        = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{&lt;t}\bigr)
-        + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{&lt;t}\bigr)
+      \log P_{\mathrm{combined}}(y_t)
+      = \log P_{\mathrm{Whisper}}(y_t \mid x, y_{&lt;t})
+      + \lambda \,\log P_{\mathrm{GPT\!2}}(y_t \mid y_{&lt;t})
       \]</span></p>
       <table>
       <colgroup>
