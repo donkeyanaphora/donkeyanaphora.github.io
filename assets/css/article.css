@@ -53,81 +53,42 @@ mjx-container[jax="CHTML"][display="true"]{
   -webkit-overflow-scrolling:touch;
 }
 
-/* Inline math: critical alignment fixes */
+/* Inline math: inherit line-height and sit on the baseline */
 mjx-container:not([display="true"]) {
-  display: inline !important;
-  vertical-align: baseline !important;
-  line-height: 0 !important;          /* Prevents line-height from affecting math */
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: left !important;
-}
-
-/* Inner MathJax content alignment */
-mjx-container:not([display="true"]) > mjx-math {
-  vertical-align: baseline !important;
-  line-height: 0 !important;
-  display: inline !important;
-}
-
-/* Ensure math elements don't create extra spacing */
-mjx-container:not([display="true"]) mjx-mo,
-mjx-container:not([display="true"]) mjx-mi,
-mjx-container:not([display="true"]) mjx-mn {
-  vertical-align: baseline !important;
+  text-align:left !important;
+  line-height: inherit;        /* was 1.3 — this caused baseline drift on iOS */
+  vertical-align: baseline;    /* ensure baseline alignment */
 }
 
 /* Display math: let MathJax size its own box */
 mjx-container[display="true"] {
   line-height: normal;
-  display: block !important;
-  text-align: center !important;
-  margin: 1em 0 !important;
 }
 
-/* Additional specificity for stubborn inline math */
-p mjx-container:not([display="true"]),
-li mjx-container:not([display="true"]),
-td mjx-container:not([display="true"]),
-th mjx-container:not([display="true"]) {
-  vertical-align: baseline !important;
-  line-height: 0 !important;
-  display: inline !important;
-}
-
-/* In tables, don't center content vertically — keep math on baseline */
+/* In tables, don’t center content vertically — keep math on baseline */
 article.markdown-body th,
 article.markdown-body td{
   padding:.45em .65em;
   text-align:left;
   border:1px solid var(--section-border);
   white-space:nowrap;
-  vertical-align: baseline;
+  vertical-align: baseline;     /* was middle — caused floaty inline math */
 }
 
 /* MathJax inside table cells: inherit size & baseline */
 article.markdown-body th mjx-container,
 article.markdown-body td mjx-container{
   white-space:normal;
-  font-size: inherit !important;
-  vertical-align: baseline !important;
-  line-height: 0 !important;
+  font-size: inherit !important;  /* was 1em — can trigger rounding quirks on iOS */
+  vertical-align: baseline;
 }
 
 /* Keep any odd letter/word spacing from leaking into MathJax */
-mjx-container { 
-  letter-spacing: normal !important; 
-  word-spacing: normal !important; 
-}
-
-/* Fix for any remaining font rendering issues */
-mjx-container[jax="CHTML"] {
-  font-style: normal !important;
-}
+mjx-container { letter-spacing: normal; word-spacing: normal; }
 
 /* ───── Responsive tables ───── */
 article.markdown-body table{
-  display:inline-block;
+  display:inline-block;          /* keeps native table grid */
   width:max-content;
   max-width:100%;
   margin:0 auto;
@@ -148,12 +109,6 @@ article.markdown-body table{
   article.markdown-body p{margin-bottom:1.3em;}
   .MathJax_Display,
   mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
-  
-  /* Mobile-specific inline math fixes */
-  mjx-container:not([display="true"]) {
-    line-height: 0 !important;
-    vertical-align: baseline !important;
-  }
 }
 
 /* ───── Article floating Back button - stacked above other buttons ───── */

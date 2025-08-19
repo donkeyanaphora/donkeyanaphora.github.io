@@ -54,36 +54,18 @@ adoption’ and exploration of shallow fusion as a method to address data
 scarcity and integration in specialized domains">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
-  <!-- MathJax config - Updated for better baseline alignment -->
+  <!-- MathJax config -->
+  <!-- <script>
+    window.MathJax = {
+      tex:   { displayIndent: '0em',  displayAlign: 'center' },
+      chtml: { mtextFont: 'Times' }
+    };
+  </script> -->
+  
   <script>
     window.MathJax = {
-      tex: { 
-        displayIndent: '0em', 
-        displayAlign: 'center',
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-      },
-      chtml: { 
-        matchFontHeight: true,           // Better font height matching
-        mtextInheritFont: true,          // Inherit surrounding text font
-        scale: 1,                        // Consistent scaling
-        minScale: 0.5,                   // Allow scaling down if needed
-        adaptiveCSS: true,               // Enable adaptive CSS
-        displayAlign: 'center',
-        displayIndent: '0em'
-      },
-      options: {
-        renderActions: {
-          addMenu: [0, '', '']           // Disable MathJax menu
-        }
-      },
-      startup: {
-        ready() {
-          MathJax.startup.defaultReady();
-          // Ensure proper baseline alignment after rendering
-          MathJax.startup.document.updateDocument();
-        }
-      }
+      tex:   { displayIndent: '0em', displayAlign: 'center' },
+      chtml: { matchFontHeight: false, mtextInheritFont: false }
     };
   </script>
 
