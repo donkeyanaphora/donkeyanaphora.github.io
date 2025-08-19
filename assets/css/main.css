@@ -123,21 +123,33 @@ article.markdown-body blockquote {
   touch-action: manipulation;
 }
 
-/* Fix MathJax zoom issues */
+/* MathJax touch and zoom handling - UPDATED */
 .MathJax_Display,
 mjx-container[jax="CHTML"][display="true"],
 mjx-container:not([display="true"]) {
   touch-action: manipulation !important;
-  /* pointer-events: none; */
   -webkit-user-select: none;
   user-select: none;
+  /* Preserve baseline alignment while preventing zoom */
+  vertical-align: baseline !important;
 }
 
+/* Re-enable pointer events for MathJax content */
 .MathJax_Display *,
 mjx-container[jax="CHTML"][display="true"] *,
 mjx-container:not([display="true"]) * {
   pointer-events: auto;
   touch-action: manipulation !important;
+}
+
+/* Allow text selection within article MathJax - UPDATED */
+article.markdown-body .MathJax_Display,
+article.markdown-body mjx-container[jax="CHTML"][display="true"],
+article.markdown-body mjx-container:not([display="true"]) {
+  -webkit-user-select: text;
+  user-select: text;
+  /* Maintain baseline alignment */
+  vertical-align: baseline !important;
 }
 
 /* Images */
@@ -198,6 +210,11 @@ html, body {
   /* Re-enable for text content */
   article.markdown-body {
     -webkit-touch-callout: default;
+  }
+  
+  /* WebKit MathJax font fix - ADDED */
+  html {
+    font-size: 100.01% !important;
   }
 }
 
