@@ -1,14 +1,3 @@
-/* ======================================================================
-   article.js — standalone JavaScript for article pages (2025-05-30)
-   • Only includes dark mode toggle functionality
-   • Safe guards to prevent errors if button doesn't exist
-====================================================================== */
-
-/* ----------------------------------------------------------------------
-   Helper utilities
----------------------------------------------------------------------- */
-const $ = s => document.querySelector(s);
-
 /* no-op: article pages don't have canvas, but function is called by dark mode toggle */
 function updateCanvasBackground() {
   // No canvas on article pages, so this does nothing
@@ -27,7 +16,7 @@ function updateCanvasBackground() {
   
   try { if (localStorage.getItem(KEY) === 'dark') root.classList.add('theme-dark'); } catch {}
 
-  const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙'; };
+  const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? 'â˜€ï¸' : 'ðŸŒ™'; };
   syncIcon();
 
   btn.addEventListener('click', () => {
