@@ -15,8 +15,8 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 ## Introduction
 I've been really busy so this will be a little informal but **STILL WORTH THE READ** because in the day to day landscape of people talking agentic AI, RAG systems, vector databases etc things like least squares regression and linear models tend to feel like dusty sklearn imports or the stuff of technical coding interviews. Despite the heavy focus on foundation model integration classic linear tools like ordinary least squares regression and its projection formula corrolary remain surprisingly powerful. By framing modern tasks like semantic filtering and bias removal as geometric problems, it becomes clear why simple formulas like 
 $$
-X(X^{\mathsf T}X)^{+}X^{\mathsf T}
-$$ 
+X\,(X^{\!\top}X)^{+}X^{\!\top}
+$$
 work so well. The focus of this article is show how ordinary least squares offers insights as well as stable and theoretically grounded solution to semantic filtering in modern search and retrieval systems. 
 
 
@@ -30,7 +30,7 @@ work so well. The focus of this article is show how ordinary least squares offer
 | --- | --- | --- |
 | $X^{+} = (X^{\!\top}X)^{-1}X^{\!\top}$ | Recipe for weights. Solves $\displaystyle\min_{\beta}\,\lVert y - X\beta\rVert_2^{\,2}$. | How much of each arrow do I need? |
 | $\hat{\beta}=X^{+}y$ | Coordinates along the arrows (scalar steps to reach the closest point). | Labels on the sub-space axes. |
-| $P_X = XX^{+}$ | Snap-to-span operator (orthogonal projector: symmetric, idempotent). | Elevator lowering you to the sheet. |
+| $P_X = X\,X^{+}$ | Snap-to-span operator (orthogonal projector: symmetric, idempotent). | Elevator lowering you to the sheet. |
 | $\hat{y}=P_Xy = X\hat{\beta}$ | Foot of the perpendicular — the unique point in $\operatorname{span}(X)$ minimizing $\lVert y-\hat{y}\rVert_2$. | Black dot where the plumb-line hits. |
 | $r = y-\hat{y} = (I-P_X)\,y$ | Residual, orthogonal to every column of $X$ ($X^{\!\top}r=0$). | Red straight-down arrow. |
 
