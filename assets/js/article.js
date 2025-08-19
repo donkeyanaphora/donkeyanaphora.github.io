@@ -3,6 +3,19 @@ function updateCanvasBackground() {
   // No canvas on article pages, so this does nothing
 }
 
+/* ======================================================================
+   article.js — Article page specific functionality
+   Handles: menu toggle, dark mode, back button (different from main page)
+====================================================================== */
+
+/* Helper utilities for article pages */
+const $ = s => document.querySelector(s);
+
+/* no-op: article pages don't have canvas, but function is called by dark mode toggle */
+function updateCanvasBackground() {
+  // No canvas on article pages, so this does nothing
+}
+
 /* ----------------------------------------------------------------------
    Dark-/light-mode toggle (works if toggle button present)
 ---------------------------------------------------------------------- */
@@ -16,7 +29,7 @@ function updateCanvasBackground() {
   
   try { if (localStorage.getItem(KEY) === 'dark') root.classList.add('theme-dark'); } catch {}
 
-  const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? 'â˜€ï¸' : 'ðŸŒ™'; };
+  const syncIcon = () => { btn.textContent = root.classList.contains('theme-dark') ? '☀️' : '🌙'; };
   syncIcon();
 
   btn.addEventListener('click', () => {
@@ -33,7 +46,22 @@ function updateCanvasBackground() {
   });
 })();
 
+/* ----------------------------------------------------------------------
+   Menu button toggle (article-specific behavior)
+---------------------------------------------------------------------- */
 const menuBtn = document.getElementById('menuBtn');
-menuBtn.addEventListener('click', () =>
-  document.body.classList.toggle('menu-open')
-);
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    document.body.classList.toggle('menu-open');
+  });
+}
+
+/* ----------------------------------------------------------------------
+   Back button (article pages only)
+---------------------------------------------------------------------- */
+const backBtn = document.querySelector('.back-btn');
+if (backBtn) {
+  backBtn.addEventListener('click', () => {
+    window.location.href = '../../';  // Navigate back to main page
+  });
+}

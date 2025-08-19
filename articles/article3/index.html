@@ -51,41 +51,27 @@ better.">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
   <!-- MathJax config -->
-  <script>
+  <!-- <script>
     window.MathJax = {
-<<<<<<< HEAD
-      tex: { 
-        displayIndent: '0em', 
-        displayAlign: 'center' 
-      },
-      chtml: { 
-        matchFontHeight: true,        // CRITICAL FIX: was false
-        mtextInheritFont: false,      // Keep false for consistency
-        exFactor: 0.5,                // Fine-tune baseline alignment
-        scale: 1,
-        minScale: 0.5
-      },
-      startup: {
-        ready() {
-          // Apply WebKit-specific fixes
-          const isWebKit = /WebKit/.test(navigator.userAgent);
-          if (isWebKit) {
-            // Trigger better font metric calculation
-            document.documentElement.style.fontSize = '100.01%';
-          }
-          MathJax.startup.defaultReady();
-        }
-      }
-=======
       tex:   { displayIndent: '0em',  displayAlign: 'center' },
       chtml: { mtextFont: 'Times' }
->>>>>>> parent of 8971f9b (hoping for the best moved favicons and rebuilt articles for mathjax ios support (hope it works))
+    };
+  </script> -->
+  
+  <script>
+    window.MathJax = {
+      tex: {},  // Empty is fine
+      chtml: { 
+        mtextFont: 'Times',
+        displayAlign: 'center',    // ✅ Moved here
+        displayIndent: '0em'       // ✅ Moved here
+      }
     };
   </script>
-  
   <!-- MathJax -->
   <script defer id="MathJax-script"
-          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js">
+  </script>
 </head>
 
 <body class="article">
