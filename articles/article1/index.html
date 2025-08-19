@@ -55,17 +55,30 @@ scarcity and integration in specialized domains">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
   <!-- MathJax config -->
-  <!-- <script>
-    window.MathJax = {
-      tex:   { displayIndent: '0em',  displayAlign: 'center' },
-      chtml: { mtextFont: 'Times' }
-    };
-  </script> -->
-  
   <script>
     window.MathJax = {
-      tex:   { displayIndent: '0em', displayAlign: 'center' },
-      chtml: { matchFontHeight: false, mtextInheritFont: false }
+      tex: { 
+        displayIndent: '0em', 
+        displayAlign: 'center' 
+      },
+      chtml: { 
+        matchFontHeight: true,        // CRITICAL FIX: was false
+        mtextInheritFont: false,      // Keep false for consistency
+        exFactor: 0.5,                // Fine-tune baseline alignment
+        scale: 1,
+        minScale: 0.5
+      },
+      startup: {
+        ready() {
+          // Apply WebKit-specific fixes
+          const isWebKit = /WebKit/.test(navigator.userAgent);
+          if (isWebKit) {
+            // Trigger better font metric calculation
+            document.documentElement.style.fontSize = '100.01%';
+          }
+          MathJax.startup.defaultReady();
+        }
+      }
     };
   </script>
 
@@ -77,9 +90,9 @@ scarcity and integration in specialized domains">
 
 <body class="article">
   <!-- floating buttons -->
-  <button id="menuBtn" class="float-btn" aria-label="Open menu">ðŸ§°</button>
-  <button class="float-btn back-btn" onclick="window.location.href='../../'" aria-label="Back to home">ðŸ¡</button>
-  <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">ðŸŒ™</button>
+  <button id="menuBtn" class="float-btn" aria-label="Open menu">🧰</button>
+  <button class="float-btn back-btn" onclick="window.location.href='../../'" aria-label="Back to home">🏡</button>
+  <button id="toggleDark" class="float-btn" aria-label="Toggle dark mode">🌙</button>
 
   <!-- Markdown content -->
   <main class="content">
