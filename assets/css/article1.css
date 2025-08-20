@@ -1,0 +1,157 @@
+/* ─────────── Article / Markdown pages only ─────────── */
+
+/* Container */
+article.markdown-body{
+  border:3px double var(--section-border);
+  background:var(--passage-bg);
+  padding:1rem;
+}
+
+/* Layout + text flow */
+article.markdown-body{
+  margin:0 auto;
+  /* max-width:42em; */
+  width:100%;
+  text-align:left;
+  font-family:"Palatino Linotype","Book Antiqua",Palatino,serif;
+  font-size:1.0625rem;
+  line-height:1.55;
+}
+
+/* Pandoc-style heading / list rhythm */
+article.markdown-body p             {margin:0 0 1.1em;}
+article.markdown-body h1            {font-size:2em;   margin:1.2em 0 .6em;}
+article.markdown-body h2            {font-size:1.6em; margin:1.1em 0 .5em;}
+article.markdown-body h3            {font-size:1.3em; margin:1em   0 .5em;}
+article.markdown-body h4,
+article.markdown-body h5,
+article.markdown-body h6            {margin:.8em 0 .4em;}
+article.markdown-body ul,
+article.markdown-body ol            {margin:0 0 1em 1.5em;}
+
+/* Code & images */
+article.markdown-body code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  font-size:.95em;
+  background:rgba(127,127,127,.08);
+  padding:.05em .3em;border-radius:3px;
+}
+article.markdown-body pre code{display:block;padding:.9em 1em;overflow-x:auto;}
+article.markdown-body img{
+  max-width:50%;
+  height:auto;
+  display:block;
+  margin:.5rem auto;
+}
+
+/* ───── Equation & MathJax handling ───── */
+
+/* Critical fix for all MathJax containers */
+mjx-container[jax="CHTML"] {
+  vertical-align: baseline !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+}
+
+/* Display math containers */
+.MathJax_Display,
+mjx-container[jax="CHTML"][display="true"]{
+  overflow-x:auto;
+  max-width:100%;
+  padding-bottom:5px;
+  -webkit-overflow-scrolling:touch;
+  vertical-align: baseline !important;
+  line-height: normal !important;
+}
+
+/* Inline math: inherit line-height and sit on the baseline */
+mjx-container:not([display="true"]) {
+  text-align:left !important;
+  line-height: inherit !important;        /* was 1.3 — this caused baseline drift on iOS */
+  vertical-align: baseline !important;    /* ensure baseline alignment with !important */
+}
+
+/* Display math: let MathJax size its own box */
+mjx-container[display="true"] {
+  line-height: normal !important;
+  vertical-align: baseline !important;
+}
+
+/* WebKit-specific fixes for Safari/Chrome */
+@supports (-webkit-appearance: none) {
+  mjx-container:not([display="true"]) {
+    /* Micro-adjustment for WebKit baseline bug */
+    transform: translateY(-0.05ex);
+  }
+  
+  /* Force better font rendering on WebKit */
+  mjx-container {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* In tables, don't center content vertically — keep math on baseline */
+article.markdown-body th,
+article.markdown-body td{
+  padding:.45em .65em;
+  text-align:left;
+  border:1px solid var(--section-border);
+  white-space:nowrap;
+  vertical-align: baseline;     /* was middle — caused floaty inline math */
+}
+
+/* MathJax inside table cells: inherit size & baseline */
+article.markdown-body th mjx-container,
+article.markdown-body td mjx-container{
+  white-space:normal;
+  font-size: inherit !important;  /* was 1em — can trigger rounding quirks on iOS */
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+}
+
+/* Prevent CSS framework interference */
+mjx-container {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-indent: 0 !important;
+}
+
+/* Mobile-specific fixes */
+@media screen and (max-device-width: 480px) {
+  mjx-container:not([display="true"]) {
+    /* Slightly larger adjustment for mobile WebKit */
+    transform: translateY(-0.1ex);
+  }
+}
+
+/* ───── Responsive tables ───── */
+article.markdown-body table{
+  display:inline-block;          /* keeps native table grid */
+  width:max-content;
+  max-width:100%;
+  margin:0 auto;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-collapse:collapse;
+}
+
+/* ───── Mobile typography tweaks ───── */
+@media screen and (max-device-width:480px){
+  article.markdown-body{
+    font-size:1.15rem;
+    line-height:1.6;
+  }
+  article.markdown-body h1{font-size:2.1em;}
+  article.markdown-body h2{font-size:1.7em;}
+  article.markdown-body a{padding:.1em 0;display:inline-block;}
+  article.markdown-body p{margin-bottom:1.3em;}
+  .MathJax_Display,
+  mjx-container[jax="CHTML"][display="true"]{margin:1.5em 0!important;}
+}
+
+/* ───── Article floating Back button - stacked above other buttons ───── */
+.back-btn{
+  right: 1rem;  
+  bottom: 5.2rem;
+}
