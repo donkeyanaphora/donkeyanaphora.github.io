@@ -80,8 +80,6 @@ $$
 
 Where  
 
-<br><br>
-
 | Pattern | Formal Sketch | Intuition |
 |---------|--------------|-----------|
 | Modal Clash **(MC)** | M<sub>phys</sub> ⊨ ¬φ **and** M<sub>interp</sub> ⊨ φ | Statement fails in physical model but holds in interpretive model |

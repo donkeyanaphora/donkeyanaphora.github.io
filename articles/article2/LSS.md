@@ -13,10 +13,12 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 *MAY 16, 2025*
 
 ## Introduction
-I've been really busy so this will be a little informal but **STILL WORTH THE READ** because in the day to day landscape of people talking agentic AI, RAG systems, vector databases etc things like least squares regression and linear models tend to feel like dusty sklearn imports or the stuff of technical coding interviews. Despite the heavy focus on foundation model integration classic linear tools like ordinary least squares regression and its projection formula corrolary remain surprisingly powerful. By framing modern tasks like semantic filtering and bias removal as geometric problems, it becomes clear why simple formulas like 
+I've been really busy so this will be a little informal but **STILL WORTH THE READ** because in the day to day landscape of people talking agentic AI, RAG systems, vector databases etc things like least squares regression and linear models tend to feel like dusty sklearn imports or the stuff of technical coding interviews. Despite the heavy focus on foundation model integration classic linear tools like ordinary least squares regression and its projection formula corrolary remain surprisingly powerful. By framing modern tasks like semantic filtering and bias removal as geometric problems, it becomes clear why simple formulas like
+
 $$
 X\,(X^{\!\top}X)^{+}X^{\!\top}
 $$
+
 work so well. The focus of this article is show how ordinary least squares offers insights as well as stable and theoretically grounded solution to semantic filtering in modern search and retrieval systems. 
 
 

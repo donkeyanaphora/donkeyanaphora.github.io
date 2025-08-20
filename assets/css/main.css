@@ -859,11 +859,11 @@ body.menu-open #menuBtn { transform: rotate(45deg); transition: transform .25s; 
   }
   
   /* Math display */
-  .MathJax_Display,
+  /* .MathJax_Display,
   mjx-container[jax="CHTML"][display="true"] {
     margin: 1em 0 !important;
     font-size: 0.9em !important;
-  }
+  } */
   
   /* Prevent horizontal scroll */
   article.markdown-body {
