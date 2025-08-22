@@ -23,17 +23,17 @@ This distribution gap has motivated researchers and practitioners (myself includ
 
 Before diving into my implementation, I'll examine how the research community has approached this domain mismatch problem and where shallow fusion fits among existing solutions.
 
-## Background & Existing Approaches (needs more)
+## Background & Existing Approaches (needs refinement)
 
 The challenge of domain adaptation in ASR has prompted several approaches, each with distinct trade-offs in cost, performance, and implementation complexity.
 
-**Traditional domain adaptation** typically involves collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning or retraining models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small relative to the specialized vocabulary they need to cover.
+**Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning or retraining models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small relative to the specialized vocabulary they need to cover.
 
-**Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window—essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements.
+**Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window, essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements. They are also architecture dependent and rely heavily on the decoder's prompting capacity.
 
 **Fusion techniques** represent a middle ground, combining predictions from multiple models during inference rather than requiring extensive retraining. The research community has explored three primary variants:
 
-- **Cold fusion** integrates language model predictions during training, essentially learning how to weight external knowledge
+- **Cold fusion** ???
 - **Deep fusion** learns the combination weights through additional neural network layers  
 - **Shallow fusion** combines model predictions through simple weighted averaging during inference
 
@@ -43,7 +43,7 @@ However, the approach introduces its own challenges. The fusion process can intr
 
 ## Implementation: Medical Domain Fusion Pipeline
 
-Having established the landscape of existing approaches, I'll now detail my implementation of shallow fusion for medical ASR, combining Whisper with a domain-adapted GPT-2 model.
+Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper with a domain-adapted GPT-2 model. However, before going into the specifics let us first build let us first build some intuition on the topic by analogy. 
 
 Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing. 
 
@@ -169,7 +169,7 @@ This demonstrates how **domain-aware shallow fusion** can significantly improve 
 - *Connect this work to broader AI trends: Ensemble Architectures like Mixture of Experts, multimodal integration, domain adaptation, and evolution of fusion techniques (cold & deep)*
 
 ## Resources
-
+* [Shallow Fusion and Deep Fusion](https://apxml.com/courses/speech-recognition-synthesis-asr-tts/chapter-3-language-modeling-adaptation-asr/lm-fusion-techniques)
 * [Deep Shallow Fusion for RNN-T Personalization](https://research.facebook.com/file/551805355910423/Deep-Shallow-Fusion-for-RNN-T-Personalization.pdf)  
 * [Analysis of Incorporating an External Language Model…](https://arxiv.org/pdf/1712.01996)  
 * [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/pdf/2212.04356)  
