@@ -111,53 +111,97 @@ scarcity and integration in specialized domains">
       companies often resort to standard recipes e.g. “exciting” the
       right activations through few-shot examples, dumping streams of
       internal documents into the model’s context, or ambitious attempts
-      at fine-tuning on small internal datasets. However, with these
-      approaches there’s often no optimization signal or gradient to
-      move against and progress if there’s any to be had involves a good
-      deal of guesswork, trial, and error.</p>
-      <p><strong>Automatic Speech Recongition (ASR)</strong> exemplifies
+      at fine-tuning on small internal datasets. However, with most of
+      these approaches there’s often no optimization signal, or gradient
+      to move against and progress if there’s any to be had involves a
+      good deal of guesswork, trial, and error.</p>
+      <p><strong>Automatic Speech Recognition (ASR)</strong> exemplifies
       this challenge. Many domains, such as medicine, law, financial
       services, etc contain specialized terminology that is typically
       outside the distribution or under-represented in the pretraining
       for general purpose models. A model trained on everyday speech
-      will struggle with phrases like “othostatic tachycardia” or domain
-      specific acronyms. Traditional solutions to this issue involve
-      collecting domain-specific audio and ground truth transcriptions
-      (often hand labeled) which can be cost prohibitive. Open source
-      datasets on specialized domains are becoming more common but their
-      volume and variety remain too limited, keeping them
-      out-of-distribution for many business use cases.</p>
-      <!-- this would be a good place to talk about the existing community and how others have done shallow fusion as a way to address this problem (not just me) -->
-      <p>This distribution gap motivated me to explore the concept of
+      will struggle with phrases like “orthostatic tachycardia” or
+      medical phonemes that are difficult to disambiguate “ICU” vs “I
+      see you”. Traditional solutions to this issue involve collecting
+      domain-specific audio and ground truth transcriptions (often hand
+      labeled) which can be cost prohibitive. Open source datasets on
+      specialized domains are becoming more common but their volume and
+      variety remain limited, keeping them tangential to many business
+      use cases.</p>
+      <p>This distribution gap has motivated researchers and
+      practitioners (myself included) to explore the concept of
       <strong>shallow fusion</strong>: combining general-purpose ASR
-      model with domain-specific language models during inference.
+      models with domain-specific language models during inference.
       Rather than requiring extensive retraining, shallow fusion
-      leverages existing domain expertise during inference from an
-      external language model. The questions I would like to explore in
+      leverages existing domain expertise from an external language
+      model at inference time. While the approach has shown promise in
+      various implementations, the questions I would like to explore in
       this article are: Can a language model trained on domain-specific
-      text meaningfully improve speech-to-text transcription accuracy
+      text meaningfully improve speech-to-text transcription quality
       within an adjacent domain? And critically, what are the failure
       modes associated with this type of integration?</p>
-      <h2 id="background-existing-approaches">Background &amp; Existing
-      Approaches</h2>
-      <p>This section is about discussing how the community has used ASR
-      to overcome domain mismatch in ASR</p>
+      <p>Before diving into my implementation, I’ll examine how the
+      research community has approached this domain mismatch problem and
+      where shallow fusion fits among existing solutions.</p>
+      <h2 id="background-existing-approaches-needs-more">Background
+      &amp; Existing Approaches (needs more)</h2>
+      <p>The challenge of domain adaptation in ASR has prompted several
+      approaches, each with distinct trade-offs in cost, performance,
+      and implementation complexity.</p>
+      <p><strong>Traditional domain adaptation</strong> typically
+      involves collecting domain-specific audio paired with ground truth
+      transcriptions, then fine-tuning or retraining models on this
+      data. While effective, this approach faces significant barriers:
+      domain-specific audio is expensive to collect, transcription
+      labeling is labor-intensive, and the resulting datasets often
+      remain small relative to the specialized vocabulary they need to
+      cover.</p>
+      <p><strong>Context injection methods</strong> attempt to bridge
+      the gap by incorporating domain-specific text directly into the
+      model’s context window—essentially “prompting” the ASR system with
+      relevant terminology. However, these approaches offer no
+      optimization signal and rely heavily on trial and error to achieve
+      meaningful improvements.</p>
+      <p><strong>Fusion techniques</strong> represent a middle ground,
+      combining predictions from multiple models during inference rather
+      than requiring extensive retraining. The research community has
+      explored three primary variants:</p>
       <ul>
-      <li>Discuss problems current research has addressed</li>
-      <li>Discuss types of fusion, cold, deep, shallow</li>
-      <li>Discuss methodologies high level</li>
+      <li><strong>Cold fusion</strong> integrates language model
+      predictions during training, essentially learning how to weight
+      external knowledge</li>
+      <li><strong>Deep fusion</strong> learns the combination weights
+      through additional neural network layers<br />
+      </li>
+      <li><strong>Shallow fusion</strong> combines model predictions
+      through simple weighted averaging during inference</li>
       </ul>
-      <h2 id="shallow-fusion-explained">Shallow Fusion Explained</h2>
-      <p>But first, what is shallow fusion? Consider for example, a
-      person listening to audio of a phone call with a customer and
-      customer service agent at an insurance claims calls center. The
-      sole function of this person is to transcribe what they hear into
-      text. The caveat, however, is that they only know very little
-      about the domain and the types of technical issues and medical
-      terminology e.g. (procedures diagnoses etc) that representatives
-      and customers are mentioning. Now consider a second person who has
-      worked in this industry for many years and has a deep
-      understanding of the domain, but is hard of hearing.</p>
+      <p>Shallow fusion’s appeal lies in its simplicity and
+      flexibility—it requires no additional training while allowing
+      real-time adjustment of how much domain expertise to incorporate.
+      This makes it particularly attractive for rapidly changing domains
+      or situations where retraining is impractical.</p>
+      <p>However, the approach introduces its own challenges. The fusion
+      process can introduce errors when models disagree, and finding the
+      optimal balance between acoustic and linguistic evidence often
+      requires domain-specific tuning. Understanding these failure modes
+      is crucial for practical deployment.</p>
+      <h2
+      id="implementation-medical-domain-fusion-pipeline">Implementation:
+      Medical Domain Fusion Pipeline</h2>
+      <p>Having established the landscape of existing approaches, I’ll
+      now detail my implementation of shallow fusion for medical ASR,
+      combining Whisper with a domain-adapted GPT-2 model.</p>
+      <p>Consider for example, a person listening to audio of a phone
+      call with a customer and customer service agent at an insurance
+      claims calls center. The sole function of this person is to
+      transcribe what they hear into text. The caveat, however, is that
+      they only know very little about the domain and the types of
+      technical issues and medical terminology e.g. (procedures
+      diagnoses etc) that representatives and customers are mentioning.
+      Now consider a second person who has worked in this industry for
+      many years and has a deep understanding of the domain, but is hard
+      of hearing.</p>
       <p>Shallow fusion can be thought of as a process of integrating
       each person’s expertise to offset the errors of one another and
       bridge modalities the other does not have access to. With this
@@ -200,14 +244,14 @@ scarcity and integration in specialized domains">
       specialized domain in its written form, but has no access to the
       audio signal. Just like in the analogy from earlier by fusing
       their predictions, we combine phonetic understanding with domain
-      expertise, leading to more accurate transcriptions for domain
-      specific terms. Without careful integration or synergy between the
-      two, both models can carry major limitations.</p>
+      expertise, aiming to improve the quality of transcriptions for
+      domain specific terms. Without careful integration or synergy
+      between the two, both models can carry major limitations.</p>
       <h4 id="process-diagram">Process Diagram:</h4>
       <p><img src="assets/viz.png" alt="diagram" /> Reference: <a
       href="https://arxiv.org/pdf/1712.01996">Kannan et al. 2017</a></p>
       <p>Consider an example where Whisper serves as our listening
-      expert and GTP2 as our domain-language expert. In practice these
+      expert and GPT-2 as our domain-language expert. In practice these
       models share a tokenizer making the process of integrating their
       predictions fairly seamless at least for the english version of
       Whisper (<a href="https://arxiv.org/pdf/2212.04356">Radford
@@ -242,7 +286,7 @@ scarcity and integration in specialized domains">
       <ul>
       <li><p>“The procedure was medically necessary for the treatment of
       claimant’s <code>_____</code>”</p></li>
-      <li><p>GPT-2 which as been fine tuned on medical literature
+      <li><p>GPT-2 which has been fine tuned on medical literature
       strongly favors the correct token (produces log probabilities
       closer to 0 for melanoma) while Whisper, which had minimal access
       to medical terminology, assigns it a much lower likelihood (log
@@ -335,58 +379,45 @@ scarcity and integration in specialized domains">
       <p>This demonstrates how <strong>domain-aware shallow
       fusion</strong> can significantly improve ASR output in
       specialized contexts.</p>
-      <h2 id="our-methodology">Our Methodology</h2>
-      <ul>
-      <li>Fusing GPT2 and Whisper</li>
-      <li>Train GPT2 on PubMed (keep Whisper Tokenizer)</li>
-      <li>Build Fusion Pipeline</li>
-      <li>Evaluation Framework</li>
-      </ul>
-      <h2 id="findings">Findings</h2>
-      <ul>
-      <li>WER increases explained by:
-      <ul>
-      <li>early terminations,</li>
-      <li>stylistic domain mismatches (punctuation abbreviations
-      centimeters -&gt; cmm)</li>
-      </ul></li>
-      <li>Decreases WER on medical terminology</li>
-      <li>Discuss gating mechanism/dynamic lambda and various generation
-      params</li>
-      </ul>
+      <h2 id="experimental-setup">Experimental Setup</h2>
+      <p><em>[This section should detail your specific methodology
+      including:]</em> - <em>Model selection and preparation (Whisper +
+      GPT-2)</em> - <em>Training GPT-2 on PubMed dataset while
+      preserving Whisper tokenizer compatibility</em> - <em>Fusion
+      pipeline architecture and implementation details</em> -
+      <em>Evaluation framework and metrics (WER, domain-specific
+      accuracy, etc.)</em> - <em>Dataset preparation and testing
+      procedures</em></p>
+      <h2 id="results-analysis">Results &amp; Analysis</h2>
+      <p><em>[present findings such as:]</em> - <em>Overall WER
+      performance comparison</em> - <em>Analysis of failure modes: early
+      terminations, stylistic domain mismatches (punctuation,
+      abbreviations like “centimeters → cm”)</em> - <em>Improvements in
+      medical terminology recognition</em> - <em>Discussion of gating
+      mechanisms and dynamic lambda approaches</em> - <em>Impact of
+      various generation parameters</em> - <em>Various decoding
+      approaches</em></p>
       <h2 id="reflection-and-future-directions">Reflection and Future
       Directions</h2>
-      <ul>
-      <li>Learnable or dynamic <span
-      class="math inline">\(\lambda\)</span></li>
-      <li>MoE<br />
-      </li>
-      <li>Cold Fusion<br />
-      </li>
-      <li>Deep Fusion</li>
-      </ul>
+      <p><em>[section should discuss:]</em> - <em>Non-synthetic datasets
+      mentioned in eval repo</em> - <em>Learnable or dynamic λ
+      approaches</em> - <em>Mixture of Experts (MoE) architectures</em>
+      - <em>Cold Fusion implementations</em> - <em>Deep Fusion
+      alternatives</em> - <em>Broader implications for multimodal AI
+      systems</em></p>
       <h2 id="conclusion">Conclusion</h2>
-      <ul>
-      <li>articulate each model’s strength and weakness, emphasizing how
-      each model hits its own data wall separately:
-      <ul>
-      <li>Whisper (generalist): broadly trained acoustic-to-text model,
-      struggles with specialized terminology.<br />
-      </li>
-      <li>GPT-2 (specialist): trained in a self-supervised way solely on
-      textual domain data, rich in domain-specific vocabulary but blind
-      to acoustic signals.<br />
-      </li>
-      </ul></li>
-      <li>dive into fusion related setbacks/metrics as well as possible
-      future directions</li>
-      <li>dive into fusion related improvements and qualitative
-      benefits</li>
-      <li>illustrate how this process extends or relates to broader
-      trends within AI e.g. Ensemble Architectures like Mixture of
-      Experts, multimodal integration, domain adaptation and evolution
-      of fusion techniques (cold &amp; deep).</li>
-      </ul>
+      <p><em>[This section should:]</em> - <em>Articulate each model’s
+      strengths and weaknesses, emphasizing how each model hits its own
+      data wall separately:</em> - <em>Whisper (generalist): broadly
+      trained acoustic-to-text model, struggles with specialized
+      terminology</em> - <em>GPT-2 (specialist): trained in a
+      self-supervised way solely on textual domain data, rich in
+      domain-specific vocabulary but blind to acoustic signals</em> -
+      <em>Summarize fusion-related setbacks/metrics as well as
+      qualitative benefits</em> - <em>Connect this work to broader AI
+      trends: Ensemble Architectures like Mixture of Experts, multimodal
+      integration, domain adaptation, and evolution of fusion techniques
+      (cold &amp; deep)</em></p>
       <h2 id="resources">Resources</h2>
       <ul>
       <li><a
@@ -409,6 +440,17 @@ scarcity and integration in specialized domains">
       <li><a href="https://arxiv.org/pdf/2005.14165">Language Models are
       Few-Shot Learners</a></li>
       </ul>
+      <hr />
+      <p><strong>Key changes made:</strong> - Fixed the typo:
+      “othostatic” → “orthostatic” - Added transition sentence at end of
+      introduction - Expanded Background section with proper prose -
+      Renamed and reframed technical section as “Implementation” -
+      Removed redundant “But first, what is shallow fusion?” opening -
+      Fixed “as been” → “has been” - Provided clear placeholders for
+      remaining sections</p>
+      <p>The flow now works: problem → existing solutions → your
+      specific implementation → experimental details → results → future
+      work.</p>
     </article>
   </main>
 
