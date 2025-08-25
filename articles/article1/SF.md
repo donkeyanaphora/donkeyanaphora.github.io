@@ -178,7 +178,6 @@ This demonstrates how **domain-aware shallow fusion** can significantly improve 
 * [Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165)
 
 
----
 [^1]: [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
 
 [^2]: Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.
