@@ -37,13 +37,15 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 
 Shallow fusion’s appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model’s view of the audio with the language model’s understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
 
-However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect words; too lightly, and the domain benefits are lost. Tuning this balance (λ) often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model[^2]. These trade-offs make it essential to understand the method’s failure modes before deploying it in practice.
+However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect tokens; too lightly, and the domain benefits are lost. Tuning the weighting factor for the external model often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model[^2]. These trade-offs make it essential to understand the method’s failure modes before deploying it in practice.
 
 ## Implementation: Medical Domain Fusion Pipeline
 
-Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper with a domain-adapted GPT-2 model. However, before going into the specifics let us first build let us first build some intuition on the topic by analogy. 
+Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper with a domain-adapted GPT-2 model. However, before going into the specifics let us first build some intuition on the topic by analogy. 
 
-Consider for example, a person listening to audio of a phone call with a customer and customer service agent at an insurance claims calls center. The sole function of this person is to transcribe what they hear into text. The caveat, however, is that they only know very little about the domain and the types of technical issues and medical terminology e.g. (procedures diagnoses etc) that representatives and customers are mentioning. Now consider a second person who has worked in this industry for many years and has a deep understanding of the domain, but is hard of hearing. 
+Consider for example, a person tasked with transcribing audio from a phone call between a customer and a claims representative at an insurance call center. This transcriber can hear the conversation clearly, but they have very little knowledge of the domain e.g. the technical issues, procedures, and medical terminology that often come up. Now imagine a second person who has worked in this industry for years and has deep familiarity with the jargon and context, but who is hard of hearing.
+
+In practice, the first person might hear a phrase like “myocardial infarction” but misrecognize or misspell it. The domain expert, although unable to hear the audio, would immediately recognize the intended term and correct the transcript.
 
 <!-- give an example of listener expert error -->
 
@@ -78,10 +80,10 @@ Reference: [Kannan et al. 2017](https://arxiv.org/pdf/1712.01996)
 Consider an example where Whisper serves as our listening expert and GPT-2 as our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford 2.2](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
 **Input Audio (Ground Truth):**  
-"The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
+"The procedure was medically necessary for the treatment of claimant's Tetralogy of `Fallot`."✔️
 
 **Whisper Initial Output:**  
-"The procedure was medically necessary for the treatment of claimant's `diploma`."🚫
+"The procedure was medically necessary for the treatment of claimant's Tetralogy of `below`."🚫
 
 #### 1. **Whisper Initial Decoding:**
 
@@ -91,20 +93,20 @@ Whisper produces logits at each step:
 - Token: "procedure" → high confidence  
 - Token: "claimant" → high confidence  
 - Token: "'s" → high confidence  
-- At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "diploma", "aroma", "melanoma"
+- At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "below", "follow", "Fallot"
 
 #### 2. **Domain GPT-2 Predictions:**  
 At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits based on the following context:
 
 - "The procedure was medically necessary for the treatment of claimant's `_____`"
 
-- GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for melanoma) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).
+- GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).
 
 | Next Token   | Whisper Log Probs | GPT-2 Log Probs |
 |--------------|------------------|-----------------|
-| **melanoma** | **–1.8**         | **–0.3**        |
-| diploma      | –1.0             | –5.0            |
-| aroma        | –3.5             | –3.8            |
+| **Fallot** | **–1.8**         | **–0.3**        |
+| below      | –1.0             | –5.0            |
+| follow        | –3.5             | –3.8            |
 
 #### 3. **Shallow Fusion (Combining Logits):**  
 We combine each model's logits using a weighted sum in the following way:
@@ -117,16 +119,16 @@ $$
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|
 |--------------|--------------|-------------|----------------|
-| **melanoma** | **–1.8**     | **–0.3**    | **–1.8 + 0.2 $\times$ (–0.3) = –1.86** |
-| diploma      | –1.0         | –5.0        | –1.0 + 0.2 $\times$ (–5.0) = –2.0 |
-| aroma        | –3.5         | –3.8        | –3.5 + 0.2 $\times$ (–3.8) = –4.26 |
+| **Fallot** | **–1.8**     | **–0.3**    | **–1.8 + 0.2 $\times$ (–0.3) = –1.86** |
+| below      | –1.0         | –5.0        | –1.0 + 0.2 $\times$ (–5.0) = –2.0 |
+| follow        | –3.5         | –3.8        | –3.5 + 0.2 $\times$ (–3.8) = –4.26 |
 
-> *Note: The numbers are illustrative. In practice additional context and scaling would favor the correct token "melanoma"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
+> *Note: The numbers here are illustrative. In practice additional context and scaling would favor the correct token "Fallot"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
 
-"melanoma" now has the highest combined score.
+"Fallot" now has the highest combined score.
 
 **Final Corrected Output:**  
-"The procedure was medically necessary for the treatment of claimant's `melanoma`."✔️
+"The procedure was medically necessary for the treatment of claimant's Tetralogy of `Fallot`."✔️
 
 This demonstrates how **domain-aware shallow fusion** can significantly improve ASR output in specialized contexts.
 

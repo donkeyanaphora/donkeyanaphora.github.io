@@ -189,13 +189,13 @@ scarcity and integration in specialized domains">
       in a self-supervised training setup.</p>
       <p>However, the approach introduces its own challenges. If the
       language model is weighted too heavily, it may bias transcriptions
-      toward plausible but incorrect words; too lightly, and the domain
-      benefits are lost. Tuning this balance (λ) often requires
-      domain-specific adjustment. In addition, shallow fusion increases
-      inference cost since predictions must run through a second model<a
-      href="#fn2" class="footnote-ref" id="fnref2"
-      role="doc-noteref"><sup>2</sup></a>. These trade-offs make it
-      essential to understand the method’s failure modes before
+      toward plausible but incorrect tokens; too lightly, and the domain
+      benefits are lost. Tuning the weighting factor for the external
+      model often requires domain-specific adjustment. In addition,
+      shallow fusion increases inference cost since predictions must run
+      through a second model<a href="#fn2" class="footnote-ref"
+      id="fnref2" role="doc-noteref"><sup>2</sup></a>. These trade-offs
+      make it essential to understand the method’s failure modes before
       deploying it in practice.</p>
       <h2
       id="implementation-medical-domain-fusion-pipeline">Implementation:
@@ -203,18 +203,21 @@ scarcity and integration in specialized domains">
       <p>Having established the landscape of existing approaches, we can
       now detail the implementation of shallow fusion for medical ASR,
       combining Whisper with a domain-adapted GPT-2 model. However,
-      before going into the specifics let us first build let us first
-      build some intuition on the topic by analogy.</p>
-      <p>Consider for example, a person listening to audio of a phone
-      call with a customer and customer service agent at an insurance
-      claims calls center. The sole function of this person is to
-      transcribe what they hear into text. The caveat, however, is that
-      they only know very little about the domain and the types of
-      technical issues and medical terminology e.g. (procedures
-      diagnoses etc) that representatives and customers are mentioning.
-      Now consider a second person who has worked in this industry for
-      many years and has a deep understanding of the domain, but is hard
-      of hearing.</p>
+      before going into the specifics let us first build some intuition
+      on the topic by analogy.</p>
+      <p>Consider for example, a person tasked with transcribing audio
+      from a phone call between a customer and a claims representative
+      at an insurance call center. This transcriber can hear the
+      conversation clearly, but they have very little knowledge of the
+      domain e.g. the technical issues, procedures, and medical
+      terminology that often come up. Now imagine a second person who
+      has worked in this industry for years and has deep familiarity
+      with the jargon and context, but who is hard of hearing.</p>
+      <p>In practice, the first person might hear a phrase like
+      “myocardial infarction” but misrecognize or misspell it. The
+      domain expert, although unable to hear the audio, would
+      immediately recognize the intended term and correct the
+      transcript.</p>
       <!-- give an example of listener expert error -->
       <p>Shallow fusion can be thought of as a process of integrating
       each person’s expertise to offset the errors of one another and
@@ -273,10 +276,10 @@ scarcity and integration in specialized domains">
       an ASR model misinterprets a specialized medical term.</p>
       <p><strong>Input Audio (Ground Truth):</strong><br />
       “The procedure was medically necessary for the treatment of
-      claimant’s <code>melanoma</code>.”✔️</p>
+      claimant’s Tetralogy of <code>Fallot</code>.”✔️</p>
       <p><strong>Whisper Initial Output:</strong><br />
       “The procedure was medically necessary for the treatment of
-      claimant’s <code>diploma</code>.”🚫</p>
+      claimant’s Tetralogy of <code>below</code>.”🚫</p>
       <h4 id="whisper-initial-decoding">1. <strong>Whisper Initial
       Decoding:</strong></h4>
       <p>Whisper produces logits at each step:</p>
@@ -290,8 +293,8 @@ scarcity and integration in specialized domains">
       <li>Token: “’s” → high confidence<br />
       </li>
       <li>At the final subword, Whisper may exhibit uncertainty,
-      spreading probabilities across candidates: “diploma”, “aroma”,
-      “melanoma”</li>
+      spreading probabilities across candidates: “below”, “follow”,
+      “Fallot”</li>
       </ul>
       <h4 id="domain-gpt-2-predictions">2. <strong>Domain GPT-2
       Predictions:</strong></h4>
@@ -302,8 +305,8 @@ scarcity and integration in specialized domains">
       claimant’s <code>_____</code>”</p></li>
       <li><p>GPT-2 which has been fine tuned on medical literature
       strongly favors the correct token (produces log probabilities
-      closer to 0 for melanoma) while Whisper, which had minimal access
-      to medical terminology, assigns it a much lower likelihood (log
+      closer to 0 for Fallot) while Whisper, which had minimal access to
+      medical terminology, assigns it a much lower likelihood (log
       probabilities that are more negative).</p></li>
       </ul>
       <table>
@@ -316,17 +319,17 @@ scarcity and integration in specialized domains">
       </thead>
       <tbody>
       <tr>
-      <td><strong>melanoma</strong></td>
+      <td><strong>Fallot</strong></td>
       <td><strong>–1.8</strong></td>
       <td><strong>–0.3</strong></td>
       </tr>
       <tr>
-      <td>diploma</td>
+      <td>below</td>
       <td>–1.0</td>
       <td>–5.0</td>
       </tr>
       <tr>
-      <td>aroma</td>
+      <td>follow</td>
       <td>–3.5</td>
       <td>–3.8</td>
       </tr>
@@ -358,21 +361,21 @@ scarcity and integration in specialized domains">
       </thead>
       <tbody>
       <tr>
-      <td><strong>melanoma</strong></td>
+      <td><strong>Fallot</strong></td>
       <td><strong>–1.8</strong></td>
       <td><strong>–0.3</strong></td>
       <td><strong>–1.8 + 0.2 <span class="math inline">\(\times\)</span>
       (–0.3) = –1.86</strong></td>
       </tr>
       <tr>
-      <td>diploma</td>
+      <td>below</td>
       <td>–1.0</td>
       <td>–5.0</td>
       <td>–1.0 + 0.2 <span class="math inline">\(\times\)</span> (–5.0)
       = –2.0</td>
       </tr>
       <tr>
-      <td>aroma</td>
+      <td>follow</td>
       <td>–3.5</td>
       <td>–3.8</td>
       <td>–3.5 + 0.2 <span class="math inline">\(\times\)</span> (–3.8)
@@ -381,15 +384,15 @@ scarcity and integration in specialized domains">
       </tbody>
       </table>
       <blockquote>
-      <p><em>Note: The numbers are illustrative. In practice additional
-      context and scaling would favor the correct token “melanoma”;
-      additionally, rare words are likely split into multiple tokens but
-      the intuition remains the same.</em></p>
+      <p><em>Note: The numbers here are illustrative. In practice
+      additional context and scaling would favor the correct token
+      “Fallot”; additionally, rare words are likely split into multiple
+      tokens but the intuition remains the same.</em></p>
       </blockquote>
-      <p>“melanoma” now has the highest combined score.</p>
+      <p>“Fallot” now has the highest combined score.</p>
       <p><strong>Final Corrected Output:</strong><br />
       “The procedure was medically necessary for the treatment of
-      claimant’s <code>melanoma</code>.”✔️</p>
+      claimant’s Tetralogy of <code>Fallot</code>.”✔️</p>
       <p>This demonstrates how <strong>domain-aware shallow
       fusion</strong> can significantly improve ASR output in
       specialized contexts.</p>
