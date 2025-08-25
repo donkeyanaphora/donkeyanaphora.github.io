@@ -17,19 +17,17 @@ AI adoption and integration have become focal points in seemingly every earnings
 
 Consider for example applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. For the generalist model to succeed, it must first grasp dense company prospectuses, specialized jargon, and the nuances of the business problem itself. To address this gap companies often resort to standard recipes e.g. "exciting" the right activations through few-shot examples, dumping streams of internal documents into the model's context, or ambitious attempts at fine-tuning on small internal datasets. However, with most of these approaches there's often no optimization signal, or gradient to move against and progress if there's any to be had involves a good deal of guesswork, trial, and error. 
 
-**Automatic Speech Recognition (ASR)** exemplifies this challenge. Many domains, such as medicine, law, financial services, etc contain specialized terminology that is typically outside the distribution or under-represented in the pretraining for general purpose models. A model trained on everyday speech will struggle with phrases like "orthostatic tachycardia" or medical phonemes that are difficult to disambiguate "ICU" vs "I see you". Traditional solutions to this issue involve collecting domain-specific audio and ground truth transcriptions (often hand labeled) which can be cost prohibitive. Open source datasets on specialized domains are becoming more common but their volume and variety remain limited, keeping them tangential to many business use cases.
+**Automatic Speech Recognition (ASR)** exemplifies this challenge. Many domains, such as medicine, law, financial services, etc contain specialized terminology that is typically outside the distribution or under-represented in the pretraining for general purpose models. A model trained on everyday speech will struggle with phrases like "orthostatic tachycardia" or specialized phonemes that are difficult to disambiguate, such as "ICU" vs "I see you". Traditional solutions to this issue involve collecting domain-specific audio and ground truth transcriptions (often hand labeled) which can be cost prohibitive. Open source datasets on specialized domains are becoming more common but their volume and variety remain limited, keeping them tangential to many business use cases.
 
 This distribution gap has motivated researchers and practitioners (myself included) to explore the concept of **shallow fusion**: combining general-purpose ASR models with domain-specific language models during inference. Rather than requiring extensive retraining, shallow fusion leverages existing domain expertise from an external language model at inference time. While the approach has shown promise in various implementations, the questions I would like to explore in this article are: Can a language model trained on domain-specific text meaningfully improve speech-to-text transcription quality within an adjacent domain? And critically, what are the failure modes associated with this type of integration?
 
-Before diving into my implementation, I'll examine how the research community has approached this domain mismatch problem and where shallow fusion fits among existing solutions.
-
 ## Background & Existing Approaches (needs refinement)
 
-The challenge of domain adaptation in ASR has prompted several approaches, each with distinct trade-offs in cost, performance, and implementation complexity.
+The challenge of domain adaptation in ASR has prompted several approaches, each with distinct trade-offs in cost, performance, and implementation complexity. So before diving into my implementation, I'll examine how the research community has approached this domain mismatch problem and where shallow fusion fits among existing solutions.
 
-**Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning or retraining models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small relative to the specialized vocabulary they need to cover.
+**Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning pretrained models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small and brittle compared to the large scale datasets that the base model was trained on. This approach also runs the risk of catastrophic forgetting[^1]
 
-**Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window, essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements. They are also architecture dependent and rely heavily on the decoder's prompting capacity.
+**Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window, essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements. They are also architecture dependent and rely on the decoder's prompting capacity.
 
 **Fusion techniques** represent a middle ground, combining predictions from multiple models during inference rather than requiring extensive retraining. The research community has explored three primary variants:
 
@@ -37,9 +35,9 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 - **Deep fusion** learns the combination weights through additional neural network layers  
 - **Shallow fusion** combines model predictions through simple weighted averaging during inference
 
-Shallow fusion's appeal lies in its simplicity and flexibility—it requires no additional training while allowing real-time adjustment of how much domain expertise to incorporate. This makes it particularly attractive for rapidly changing domains or situations where retraining is impractical.
+Shallow fusion’s appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model’s view of the audio with the language model’s understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
 
-However, the approach introduces its own challenges. The fusion process can introduce errors when models disagree, and finding the optimal balance between acoustic and linguistic evidence often requires domain-specific tuning. Understanding these failure modes is crucial for practical deployment.
+However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect words; too lightly, and the domain benefits are lost. Tuning this balance (λ) often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model[^2]. These trade-offs make it essential to understand the method’s failure modes before deploying it in practice.
 
 ## Implementation: Medical Domain Fusion Pipeline
 
@@ -179,15 +177,8 @@ This demonstrates how **domain-aware shallow fusion** can significantly improve 
 * [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)  
 * [Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165)
 
+
 ---
+[^1]: [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
 
-**Key changes made:**
-- Fixed the typo: "othostatic" → "orthostatic" 
-- Added transition sentence at end of introduction
-- Expanded Background section with proper prose
-- Renamed and reframed technical section as "Implementation"
-- Removed redundant "But first, what is shallow fusion?" opening
-- Fixed "as been" → "has been"
-- Provided clear placeholders for remaining sections
-
-The flow now works: problem → existing solutions → your specific implementation → experimental details → results → future work.
+[^2]: Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.

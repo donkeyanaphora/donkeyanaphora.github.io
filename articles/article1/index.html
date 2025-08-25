@@ -121,13 +121,13 @@ scarcity and integration in specialized domains">
       outside the distribution or under-represented in the pretraining
       for general purpose models. A model trained on everyday speech
       will struggle with phrases like “orthostatic tachycardia” or
-      medical phonemes that are difficult to disambiguate “ICU” vs “I
-      see you”. Traditional solutions to this issue involve collecting
-      domain-specific audio and ground truth transcriptions (often hand
-      labeled) which can be cost prohibitive. Open source datasets on
-      specialized domains are becoming more common but their volume and
-      variety remain limited, keeping them tangential to many business
-      use cases.</p>
+      specialized phonemes that are difficult to disambiguate, such as
+      “ICU” vs “I see you”. Traditional solutions to this issue involve
+      collecting domain-specific audio and ground truth transcriptions
+      (often hand labeled) which can be cost prohibitive. Open source
+      datasets on specialized domains are becoming more common but their
+      volume and variety remain limited, keeping them tangential to many
+      business use cases.</p>
       <p>This distribution gap has motivated researchers and
       practitioners (myself included) to explore the concept of
       <strong>shallow fusion</strong>: combining general-purpose ASR
@@ -140,30 +140,32 @@ scarcity and integration in specialized domains">
       text meaningfully improve speech-to-text transcription quality
       within an adjacent domain? And critically, what are the failure
       modes associated with this type of integration?</p>
-      <p>Before diving into my implementation, I’ll examine how the
-      research community has approached this domain mismatch problem and
-      where shallow fusion fits among existing solutions.</p>
       <h2
       id="background-existing-approaches-needs-refinement">Background
       &amp; Existing Approaches (needs refinement)</h2>
       <p>The challenge of domain adaptation in ASR has prompted several
       approaches, each with distinct trade-offs in cost, performance,
-      and implementation complexity.</p>
+      and implementation complexity. So before diving into my
+      implementation, I’ll examine how the research community has
+      approached this domain mismatch problem and where shallow fusion
+      fits among existing solutions.</p>
       <p><strong>Traditional domain adaptation</strong> typically
       requires collecting domain-specific audio paired with ground truth
-      transcriptions, then fine-tuning or retraining models on this
-      data. While effective, this approach faces significant barriers:
+      transcriptions, then fine-tuning pretrained models on this data.
+      While effective, this approach faces significant barriers:
       domain-specific audio is expensive to collect, transcription
       labeling is labor-intensive, and the resulting datasets often
-      remain small relative to the specialized vocabulary they need to
-      cover.</p>
+      remain small and brittle compared to the large scale datasets that
+      the base model was trained on. This approach also runs the risk of
+      catastrophic forgetting<a href="#fn1" class="footnote-ref"
+      id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
       <p><strong>Context injection methods</strong> attempt to bridge
       the gap by incorporating domain-specific text directly into the
       model’s context window, essentially “prompting” the ASR system
       with relevant terminology. However, these approaches offer no
       optimization signal and rely heavily on trial and error to achieve
       meaningful improvements. They are also architecture dependent and
-      rely heavily on the decoder’s prompting capacity.</p>
+      rely on the decoder’s prompting capacity.</p>
       <p><strong>Fusion techniques</strong> represent a middle ground,
       combining predictions from multiple models during inference rather
       than requiring extensive retraining. The research community has
@@ -176,16 +178,25 @@ scarcity and integration in specialized domains">
       <li><strong>Shallow fusion</strong> combines model predictions
       through simple weighted averaging during inference</li>
       </ul>
-      <p>Shallow fusion’s appeal lies in its simplicity and
-      flexibility—it requires no additional training while allowing
-      real-time adjustment of how much domain expertise to incorporate.
-      This makes it particularly attractive for rapidly changing domains
-      or situations where retraining is impractical.</p>
-      <p>However, the approach introduces its own challenges. The fusion
-      process can introduce errors when models disagree, and finding the
-      optimal balance between acoustic and linguistic evidence often
-      requires domain-specific tuning. Understanding these failure modes
-      is crucial for practical deployment.</p>
+      <p>Shallow fusion’s appeal lies in its simplicity and flexibility,
+      as it requires no additional training of the base ASR model.
+      Instead, you incorporate predictions from an external language
+      model directly at inference time, blending the acoustic model’s
+      view of the audio with the language model’s understanding of
+      domain-specific text. Importantly, the only data needed to build
+      or adapt the external language model is unstructured text, which
+      can be collected far more easily than transcribed audio and used
+      in a self-supervised training setup.</p>
+      <p>However, the approach introduces its own challenges. If the
+      language model is weighted too heavily, it may bias transcriptions
+      toward plausible but incorrect words; too lightly, and the domain
+      benefits are lost. Tuning this balance (λ) often requires
+      domain-specific adjustment. In addition, shallow fusion increases
+      inference cost since predictions must run through a second model<a
+      href="#fn2" class="footnote-ref" id="fnref2"
+      role="doc-noteref"><sup>2</sup></a>. These trade-offs make it
+      essential to understand the method’s failure modes before
+      deploying it in practice.</p>
       <h2
       id="implementation-medical-domain-fusion-pipeline">Implementation:
       Medical Domain Fusion Pipeline</h2>
@@ -447,16 +458,23 @@ scarcity and integration in specialized domains">
       Few-Shot Learners</a></li>
       </ul>
       <hr />
-      <p><strong>Key changes made:</strong> - Fixed the typo:
-      “othostatic” → “orthostatic” - Added transition sentence at end of
-      introduction - Expanded Background section with proper prose -
-      Renamed and reframed technical section as “Implementation” -
-      Removed redundant “But first, what is shallow fusion?” opening -
-      Fixed “as been” → “has been” - Provided clear placeholders for
-      remaining sections</p>
-      <p>The flow now works: problem → existing solutions → your
-      specific implementation → experimental details → results → future
-      work.</p>
+      <section id="footnotes"
+      class="footnotes footnotes-end-of-document" role="doc-endnotes">
+      <hr />
+      <ol>
+      <li id="fn1"><p><a
+      href="https://en.wikipedia.org/wiki/Catastrophic_interference">Catastrophic
+      forgetting</a> occurs when a neural network loses previously
+      learned information upon learning new tasks or data.<a
+      href="#fnref1" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      <li id="fn2"><p>Several variations exist to reduce the inference
+      cost of shallow fusion, including N-best rescoring (applying the
+      LM only to candidate transcripts), using smaller or distilled
+      domain LMs etc.<a href="#fnref2" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      </ol>
+      </section>
     </article>
   </main>
 
