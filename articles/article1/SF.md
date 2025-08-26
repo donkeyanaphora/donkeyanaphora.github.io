@@ -177,7 +177,7 @@ The primary evaluation metric was Word Error Rate (WER), comparing transcription
 
 ### Overall Performance
 
-The shallow fusion approach demonstrated a **10% reduction in Word Error Rate** compared to Whisper-only transcription on the synthetic radiology dataset. This improvement represents substantial practical value, as even modest WER reductions can significantly impact clinical workflow efficiency and documentation accuracy.
+The shallow fusion approach reduced Word Error Rate from **8.24%** to **7.00%** on the synthetic radiology dataset—a **1.24-point absolute drop**, corresponding to a **15% relative reduction in errors**.[^3] Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
 
 ### Performance Analysis by Model Size
 
@@ -200,8 +200,9 @@ The fusion system frequently "over-corrected" spoken abbreviations into their fo
 **2. Punctuation Insertion**
 The GPT-2 model, trained on formatted medical abstracts, introduced punctuation that wasn't present in the spoken audio. This created a stylistic mismatch between transcribed speech and formal written medical language.
 
-**3. Premature Sequence Terminations**
-Higher λ values (increased language model influence) combined with beam search decoding led to premature sequence terminations. This appeared most frequently when the language model assigned high probability to end-of-sequence tokens based on perceived semantic completeness, even when the audio continued.
+
+**3. Premature Termination and Incomplete Transcripts**  
+When λ (the LM weight) was set too high, beam search decoding often produced incomplete transcripts. Chorowski & Jaitly (2016) reported that external LMs can cause seq2seq systems to skip words or drop parts of an utterance during decoding, unless a coverage term is added to the beam search criterion [(Chorowski & Jaitly, 2016)](https://arxiv.org/pdf/1612.02695). In our experiments, higher λ coupled with wide beam searches similarly led to premature terminations, with the LM assigning high probability to end-of-sequence tokens once a transcript appeared semantically complete, even while audio continued.
 
 ### Domain-Specific Improvements
 
@@ -269,3 +270,7 @@ Future work toward learned gating mechanisms, advanced fusion architectures, and
 [^1]: [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
 
 [^2]: Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.
+
+[^3]: The distinction here is between *percentage points* and *percent reduction*. The absolute WER drop is **1.24 points** (8.24 → 7.00). However, since errors fell from 8.24 to 7.00, the system made about **15% fewer errors relative to the baseline**.
+
+[^3]: Relative reduction is computed as `(8.24 - 7.00) / 8.24 ≈ 15%`.

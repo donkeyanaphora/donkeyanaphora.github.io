@@ -478,12 +478,17 @@ scarcity and integration in specialized domains">
       sizes (small, medium, large)</p>
       <h2 id="results-analysis">Results &amp; Analysis</h2>
       <h3 id="overall-performance">Overall Performance</h3>
-      <p>The shallow fusion approach demonstrated a <strong>10%
-      reduction in Word Error Rate</strong> compared to Whisper-only
-      transcription on the synthetic radiology dataset. This improvement
-      represents substantial practical value, as even modest WER
-      reductions can significantly impact clinical workflow efficiency
-      and documentation accuracy.</p>
+      <p>The shallow fusion approach reduced Word Error Rate from
+      <strong>8.24%</strong> to <strong>7.00%</strong> on the synthetic
+      radiology dataset—a <strong>1.24-point absolute drop</strong>,
+      corresponding to a <strong>15% relative reduction in
+      errors</strong>.<a href="#fn3" class="footnote-ref" id="fnref3"
+      role="doc-noteref"><sup>3</sup></a> Overall observed results are
+      consistent with prior work. For example, Kannan et al. (2017)
+      reported a <strong>9.1% relative WER reduction</strong> on Google
+      Voice Search using shallow fusion with a neural LM <a
+      href="https://arxiv.org/pdf/1712.01996">(Kannan et al.,
+      2017)</a>.</p>
       <h3 id="performance-analysis-by-model-size">Performance Analysis
       by Model Size</h3>
       <p>Testing across GPT-2 variants revealed interesting scaling
@@ -512,12 +517,19 @@ scarcity and integration in specialized domains">
       that wasn’t present in the spoken audio. This created a stylistic
       mismatch between transcribed speech and formal written medical
       language.</p>
-      <p><strong>3. Premature Sequence Terminations</strong> Higher λ
-      values (increased language model influence) combined with beam
-      search decoding led to premature sequence terminations. This
-      appeared most frequently when the language model assigned high
-      probability to end-of-sequence tokens based on perceived semantic
-      completeness, even when the audio continued.</p>
+      <p><strong>3. Premature Termination and Incomplete
+      Transcripts</strong><br />
+      When λ (the LM weight) was set too high, beam search decoding
+      often produced incomplete transcripts. Chorowski &amp; Jaitly
+      (2016) reported that external LMs can cause seq2seq systems to
+      skip words or drop parts of an utterance during decoding, unless a
+      coverage term is added to the beam search criterion <a
+      href="https://arxiv.org/pdf/1612.02695">(Chorowski &amp; Jaitly,
+      2016)</a>. In our experiments, higher λ coupled with wide beam
+      searches similarly led to premature terminations, with the LM
+      assigning high probability to end-of-sequence tokens once a
+      transcript appeared semantically complete, even while audio
+      continued.</p>
       <h3 id="domain-specific-improvements">Domain-Specific
       Improvements</h3>
       <p>The fusion approach’s benefits were concentrated almost
@@ -674,6 +686,9 @@ scarcity and integration in specialized domains">
       LM only to candidate transcripts), using smaller or distilled
       domain LMs etc.<a href="#fnref2" class="footnote-back"
       role="doc-backlink">↩︎</a></p></li>
+      <li id="fn3"><p>Relative reduction is computed as
+      <code>(8.24 - 7.00) / 8.24 ≈ 15%</code>.<a href="#fnref3"
+      class="footnote-back" role="doc-backlink">↩︎</a></p></li>
       </ol>
       </section>
     </article>
