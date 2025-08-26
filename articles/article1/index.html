@@ -172,17 +172,30 @@ scarcity and integration in specialized domains">
       combining predictions from multiple models during inference rather
       than requiring extensive retraining. The research community has
       explored three primary variants:</p>
+      <!-- - **Shallow fusion** combines model predictions at inference using simple weighted averaging—no extra training required.
+      - **Deep fusion** introduces a small fusion network that learns how to merge representations from both the ASR decoder and external LM—while keeping both models frozen.
+      - **Cold fusion** integrates the pretrained language model directly into ASR training, allowing the system to internalize linguistic knowledge early. This often results in faster convergence, better domain adaptation, and reduced labeled-data requirements—albeit with higher training cost and complexity. -->
       <ul>
-      <li><strong>Cold fusion</strong> integrates language model
-      predictions during training, learning to combine acoustic and
-      language model features through additional parameters while
-      keeping the pre-trained models frozen</li>
-      <li><strong>Deep fusion</strong> learns the combination weights
-      through additional neural network layers that are trained to
-      optimally merge predictions from both models</li>
-      <li><strong>Shallow fusion</strong> combines model predictions
-      through simple weighted averaging during inference, requiring no
-      additional training</li>
+      <li><strong>Shallow fusion</strong> combines model predictions at
+      inference time via a weighted average of ASR and LM scores,
+      requiring no additional training <a
+      href="https://arxiv.org/pdf/1506.07503">(Chorowski et al.,
+      2015)</a>.<br />
+      </li>
+      <li><strong>Deep fusion</strong> augments the decoder with a small
+      gating network that learns to merge hidden representations from
+      the ASR and LM while keeping both models frozen <a
+      href="https://arxiv.org/pdf/1503.03535">(Gulcehre et al.,
+      2015)</a>.<br />
+      </li>
+      <li><strong>Cold fusion</strong> incorporates a pretrained LM
+      directly into ASR training—projecting the LM’s probability
+      distribution into a shared embedding space and using gating
+      layers—letting the ASR internalize linguistic knowledge early.
+      This improves convergence and domain adaptation at the cost of
+      greater training complexity <a
+      href="https://arxiv.org/pdf/1708.06426">(Sriram et al.,
+      2017)</a>.</li>
       </ul>
       <p>Shallow fusion’s appeal lies in its simplicity and flexibility,
       as it requires no additional training of the base ASR model.
@@ -224,7 +237,6 @@ scarcity and integration in specialized domains">
       domain expert, although unable to hear the audio, would
       immediately recognize the intended term and correct the
       transcript.</p>
-      <!-- give an example of listener expert error -->
       <p>Shallow fusion can be thought of as a process of integrating
       each person’s expertise to offset the errors of one another and
       bridge modalities the other does not have access to. With this
@@ -433,12 +445,14 @@ scarcity and integration in specialized domains">
       seamless integration during the fusion process without requiring
       token mapping or vocabulary alignment procedures.</p>
       <p><strong>Training pipeline and tuned models:</strong></p>
-      <p><a href="https://github.com/donkeyanaphora/SHALLOW_FUSION"><img
-      src="https://img.shields.io/badge/View%20on-GitHub-181717?logo=github"
-      alt="View on GitHub" /></a></p>
-      <p><a href="https://huggingface.co/cwestnedge/models"><img
-      src="https://img.shields.io/badge/HuggingFace-Models-orange?logo=huggingface"
-      alt="Hugging Face Models" /></a></p>
+      <ul>
+      <li><a
+      href="https://github.com/donkeyanaphora/SHALLOW_FUSION">View on
+      GitHub</a><br />
+      </li>
+      <li><a href="https://huggingface.co/cwestnedge/models">Hugging
+      Face Models</a></li>
+      </ul>
       <h3 id="fusion-pipeline-architecture">Fusion Pipeline
       Architecture</h3>
       <p>The fusion pipeline operates selectively on relevant tokens
@@ -548,11 +562,11 @@ scarcity and integration in specialized domains">
       <p><strong>Advanced Fusion Architectures</strong> Beyond shallow
       fusion, <strong>deep fusion</strong> and <strong>cold
       fusion</strong> approaches warrant investigation. Deep fusion
-      could learn more sophisticated combination strategies through
-      neural network layers trained specifically for the fusion task.
-      Cold fusion could be explored by integrating the domain language
-      model during Whisper’s training process, though this would require
-      more substantial computational resources and training data.</p>
+      could learn more sophisticated integration by combining hidden
+      states and tuning a task specific fusion function. Cold fusion
+      could be explored by integrating the domain language model during
+      Whisper’s training process, though this would require more
+      substantial computational resources and training data.</p>
       <p><strong>Real-World Dataset Validation</strong> The synthetic
       evaluation dataset, while useful for proof-of-concept
       demonstration, limits the generalizability of these findings.
@@ -622,28 +636,33 @@ scarcity and integration in specialized domains">
       deployment expands across diverse professional domains.</p>
       <h2 id="resources">Resources</h2>
       <ul>
-      <li><a
-      href="https://apxml.com/courses/speech-recognition-synthesis-asr-tts/chapter-3-language-modeling-adaptation-asr/lm-fusion-techniques">Shallow
-      Fusion and Deep Fusion</a></li>
-      <li><a
-      href="https://research.facebook.com/file/551805355910423/Deep-Shallow-Fusion-for-RNN-T-Personalization.pdf">Deep
-      Shallow Fusion for RNN-T Personalization</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/1712.01996">Analysis of
-      Incorporating an External Language Model…</a><br />
-      </li>
-      <li><a href="https://arxiv.org/pdf/2212.04356">Robust Speech
-      Recognition via Large-Scale Weak Supervision</a><br />
+      <li><a href="https://arxiv.org/pdf/1506.07503">Shallow Fusion:
+      Attention-Based Models for Speech Recognition</a> — Chorowski et
+      al., 2015<br />
       </li>
       <li><a href="https://arxiv.org/pdf/1503.03535">On Using
-      Monolingual Corpora in Neural Machine Translation</a><br />
+      Monolingual Corpora in Neural Machine Translation (Deep
+      Fusion)</a> — Gulcehre et al., 2015<br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/1708.06426">Cold Fusion:
+      Training Seq2Seq Models Together with Language Models</a> — Sriram
+      et al., 2017<br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/1712.01996">Analysis of
+      Incorporating an External Language Model…</a> — Kannan et al.,
+      2017<br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/2212.04356">Robust Speech
+      Recognition via Large-Scale Weak Supervision</a> — Radford et al.,
+      2022<br />
       </li>
       <li><a
       href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">Language
-      Models are Unsupervised Multitask Learners</a><br />
+      Models are Unsupervised Multitask Learners</a> — OpenAI,
+      2019<br />
       </li>
       <li><a href="https://arxiv.org/pdf/2005.14165">Language Models are
-      Few-Shot Learners</a></li>
+      Few-Shot Learners</a> — Brown et al., 2020</li>
       </ul>
       <section id="footnotes"
       class="footnotes footnotes-end-of-document" role="doc-endnotes">

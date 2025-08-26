@@ -31,9 +31,13 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 
 **Fusion techniques** represent a middle ground, combining predictions from multiple models during inference rather than requiring extensive retraining. The research community has explored three primary variants:
 
-- **Cold fusion** integrates language model predictions during training, learning to combine acoustic and language model features through additional parameters while keeping the pre-trained models frozen
-- **Deep fusion** learns the combination weights through additional neural network layers that are trained to optimally merge predictions from both models
-- **Shallow fusion** combines model predictions through simple weighted averaging during inference, requiring no additional training
+<!-- - **Shallow fusion** combines model predictions at inference using simple weighted averaging—no extra training required.
+- **Deep fusion** introduces a small fusion network that learns how to merge representations from both the ASR decoder and external LM—while keeping both models frozen.
+- **Cold fusion** integrates the pretrained language model directly into ASR training, allowing the system to internalize linguistic knowledge early. This often results in faster convergence, better domain adaptation, and reduced labeled-data requirements—albeit with higher training cost and complexity. -->
+
+- **Shallow fusion** combines model predictions at inference time via a weighted average of ASR and LM scores, requiring no additional training [(Chorowski et al., 2015)](https://arxiv.org/pdf/1506.07503).  
+- **Deep fusion** augments the decoder with a small gating network that learns to merge hidden representations from the ASR and LM while keeping both models frozen [(Gulcehre et al., 2015)](https://arxiv.org/pdf/1503.03535).  
+- **Cold fusion** incorporates a pretrained LM directly into ASR training—projecting the LM’s probability distribution into a shared embedding space and using gating layers—letting the ASR internalize linguistic knowledge early. This improves convergence and domain adaptation at the cost of greater training complexity [(Sriram et al., 2017)](https://arxiv.org/pdf/1708.06426). 
 
 Shallow fusion's appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model's view of the audio with the language model's understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
 
@@ -46,8 +50,6 @@ Having established the landscape of existing approaches, we can now detail the i
 Consider for example, a person tasked with transcribing audio from a phone call between a customer and a claims representative at an insurance call center. This transcriber can hear the conversation clearly, but they have very little knowledge of the domain e.g. the technical issues, procedures, and medical terminology that often come up. Now imagine a second person who has worked in this industry for years and has deep familiarity with the jargon and context, but who is hard of hearing.
 
 In practice, the first person might hear a phrase like "myocardial infarction" but misrecognize or misspell it. The domain expert, although unable to hear the audio, would immediately recognize the intended term and correct the transcript.
-
-<!-- give an example of listener expert error -->
 
 Shallow fusion can be thought of as a process of integrating each person's expertise to offset the errors of one another and bridge modalities the other does not have access to. With this analogy we can now formally describe this process. In the example below think of $P_{\text{ASR}}$ as the person listening to the audio and $P_{\text{LM}}$ as the domain expert that is hard of hearing but deeply understands the context. 
 
@@ -151,9 +153,8 @@ The models were trained using standard autoregressive language modeling objectiv
 
 **Training pipeline and tuned models:**
 
-[![View on GitHub](https://img.shields.io/badge/View%20on-GitHub-181717?logo=github)](https://github.com/donkeyanaphora/SHALLOW_FUSION)
-
-[![Hugging Face Models](https://img.shields.io/badge/HuggingFace-Models-orange?logo=huggingface)](https://huggingface.co/cwestnedge/models)
+- [View on GitHub](https://github.com/donkeyanaphora/SHALLOW_FUSION)  
+- [Hugging Face Models](https://huggingface.co/cwestnedge/models)  
 
 ### Fusion Pipeline Architecture
 
@@ -228,7 +229,7 @@ The experimental results highlight several areas for improvement that point towa
 The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty—particularly around medical terminology—the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
 
 **Advanced Fusion Architectures**
-Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated combination strategies through neural network layers trained specifically for the fusion task. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
+Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
 
 **Real-World Dataset Validation**
 The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as those provided by John Snow Labs, which require proper institutional access and permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
@@ -258,13 +259,13 @@ The observed improvements concentrated almost exclusively on medical terminology
 Future work toward learned gating mechanisms, advanced fusion architectures, and validation on authentic clinical datasets will help address current limitations. More broadly, this work illustrates the ongoing evolution of AI system architectures from monolithic models toward composite systems that combine specialized expertise, a trend likely to accelerate as AI deployment expands across diverse professional domains.
 
 ## Resources
-* [Shallow Fusion and Deep Fusion](https://apxml.com/courses/speech-recognition-synthesis-asr-tts/chapter-3-language-modeling-adaptation-asr/lm-fusion-techniques)
-* [Deep Shallow Fusion for RNN-T Personalization](https://research.facebook.com/file/551805355910423/Deep-Shallow-Fusion-for-RNN-T-Personalization.pdf)  
-* [Analysis of Incorporating an External Language Model…](https://arxiv.org/pdf/1712.01996)  
-* [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/pdf/2212.04356)  
-* [On Using Monolingual Corpora in Neural Machine Translation](https://arxiv.org/pdf/1503.03535)  
-* [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)  
-* [Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165)
+* [Shallow Fusion: Attention-Based Models for Speech Recognition](https://arxiv.org/pdf/1506.07503) — Chorowski et al., 2015  
+* [On Using Monolingual Corpora in Neural Machine Translation (Deep Fusion)](https://arxiv.org/pdf/1503.03535) — Gulcehre et al., 2015  
+* [Cold Fusion: Training Seq2Seq Models Together with Language Models](https://arxiv.org/pdf/1708.06426) — Sriram et al., 2017  
+* [Analysis of Incorporating an External Language Model…](https://arxiv.org/pdf/1712.01996) — Kannan et al., 2017  
+* [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/pdf/2212.04356) — Radford et al., 2022  
+* [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) — OpenAI, 2019  
+* [Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165) — Brown et al., 2020  
 
 
 [^1]: [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
