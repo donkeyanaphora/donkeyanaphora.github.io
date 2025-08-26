@@ -98,7 +98,7 @@ Whisper produces logits at each step:
 #### 2. **Domain GPT-2 Predictions:**  
 At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits based on the following context:
 
-- "The procedure was medically necessary for the treatment of claimant's `_____`"
+- "The procedure was medically necessary for the treatment of claimant's Tetralogy of `_____`"
 
 - GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).
 
