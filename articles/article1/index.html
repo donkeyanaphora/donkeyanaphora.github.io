@@ -172,30 +172,25 @@ scarcity and integration in specialized domains">
       combining predictions from multiple models during inference rather
       than requiring extensive retraining. The research community has
       explored three primary variants:</p>
-      <!-- - **Shallow fusion** combines model predictions at inference using simple weighted averaging—no extra training required.
-      - **Deep fusion** introduces a small fusion network that learns how to merge representations from both the ASR decoder and external LM—while keeping both models frozen.
-      - **Cold fusion** integrates the pretrained language model directly into ASR training, allowing the system to internalize linguistic knowledge early. This often results in faster convergence, better domain adaptation, and reduced labeled-data requirements—albeit with higher training cost and complexity. -->
       <ul>
-      <li><strong>Shallow fusion</strong> combines model predictions at
-      inference time via a weighted average of ASR and LM scores,
+      <li><p><strong>Shallow fusion</strong> combines model predictions
+      at inference time via a weighted average of ASR and LM scores,
       requiring no additional training <a
-      href="https://arxiv.org/pdf/1506.07503">(Chorowski et al.,
-      2015)</a>.<br />
-      </li>
-      <li><strong>Deep fusion</strong> augments the decoder with a small
-      gating network that learns to merge hidden representations from
-      the ASR and LM while keeping both models frozen <a
       href="https://arxiv.org/pdf/1503.03535">(Gulcehre et al.,
-      2015)</a>.<br />
-      </li>
-      <li><strong>Cold fusion</strong> incorporates a pretrained LM
+      2015)</a>.</p></li>
+      <li><p><strong>Deep fusion</strong> augments the decoder with a
+      small gating network that learns to merge hidden representations
+      from the ASR and LM while keeping both models frozen <a
+      href="https://arxiv.org/pdf/1503.03535">(Gulcehre et al.,
+      2015)</a>.</p></li>
+      <li><p><strong>Cold fusion</strong> incorporates a pretrained LM
       directly into ASR training—projecting the LM’s probability
       distribution into a shared embedding space and using gating
       layers—letting the ASR internalize linguistic knowledge early.
       This improves convergence and domain adaptation at the cost of
       greater training complexity <a
       href="https://arxiv.org/pdf/1708.06426">(Sriram et al.,
-      2017)</a>.</li>
+      2017)</a>.</p></li>
       </ul>
       <p>Shallow fusion’s appeal lies in its simplicity and flexibility,
       as it requires no additional training of the base ASR model.
@@ -636,17 +631,17 @@ scarcity and integration in specialized domains">
       deployment expands across diverse professional domains.</p>
       <h2 id="resources">Resources</h2>
       <ul>
-      <li><a href="https://arxiv.org/pdf/1506.07503">Shallow Fusion:
-      Attention-Based Models for Speech Recognition</a> — Chorowski et
-      al., 2015<br />
-      </li>
       <li><a href="https://arxiv.org/pdf/1503.03535">On Using
-      Monolingual Corpora in Neural Machine Translation (Deep
-      Fusion)</a> — Gulcehre et al., 2015<br />
+      Monolingual Corpora in Neural Machine Translation</a> — Gulcehre
+      et al., 2015<br />
       </li>
       <li><a href="https://arxiv.org/pdf/1708.06426">Cold Fusion:
       Training Seq2Seq Models Together with Language Models</a> — Sriram
       et al., 2017<br />
+      </li>
+      <li><a href="https://arxiv.org/pdf/1612.02695">Towards Better
+      Decoding and Language Model Integration in Sequence-to-Sequence
+      Models</a> — Chorowski &amp; Jaitly, 2016<br />
       </li>
       <li><a href="https://arxiv.org/pdf/1712.01996">Analysis of
       Incorporating an External Language Model…</a> — Kannan et al.,

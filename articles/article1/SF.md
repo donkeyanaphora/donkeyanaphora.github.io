@@ -31,13 +31,11 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 
 **Fusion techniques** represent a middle ground, combining predictions from multiple models during inference rather than requiring extensive retraining. The research community has explored three primary variants:
 
-<!-- - **Shallow fusion** combines model predictions at inference using simple weighted averaging—no extra training required.
-- **Deep fusion** introduces a small fusion network that learns how to merge representations from both the ASR decoder and external LM—while keeping both models frozen.
-- **Cold fusion** integrates the pretrained language model directly into ASR training, allowing the system to internalize linguistic knowledge early. This often results in faster convergence, better domain adaptation, and reduced labeled-data requirements—albeit with higher training cost and complexity. -->
+- **Shallow fusion** combines model predictions at inference time via a weighted average of ASR and LM scores, requiring no additional training [(Gulcehre et al., 2015)](https://arxiv.org/pdf/1503.03535). 
 
-- **Shallow fusion** combines model predictions at inference time via a weighted average of ASR and LM scores, requiring no additional training [(Chorowski et al., 2015)](https://arxiv.org/pdf/1506.07503).  
 - **Deep fusion** augments the decoder with a small gating network that learns to merge hidden representations from the ASR and LM while keeping both models frozen [(Gulcehre et al., 2015)](https://arxiv.org/pdf/1503.03535).  
-- **Cold fusion** incorporates a pretrained LM directly into ASR training—projecting the LM’s probability distribution into a shared embedding space and using gating layers—letting the ASR internalize linguistic knowledge early. This improves convergence and domain adaptation at the cost of greater training complexity [(Sriram et al., 2017)](https://arxiv.org/pdf/1708.06426). 
+
+- **Cold fusion** incorporates a pretrained LM directly into ASR training—projecting the LM’s probability distribution into a shared embedding space and using gating layers—letting the ASR internalize linguistic knowledge early. This improves convergence and domain adaptation at the cost of greater training complexity [(Sriram et al., 2017)](https://arxiv.org/pdf/1708.06426).  
 
 Shallow fusion's appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model's view of the audio with the language model's understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
 
@@ -259,9 +257,9 @@ The observed improvements concentrated almost exclusively on medical terminology
 Future work toward learned gating mechanisms, advanced fusion architectures, and validation on authentic clinical datasets will help address current limitations. More broadly, this work illustrates the ongoing evolution of AI system architectures from monolithic models toward composite systems that combine specialized expertise, a trend likely to accelerate as AI deployment expands across diverse professional domains.
 
 ## Resources
-* [Shallow Fusion: Attention-Based Models for Speech Recognition](https://arxiv.org/pdf/1506.07503) — Chorowski et al., 2015  
-* [On Using Monolingual Corpora in Neural Machine Translation (Deep Fusion)](https://arxiv.org/pdf/1503.03535) — Gulcehre et al., 2015  
+* [On Using Monolingual Corpora in Neural Machine Translation](https://arxiv.org/pdf/1503.03535) — Gulcehre et al., 2015  
 * [Cold Fusion: Training Seq2Seq Models Together with Language Models](https://arxiv.org/pdf/1708.06426) — Sriram et al., 2017  
+* [Towards Better Decoding and Language Model Integration in Sequence-to-Sequence Models](https://arxiv.org/pdf/1612.02695) — Chorowski & Jaitly, 2016  
 * [Analysis of Incorporating an External Language Model…](https://arxiv.org/pdf/1712.01996) — Kannan et al., 2017  
 * [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/pdf/2212.04356) — Radford et al., 2022  
 * [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) — OpenAI, 2019  
