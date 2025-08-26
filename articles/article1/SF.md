@@ -10,7 +10,7 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 # 🔗 Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges 
 
 **COLLINS WESTNEDGE**  
-*APRIL 16, 2025*
+*AUGUST 26, 2025*
 
 ## Introduction
 AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption. One of the fundamental challenges is the gap between available data and the data needed for a domain-specific task. 
