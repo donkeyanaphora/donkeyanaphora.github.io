@@ -273,4 +273,4 @@ Future work toward learned gating mechanisms, advanced fusion architectures, and
 
 [^3]: The distinction here is between *percentage points* and *percent reduction*. The absolute WER drop is **1.24 points** (8.24 → 7.00). However, since errors fell from 8.24 to 7.00, the system made about **15% fewer errors relative to the baseline**.
 
-[^3]: Relative reduction is computed as `(8.24 - 7.00) / 8.24 ≈ 15%`.
+[^3]: Relative reduction is computed as (8.24 - 7.00) / 8.24 ≈ 15%.
