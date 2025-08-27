@@ -184,6 +184,7 @@ The shallow fusion approach reduced Word Error Rate from **8.24%** to **7.00%** 
 ### Performance Analysis by Model Size
 
 Testing across GPT-2 variants revealed interesting scaling properties:
+
 - **GPT-2 Small**: Provided baseline domain improvements with minimal computational overhead
 - **GPT-2 Medium**: Achieved the optimal balance of accuracy gains and inference speed
 - **GPT-2 Large**: Marginal additional accuracy improvements but with significantly increased computational cost
