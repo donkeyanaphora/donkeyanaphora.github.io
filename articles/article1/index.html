@@ -216,9 +216,10 @@ scarcity and integration in specialized domains">
       Medical Domain Fusion Pipeline</h2>
       <p>Having established the landscape of existing approaches, we can
       now detail the implementation of shallow fusion for medical ASR,
-      combining Whisper with a domain-adapted GPT-2 model. However,
-      before going into the specifics let us first build some intuition
-      on the topic by analogy.</p>
+      combining Whisper (our ASR model) with a domain-adapted GPT-2
+      model (our external language model). However, before going into
+      the specifics let us first build some intuition on the topic by
+      analogy.</p>
       <p>Consider for example, a person tasked with transcribing audio
       from a phone call between a customer and a claims representative
       at an insurance call center. This transcriber can hear the
@@ -534,9 +535,13 @@ scarcity and integration in specialized domains">
       Improvements</h3>
       <p>The fusion approach’s benefits were concentrated almost
       exclusively in medical terminology recognition. Examples of
-      successful corrections included: - Complex pharmaceutical names -
-      Anatomical terminology - Rare disease names and medical conditions
-      - Procedural and diagnostic terminology</p>
+      successful corrections included:</p>
+      <ul>
+      <li>Complex pharmaceutical names</li>
+      <li>Anatomical terminology</li>
+      <li>Rare disease names and medical conditions</li>
+      <li>Procedural and diagnostic terminology</li>
+      </ul>
       <p>Standard conversational language showed minimal improvement,
       confirming that the benefits derive specifically from domain
       expertise rather than general language modeling enhancement.</p>
@@ -578,11 +583,13 @@ scarcity and integration in specialized domains">
       evaluation dataset, while useful for proof-of-concept
       demonstration, limits the generalizability of these findings.
       Future work should incorporate authentic clinical dictations such
-      as those provided by John Snow Labs, which require proper
-      institutional access and permissions. Real clinical speech
-      presents challenges absent in synthetic data: background noise,
-      speaker variations, interruptions, and the full complexity of
-      clinical communication patterns.</p>
+      as the <a
+      href="https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology">Shaip
+      Physician Dictation Dataset</a>, which requires a databricks
+      account permissions. Real clinical speech presents challenges
+      absent in synthetic data: background noise, speaker variations,
+      interruptions, and the full complexity of clinical communication
+      patterns.</p>
       <h3 id="broader-implications">Broader Implications</h3>
       <p>This work connects to several important trends in contemporary
       AI development:</p>
@@ -620,11 +627,11 @@ scarcity and integration in specialized domains">
       However, it remains completely blind to acoustic signals and
       exhibits biases toward formal written language rather than
       conversational speech patterns.</p>
-      <p>The 10% WER reduction achieved through shallow fusion validates
+      <p>The 15% WER reduction achieved through shallow fusion validates
       the core hypothesis: domain-specific language models can
       meaningfully improve speech recognition in specialized contexts.
-      However, the failure modes—abbreviation mismatches, punctuation
-      insertion, and premature terminations reveal the challenges of
+      However, the failure modes (abbreviation mismatches, punctuation
+      insertion, and premature terminations) reveal the challenges of
       bridging modalities with different statistical properties and
       stylistic conventions.</p>
       <p>The observed improvements concentrated almost exclusively on

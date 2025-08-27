@@ -43,7 +43,7 @@ However, the approach introduces its own challenges. If the language model is we
 
 ## Implementation: Medical Domain Fusion Pipeline
 
-Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper with a domain-adapted GPT-2 model. However, before going into the specifics let us first build some intuition on the topic by analogy. 
+Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper (our ASR model) with a domain-adapted GPT-2 model (our external language model). However, before going into the specifics let us first build some intuition on the topic by analogy. 
 
 Consider for example, a person tasked with transcribing audio from a phone call between a customer and a claims representative at an insurance call center. This transcriber can hear the conversation clearly, but they have very little knowledge of the domain e.g. the technical issues, procedures, and medical terminology that often come up. Now imagine a second person who has worked in this industry for years and has deep familiarity with the jargon and context, but who is hard of hearing.
 
@@ -207,6 +207,7 @@ When λ (the LM weight) was set too high, beam search decoding often produced in
 ### Domain-Specific Improvements
 
 The fusion approach's benefits were concentrated almost exclusively in medical terminology recognition. Examples of successful corrections included:
+
 - Complex pharmaceutical names
 - Anatomical terminology
 - Rare disease names and medical conditions
@@ -231,7 +232,7 @@ The static λ weighting approach represents a significant limitation. A more sop
 Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
 
 **Real-World Dataset Validation**
-The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as those provided by John Snow Labs, which require proper institutional access and permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
+The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as the [Shaip Physician Dictation Dataset](https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology), which requires a databricks account permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
 
 ### Broader Implications
 
@@ -251,7 +252,7 @@ This exploration of shallow fusion for medical ASR demonstrates both the promise
 
 **GPT-2 (Domain Specialist)** trained on PubMed abstracts develops rich representations of medical terminology and context through self-supervised learning on abundant textual data. However, it remains completely blind to acoustic signals and exhibits biases toward formal written language rather than conversational speech patterns.
 
-The 10% WER reduction achieved through shallow fusion validates the core hypothesis: domain-specific language models can meaningfully improve speech recognition in specialized contexts. However, the failure modes—abbreviation mismatches, punctuation insertion, and premature terminations reveal the challenges of bridging modalities with different statistical properties and stylistic conventions.
+The 15% WER reduction achieved through shallow fusion validates the core hypothesis: domain-specific language models can meaningfully improve speech recognition in specialized contexts. However, the failure modes (abbreviation mismatches, punctuation insertion, and premature terminations) reveal the challenges of bridging modalities with different statistical properties and stylistic conventions.
 
 The observed improvements concentrated almost exclusively on medical terminology recognition, confirming that the benefits derive from genuine domain expertise rather than general language modeling improvements. This specificity, while limiting the approach's broad applicability, makes it particularly valuable for specialized transcription applications where domain terminology accuracy is critical.
 
