@@ -156,9 +156,8 @@ scarcity and integration in specialized domains">
       labeling is labor-intensive, and the resulting datasets often
       remain small and brittle compared to the large scale datasets that
       the base model was trained on. This approach also runs the risk of
-      catastrophic forgetting<a href="#fn1" class="footnote-ref"
-      id="fnref1" role="doc-noteref"><sup>1</sup></a>, where the model
-      loses its general capabilities when adapting to the specific
+      <strong>catastrophic forgetting</strong><sup>1</sup> where the
+      model loses its general capabilities when adapting to the specific
       domain.</p>
       <p><strong>Context injection methods</strong> attempt to bridge
       the gap by incorporating domain-specific text directly into the
@@ -207,9 +206,8 @@ scarcity and integration in specialized domains">
       benefits are lost. Tuning the weighting factor for the external
       model often requires domain-specific adjustment. In addition,
       shallow fusion increases inference cost since predictions must run
-      through a second model<a href="#fn2" class="footnote-ref"
-      id="fnref2" role="doc-noteref"><sup>2</sup></a>. These trade-offs
-      make it essential to understand the method’s failure modes before
+      through a second model<sup>2</sup>. These trade-offs make it
+      essential to understand the method’s failure modes before
       deploying it in practice.</p>
       <h2
       id="implementation-medical-domain-fusion-pipeline">Implementation:
@@ -458,12 +456,16 @@ scarcity and integration in specialized domains">
       English transcription task, Whisper should not emit these special
       tokens during normal operation, making this a non-issue in
       practice.</p>
-      <p>The implementation performs fusion by: 1. Running Whisper’s
-      encoder to generate audio features 2. At each decoding step,
-      computing logit distributions from both Whisper’s decoder and the
-      domain-adapted GPT-2 3. Combining logits using the weighted sum
-      formulation described earlier 4. Selecting tokens based on the
-      fused probability distribution</p>
+      <p>The implementation performs fusion by:</p>
+      <ol type="1">
+      <li>Running Whisper’s encoder to generate audio features</li>
+      <li>At each decoding step, computing logit distributions from both
+      Whisper’s decoder and the domain-adapted GPT-2</li>
+      <li>Combining logits using the weighted sum formulation described
+      earlier</li>
+      <li>Selecting tokens based on the fused probability
+      distribution</li>
+      </ol>
       <h3 id="evaluation-framework">Evaluation Framework</h3>
       <p>Testing was conducted on a proof-of-concept dataset consisting
       of synthetic radiology report dictations. While ideally evaluation
@@ -483,8 +485,7 @@ scarcity and integration in specialized domains">
       <strong>8.24%</strong> to <strong>7.00%</strong> on the synthetic
       radiology dataset—a <strong>1.24-point absolute drop</strong>,
       corresponding to a <strong>15% relative reduction in
-      errors</strong>.<a href="#fn3" class="footnote-ref" id="fnref3"
-      role="doc-noteref"><sup>3</sup></a> Overall observed results are
+      errors</strong>.<sup>3</sup> Overall observed results are
       consistent with prior work. For example, Kannan et al. (2017)
       reported a <strong>9.1% relative WER reduction</strong> on Google
       Voice Search using shallow fusion with a neural LM <a
@@ -678,26 +679,22 @@ scarcity and integration in specialized domains">
       <li><a href="https://arxiv.org/pdf/2005.14165">Language Models are
       Few-Shot Learners</a> — Brown et al., 2020</li>
       </ul>
-      <section id="footnotes"
-      class="footnotes footnotes-end-of-document" role="doc-endnotes">
       <hr />
-      <ol>
-      <li id="fn1"><p><a
+      <ol type="1">
+      <li><p><a
       href="https://en.wikipedia.org/wiki/Catastrophic_interference">Catastrophic
       forgetting</a> occurs when a neural network loses previously
-      learned information upon learning new tasks or data.<a
-      href="#fnref1" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      <li id="fn2"><p>Several variations exist to reduce the inference
-      cost of shallow fusion, including N-best rescoring (applying the
-      LM only to candidate transcripts), using smaller or distilled
-      domain LMs etc.<a href="#fnref2" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      <li id="fn3"><p>Relative reduction is computed as (8.24 - 7.00) /
-      8.24 ≈ 15%.<a href="#fnref3" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
+      learned information upon learning new tasks or data.</p></li>
+      <li><p>Several variations exist to reduce the inference cost of
+      shallow fusion, including N-best rescoring (applying the LM only
+      to candidate transcripts), using smaller or distilled domain LMs
+      etc.</p></li>
+      <li><p>The distinction here is between <em>percentage points</em>
+      and <em>percent reduction</em>. The absolute WER drop is
+      <strong>1.24 points</strong> (8.24 → 7.00). However, since errors
+      fell from 8.24 to 7.00, the system made about <strong>15% fewer
+      errors relative to the baseline</strong>.</p></li>
       </ol>
-      </section>
     </article>
   </main>
 

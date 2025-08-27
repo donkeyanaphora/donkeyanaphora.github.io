@@ -25,7 +25,7 @@ This distribution gap has motivated researchers and practitioners (myself includ
 
 The challenge of domain adaptation in ASR has prompted several approaches, each with distinct trade-offs in cost, performance, and implementation complexity. Before diving into my implementation, I'll examine how the research community has approached this domain mismatch problem and where shallow fusion fits among existing solutions.
 
-**Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning pretrained models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small and brittle compared to the large scale datasets that the base model was trained on. This approach also runs the risk of catastrophic forgetting[^1], where the model loses its general capabilities when adapting to the specific domain.
+**Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning pretrained models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small and brittle compared to the large scale datasets that the base model was trained on. This approach also runs the risk of **catastrophic forgetting**<sup>1</sup> where the model loses its general capabilities when adapting to the specific domain.
 
 **Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window, essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements. They are also architecture dependent and rely on the decoder's prompting capacity, which may be limited in models not explicitly designed for such conditioning.
 
@@ -39,7 +39,7 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 
 Shallow fusion's appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model's view of the audio with the language model's understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
 
-However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect tokens; too lightly, and the domain benefits are lost. Tuning the weighting factor for the external model often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model[^2]. These trade-offs make it essential to understand the method's failure modes before deploying it in practice.
+However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect tokens; too lightly, and the domain benefits are lost. Tuning the weighting factor for the external model often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model<sup>2</sup>. These trade-offs make it essential to understand the method's failure modes before deploying it in practice.
 
 ## Implementation: Medical Domain Fusion Pipeline
 
@@ -159,6 +159,7 @@ The models were trained using standard autoregressive language modeling objectiv
 The fusion pipeline operates selectively on relevant tokens only. Whisper contains special task-related tokens (language identifiers, task specifiers, timestamps) that are outside the scope of GPT-2's vocabulary and training domain. However, for the English transcription task, Whisper should not emit these special tokens during normal operation, making this a non-issue in practice.
 
 The implementation performs fusion by:
+
 1. Running Whisper's encoder to generate audio features
 2. At each decoding step, computing logit distributions from both Whisper's decoder and the domain-adapted GPT-2
 3. Combining logits using the weighted sum formulation described earlier
@@ -177,7 +178,7 @@ The primary evaluation metric was Word Error Rate (WER), comparing transcription
 
 ### Overall Performance
 
-The shallow fusion approach reduced Word Error Rate from **8.24%** to **7.00%** on the synthetic radiology dataset—a **1.24-point absolute drop**, corresponding to a **15% relative reduction in errors**.[^3] Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
+The shallow fusion approach reduced Word Error Rate from **8.24%** to **7.00%** on the synthetic radiology dataset—a **1.24-point absolute drop**, corresponding to a **15% relative reduction in errors**.<sup>3</sup> Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
 
 ### Performance Analysis by Model Size
 
@@ -267,11 +268,10 @@ Future work toward learned gating mechanisms, advanced fusion architectures, and
 * [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) — OpenAI, 2019  
 * [Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165) — Brown et al., 2020  
 
+--- 
 
-[^1]: [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
+1. [Catastrophic forgetting](https://en.wikipedia.org/wiki/Catastrophic_interference) occurs when a neural network loses previously learned information upon learning new tasks or data.
 
-[^2]: Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.
+2. Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.
 
-[^3]: The distinction here is between *percentage points* and *percent reduction*. The absolute WER drop is **1.24 points** (8.24 → 7.00). However, since errors fell from 8.24 to 7.00, the system made about **15% fewer errors relative to the baseline**.
-
-[^3]: Relative reduction is computed as (8.24 - 7.00) / 8.24 ≈ 15%.
+3. The distinction here is between *percentage points* and *percent reduction*. The absolute WER drop is **1.24 points** (8.24 → 7.00). However, since errors fell from 8.24 to 7.00, the system made about **15% fewer errors relative to the baseline**.
