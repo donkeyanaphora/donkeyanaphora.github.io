@@ -429,10 +429,12 @@ scarcity and integration in specialized domains">
       domain, the PubMed dataset was used. For adapting we tuned GPT-2
       small, medium, and large on roughly <strong>3.63 billion
       tokens</strong> from PubMed abstracts. I trained three GPT-2
-      variants to create domain-adapted language models: - <strong>GPT-2
-      Small</strong> (117M parameters) - <strong>GPT-2 Medium</strong>
-      (345M parameters) - <strong>GPT-2 Large</strong> (774M
-      parameters)</p>
+      variants to create domain-adapted language models:</p>
+      <ul>
+      <li><strong>GPT-2 Small</strong> (117M parameters)</li>
+      <li><strong>GPT-2 Medium</strong> (345M parameters)</li>
+      <li><strong>GPT-2 Large</strong> (774M parameters)</li>
+      </ul>
       <p>The models were trained using standard autoregressive language
       modeling objectives on this large corpus of medical abstracts. By
       maintaining Whisper’s tokenizer throughout training, I ensured
