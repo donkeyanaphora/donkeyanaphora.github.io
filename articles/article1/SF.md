@@ -220,7 +220,7 @@ Standard conversational language showed minimal improvement, confirming that the
 
 ### Hyperparameter Sensitivity
 
-The λ weighting factor proved critical to performance. Lower values (λ < 0.1) provided minimal domain benefits, while higher values (λ > 0.5) introduced too many artifacts from the written domain bias. The optimal range fell between 0.12-0.3 for most test cases, though this varied with content complexity and medical terminology density.
+The λ weighting factor proved critical to performance. Lower values (λ < 0.1) provided minimal domain benefits, while higher values (λ > 0.5) introduced too many artifacts from the written domain bias. The optimal range fell between 0.12-0.30 for most test cases, though this varied with content complexity and medical terminology density.
 
 ## Reflection and Future Directions
 
