@@ -77,7 +77,7 @@ The idea is that the ASR model understands phonetics and language in a general s
 ![diagram](assets/viz.png)
 Reference: [Kannan et al. 2017](https://arxiv.org/pdf/1712.01996)
 
-Consider an example where Whisper serves as our listening expert and GPT-2 as our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford 2.2](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
+Consider an example where Whisper serves as our listening expert and GPT-2 as our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford et al., 2022](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
 **Input Audio (Ground Truth):**  
 "The procedure was medically necessary for the treatment of claimant's Tetralogy of `Fallot`."✔️
