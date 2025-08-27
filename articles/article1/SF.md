@@ -144,8 +144,8 @@ While Bio-GPT represents an existing medical language model, it uses a different
 
 In order to adapt an external language model to the medical domain, the PubMed dataset was used. For adapting we tuned GPT-2 small, medium, and large on roughly **3.63 billion tokens** from PubMed abstracts. I trained three GPT-2 variants to create domain-adapted language models:
 
-- **GPT-2 Small** (117M parameters)
-- **GPT-2 Medium** (345M parameters) 
+- **GPT-2 Small** (124M parameters)
+- **GPT-2 Medium** (355M parameters) 
 - **GPT-2 Large** (774M parameters)
 
 The models were trained using standard autoregressive language modeling objectives on this large corpus of medical abstracts. By maintaining Whisper's tokenizer throughout training, I ensured seamless integration during the fusion process without requiring token mapping or vocabulary alignment procedures.
