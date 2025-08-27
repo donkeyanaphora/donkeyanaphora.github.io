@@ -182,14 +182,16 @@ scarcity and integration in specialized domains">
       from the ASR and LM while keeping both models frozen <a
       href="https://arxiv.org/pdf/1503.03535">(Gulcehre et al.,
       2015)</a>.</p></li>
-      <li><p><strong>Cold fusion</strong> incorporates a pretrained LM
-      directly into ASR training—projecting the LM’s probability
-      distribution into a shared embedding space and using gating
-      layers—letting the ASR internalize linguistic knowledge early.
-      This improves convergence and domain adaptation at the cost of
-      greater training complexity <a
-      href="https://arxiv.org/pdf/1708.06426">(Sriram et al.,
-      2017)</a>.</p></li>
+      <li><p><strong>Cold fusion</strong> builds on the idea of deep
+      fusion but with a key difference: instead of training the ASR
+      model first and then adding a language model later, the seq2seq
+      ASR model is trained from scratch alongside a fixed, pretrained LM
+      <a href="https://arxiv.org/pdf/1708.06426">(Sriram et al.,
+      2017)</a>. Because the ASR model is exposed to the LM throughout
+      training, it learns to rely on the LM for linguistic information
+      while dedicating its own capacity to mapping acoustic features
+      into text. This disentanglement allows even relatively small
+      decoders to perform well.</p></li>
       </ul>
       <p>Shallow fusion’s appeal lies in its simplicity and flexibility,
       as it requires no additional training of the base ASR model.
