@@ -206,10 +206,7 @@ To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.
 | λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
 |---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
 | **Fused WER**       |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
-| **Relative Improvement**<sup>3</sup> | +4.4%  | +8.9%  | +12%   | +10.8% | +10.9% | +9.4%  | +12.1% | +1.2%  | -1.4%  | -4.8%  |
-
-> *Note: Relative Improvement = (Baseline WER - Fused WER) / Baseline WER × 100%  
-Positive values indicate fewer errors (better), negative values indicate more errors (worse)*
+| **Relative Improvement<sup>3</sup>** | +4.4%  | +8.9%  | +12%   | +10.8% | +10.9% | +9.4%  | +12.1% | +1.2%  | -1.4%  | -4.8%  |
 
 > *Note: Variability across λ values likely reflects the small synthetic evaluation set.*
 
