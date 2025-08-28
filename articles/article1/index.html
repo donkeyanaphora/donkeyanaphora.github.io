@@ -565,20 +565,26 @@ scarcity and integration in specialized domains">
       <td>0.087</td>
       </tr>
       <tr>
-      <td><strong>Relative Δ (%)</strong></td>
-      <td>+4.4</td>
-      <td>+8.9</td>
-      <td>+12</td>
-      <td>+10.8</td>
-      <td>+10.9</td>
-      <td>+9.4</td>
-      <td>+12.1</td>
-      <td>+1.2</td>
-      <td>-1.4</td>
-      <td>-4.8</td>
+      <td><strong>Relative Improvement</strong><sup>3</sup></td>
+      <td>+4.4%</td>
+      <td>+8.9%</td>
+      <td>+12%</td>
+      <td>+10.8%</td>
+      <td>+10.9%</td>
+      <td>+9.4%</td>
+      <td>+12.1%</td>
+      <td>+1.2%</td>
+      <td>-1.4%</td>
+      <td>-4.8%</td>
       </tr>
       </tbody>
       </table>
+      <blockquote>
+      <p><em>Note: Relative Improvement = (Baseline WER - Fused WER) /
+      Baseline WER × 100%<br />
+      Positive values indicate fewer errors (better), negative values
+      indicate more errors (worse)</em></p>
+      </blockquote>
       <blockquote>
       <p><em>Note: Variability across λ values likely reflects the small
       synthetic evaluation set.</em></p>
@@ -764,11 +770,9 @@ scarcity and integration in specialized domains">
       shallow fusion, including N-best rescoring (applying the LM only
       to candidate transcripts), using smaller or distilled domain LMs
       etc.</p></li>
-      <li><p>The distinction here is between <em>percentage points</em>
-      and <em>percent reduction</em>. The absolute WER drop is
-      <strong>1.24 points</strong> (8.24 → 7.00). However, since errors
-      fell from 8.24 to 7.00, the system made about <strong>15% fewer
-      errors relative to the baseline</strong>.</p></li>
+      <li><p>Relative Improvement = (Baseline WER - Fused WER) /
+      Baseline WER × 100%. Positive values indicate error
+      reduction.</p></li>
       </ol>
     </article>
   </main>
