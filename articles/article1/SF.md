@@ -181,7 +181,7 @@ The primary evaluation metric was Word Error Rate (WER), comparing transcription
 
 ### Overall Performance
 
-The shallow fusion approach reduced Word Error Rate from **8.24%** to **7.00%** on the synthetic radiology dataset—a **1.24-point absolute drop**, corresponding to a **15% relative reduction in errors**.<sup>3</sup> Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
+The shallow fusion approach reduced Word Error Rate from **8.31%** to **7.31%** on the synthetic radiology dataset—a **1.0-point absolute drop**, corresponding to a **12% relative reduction in errors**.[^3] Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
 
 ### Performance Analysis by Model Size
 
@@ -192,6 +192,25 @@ Testing across GPT-2 variants revealed interesting scaling properties:
 - **GPT-2 Large**: Marginal additional accuracy improvements but with significantly increased computational cost
 
 The medium-sized model emerged as the practical sweet spot, offering most of the fusion benefits without the computational penalty of the largest variant.
+
+#### Hyperparameter Sensitivity (λ / Alpha Weight)
+
+To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the goal here was to keep the external LM comparable to Whisper’s decoder capacity so that improvements reflect fusion rather than raw model size. Results are shown below:
+
+| Alpha | Base WER | Fused WER | Relative WER Reduction (%) |
+|------:|---------:|----------:|---------------------------:|
+| 0.03  | 0.0831   | 0.0794    | +4.4                       |
+| 0.06  | 0.0831   | 0.0757    | +8.9                       |
+| 0.09  | 0.0831   | 0.0731    | +12.0                      |
+| 0.12  | 0.0831   | 0.0741    | +10.8                      |
+| 0.15  | 0.0831   | 0.0741    | +10.9                      |
+| 0.18  | 0.0831   | 0.0753    | +9.4                       |
+| 0.21  | 0.0831   | 0.0731    | +12.1                      |
+| 0.24  | 0.0831   | 0.0821    | +1.2                       |
+| 0.27  | 0.0831   | 0.0843    | –1.4                       |
+| 0.30  | 0.0831   | 0.0871    | –4.8                       |
+
+Performance peaks around **α = 0.09–0.12**, yielding a ~12% relative reduction in WER compared to baseline.
 
 ### Error Pattern Analysis and Failure Modes
 

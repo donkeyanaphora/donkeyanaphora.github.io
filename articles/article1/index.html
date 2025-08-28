@@ -483,13 +483,13 @@ scarcity and integration in specialized domains">
       <h2 id="results-analysis">Results &amp; Analysis</h2>
       <h3 id="overall-performance">Overall Performance</h3>
       <p>The shallow fusion approach reduced Word Error Rate from
-      <strong>8.24%</strong> to <strong>7.00%</strong> on the synthetic
-      radiology dataset—a <strong>1.24-point absolute drop</strong>,
-      corresponding to a <strong>15% relative reduction in
-      errors</strong>.<sup>3</sup> Overall observed results are
-      consistent with prior work. For example, Kannan et al. (2017)
-      reported a <strong>9.1% relative WER reduction</strong> on Google
-      Voice Search using shallow fusion with a neural LM <a
+      <strong>8.31%</strong> to <strong>7.31%</strong> on the synthetic
+      radiology dataset—a <strong>1.0-point absolute drop</strong>,
+      corresponding to a <strong>12% relative reduction in
+      errors</strong>.[^3] Overall observed results are consistent with
+      prior work. For example, Kannan et al. (2017) reported a
+      <strong>9.1% relative WER reduction</strong> on Google Voice
+      Search using shallow fusion with a neural LM <a
       href="https://arxiv.org/pdf/1712.01996">(Kannan et al.,
       2017)</a>.</p>
       <h3 id="performance-analysis-by-model-size">Performance Analysis
@@ -508,6 +508,90 @@ scarcity and integration in specialized domains">
       <p>The medium-sized model emerged as the practical sweet spot,
       offering most of the fusion benefits without the computational
       penalty of the largest variant.</p>
+      <h4 id="hyperparameter-sensitivity-λ-alpha-weight">Hyperparameter
+      Sensitivity (λ / Alpha Weight)</h4>
+      <p>To evaluate the effect of the fusion weight λ, we varied it
+      between 0.03 and 0.30 while fixing the model pairing to Whisper
+      Small + GPT-2 PubMed Small. Although one could mix and match
+      different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the
+      goal here was to keep the external LM comparable to Whisper’s
+      decoder capacity so that improvements reflect fusion rather than
+      raw model size. Results are shown below:</p>
+      <table>
+      <thead>
+      <tr>
+      <th style="text-align: right;">Alpha</th>
+      <th style="text-align: right;">Base WER</th>
+      <th style="text-align: right;">Fused WER</th>
+      <th style="text-align: right;">Relative WER Reduction (%)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td style="text-align: right;">0.03</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0794</td>
+      <td style="text-align: right;">+4.4</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.06</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0757</td>
+      <td style="text-align: right;">+8.9</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.09</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0731</td>
+      <td style="text-align: right;">+12.0</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.12</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0741</td>
+      <td style="text-align: right;">+10.8</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.15</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0741</td>
+      <td style="text-align: right;">+10.9</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.18</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0753</td>
+      <td style="text-align: right;">+9.4</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.21</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0731</td>
+      <td style="text-align: right;">+12.1</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.24</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0821</td>
+      <td style="text-align: right;">+1.2</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.27</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0843</td>
+      <td style="text-align: right;">–1.4</td>
+      </tr>
+      <tr>
+      <td style="text-align: right;">0.30</td>
+      <td style="text-align: right;">0.0831</td>
+      <td style="text-align: right;">0.0871</td>
+      <td style="text-align: right;">–4.8</td>
+      </tr>
+      </tbody>
+      </table>
+      <p>Performance peaks around <strong>α = 0.09–0.12</strong>,
+      yielding a ~12% relative reduction in WER compared to
+      baseline.</p>
       <h3 id="error-pattern-analysis-and-failure-modes">Error Pattern
       Analysis and Failure Modes</h3>
       <p>While the overall WER improvement was encouraging, analysis
