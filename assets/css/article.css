@@ -42,7 +42,7 @@ article.markdown-body pre code{
   overflow-x:auto;
 }
 article.markdown-body img{
-  max-width:50%;
+  max-width:60%;
   height:auto;
   display:block;
   margin:.5rem auto;
@@ -52,9 +52,10 @@ article.markdown-body img{
 article.markdown-body table{
   display:block; /*inline-block or block */
   width:max-content;
-  /* max-width:100%; */
-  max-width:calc(100% - 3.85em); /* Account for the left margin */
-  margin:0 0 1em 3.85em;
+  max-width:100%;
+  margin:0 auto;
+  /* max-width:calc(100% - 3.85em); */
+  /* margin:0 0 1em 3.85em; */
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
   border-collapse:collapse;

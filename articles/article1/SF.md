@@ -98,34 +98,29 @@ Whisper produces logits at each step:
 - At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "below", "follow", "Fallot"
 
 #### 2. **Domain GPT-2 Predictions:**  
-At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits based on the following context:
+At the ambiguous decoding step in "The procedure was medically necessary for the treatment of claimant's Tetralogy of ____", each model produces different log probabilities:
 
-- "The procedure was medically necessary for the treatment of claimant's Tetralogy of `_____`"
-
-- GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).
 
 | Next Token   | Whisper Log Probs | GPT-2 Log Probs |
 |--------------|------------------|-----------------|
 | **Fallot** | **–1.8**         | **–0.3**        |
 | below      | –1.0             | –5.0            |
 | follow        | –3.5             | –3.8            |
+<br>
+
+GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).*
 
 #### 3. **Shallow Fusion (Combining Logits):**
-<!-- $$
-\log P_{\text{combined}}\bigl(y_t\bigr)
-  = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr)
-  + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)
-$$ -->
 
-
-<!-- <div style="margin-left: 3.85em;">
-$\log P_{\text{combined}}\bigl(y_t\bigr) = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr) + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)$
-</div> -->
+**Fusion Equation:**
 
 We combine each model's logits using a weighted sum in the following way:
 
-- **Fusion Equation:**<br>$\log P_{\text{combined}}\bigl(y_t\bigr) = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr) + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)$
+$$
+\log P_{\text{combined}}(y_t) = \log P_{\text{Whisper}}(y_t \mid x, y_{<t}) + \lambda \log P_{\text{GPT2}}(y_t \mid y_{<t})
+$$
 
+**Example:**
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|
 |--------------|--------------|-------------|----------------|
@@ -207,7 +202,7 @@ To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.
 
 **Table. WER vs. λ Baseline WER = 0.0831.**
 
-|   λ (Fusion Weight)   |   **Fused WER** |   **Relative Δ (%)** |
+<!-- |   λ (Fusion Weight)   |   **Fused WER** |   **Relative Δ (%)** |
 |-----------------------|-----------------|----------------------|
 | 0.03                  |           0.079 |                  4.4 |
 | 0.06                  |           0.076 |                  8.9 |
@@ -218,7 +213,12 @@ To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.
 | 0.21                  |           0.073 |                 12.1 |
 | 0.24                  |           0.082 |                  1.2 |
 | 0.27                  |           0.084 |                 -1.4 |
-| 0.3                   |           0.087 |                 -4.8 |
+| 0.3                   |           0.087 |                 -4.8 | -->
+
+| λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
+|---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| **Fused WER**       |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
+| **Relative Δ (%)**  |  4.4   |  8.9   | 12     | 10.8   | 10.9   |  9.4   | 12.1   |  1.2   | -1.4   | -4.8   |
 
 > *Note: Variability across λ values likely reflects the small synthetic evaluation set.*
 
