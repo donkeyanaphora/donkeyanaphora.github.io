@@ -198,17 +198,17 @@ The medium-sized model emerged as the practical sweet spot, offering most of the
 To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the goal here was to keep the external LM comparable to Whisper’s decoder capacity so that improvements reflect fusion rather than raw model size. Results are shown below:
 
 | λ | Base WER | Fused WER | Relative WER Reduction (%) |
-|------:|---------:|----------:|---------------------------:|
-| 0.03  | 0.0831   | 0.0794    | +4.4                       |
-| 0.06  | 0.0831   | 0.0757    | +8.9                       |
-| 0.09  | 0.0831   | 0.0731    | +12.0                      |
-| 0.12  | 0.0831   | 0.0741    | +10.8                      |
-| 0.15  | 0.0831   | 0.0741    | +10.9                      |
-| 0.18  | 0.0831   | 0.0753    | +9.4                       |
-| 0.21  | 0.0831   | 0.0731    | +12.1                      |
-| 0.24  | 0.0831   | 0.0821    | +1.2                       |
-| 0.27  | 0.0831   | 0.0843    | –1.4                       |
-| 0.30  | 0.0831   | 0.0871    | –4.8                       |
+|------:|---------:|----------:|-----------------------:|
+| 0.03  | 0.0831   | 0.0794    | +4.4                   |
+| 0.06  | 0.0831   | 0.0757    | +8.9                   |
+| 0.09  | 0.0831   | 0.0731    | +12.0                  |
+| 0.12  | 0.0831   | 0.0741    | +10.8                  |
+| 0.15  | 0.0831   | 0.0741    | +10.9                  |
+| 0.18  | 0.0831   | 0.0753    | +9.4                   |
+| 0.21  | 0.0831   | 0.0731    | +12.1                  |
+| 0.24  | 0.0831   | 0.0821    | +1.2                   |
+| 0.27  | 0.0831   | 0.0843    | –1.4                   |
+| 0.30  | 0.0831   | 0.0871    | –4.8                   |
 
 *Note: Variability in the relative WER reduction across λ values likely reflects the small size of the synthetic evaluation set. Larger real world datasets would be needed to capture the true distribution*
 
