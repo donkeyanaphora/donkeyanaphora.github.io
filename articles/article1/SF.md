@@ -196,7 +196,7 @@ The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measu
 
 ### Overall Performance
 
-The shallow fusion approach reduced Word Error Rate from **8.31%** to **7.31%** on the synthetic radiology dataset—a **1.0-point absolute drop**, corresponding to a **12% relative reduction in errors**.[^3] Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
+The shallow fusion approach reduced Word Error Rate from **8.31%** to **7.31%** on the synthetic radiology dataset—a **1.0-point absolute drop**, corresponding to a **12% relative reduction in errors**. Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
 
 ### Performance Analysis by Model Size
 
