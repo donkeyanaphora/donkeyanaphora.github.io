@@ -193,11 +193,11 @@ Testing across GPT-2 variants revealed interesting scaling properties:
 
 The medium-sized model emerged as the practical sweet spot, offering most of the fusion benefits without the computational penalty of the largest variant.
 
-#### Hyperparameter Sensitivity (λ / Alpha Weight)
+#### Hyperparameter Sensitivity (λ / Lambda Weight)
 
 To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the goal here was to keep the external LM comparable to Whisper’s decoder capacity so that improvements reflect fusion rather than raw model size. Results are shown below:
 
-| Alpha | Base WER | Fused WER | Relative WER Reduction (%) |
+| λ | Base WER | Fused WER | Relative WER Reduction (%) |
 |------:|---------:|----------:|---------------------------:|
 | 0.03  | 0.0831   | 0.0794    | +4.4                       |
 | 0.06  | 0.0831   | 0.0757    | +8.9                       |
@@ -210,7 +210,9 @@ To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.
 | 0.27  | 0.0831   | 0.0843    | –1.4                       |
 | 0.30  | 0.0831   | 0.0871    | –4.8                       |
 
-Performance peaks around **α = 0.09–0.12**, yielding a ~12% relative reduction in WER compared to baseline.
+*Note: Variability in the relative WER reduction across λ values likely reflects the small size of the synthetic evaluation set. Larger real world datasets would be needed to capture the true distribution*
+
+Performance peaks around **λ = 0.09–0.12**, yielding a ~12% relative reduction in WER compared to baseline. It's worth noting variance
 
 ### Error Pattern Analysis and Failure Modes
 

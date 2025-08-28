@@ -508,8 +508,8 @@ scarcity and integration in specialized domains">
       <p>The medium-sized model emerged as the practical sweet spot,
       offering most of the fusion benefits without the computational
       penalty of the largest variant.</p>
-      <h4 id="hyperparameter-sensitivity-λ-alpha-weight">Hyperparameter
-      Sensitivity (λ / Alpha Weight)</h4>
+      <h4 id="hyperparameter-sensitivity-λ-lambda-weight">Hyperparameter
+      Sensitivity (λ / Lambda Weight)</h4>
       <p>To evaluate the effect of the fusion weight λ, we varied it
       between 0.03 and 0.30 while fixing the model pairing to Whisper
       Small + GPT-2 PubMed Small. Although one could mix and match
@@ -520,7 +520,7 @@ scarcity and integration in specialized domains">
       <table>
       <thead>
       <tr>
-      <th style="text-align: right;">Alpha</th>
+      <th style="text-align: right;">λ</th>
       <th style="text-align: right;">Base WER</th>
       <th style="text-align: right;">Fused WER</th>
       <th style="text-align: right;">Relative WER Reduction (%)</th>
@@ -589,9 +589,13 @@ scarcity and integration in specialized domains">
       </tr>
       </tbody>
       </table>
-      <p>Performance peaks around <strong>α = 0.09–0.12</strong>,
-      yielding a ~12% relative reduction in WER compared to
-      baseline.</p>
+      <p><em>Note: Variability in the relative WER reduction across λ
+      values likely reflects the small size of the synthetic evaluation
+      set. Larger real world datasets would be needed to capture the
+      true distribution</em></p>
+      <p>Performance peaks around <strong>λ = 0.09–0.12</strong>,
+      yielding a ~12% relative reduction in WER compared to baseline.
+      It’s worth noting variance</p>
       <h3 id="error-pattern-analysis-and-failure-modes">Error Pattern
       Analysis and Failure Modes</h3>
       <p>While the overall WER improvement was encouraging, analysis
