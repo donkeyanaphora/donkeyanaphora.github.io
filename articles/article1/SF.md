@@ -196,7 +196,7 @@ Testing across GPT-2 variants revealed interesting scaling properties:
 
 The medium-sized model emerged as the practical sweet spot, offering most of the fusion benefits without the computational penalty of the largest variant.
 
-#### Hyperparameter Sensitivity (λ / Lambda Weight)
+### Hyperparameter Sensitivity (λ / Lambda Weight)
 
 To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper’s decoder so that improvements reflect fusion rather than raw model size.
 
