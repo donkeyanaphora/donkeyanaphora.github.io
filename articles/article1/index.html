@@ -201,8 +201,7 @@ specialized domains">
       view of the audio with the language model’s understanding of
       domain-specific text. Importantly, the only data needed to build
       or adapt the external language model is unstructured text, which
-      can be collected far more easily than transcribed audio and used
-      in a self-supervised training setup.</p>
+      can be collected far more easily than audio transcriptions.</p>
       <p>However, the approach introduces its own challenges. If the
       language model is weighted too heavily, it may bias transcriptions
       toward plausible but incorrect tokens; too lightly, and the domain
@@ -417,7 +416,7 @@ specialized domains">
       the base ASR model due to its strong general-purpose performance
       and <strong>GPT-2</strong> as the domain-specific language model.
       The external model selected for this fusion process was GPT-2
-      small, medium, and large. The reason for selecting this model was
+      small, medium, and large. The reason for selecting these model was
       partly due to convenience, because pre-trained versions are widely
       available and they share a tokenizer/vocabulary with Whisper’s
       decoder. The shared vocabulary means we do not have to learn a
@@ -431,20 +430,19 @@ specialized domains">
       <h3 id="training-domain-specific-language-models">Training
       Domain-Specific Language Models</h3>
       <p>In order to adapt an external language model to the medical
-      domain, the PubMed dataset was used. For adapting we tuned GPT-2
-      small, medium, and large on roughly <strong>3.63 billion
-      tokens</strong> from PubMed abstracts. I trained three GPT-2
-      variants to create domain-adapted language models:</p>
+      domain, the PubMed dataset was used. Numerous versions of GPT-2
+      were tuned on roughly <strong>3.63 billion tokens</strong> from
+      PubMed abstracts. Three GPT-2 variants were trained to create the
+      following domain-adapted language models:</p>
       <ul>
       <li><strong>GPT-2 Small</strong> (124M parameters)</li>
       <li><strong>GPT-2 Medium</strong> (355M parameters)</li>
       <li><strong>GPT-2 Large</strong> (774M parameters)</li>
       </ul>
       <p>The models were trained using standard autoregressive language
-      modeling objectives on this large corpus of medical abstracts. By
-      maintaining Whisper’s tokenizer throughout training, I ensured
-      seamless integration during the fusion process without requiring
-      token mapping or vocabulary alignment procedures.</p>
+      modeling objectives on this large corpus of medical abstracts.
+      Retaining Whisper’s tokenizer ensured seamless fusion, eliminating
+      any need for token mapping or vocabulary alignment.</p>
       <p><strong>Training pipeline and tuned models:</strong></p>
       <ul>
       <li><a
@@ -496,13 +494,13 @@ specialized domains">
       radiology dataset—a <strong>1.0-point absolute drop</strong>,
       corresponding to a <strong>12% relative reduction in
       errors</strong>. Overall observed results are consistent with
-      prior work. For example, Kannan et al. (2017) reported a
-      <strong>9.1% relative WER reduction</strong> on Google Voice
-      Search using shallow fusion with a neural LM <a
-      href="https://arxiv.org/pdf/1712.01996">(Kannan et al.,
-      2017)</a>.</p>
+      prior work. For example, <a
+      href="(https://arxiv.org/pdf/1712.01996)">Kannan et al. (2017)</a>
+      reported a <strong>9.1% relative WER reduction</strong> on Google
+      Voice Search using shallow fusion with a neural LM.</p>
       <h3 id="performance-analysis-by-model-size">Performance Analysis
       by Model Size</h3>
+      <!-- need data to support this... this is mostly true of self supervised eval across models fusion wise idk medium felt best -->
       <p>Testing across GPT-2 variants revealed interesting scaling
       properties:</p>
       <ul>

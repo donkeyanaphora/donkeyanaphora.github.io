@@ -46,7 +46,7 @@ The challenge of domain adaptation in ASR has prompted several approaches, each 
 
 <!-- Because the ASR model is exposed to the LM throughout training, it learns to rely on the LM for linguistic information while dedicating its own capacity to mapping acoustic features into text. This disentanglement allows even relatively small decoders to perform well.   -->
 
-Shallow fusion's appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model's view of the audio with the language model's understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than transcribed audio and used in a self-supervised training setup.
+Shallow fusion's appeal lies in its simplicity and flexibility, as it requires no additional training of the base ASR model. Instead, you incorporate predictions from an external language model directly at inference time, blending the acoustic model's view of the audio with the language model's understanding of domain-specific text. Importantly, the only data needed to build or adapt the external language model is unstructured text, which can be collected far more easily than audio transcriptions.
 
 However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect tokens; too lightly, and the domain benefits are lost. Tuning the weighting factor for the external model often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model<sup>2</sup>. These trade-offs make it essential to understand the method's failure modes before deploying it in practice.
 
@@ -153,19 +153,19 @@ This demonstrates how **domain-aware shallow fusion** can significantly improve 
 
 ### Model Selection and Preparation
 
-For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external model selected for this fusion process was GPT-2 small, medium, and large. The reason for selecting this model was partly due to convenience, because pre-trained versions are widely available and they share a tokenizer/vocabulary with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another.
+For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external model selected for this fusion process was GPT-2 small, medium, and large. The reason for selecting these model was partly due to convenience, because pre-trained versions are widely available and they share a tokenizer/vocabulary with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another.
 
 While Bio-GPT represents an existing medical language model, it uses a different tokenizer that would require learning a mapping function between tokenization schemes. To avoid potential errors and implementation complexity, I opted to train custom GPT-2 variants on medical data while preserving Whisper's tokenizer compatibility.
 
 ### Training Domain-Specific Language Models
 
-In order to adapt an external language model to the medical domain, the PubMed dataset was used. For adapting we tuned GPT-2 small, medium, and large on roughly **3.63 billion tokens** from PubMed abstracts. I trained three GPT-2 variants to create domain-adapted language models:
+In order to adapt an external language model to the medical domain, the PubMed dataset was used. Numerous versions of GPT-2 were tuned on roughly **3.63 billion tokens** from PubMed abstracts. Three GPT-2 variants were trained to create the following domain-adapted language models:
 
 - **GPT-2 Small** (124M parameters)
 - **GPT-2 Medium** (355M parameters) 
 - **GPT-2 Large** (774M parameters)
 
-The models were trained using standard autoregressive language modeling objectives on this large corpus of medical abstracts. By maintaining Whisper's tokenizer throughout training, I ensured seamless integration during the fusion process without requiring token mapping or vocabulary alignment procedures.
+The models were trained using standard autoregressive language modeling objectives on this large corpus of medical abstracts. Retaining Whisper’s tokenizer ensured seamless fusion, eliminating any need for token mapping or vocabulary alignment. 
 
 **Training pipeline and tuned models:**
 
@@ -196,10 +196,10 @@ The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measu
 
 ### Overall Performance
 
-The shallow fusion approach reduced Word Error Rate from **8.31%** to **7.31%** on the synthetic radiology dataset—a **1.0-point absolute drop**, corresponding to a **12% relative reduction in errors**. Overall observed results are consistent with prior work. For example, Kannan et al. (2017) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM [(Kannan et al., 2017)](https://arxiv.org/pdf/1712.01996).
+The shallow fusion approach reduced Word Error Rate from **8.31%** to **7.31%** on the synthetic radiology dataset—a **1.0-point absolute drop**, corresponding to a **12% relative reduction in errors**. Overall observed results are consistent with prior work. For example, [Kannan et al. (2017)]((https://arxiv.org/pdf/1712.01996)) reported a **9.1% relative WER reduction** on Google Voice Search using shallow fusion with a neural LM.
 
 ### Performance Analysis by Model Size
-
+<!-- need data to support this... this is mostly true of self supervised eval across models fusion wise idk medium felt best -->
 Testing across GPT-2 variants revealed interesting scaling properties:
 
 - **GPT-2 Small**: Provided baseline domain improvements with minimal computational overhead
