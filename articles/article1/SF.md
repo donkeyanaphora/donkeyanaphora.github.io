@@ -202,19 +202,6 @@ To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.
 
 **Table. WER vs. λ Baseline WER = 0.0831.**
 
-<!-- |   λ (Fusion Weight)   |   **Fused WER** |   **Relative Δ (%)** |
-|-----------------------|-----------------|----------------------|
-| 0.03                  |           0.079 |                  4.4 |
-| 0.06                  |           0.076 |                  8.9 |
-| 0.09                  |           0.073 |                 12   |
-| 0.12                  |           0.074 |                 10.8 |
-| 0.15                  |           0.074 |                 10.9 |
-| 0.18                  |           0.075 |                  9.4 |
-| 0.21                  |           0.073 |                 12.1 |
-| 0.24                  |           0.082 |                  1.2 |
-| 0.27                  |           0.084 |                 -1.4 |
-| 0.3                   |           0.087 |                 -4.8 | -->
-
 | λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
 |---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
 | **Fused WER**       |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
@@ -236,7 +223,6 @@ The fusion system frequently "over-corrected" spoken abbreviations into their fo
 **2. Punctuation Insertion**
 The GPT-2 model, trained on formatted medical abstracts, introduced punctuation that wasn't present in the spoken audio. This created a stylistic mismatch between transcribed speech and formal written medical language.
 
-
 **3. Premature Termination and Incomplete Transcripts**  
 When λ (the LM weight) was set too high, beam search decoding often produced incomplete transcripts. Chorowski & Jaitly (2016) reported that external LMs can cause seq2seq systems to skip words or drop parts of an utterance during decoding, unless a coverage term is added to the beam search criterion [(Chorowski & Jaitly, 2016)](https://arxiv.org/pdf/1612.02695). In our experiments, higher λ coupled with wide beam searches similarly led to premature terminations, with the LM assigning high probability to end-of-sequence tokens once a transcript appeared semantically complete, even while audio continued.
 
@@ -250,10 +236,6 @@ The fusion approach's benefits were concentrated almost exclusively in medical t
 - Procedural and diagnostic terminology
 
 Standard conversational language showed minimal improvement, confirming that the benefits derive specifically from domain expertise rather than general language modeling enhancement.
-
-### Hyperparameter Sensitivity
-
-The λ weighting factor proved critical to performance. Lower values (λ < 0.1) provided minimal domain benefits, while higher values (λ > 0.5) introduced too many artifacts from the written domain bias. The optimal range fell between 0.12-0.30 for most test cases, though this varied with content complexity and medical terminology density.
 
 ## Reflection and Future Directions
 

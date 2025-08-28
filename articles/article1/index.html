@@ -519,18 +519,6 @@ scarcity and integration in specialized domains">
       decoder so that improvements reflect fusion rather than raw model
       size.</p>
       <p><strong>Table. WER vs. λ Baseline WER = 0.0831.</strong></p>
-      <!-- |   λ (Fusion Weight)   |   **Fused WER** |   **Relative Δ (%)** |
-      |-----------------------|-----------------|----------------------|
-      | 0.03                  |           0.079 |                  4.4 |
-      | 0.06                  |           0.076 |                  8.9 |
-      | 0.09                  |           0.073 |                 12   |
-      | 0.12                  |           0.074 |                 10.8 |
-      | 0.15                  |           0.074 |                 10.9 |
-      | 0.18                  |           0.075 |                  9.4 |
-      | 0.21                  |           0.073 |                 12.1 |
-      | 0.24                  |           0.082 |                  1.2 |
-      | 0.27                  |           0.084 |                 -1.4 |
-      | 0.3                   |           0.087 |                 -4.8 | -->
       <table style="width:100%;">
       <colgroup>
       <col style="width: 20%" />
@@ -639,14 +627,6 @@ scarcity and integration in specialized domains">
       <p>Standard conversational language showed minimal improvement,
       confirming that the benefits derive specifically from domain
       expertise rather than general language modeling enhancement.</p>
-      <h3 id="hyperparameter-sensitivity">Hyperparameter
-      Sensitivity</h3>
-      <p>The λ weighting factor proved critical to performance. Lower
-      values (λ &lt; 0.1) provided minimal domain benefits, while higher
-      values (λ &gt; 0.5) introduced too many artifacts from the written
-      domain bias. The optimal range fell between 0.12-0.30 for most
-      test cases, though this varied with content complexity and medical
-      terminology density.</p>
       <h2 id="reflection-and-future-directions">Reflection and Future
       Directions</h2>
       <h3 id="addressing-current-limitations">Addressing Current
