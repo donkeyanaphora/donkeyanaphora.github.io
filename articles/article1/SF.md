@@ -195,24 +195,18 @@ The medium-sized model emerged as the practical sweet spot, offering most of the
 
 #### Hyperparameter Sensitivity (λ / Lambda Weight)
 
-To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the goal here was to keep the external LM comparable to Whisper’s decoder capacity so that improvements reflect fusion rather than raw model size. Results are shown below:
+To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper’s decoder so that improvements reflect fusion rather than raw model size.
 
-| λ | Base WER | Fused WER | Relative WER Reduction (%) |
-|------:|---------:|----------:|-----------------------:|
-| 0.03  | 0.0831   | 0.0794    | +4.4                   |
-| 0.06  | 0.0831   | 0.0757    | +8.9                   |
-| 0.09  | 0.0831   | 0.0731    | +12.0                  |
-| 0.12  | 0.0831   | 0.0741    | +10.8                  |
-| 0.15  | 0.0831   | 0.0741    | +10.9                  |
-| 0.18  | 0.0831   | 0.0753    | +9.4                   |
-| 0.21  | 0.0831   | 0.0731    | +12.1                  |
-| 0.24  | 0.0831   | 0.0821    | +1.2                   |
-| 0.27  | 0.0831   | 0.0843    | –1.4                   |
-| 0.30  | 0.0831   | 0.0871    | –4.8                   |
+**Table. WER vs. λ (Baseline = 0.0831).**
 
-*Note: Variability in the relative WER reduction across λ values likely reflects the small size of the synthetic evaluation set. Larger real world datasets would be needed to capture the true distribution*
+| λ (Fusion Weight)  |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
+|--------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| **Fused WER**      |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
+| **Relative Δ (%)** |  +4.4  |  +8.9  | +12.0  | +10.8  | +10.9  |  +9.4  | +12.1  |  +1.2  |  –1.4  |  –4.8  |
 
-Performance peaks around **λ = 0.09–0.12**, yielding a ~12% relative reduction in WER compared to baseline. It's worth noting variance
+*Note: Variability across λ values likely reflects the small size of the synthetic evaluation set.*
+
+Performance peaks around **λ ≈ 0.09–0.12**, yielding roughly a **12% relative reduction in WER** compared to baseline.
 
 ### Error Pattern Analysis and Failure Modes
 

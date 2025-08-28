@@ -50,7 +50,7 @@ article.markdown-body img{
 
 /* ───── Tables (responsive) ───── */
 article.markdown-body table{
-  display:inline-block;          /* preserves native grid while allowing scroll */
+  display:block;          /* preserves native grid while allowing scroll (was 'inline-block' before) */
   width:max-content;
   max-width:100%;
   margin:0 auto;
