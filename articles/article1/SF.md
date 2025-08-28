@@ -108,7 +108,7 @@ At the ambiguous decoding step in "The procedure was medically necessary for the
 | follow        | –3.5             | –3.8            |
 <br>
 
-GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).*
+> *Note: GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).*
 
 #### 3. **Shallow Fusion (Combining Logits):**
 
