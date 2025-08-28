@@ -1,6 +1,6 @@
 ---
 title: "Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges"
-description: "A minor rant about 'AI adoption' and exploration of shallow fusion as a method to address data scarcity and integration in specialized domains"
+description: "An exploration of shallow fusion as a method to address data scarcity and integration in specialized domains"
 slug: "article1"
 date: "2025-08-26"
 draft: true
@@ -13,21 +13,28 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 *AUGUST 26, 2025*
 
 ## Introduction
+
 AI adoption and integration have become focal points in seemingly every earnings call, linkedin post, townhall and industry keynote. However, most of these conversations exist to highlight revenue potential, promote products and services, or bolster positive consumer sentiment, which is likely why they tend to gloss over or abstract away the technical challenges that stand in the way of effective adoption. One of the fundamental challenges is the gap between available data and the data needed for a domain-specific task. 
 
 Consider for example applying a large generalist model to a highly specialized task that barely surfaces in its pretraining data if at all. For the generalist model to succeed, it must first grasp dense company prospectuses, specialized jargon, and the nuances of the business problem itself. To address this gap companies often resort to standard recipes e.g. "exciting" the right activations through few-shot examples, dumping streams of internal documents into the model's context, or ambitious attempts at fine-tuning on small internal datasets. However, with most of these approaches there's often no optimization signal, or gradient to move against and progress if there's any to be had involves a good deal of guesswork, trial, and error. 
 
-**Automatic Speech Recognition (ASR)** exemplifies this challenge. Many domains, such as medicine, law, financial services, etc contain specialized terminology that is typically outside the distribution or under-represented in the pretraining for general purpose models. A model trained on everyday speech will struggle with phrases like "orthostatic tachycardia" or specialized phonemes that are difficult to disambiguate, such as "ICU" vs "I see you". Traditional solutions to this issue involve collecting domain-specific audio and ground truth transcriptions (often hand labeled) which can be cost prohibitive. Open source datasets on specialized domains are becoming more common but their volume and variety remain limited, keeping them tangential to many business use cases.
+**Automatic Speech Recognition (ASR)** exemplifies this challenge. Many domains, such as medicine, law, financial services, etc contain specialized terminology that is typically outside the distribution or under-represented in the pretraining for general purpose models. A model trained on everyday speech will struggle with phrases like "orthostatic tachycardia" or specialized phonemes that are difficult to disambiguate, such as "ICU" vs "I see you". Traditional solutions to this issue involve collecting domain-specific audio and ground truth transcriptions (often hand labeled) which can be cost prohibitive. Word Error Rate (WER)<sup>3</sup>—the percentage of incorrectly transcribed words—remains the standard metric for evaluating ASR performance. Open source datasets on specialized domains are becoming more common but their volume and variety remain limited, keeping them tangential to many business use cases.
 
-This distribution gap has motivated researchers and practitioners (myself included) to explore the concept of **shallow fusion**: combining general-purpose ASR models with domain-specific language models during inference. Rather than requiring extensive retraining, shallow fusion leverages existing domain expertise from an external language model at inference time. While the approach has shown promise in various implementations, the questions I would like to explore in this article are: Can a language model trained on domain-specific text meaningfully improve speech-to-text transcription quality within an adjacent domain? And critically, what are the failure modes associated with this type of integration?
+This distribution gap has motivated researchers and practitioners to explore the concept of **shallow fusion**: combining general-purpose ASR models with domain-specific language models during inference. Rather than requiring extensive retraining, shallow fusion leverages existing domain expertise from an external language model at inference time. While the approach has shown promise in various implementations, the questions I would like to explore in this article are: Can a language model trained on domain-specific text meaningfully improve speech-to-text transcription quality within an adjacent domain? And critically, what are the failure modes associated with this type of integration?
 
 ## Background & Existing Approaches
 
 The challenge of domain adaptation in ASR has prompted several approaches, each with distinct trade-offs in cost, performance, and implementation complexity. Before diving into my implementation, I'll examine how the research community has approached this domain mismatch problem and where shallow fusion fits among existing solutions.
 
+### Traditional Domain Adaptation
+
 **Traditional domain adaptation** typically requires collecting domain-specific audio paired with ground truth transcriptions, then fine-tuning pretrained models on this data. While effective, this approach faces significant barriers: domain-specific audio is expensive to collect, transcription labeling is labor-intensive, and the resulting datasets often remain small and brittle compared to the large scale datasets that the base model was trained on. This approach also runs the risk of **catastrophic forgetting**<sup>1</sup> where the model loses its general capabilities when adapting to the specific domain.
 
+### Context Injection Methods
+
 **Context injection methods** attempt to bridge the gap by incorporating domain-specific text directly into the model's context window, essentially "prompting" the ASR system with relevant terminology. However, these approaches offer no optimization signal and rely heavily on trial and error to achieve meaningful improvements. They are also architecture dependent and rely on the decoder's prompting capacity, which may be limited in models not explicitly designed for such conditioning.
+
+### Fusion Techniques
 
 **Fusion techniques** represent a middle ground, combining predictions from multiple models during inference rather than requiring extensive retraining. The research community has explored three primary variants:
 
@@ -46,6 +53,8 @@ However, the approach introduces its own challenges. If the language model is we
 ## Implementation: Medical Domain Fusion Pipeline
 
 Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper (our ASR model) with a domain-adapted GPT-2 model (our external language model). However, before going into the specifics let us first build some intuition on the topic by analogy. 
+
+### Conceptual Framework
 
 Consider for example, a person tasked with transcribing audio from a phone call between a customer and a claims representative at an insurance call center. This transcriber can hear the conversation clearly, but they have very little knowledge of the domain e.g. the technical issues, procedures, and medical terminology that often come up. Now imagine a second person who has worked in this industry for years and has deep familiarity with the jargon and context, but who is hard of hearing.
 
@@ -79,6 +88,8 @@ The idea is that the ASR model understands phonetics and language in a general s
 ![diagram](assets/viz.png)
 Reference: [Kannan et al. 2017](https://arxiv.org/pdf/1712.01996)
 
+### Practical Example
+
 Consider an example where Whisper serves as our listening expert and GPT-2 as our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the english version of Whisper ([Radford et al., 2022](https://arxiv.org/pdf/2212.04356)). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
 **Input Audio (Ground Truth):**  
@@ -87,7 +98,9 @@ Consider an example where Whisper serves as our listening expert and GPT-2 as ou
 **Whisper Initial Output:**  
 "The procedure was medically necessary for the treatment of claimant's Tetralogy of `below`."🚫
 
-#### 1. **Whisper Initial Decoding:**
+#### Step-by-Step Fusion Process
+
+**1. Whisper Initial Decoding:**
 
 Whisper produces logits at each step:
 
@@ -97,9 +110,8 @@ Whisper produces logits at each step:
 - Token: "'s" → high confidence  
 - At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "below", "follow", "Fallot"
 
-#### 2. **Domain GPT-2 Predictions:**  
+**2. Domain GPT-2 Predictions:**  
 At the ambiguous decoding step in "The procedure was medically necessary for the treatment of claimant's Tetralogy of ____", each model produces different log probabilities:
-
 
 | Next Token   | Whisper Log Probs | GPT-2 Log Probs |
 |--------------|------------------|-----------------|
@@ -110,7 +122,7 @@ At the ambiguous decoding step in "The procedure was medically necessary for the
 
 > *Note: GPT-2 which has been fine tuned on medical literature strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).*
 
-#### 3. **Shallow Fusion (Combining Logits):**
+**3. Shallow Fusion (Combining Logits):**
 
 **Fusion Equation:**
 
@@ -173,7 +185,7 @@ The implementation performs fusion by:
 
 ### Evaluation Framework
 
-Testing was conducted on a proof-of-concept dataset consisting of synthetic radiology report dictations. While ideally evaluation would occur on authentic clinical dictations, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation.
+Testing was conducted on 85 synthetic radiology report dictations (each under 30 seconds). While ideally evaluation would occur on authentic clinical dictations, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
 
 The primary evaluation metric was Word Error Rate (WER), comparing transcriptions from:
 - Whisper-only baseline
@@ -198,19 +210,18 @@ The medium-sized model emerged as the practical sweet spot, offering most of the
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
-To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper’s decoder so that improvements reflect fusion rather than raw model size.
+To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper's decoder so that improvements reflect fusion rather than raw model size.
 
-**Table 1: Word Error Rate vs. Fusion Weight λ**  
-*Baseline WER (Whisper-only): 0.0831*
+**Table. WER vs. λ Baseline WER = 0.0831.**
 
 | λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
 |---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
 | **Fused WER**       |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
-| **Relative Improvement<sup>3</sup>** | +4.4%  | +8.9%  | +12%   | +10.8% | +10.9% | +9.4%  | +12.1% | +1.2%  | -1.4%  | -4.8%  |
+| **Relative Δ (%)**  |  4.4   |  8.9   | 12     | 10.8   | 10.9   |  9.4   | 12.1   |  1.2   | -1.4   | -4.8   |
 
 > *Note: Variability across λ values likely reflects the small synthetic evaluation set.*
 
-Performance peaks around **λ ≈ 0.09–0.12**, yielding roughly a **12% relative reduction in WER** compared to baseline.
+Performance peaks at λ = 0.09 and λ = 0.21, both yielding approximately 12% relative reduction in WER compared to baseline. The λ weighting factor proved critical to performance, with meaningful improvements (>8%) observed in the 0.06-0.21 range. Higher values (λ ≥ 0.24) showed degraded performance, with λ = 0.30 actually performing worse than baseline (-4.8%).
 
 ### Error Pattern Analysis and Failure Modes
 
@@ -244,13 +255,13 @@ Standard conversational language showed minimal improvement, confirming that the
 
 The experimental results highlight several areas for improvement that point toward promising future research directions:
 
-**Learned Gating Mechanisms**
+#### Learned Gating Mechanisms
 The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty—particularly around medical terminology—the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
 
-**Advanced Fusion Architectures**
+#### Advanced Fusion Architectures
 Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
 
-**Real-World Dataset Validation**
+#### Real-World Dataset Validation
 The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as the [Shaip Physician Dictation Dataset](https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology), which requires a databricks account permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
 
 ### Broader Implications
@@ -269,15 +280,16 @@ This exploration of shallow fusion for medical ASR demonstrates both the promise
 
 **Whisper (Generalist Model)** excels at acoustic-to-text mapping and handles diverse speakers, accents, and recording conditions effectively. However, its broad training distribution means medical terminology remains under-represented, leading to systematic errors on specialized vocabulary despite strong general performance.
 
-**GPT-2 (Domain Specialist)** trained on PubMed abstracts develops rich representations of medical terminology and context through self-supervised learning on abundant textual data. However, it remains completely blind to acoustic signals and exhibits biases toward formal written language rather than conversational speech patterns.
+**GPT-2 (Domain Specialist)** trained on PubMed abstracts develop rich representations of medical terminology and context through self-supervised learning on abundant textual data. However, it remains completely blind to acoustic signals and exhibits biases toward formal written language rather than conversational speech patterns.
 
-The 15% WER reduction achieved through shallow fusion validates the core hypothesis: domain-specific language models can meaningfully improve speech recognition in specialized contexts. However, the failure modes (abbreviation mismatches, punctuation insertion, and premature terminations) reveal the challenges of bridging modalities with different statistical properties and stylistic conventions.
+The 12% WER reduction achieved through shallow fusion validates the core hypothesis: domain-specific language models can meaningfully improve speech recognition in specialized contexts. However, the failure modes (abbreviation mismatches, punctuation insertion, and premature terminations) reveal the challenges of bridging modalities with different statistical properties and stylistic conventions.
 
 The observed improvements concentrated almost exclusively on medical terminology recognition, confirming that the benefits derive from genuine domain expertise rather than general language modeling improvements. This specificity, while limiting the approach's broad applicability, makes it particularly valuable for specialized transcription applications where domain terminology accuracy is critical.
 
 Future work toward learned gating mechanisms, advanced fusion architectures, and validation on authentic clinical datasets will help address current limitations. More broadly, this work illustrates the ongoing evolution of AI system architectures from monolithic models toward composite systems that combine specialized expertise, a trend likely to accelerate as AI deployment expands across diverse professional domains.
 
 ## Resources
+
 * [On Using Monolingual Corpora in Neural Machine Translation](https://arxiv.org/pdf/1503.03535) — Gulcehre et al., 2015  
 * [Cold Fusion: Training Seq2Seq Models Together with Language Models](https://arxiv.org/pdf/1708.06426) — Sriram et al., 2017  
 * [Towards Better Decoding and Language Model Integration in Sequence-to-Sequence Models](https://arxiv.org/pdf/1612.02695) — Chorowski & Jaitly, 2016  
@@ -292,4 +304,4 @@ Future work toward learned gating mechanisms, advanced fusion architectures, and
 
 2. Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts), using smaller or distilled domain LMs etc.
 
-3. Relative Improvement = (Baseline WER - Fused WER) / Baseline WER × 100%. Positive values indicate error reduction.
+3. [Word Error Rate (WER)](https://en.wikipedia.org/wiki/Word_error_rate) is the standard metric for evaluating ASR systems, calculated as the minimum number of word-level edits (insertions, deletions, substitutions) required to transform the hypothesis into the reference, divided by the total number of words in the reference.
