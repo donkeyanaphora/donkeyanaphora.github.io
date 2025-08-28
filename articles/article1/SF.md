@@ -210,7 +210,7 @@ The medium-sized model emerged as the practical sweet spot, offering most of the
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
-To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper's decoder so that improvements reflect fusion rather than raw model size.
+To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although different model sizes could be mixed and matched (e.g., GPT-2 Medium with Whisper Tiny), the external LM was kept comparable to Whisper's decoder to ensure improvements reflected fusion rather than raw model size.
 
 **Table. WER vs. λ Baseline WER = 0.0831.**
 
