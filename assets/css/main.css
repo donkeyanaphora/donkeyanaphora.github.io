@@ -254,7 +254,7 @@ h2 {
 
 /* ========== LAYOUT ========== */
 #wrapper {
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
   text-align: left;
   /* max-width: 800px; */
@@ -262,7 +262,7 @@ h2 {
 
 /* ARTICLE CONTENT CONTAINER - Match wrapper styling */
 main.content {
-  width: 70%; /* Match landing page wrapper width */
+  width: 60%; /* Match landing page wrapper width */
   margin: 1rem auto;
   /* max-width: 800px; */
 }

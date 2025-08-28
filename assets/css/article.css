@@ -50,14 +50,16 @@ article.markdown-body img{
 
 /* ───── Tables (responsive) ───── */
 article.markdown-body table{
-  display:block;          /* preserves native grid while allowing scroll (was 'inline-block' before) */
+  display:block; /*inline-block or block */
   width:max-content;
-  max-width:100%;
-  margin:0 auto;
+  /* max-width:100%; */
+  max-width:calc(100% - 3.85em); /* Account for the left margin */
+  margin:0 0 1em 3.85em;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
   border-collapse:collapse;
 }
+
 article.markdown-body th,
 article.markdown-body td{
   padding:.45em .65em;

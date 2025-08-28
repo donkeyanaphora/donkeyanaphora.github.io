@@ -110,14 +110,22 @@ At this ambiguous decoding step, GPT-2 (the domain-adapted LM) produces logits b
 | below      | –1.0             | –5.0            |
 | follow        | –3.5             | –3.8            |
 
-#### 3. **Shallow Fusion (Combining Logits):**  
-We combine each model's logits using a weighted sum in the following way:
-
-$$
+#### 3. **Shallow Fusion (Combining Logits):**
+<!-- $$
 \log P_{\text{combined}}\bigl(y_t\bigr)
   = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr)
   + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)
-$$
+$$ -->
+
+
+<!-- <div style="margin-left: 3.85em;">
+$\log P_{\text{combined}}\bigl(y_t\bigr) = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr) + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)$
+</div> -->
+
+We combine each model's logits using a weighted sum in the following way:
+
+- **Fusion Equation:**<br>$\log P_{\text{combined}}\bigl(y_t\bigr) = \log P_{\text{Whisper}}\bigl(y_t \mid x,\, y_{<t}\bigr) + \lambda\,\log P_{\text{GPT2}}\bigl(y_t \mid y_{<t}\bigr)$
+
 
 | Next Token   | Whisper Score | GPT-2 Score | Combined Score (λ = 0.2)|
 |--------------|--------------|-------------|----------------|
@@ -197,14 +205,22 @@ The medium-sized model emerged as the practical sweet spot, offering most of the
 
 To evaluate the effect of the fusion weight λ, we varied it between 0.03 and 0.30 while fixing the model pairing to Whisper Small + GPT-2 PubMed Small. Although one could mix and match different model sizes (e.g., GPT-2 Medium with Whisper Tiny), the aim here was to keep the external LM comparable to Whisper’s decoder so that improvements reflect fusion rather than raw model size.
 
-**Table. WER vs. λ (Baseline = 0.0831).**
+**Table. WER vs. λ Baseline WER = 0.0831.**
 
-| λ (Fusion Weight)  |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.30 |
-|--------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| **Fused WER**      |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
-| **Relative Δ (%)** |  +4.4  |  +8.9  | +12.0  | +10.8  | +10.9  |  +9.4  | +12.1  |  +1.2  |  –1.4  |  –4.8  |
+|   λ (Fusion Weight)   |   **Fused WER** |   **Relative Δ (%)** |
+|-----------------------|-----------------|----------------------|
+| 0.03                  |           0.079 |                  4.4 |
+| 0.06                  |           0.076 |                  8.9 |
+| 0.09                  |           0.073 |                 12   |
+| 0.12                  |           0.074 |                 10.8 |
+| 0.15                  |           0.074 |                 10.9 |
+| 0.18                  |           0.075 |                  9.4 |
+| 0.21                  |           0.073 |                 12.1 |
+| 0.24                  |           0.082 |                  1.2 |
+| 0.27                  |           0.084 |                 -1.4 |
+| 0.3                   |           0.087 |                 -4.8 |
 
-*Note: Variability across λ values likely reflects the small size of the synthetic evaluation set.*
+> *Note: Variability across λ values likely reflects the small synthetic evaluation set.*
 
 Performance peaks around **λ ≈ 0.09–0.12**, yielding roughly a **12% relative reduction in WER** compared to baseline.
 
