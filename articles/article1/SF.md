@@ -186,6 +186,7 @@ The implementation performs fusion by:
 Testing was conducted on 85 synthetic radiology report dictations (each under 30 seconds). Ideally, evaluation would occur on authentic clinical dictations, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
 
 The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measures the percentage of incorrectly transcribed words. Testing compared transcriptions from:
+
 - Whisper-only baseline
 - Shallow fusion with various λ weighting values
 - Different GPT-2 model sizes (small, medium, large)
