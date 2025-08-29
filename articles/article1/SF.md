@@ -195,7 +195,7 @@ The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measu
 
 ### Overall Performance
 
-In preliminary synthetic evaluations, shallow fusion showed consistent WER reductions across different model sizes on the synthetic radiology dataset. For **Whisper Small + GPT-2 PubMed Small**, WER went from 7.65%** to 6.80% at λ = 0.09 (a 10.7% relative drop). For **Whisper Medium + GPT-2 PubMed Medium**, WER went from 5.60% to 4.90% at λ = 0.12 (a 12.2% relative drop). These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative WER reduction on Google Voice Search with shallow fusion).
+In preliminary synthetic evaluations, shallow fusion showed consistent WER reductions across different model sizes on the synthetic radiology dataset. For **Whisper Small + GPT-2 PubMed Small**, WER went from 7.65% to 6.80% at λ = 0.09 (a 10.7% relative drop). For **Whisper Medium + GPT-2 PubMed Medium**, WER went from 5.60% to 4.90% at λ = 0.12 (a 12.2% relative drop). These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative WER reduction on Google Voice Search with shallow fusion).
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
