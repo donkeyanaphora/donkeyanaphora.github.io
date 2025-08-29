@@ -470,14 +470,14 @@ specialized domains">
       <h3 id="evaluation-framework">Evaluation Framework</h3>
       <p>Testing was conducted on 85 synthetic radiology report
       dictations (each under 30 seconds). Ideally, evaluation would
-      occur on authentic clinical dictations, access to such datasets
-      typically requires institutional permissions and agreements. To
-      generate the synthetic dataset, I prompted a language model to
-      create realistic radiology report dictations that mirror the
-      style, terminology, and content patterns found in actual clinical
-      documentation. While this limited dataset demonstrates
-      feasibility, production deployment would require validation on
-      larger, authentic clinical datasets.</p>
+      occur on authentic clinical dictations, however, access to such
+      datasets typically requires institutional permissions and
+      agreements. To generate the synthetic dataset, I prompted a
+      language model to create realistic radiology report dictations
+      that mirror the style, terminology, and content patterns found in
+      actual clinical documentation. While this limited dataset
+      demonstrates feasibility, production deployment would require
+      validation on larger, authentic clinical datasets.</p>
       <p>The primary evaluation metric was Word Error Rate
       (WER)<sup>3</sup>, which measures the percentage of incorrectly
       transcribed words. Testing compared transcriptions from:</p>
@@ -490,16 +490,16 @@ specialized domains">
       <h3 id="overall-performance">Overall Performance</h3>
       <p>In preliminary synthetic evaluations, shallow fusion showed
       consistent WER reductions across different model sizes on the
-      synthetic radiology dataset. For Whisper Small + GPT-2 PubMed
-      Small, WER decreased from <strong>8.31%</strong> to
-      <strong>7.31%</strong> at optimal λ values—a <strong>12% relative
-      reduction in errors</strong>. The Whisper Medium + GPT-2 PubMed
-      Medium configuration showed even stronger results, reducing WER
-      from <strong>6.18%</strong> to <strong>5.30%</strong> at λ =
-      0.12—a <strong>14.8% relative improvement</strong>. These
-      preliminary results show patterns similar to prior work: Kannan et
-      al. (2017) reported a <strong>9.1% relative WER reduction</strong>
-      on Google Voice Search using shallow fusion with a neural LM.</p>
+      synthetic radiology dataset. For <strong>Whisper Small + GPT-2
+      PubMed Small</strong>, WER went from <strong>7.65%</strong> to
+      <strong>6.80%</strong> at <strong>λ = 0.09</strong>—a
+      <strong>10.7%</strong> relative drop. For <strong>Whisper Medium +
+      GPT-2 PubMed Medium</strong>, WER went from <strong>5.60%</strong>
+      to <strong>4.90%</strong> at <strong>λ = 0.12</strong>—a
+      <strong>12.2%</strong> relative drop. These preliminary results
+      align with prior work (e.g., Kannan et al., 2017,
+      <strong>9.1%</strong> relative WER reduction on Google Voice
+      Search with shallow fusion).</p>
       <h3 id="hyperparameter-sensitivity-λ-lambda-weight">Hyperparameter
       Sensitivity (λ / Lambda Weight)</h3>
       <p>To evaluate the effect of the fusion weight λ, it was varied
@@ -510,7 +510,7 @@ specialized domains">
       capacity differences.</p>
       <p><strong>Table 1. WER vs. λ for Whisper Small + GPT-2 PubMed
       Small</strong><br />
-      <em>Baseline WER = 0.0831</em></p>
+      <em>Baseline WER = 0.0765</em></p>
       <table style="width:100%;">
       <colgroup>
       <col style="width: 20%" />
@@ -522,8 +522,8 @@ specialized domains">
       <col style="width: 7%" />
       <col style="width: 7%" />
       <col style="width: 7%" />
-      <col style="width: 7%" />
-      <col style="width: 7%" />
+      <col style="width: 8%" />
+      <col style="width: 8%" />
       </colgroup>
       <thead>
       <tr>
@@ -543,36 +543,36 @@ specialized domains">
       <tbody>
       <tr>
       <td><strong>Fused WER</strong></td>
-      <td>0.079</td>
-      <td>0.076</td>
-      <td>0.073</td>
       <td>0.074</td>
+      <td>0.07</td>
+      <td>0.068</td>
+      <td>0.072</td>
+      <td>0.072</td>
       <td>0.074</td>
-      <td>0.075</td>
-      <td>0.073</td>
-      <td>0.082</td>
-      <td>0.084</td>
+      <td>0.072</td>
+      <td>0.083</td>
+      <td>0.085</td>
       <td>0.087</td>
       </tr>
       <tr>
-      <td><strong>Relative Improvement (%)</strong></td>
-      <td>4.4</td>
-      <td>8.9</td>
-      <td>12.0</td>
-      <td>10.8</td>
-      <td>10.9</td>
-      <td>9.4</td>
-      <td>12.1</td>
-      <td>1.2</td>
-      <td>-1.4</td>
-      <td>-4.8</td>
+      <td><strong>Relative Δ (%)</strong></td>
+      <td>3.6</td>
+      <td>8</td>
+      <td>10.7</td>
+      <td>5.4</td>
+      <td>5.4</td>
+      <td>3.6</td>
+      <td>5.4</td>
+      <td>-8.9</td>
+      <td>-10.7</td>
+      <td>-13.4</td>
       </tr>
       </tbody>
       </table>
       <p><br></p>
       <p><strong>Table 2. WER vs. λ for Whisper Medium + GPT-2 PubMed
       Medium</strong><br />
-      <em>Baseline WER = 0.0618</em></p>
+      <em>Baseline WER = 0.0560</em></p>
       <table style="width:100%;">
       <colgroup>
       <col style="width: 20%" />
@@ -605,60 +605,71 @@ specialized domains">
       <tbody>
       <tr>
       <td><strong>Fused WER</strong></td>
-      <td>0.057</td>
-      <td>0.056</td>
-      <td>0.056</td>
+      <td>0.053</td>
+      <td>0.053</td>
+      <td>0.053</td>
+      <td>0.049</td>
+      <td>0.053</td>
+      <td>0.053</td>
       <td>0.053</td>
       <td>0.054</td>
       <td>0.055</td>
-      <td>0.054</td>
-      <td>0.054</td>
-      <td>0.055</td>
-      <td>0.058</td>
+      <td>0.057</td>
       </tr>
       <tr>
-      <td><strong>Relative Improvement (%)</strong></td>
-      <td>7.7</td>
-      <td>9.2</td>
-      <td>9.1</td>
-      <td>14.8</td>
-      <td>12.7</td>
-      <td>11.5</td>
-      <td>13.2</td>
-      <td>12.0</td>
-      <td>10.3</td>
-      <td>6.8</td>
+      <td><strong>Relative Δ (%)</strong></td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>12.2</td>
+      <td>6.1</td>
+      <td>4.9</td>
+      <td>4.9</td>
+      <td>3.7</td>
+      <td>2.4</td>
+      <td>-1.2</td>
       </tr>
       </tbody>
       </table>
       <blockquote>
-      <p><em>Note: Variability across λ values likely reflects the small
-      synthetic evaluation set (85 samples); see statistical
-      significance analysis below.</em></p>
+      <p>Note: Values are corpus (micro) WER on 85 synthetic radiology
+      clips after the specified normalization. Relative changes use
+      unrounded WERs. λ was selected on this same set, so results may be
+      optimistic; see the significance section for permutation-test
+      p-values.</p>
       </blockquote>
-      <p>In synthetic testing, the Small model configuration showed
-      optimal results at λ = 0.09 and λ = 0.21, yielding approximately
-      12% relative WER reduction. The Medium configuration shows optimal
-      performance at λ = 0.12 with 14.8% improvement. Across both
-      configurations improvements are observed in the 0.06-0.21 range.
-      Higher fusion weights (λ ≥ 0.24) show degraded performance, with λ
-      = 0.30 performing worse than baseline in the Small configuration
-      (-4.8%).</p>
+      <p>In synthetic testing, the small model configuration showed
+      optimal results at λ = 0.09, yielding a <strong>10.7%</strong>
+      relative WER reduction (0.0765 → 0.0680). The medium configuration
+      was best at λ = 0.12, with a <strong>12.2%</strong> relative
+      reduction (0.0560 → 0.0490). Across both models, improvements
+      appear for λ in roughly the <strong>0.03–0.21</strong> range.
+      Higher weights start to hurt: for Small, λ ≥ 0.24 falls below
+      baseline (e.g., λ = 0.30 is <strong>−13.4%</strong>), and for
+      Medium, performance remains slightly improved up to λ = 0.27 but
+      is a bit worse at λ = 0.30 (<strong>−1.2%</strong>).</p>
       <h3 id="statistical-significance">Statistical Significance</h3>
-      <p>The fused system and original Whisper only system were tested
-      on 85 of the same audio clips. The new (fused) system made
-      <strong>about 12% fewer word mistakes overall</strong> (from
-      <strong>5.60%</strong> down to <strong>4.92%</strong>). When
-      performing a fair “shuffle” check to see if that difference could
-      be due to chance, results like this show up <strong>about 1 in 5
-      times</strong> (or <strong>about 1 in 10</strong> if you only ask
-      whether the new system is better), so the win is
-      <strong>suggestive but not definitive</strong>. Looking
-      clip-by-clip (treating each clip equally), errors drop
-      <strong>about 15%</strong>, with checks indicating <strong>roughly
-      a 1 in 20 to 1 in 40</strong> chance it’s just noise. Overall: a
-      <strong>small, but consistent improvement</strong> that likely
-      benefits from <strong>more data</strong> to be conclusive.</p>
+      <p>The fused system and original whisper only system were tested
+      on 85 of the same audio clips.</p>
+      <p><strong>For the small model</strong>, overall errors fell from
+      7.65%** to 6.83% (about 10.7% fewer). A simple shuffle check says
+      a difference that size would happen by chance about 1 in 43 times
+      (two-sided p = 0.0231), or about 1 in 93 if you only ask whether
+      the fused system is better (one-sided p = 0.0108). Taken together,
+      that pattern is consistent with a modest real effect on this
+      set.</p>
+      <p><strong>For the medium model</strong>, overall errors went from
+      5.60% to 4.92% (about 12.2% fewer). The shuffle check says a
+      difference that size could occur about 1 in 5 times by chance
+      (two-sided p=0.1885), or about 1 in 11 if you only test for
+      improvement (one-sided p=0.0927), so this is promising but not
+      conclusive.</p>
+      <p><strong>Bottom line:</strong> shallow fusion results show
+      modest, yet consistent error reductions on this dataset. The small
+      model’s improvement is statistically significant, while the medium
+      model achieves the lowest error but with only suggestive evidence
+      of improvement. More data, ideally real clinical dictations, would
+      make the conclusion more definitive.</p>
       <h3 id="error-pattern-analysis-and-failure-modes">Error Pattern
       Analysis and Failure Modes</h3>
       <p>While the synthetic evaluation showed promising patterns,
@@ -723,6 +734,14 @@ specialized domains">
       synthetic data: background noise, speaker variations,
       interruptions, and the full complexity of clinical communication
       patterns.</p>
+      <h4 id="coverage-penalty">Coverage Penalty</h4>
+      <p>The current implementation does not make use of a coverage
+      penalty to address premature sequence terminations. This penalty
+      term measures how much of the audio the model actually attended to
+      and candidates that skip large stretches are penalized, while
+      transcripts that cover the whole utterance are preferred. This
+      strategy follows Chorowski &amp; Jaitly (2016) and Kannan et
+      al. (2017) and can be incorporated during generation.</p>
       <h4 id="learned-gating-mechanisms">Learned Gating Mechanisms</h4>
       <p>The static λ weighting approach represents a significant
       limitation. A more sophisticated system would dynamically adjust
@@ -781,7 +800,7 @@ specialized domains">
       data. However, it remains completely blind to acoustic signals and
       exhibits biases toward formal written language rather than
       conversational speech patterns.</p>
-      <p>The preliminary synthetic evaluation, showing up to 14.8% WER
+      <p>The preliminary synthetic evaluation, showing up to 12.2% WER
       reduction, suggests shallow fusion may have potential for
       improvement, though further validation on clinical data is needed.
       Additionally, the failure modes (abbreviation mismatches,
