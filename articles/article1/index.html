@@ -666,10 +666,13 @@ specialized domains">
       method’s limitations:</p>
       <p><strong>1. Abbreviation Expansion Mismatches</strong><br />
       The fusion system frequently “over-corrected” spoken abbreviations
-      into their formal written equivalents. For example: - Audio:
-      “centimeters” → Whisper: “centimeters” → Fused output: “cm” - This
-      reflects the domain language model’s bias toward written medical
-      documentation style</p>
+      into their formal written equivalents. For example:</p>
+      <ul>
+      <li>Audio: “centimeters” → Whisper: “centimeters” → Fused output:
+      “cm”</li>
+      <li>This reflects the domain language model’s bias toward written
+      medical documentation style</li>
+      </ul>
       <p><strong>2. Punctuation Insertion</strong><br />
       The GPT-2 model, trained on formatted medical abstracts,
       introduced punctuation that wasn’t present in the spoken audio.
@@ -681,11 +684,11 @@ specialized domains">
       often produced incomplete transcripts. Chorowski &amp; Jaitly
       (2016) reported that external LMs can cause seq2seq systems to
       skip words or drop parts of an utterance during decoding, unless a
-      coverage term is added to the beam search criterion. In our
-      experiments, higher λ coupled with wide beam searches similarly
-      led to premature terminations, with the LM assigning high
-      probability to end-of-sequence tokens once a transcript appeared
-      semantically complete, even while audio continued.</p>
+      coverage term is added to the beam search criterion. In this
+      experiment, higher λ coupled with wide beam searches similarly led
+      to premature terminations, with the LM assigning high probability
+      to end-of-sequence tokens once a transcript appeared semantically
+      complete, even while audio continued.</p>
       <h3 id="domain-specific-improvements">Domain-Specific
       Improvements</h3>
       <p>The fusion approach’s benefits were concentrated almost
@@ -727,7 +730,7 @@ specialized domains">
       confidence and contextual cues. When Whisper exhibits high
       confidence in its predictions, the domain model should have
       minimal influence. Conversely, during periods of acoustic
-      uncertainty—particularly around medical terminology—the fusion
+      uncertainty, particularly around medical terminology, the fusion
       weight should increase. Implementing this would likely involve
       training a small gating network that learns to predict optimal λ
       values given acoustic features and partial transcript context.</p>

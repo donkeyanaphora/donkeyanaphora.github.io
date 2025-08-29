@@ -233,6 +233,7 @@ While the synthetic evaluation showed promising patterns, analysis revealed spec
 
 **1. Abbreviation Expansion Mismatches**  
 The fusion system frequently "over-corrected" spoken abbreviations into their formal written equivalents. For example:
+
 - Audio: "centimeters" → Whisper: "centimeters" → Fused output: "cm"
 - This reflects the domain language model's bias toward written medical documentation style
 
@@ -240,7 +241,7 @@ The fusion system frequently "over-corrected" spoken abbreviations into their fo
 The GPT-2 model, trained on formatted medical abstracts, introduced punctuation that wasn't present in the spoken audio. This created a stylistic mismatch between transcribed speech and formal written medical language.
 
 **3. Premature Termination and Incomplete Transcripts**  
-When λ (the LM weight) was set too high, beam search decoding often produced incomplete transcripts. Chorowski & Jaitly (2016) reported that external LMs can cause seq2seq systems to skip words or drop parts of an utterance during decoding, unless a coverage term is added to the beam search criterion. In our experiments, higher λ coupled with wide beam searches similarly led to premature terminations, with the LM assigning high probability to end-of-sequence tokens once a transcript appeared semantically complete, even while audio continued.
+When λ (the LM weight) was set too high, beam search decoding often produced incomplete transcripts. Chorowski & Jaitly (2016) reported that external LMs can cause seq2seq systems to skip words or drop parts of an utterance during decoding, unless a coverage term is added to the beam search criterion. In this experiment, higher λ coupled with wide beam searches similarly led to premature terminations, with the LM assigning high probability to end-of-sequence tokens once a transcript appeared semantically complete, even while audio continued.
 
 ### Domain-Specific Improvements
 
@@ -263,7 +264,7 @@ The experimental results highlight several areas for improvement that point towa
 The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as the [Shaip Physician Dictation Dataset](https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology), which requires Databricks account permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
 
 #### Learned Gating Mechanisms
-The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty—particularly around medical terminology—the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
+The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty, particularly around medical terminology, the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
 
 #### Advanced Fusion Architectures
 Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task-specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
