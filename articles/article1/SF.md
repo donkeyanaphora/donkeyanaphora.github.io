@@ -210,6 +210,7 @@ To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0
 | **Fused WER**       |  0.079 |  0.076 |  0.073 |  0.074 |  0.074 |  0.075 |  0.073 |  0.082 |  0.084 |  0.087 |
 | **Relative Improvement (%)** | 4.4  | 8.9  | 12.0   | 10.8 | 10.9 | 9.4  | 12.1 | 1.2  | -1.4  | -4.8  |
 
+<br>
 
 **Table 2. WER vs. λ for Whisper Medium + GPT-2 PubMed Medium**  
 *Baseline WER = 0.0618*
