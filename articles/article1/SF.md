@@ -226,7 +226,7 @@ In synthetic testing, the Small model configuration showed optimal results at λ
 
 ### Statistical Significance
 
-We tested two versions of the system on 85 of the same audio clips. The new (fused) system made **about 12% fewer word mistakes overall** (from 5.60% down to 4.92%). When we do a fair "shuffle" check to see if that difference could be luck, results like this show up **about 1 in 5 times** (or **about 1 in 10** if you only ask whether the new system is better), so the win is **suggestive but not ironclad**. Looking clip-by-clip (treating each clip equally), errors drop **about 15%**, with checks indicating **roughly a 1 in 12 to 1 in 19** chance it's just noise—again **borderline**. Overall: a **small, consistent improvement** that likely benefits from **more data** to be conclusive.
+We tested two versions of the system on 85 of the same audio clips. The new (fused) system made **about 12% fewer word mistakes overall** (from 5.60% down to 4.92%). When we do a fair "shuffle" check to see if that difference could be luck, results like this show up **about 1 in 5 times** (or **about 1 in 10** if you only ask whether the new system is better), so the win is **suggestive but not definitive**. Looking clip-by-clip (treating each clip equally), errors drop **about 15%**, with checks indicating **roughly a 1 in 12 to 1 in 19** chance it's just noise—again **borderline**. Overall: a **small, consistent improvement** that likely benefits from **more data** to be conclusive.
 
 ### Error Pattern Analysis and Failure Modes
 
