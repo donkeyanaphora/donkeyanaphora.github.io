@@ -195,7 +195,7 @@ The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measu
 
 ### Overall Performance
 
-In preliminary synthetic evaluations, shallow fusion showed consistent WER reductions across different model sizes on the synthetic radiology dataset. For **Whisper Small + GPT-2 PubMed Small**, WER went from **7.65%** to **6.80%** at **λ = 0.09**—a **10.7%** relative drop. For **Whisper Medium + GPT-2 PubMed Medium**, WER went from **5.60%** to **4.90%** at **λ = 0.12**—a **12.2%** relative drop. These preliminary results align with prior work (e.g., Kannan et al., 2017, **9.1%** relative WER reduction on Google Voice Search with shallow fusion).
+In preliminary synthetic evaluations, shallow fusion showed consistent WER reductions across different model sizes on the synthetic radiology dataset. For **Whisper Small + GPT-2 PubMed Small**, WER went from 7.65%** to 6.80% at λ = 0.09 (a 10.7% relative drop). For **Whisper Medium + GPT-2 PubMed Medium**, WER went from 5.60% to 4.90% at λ = 0.12 (a 12.2% relative drop). These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative WER reduction on Google Voice Search with shallow fusion).
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
@@ -219,15 +219,15 @@ To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0
 | **Fused WER**       |  0.053 |  0.053 |  0.053 |  0.049 |  0.053 |  0.053 |  0.053 |  0.054 |  0.055 |  0.057 |
 | **Relative Δ (%)**  |  6.1   |  6.1   |  6.1   | 12.2   |  6.1   |  4.9   |  4.9   |  3.7   |  2.4   | -1.2   |
 
-> Note: Values are corpus (micro) WER on 85 synthetic radiology clips after the specified normalization. Relative changes use unrounded WERs. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values.
+> Note: Values are corpus (micro) WER on 85 synthetic radiology clips after the specified normalization. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values.
 
-In synthetic testing, the small model configuration showed optimal results at λ = 0.09, yielding a **10.7%** relative WER reduction (0.0765 → 0.0680). The medium configuration was best at λ = 0.12, with a **12.2%** relative reduction (0.0560 → 0.0490). Across both models, improvements appear for λ in roughly the **0.03–0.21** range. Higher weights start to hurt: for Small, λ ≥ 0.24 falls below baseline (e.g., λ = 0.30 is **−13.4%**), and for Medium, performance remains slightly improved up to λ = 0.27 but is a bit worse at λ = 0.30 (**−1.2%**).
+In synthetic testing, the small model configuration showed optimal results at λ = 0.09, yielding a **10.7%** relative WER reduction (0.0765 → 0.0680). The medium configuration was best at λ = 0.12, with a **12.2%** relative reduction (0.0560 → 0.0490). Across both models, improvements appear for λ in roughly the 0.03–0.21 range. Higher weights start to hurt: for Small, λ ≥ 0.24 falls below baseline (e.g., λ = 0.30 is −13.4%), and for Medium, performance remains slightly improved up to λ = 0.27 but is a bit worse at λ = 0.30 (−1.2%).
 
 ### Statistical Significance
 
 The fused system and original whisper only system were tested on 85 of the same audio clips.
 
-**For the small model**, overall errors fell from 7.65%** to 6.83% (about 10.7% fewer). A simple shuffle check says a difference that size would happen by chance about 1 in 43 times (two-sided p = 0.0231), or about 1 in 93 if you only ask whether the fused system is better (one-sided p = 0.0108). Taken together, that pattern is consistent with a modest real effect on this set.
+**For the small model**, overall errors fell from 7.65% to 6.83% (about 10.7% fewer). A simple shuffle check says a difference that size would happen by chance about 1 in 43 times (two-sided p = 0.0231), or about 1 in 93 if you only ask whether the fused system is better (one-sided p = 0.0108). Taken together, that pattern is consistent with a modest real effect on this set.
 
 **For the medium model**, overall errors went from 5.60% to 4.92% (about 12.2% fewer). The shuffle check says a difference that size could occur about 1 in 5 times by chance (two-sided p=0.1885), or about 1 in 11 if you only test for improvement (one-sided p=0.0927), so this is promising but not conclusive.
 
