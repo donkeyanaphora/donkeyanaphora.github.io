@@ -406,8 +406,8 @@ specialized domains">
       <p><strong>Final Corrected Output:</strong><br />
       “The procedure was medically necessary for the treatment of
       claimant’s Tetralogy of <code>Fallot</code>.”✔️</p>
-      <p>This demonstrates how <strong>domain-aware shallow
-      fusion</strong> can significantly improve ASR output in
+      <p>This illustrates how <strong>domain-aware shallow
+      fusion</strong> could potentially improve ASR output in
       specialized contexts.</p>
       <h2 id="experimental-setup">Experimental Setup</h2>
       <h3 id="model-selection-and-preparation">Model Selection and
@@ -489,41 +489,30 @@ specialized domains">
       values - Different GPT-2 model sizes (small, medium, large)</p>
       <h2 id="results-analysis">Results &amp; Analysis</h2>
       <h3 id="overall-performance">Overall Performance</h3>
-      <p>The shallow fusion approach reduced Word Error Rate from
-      <strong>8.31%</strong> to <strong>7.31%</strong> on the synthetic
-      radiology dataset—a <strong>1.0-point absolute drop</strong>,
-      corresponding to a <strong>12% relative reduction in
-      errors</strong>. Overall observed results are consistent with
-      prior work. For example, <a
-      href="(https://arxiv.org/pdf/1712.01996)">Kannan et al. (2017)</a>
+      <p>In preliminary synthetic evaluation, shallow fusion showed
+      consistent WER reductions across different model sizes on the
+      synthetic radiology dataset. For Whisper Small + GPT-2 PubMed
+      Small, WER decreased from <strong>8.31%</strong> to
+      <strong>7.31%</strong> at optimal λ values—a <strong>12% relative
+      reduction in errors</strong>. The Whisper Medium + GPT-2 PubMed
+      Medium configuration showed even stronger results, reducing WER
+      from <strong>6.18%</strong> to <strong>5.30%</strong> at λ =
+      0.12—a <strong>14.8% relative improvement</strong>. These
+      preliminary results show patterns similar to prior work: <a
+      href="https://arxiv.org/pdf/1712.01996">Kannan et al. (2017)</a>
       reported a <strong>9.1% relative WER reduction</strong> on Google
       Voice Search using shallow fusion with a neural LM.</p>
-      <h3 id="performance-analysis-by-model-size">Performance Analysis
-      by Model Size</h3>
-      <!-- need data to support this... this is mostly true of self supervised eval across models fusion wise idk medium felt best -->
-      <p>Testing across GPT-2 variants revealed interesting scaling
-      properties:</p>
-      <ul>
-      <li><strong>GPT-2 Small</strong>: Provided baseline domain
-      improvements with minimal computational overhead</li>
-      <li><strong>GPT-2 Medium</strong>: Achieved the optimal balance of
-      accuracy gains and inference speed</li>
-      <li><strong>GPT-2 Large</strong>: Marginal additional accuracy
-      improvements but with significantly increased computational
-      cost</li>
-      </ul>
-      <p>The medium-sized model emerged as the practical sweet spot,
-      offering most of the fusion benefits without the computational
-      penalty of the largest variant.</p>
       <h3 id="hyperparameter-sensitivity-λ-lambda-weight">Hyperparameter
       Sensitivity (λ / Lambda Weight)</h3>
       <p>To evaluate the effect of the fusion weight λ, it was varied
-      between 0.03 and 0.30 while fixing the model pairing to Whisper
-      Small + GPT-2 PubMed Small. Although different model sizes could
-      be mixed and matched (e.g., GPT-2 Medium with Whisper Tiny), the
-      external LM was kept comparable to Whisper’s decoder to ensure
-      improvements reflected fusion rather than raw model size.</p>
-      <p><strong>Table. WER vs. λ Baseline WER = 0.0831.</strong></p>
+      between 0.03 and 0.30 using two model configurations. Although
+      different model sizes could be mixed and matched (e.g., GPT-2
+      Medium with Whisper Tiny), matching model sizes were used to
+      ensure improvements reflected fusion rather than raw model
+      capacity differences.</p>
+      <p><strong>Table 1. WER vs. λ for Whisper Small + GPT-2 PubMed
+      Small</strong><br />
+      <em>Baseline WER = 0.0831</em></p>
       <table style="width:100%;">
       <colgroup>
       <col style="width: 20%" />
@@ -568,35 +557,98 @@ specialized domains">
       <td>0.087</td>
       </tr>
       <tr>
-      <td><strong>Relative Improvement</strong></td>
-      <td>+4.4%</td>
-      <td>+8.9%</td>
-      <td>+12%</td>
-      <td>+10.8%</td>
-      <td>+10.9%</td>
-      <td>+9.4%</td>
-      <td>+12.1%</td>
-      <td>+1.2%</td>
-      <td>-1.4%</td>
-      <td>-4.8%</td>
+      <td><strong>Relative Improvement (%)</strong></td>
+      <td>4.4</td>
+      <td>8.9</td>
+      <td>12.0</td>
+      <td>10.8</td>
+      <td>10.9</td>
+      <td>9.4</td>
+      <td>12.1</td>
+      <td>1.2</td>
+      <td>-1.4</td>
+      <td>-4.8</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><strong>Table 2. WER vs. λ for Whisper Medium + GPT-2 PubMed
+      Medium</strong><br />
+      <em>Baseline WER = 0.0618</em></p>
+      <table style="width:100%;">
+      <colgroup>
+      <col style="width: 20%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      <col style="width: 7%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>λ (Fusion Weight)</th>
+      <th>0.03</th>
+      <th>0.06</th>
+      <th>0.09</th>
+      <th>0.12</th>
+      <th>0.15</th>
+      <th>0.18</th>
+      <th>0.21</th>
+      <th>0.24</th>
+      <th>0.27</th>
+      <th>0.30</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><strong>Fused WER</strong></td>
+      <td>0.057</td>
+      <td>0.056</td>
+      <td>0.056</td>
+      <td>0.053</td>
+      <td>0.054</td>
+      <td>0.055</td>
+      <td>0.054</td>
+      <td>0.054</td>
+      <td>0.055</td>
+      <td>0.058</td>
+      </tr>
+      <tr>
+      <td><strong>Relative Improvement (%)</strong></td>
+      <td>7.7</td>
+      <td>9.2</td>
+      <td>9.1</td>
+      <td>14.8</td>
+      <td>12.7</td>
+      <td>11.5</td>
+      <td>13.2</td>
+      <td>12.0</td>
+      <td>10.3</td>
+      <td>6.8</td>
       </tr>
       </tbody>
       </table>
       <blockquote>
       <p><em>Note: Variability across λ values likely reflects the small
-      synthetic evaluation set.</em></p>
+      synthetic evaluation set (85 samples).</em></p>
       </blockquote>
-      <p>Performance peaks at λ = 0.09 and λ = 0.21, both yielding
-      approximately 12% relative reduction in WER compared to baseline.
-      The λ weighting factor proved critical to performance, with
-      meaningful improvements (&gt;8%) observed in the 0.06-0.21 range.
-      Higher values (λ ≥ 0.24) showed degraded performance, with λ =
-      0.30 actually performing worse than baseline (-4.8%).</p>
+      <p>In synthetic testing, the Small model configuration showed
+      optimal results at λ = 0.09 and λ = 0.21, yielding approximately
+      12% relative WER reduction. The Medium configuration shows optimal
+      performance at λ = 0.12 with 14.8% improvement. Across both
+      configurations improvements are observed in the 0.06-0.21 range.
+      Higher fusion weights (λ ≥ 0.24) show degraded performance, with λ
+      = 0.30 performing worse than baseline in the Small configuration
+      (-4.8%).</p>
       <h3 id="error-pattern-analysis-and-failure-modes">Error Pattern
       Analysis and Failure Modes</h3>
-      <p>While the overall WER improvement was encouraging, analysis
-      revealed specific failure modes that illuminate the method’s
-      limitations:</p>
+      <p>While the synthetic evaluation showed promising patterns,
+      analysis revealed specific failure modes that illuminate the
+      method’s limitations:</p>
       <p><strong>1. Abbreviation Expansion Mismatches</strong> The
       fusion system frequently “over-corrected” spoken abbreviations
       into their formal written equivalents. For example: - Audio:
@@ -633,8 +685,9 @@ specialized domains">
       <li>Procedural and diagnostic terminology</li>
       </ul>
       <p>Standard conversational language showed minimal improvement,
-      confirming that the benefits derive specifically from domain
-      expertise rather than general language modeling enhancement.</p>
+      suggesting that benefits in this synthetic evaluation may derive
+      from domain expertise rather than general language modeling
+      enhancement.</p>
       <h2 id="reflection-and-future-directions">Reflection and Future
       Directions</h2>
       <h3 id="addressing-current-limitations">Addressing Current
@@ -712,16 +765,16 @@ specialized domains">
       However, it remains completely blind to acoustic signals and
       exhibits biases toward formal written language rather than
       conversational speech patterns.</p>
-      <p>The 12% WER reduction achieved through shallow fusion validates
-      the core hypothesis: domain-specific language models can
-      meaningfully improve speech recognition in specialized contexts.
-      However, the failure modes (abbreviation mismatches, punctuation
-      insertion, and premature terminations) reveal the challenges of
-      bridging modalities with different statistical properties and
-      stylistic conventions.</p>
-      <p>The observed improvements concentrated almost exclusively on
-      medical terminology recognition, confirming that the benefits
-      derive from genuine domain expertise rather than general language
+      <p>The preliminary synthetic evaluation showing up to 14.8% WER
+      reduction suggests shallow fusion may have potential for
+      improvement, though further validation on clinical data is needed.
+      Additionally, the failure modes (abbreviation mismatches,
+      punctuation insertion, and premature terminations) reveal the
+      challenges of bridging modalities with different statistical
+      properties and stylistic conventions.</p>
+      <p>The observed improvements appeared concentrated on medical
+      terminology recognition, suggesting that the benefits may derive
+      from genuine domain expertise rather than general language
       modeling improvements. This specificity, while limiting the
       approach’s broad applicability, makes it particularly valuable for
       specialized transcription applications where domain terminology
