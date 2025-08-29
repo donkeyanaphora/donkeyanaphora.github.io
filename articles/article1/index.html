@@ -416,12 +416,12 @@ specialized domains">
       was partly due to convenience, because pre-trained versions are
       widely available and they share a tokenizer/vocabulary with
       Whisper’s decoder. The shared vocabulary means we do not have to
-      learn a mapping from one model’s vocabulary to another.</p>
-      <p>While Bio-GPT represents an existing medical language model, it
-      uses a different tokenizer that would require learning a mapping
-      function between tokenization schemes. To avoid potential errors
-      and implementation complexity, I opted to train custom GPT-2
-      variants on medical data while preserving Whisper’s tokenizer
+      learn a mapping from one model’s vocabulary to another. While
+      Bio-GPT represents an existing medical language model, it uses a
+      different tokenizer that would require learning a mapping function
+      between tokenization schemes. To avoid potential errors and
+      implementation complexity, I opted to train custom GPT-2 variants
+      on medical data while preserving Whisper’s tokenizer
       compatibility.</p>
       <h3 id="training-domain-specific-language-models">Training
       Domain-Specific Language Models</h3>
@@ -469,7 +469,7 @@ specialized domains">
       </ol>
       <h3 id="evaluation-framework">Evaluation Framework</h3>
       <p>Testing was conducted on 85 synthetic radiology report
-      dictations (each under 30 seconds). While ideally evaluation would
+      dictations (each under 30 seconds). Ideally, evaluation would
       occur on authentic clinical dictations, access to such datasets
       typically requires institutional permissions and agreements. To
       generate the synthetic dataset, I prompted a language model to

@@ -153,9 +153,7 @@ This illustrates how **domain-aware shallow fusion** could potentially improve A
 
 ### Model Selection and Preparation
 
-For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external model selected for this fusion process was GPT-2 small, medium, and large. The reason for selecting these models was partly due to convenience, because pre-trained versions are widely available and they share a tokenizer/vocabulary with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another.
-
-While Bio-GPT represents an existing medical language model, it uses a different tokenizer that would require learning a mapping function between tokenization schemes. To avoid potential errors and implementation complexity, I opted to train custom GPT-2 variants on medical data while preserving Whisper's tokenizer compatibility.
+For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external model selected for this fusion process was GPT-2 small, medium, and large. The reason for selecting these models was partly due to convenience, because pre-trained versions are widely available and they share a tokenizer/vocabulary with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another. While Bio-GPT represents an existing medical language model, it uses a different tokenizer that would require learning a mapping function between tokenization schemes. To avoid potential errors and implementation complexity, I opted to train custom GPT-2 variants on medical data while preserving Whisper's tokenizer compatibility.
 
 ### Training Domain-Specific Language Models
 
@@ -185,7 +183,7 @@ The implementation performs fusion by:
 
 ### Evaluation Framework
 
-Testing was conducted on 85 synthetic radiology report dictations (each under 30 seconds). While ideally evaluation would occur on authentic clinical dictations, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
+Testing was conducted on 85 synthetic radiology report dictations (each under 30 seconds). Ideally, evaluation would occur on authentic clinical dictations, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
 
 The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measures the percentage of incorrectly transcribed words. Testing compared transcriptions from:
 - Whisper-only baseline
