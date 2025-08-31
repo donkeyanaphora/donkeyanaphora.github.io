@@ -227,9 +227,9 @@ In synthetic testing, the small model configuration showed optimal results at λ
 
 The fused system and original whisper only system were tested on 85 of the same audio clips.
 
-**For the small model**, overall errors fell from 7.65% to 6.83% (about 10.7% fewer). A simple shuffle check says a difference that size would happen by chance about 1 in 43 times (two-sided p = 0.0231), or about 1 in 93 if you only ask whether the fused system is better (one-sided p = 0.0108). Taken together, that pattern is consistent with a modest real effect on this set.
+**For the small model**, overall errors fell from 7.65% to 6.83% (about 10.7% fewer). A simple shuffle check<sup>4</sup> suggests a difference that size would happen by chance about 1 in 43 times (two-sided p = 0.0231), or about 1 in 93 if you only ask whether the fused system is better (one-sided p = 0.0108). Taken together, that pattern is consistent with a modest real effect on this set.
 
-**For the medium model**, overall errors went from 5.60% to 4.92% (about 12.2% fewer). The shuffle check says a difference that size could occur about 1 in 5 times by chance (two-sided p=0.1885), or about 1 in 11 if you only test for improvement (one-sided p=0.0927), so this is promising but not conclusive.
+**For the medium model**, overall errors went from 5.60% to 4.92% (about 12.2% fewer). The shuffle check suggests a difference that size could occur about 1 in 5 times by chance (two-sided p=0.1885), or about 1 in 11 if you only test for improvement (one-sided p=0.0927), so this is promising but not conclusive.
 
 **Bottom line:** shallow fusion results show modest, yet consistent error reductions on this dataset. The small model’s improvement is statistically significant, while the medium model achieves the lowest error but with only suggestive evidence of improvement. More data, ideally real clinical dictations, would make the conclusion more definitive.
 
@@ -320,3 +320,5 @@ Future work towards learned gating mechanisms, advanced fusion architectures, an
 2. Several variations exist to reduce the inference cost of shallow fusion, including N-best rescoring (applying the LM only to candidate transcripts) and using smaller or distilled domain LMs.
 
 3. [Word Error Rate (WER)](https://en.wikipedia.org/wiki/Word_error_rate) is the standard metric for evaluating ASR systems, calculated as the minimum number of word-level edits (insertions, deletions, substitutions) required to transform the hypothesis into the reference, divided by the total number of words in the reference.
+
+4. A shuffle test (permutation test) is a nonparametric significance test where labels (baseline vs. fused) are randomly swapped to see how often a difference as large as the observed one would arise by chance
