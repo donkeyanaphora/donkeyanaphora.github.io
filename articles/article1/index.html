@@ -297,13 +297,13 @@ specialized domains">
       <p><strong>1. Whisper Initial Decoding:</strong></p>
       <p>Whisper produces logits at each step:</p>
       <ul>
-      <li>Token: “The” → high confidence<br />
+      <li>Token: “The” -&gt; high confidence<br />
       </li>
-      <li>Token: “procedure” → high confidence<br />
+      <li>Token: “procedure” -&gt; high confidence<br />
       </li>
-      <li>Token: “claimant” → high confidence<br />
+      <li>Token: “claimant” -&gt; high confidence<br />
       </li>
-      <li>Token: “’s” → high confidence<br />
+      <li>Token: “’s” -&gt; high confidence<br />
       </li>
       <li>At the final subword, Whisper may exhibit uncertainty,
       spreading probabilities across candidates: “below”, “follow”,
@@ -506,11 +506,11 @@ specialized domains">
       </ul>
       <p>These preliminary results align with prior work (e.g., Kannan
       et al., 2017, 9.1% relative reduction on Google Voice Search with
-      shallow fusion. While these improvements are modest, analysis
+      shallow fusion). While these improvements are modest, analysis
       suggests that fusion particularly excels at correcting medical
       terminology errors, successfully recovering terms like
       “scapholunate” from “scaffolunate” and “cholecystitis” from
-      “colosceitis” though fused model occasionally introduces
+      “colosceitis” though the fused model occasionally introduces
       hyphenation artifacts in compound medical terms which hurts
       WER.</p>
       <h3 id="hyperparameter-sensitivity-λ-lambda-weight">Hyperparameter
@@ -666,7 +666,7 @@ specialized domains">
       <strong>Relative reductions are calculated from unrounded
       values</strong>. λ was selected on this same set, so results may
       be optimistic; see the significance section for permutation-test
-      p-value</p>
+      p-values</p>
       </blockquote>
       <!-- 
       In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
@@ -703,8 +703,8 @@ specialized domains">
       The fusion system frequently “over-corrected” spoken abbreviations
       into their formal written equivalents. For example:</p>
       <ul>
-      <li>Audio: “centimeters” → Whisper: “centimeters” → Fused output:
-      “cm”</li>
+      <li>Audio: “centimeters” -&gt; Whisper: “centimeters” -&gt; Fused
+      output: “cm”</li>
       <li>This reflects the domain language model’s bias toward written
       medical documentation style</li>
       </ul>

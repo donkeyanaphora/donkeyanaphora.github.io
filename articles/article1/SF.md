@@ -104,10 +104,10 @@ Consider an example where Whisper serves as our listening expert and GPT-2 as ou
 
 Whisper produces logits at each step:
 
-- Token: "The" → high confidence  
-- Token: "procedure" → high confidence  
-- Token: "claimant" → high confidence  
-- Token: "'s" → high confidence  
+- Token: "The" -> high confidence  
+- Token: "procedure" -> high confidence  
+- Token: "claimant" -> high confidence  
+- Token: "'s" -> high confidence  
 - At the final subword, Whisper may exhibit uncertainty, spreading probabilities across candidates: "below", "follow", "Fallot"
 
 **2. Domain GPT-2 Predictions:**  
@@ -203,7 +203,7 @@ In preliminary synthetic evaluations, shallow fusion demonstrated modest WER red
 - **Whisper Small + GPT-2 PubMed Small:** WER decreased from 6.86% to 6.30% at λ = 0.24 (an 8.3% relative reduction)
 - **Whisper Medium + GPT-2 PubMed Medium:** WER decreased from 5.20% to 4.84% at λ = 0.24 (a 6.9% relative reduction)
 
-These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative reduction on Google Voice Search with shallow fusion. While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
+These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative reduction on Google Voice Search with shallow fusion). While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though the fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
@@ -227,7 +227,7 @@ To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0
 | **Fused WER**       |  0.051 |   0.05 |   0.05 |   0.05 |   0.05 |   0.05 |   0.05 |  0.049 |  0.049 |  0.048 |  0.049 |  0.049 |
 | **Relative Δ (%)**  |  2.6   |   3.3  |   4    |   3.6  |   4    |   4.4  |   4    |  5.5   |  6.2   |  6.9   |  4.7   |  5.5   |
 
-> Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Relative reductions are calculated from unrounded values**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-value
+> Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Relative reductions are calculated from unrounded values**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values
 
 <!-- 
 In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
@@ -250,7 +250,7 @@ While the synthetic evaluation showed promising patterns, analysis revealed spec
 **1. Abbreviation Expansion Mismatches**  
 The fusion system frequently "over-corrected" spoken abbreviations into their formal written equivalents. For example:
 
-- Audio: "centimeters" → Whisper: "centimeters" → Fused output: "cm"
+- Audio: "centimeters" -> Whisper: "centimeters" -> Fused output: "cm"
 - This reflects the domain language model's bias toward written medical documentation style
 
 **2. Punctuation Insertion**  
