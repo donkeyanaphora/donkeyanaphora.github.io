@@ -251,22 +251,28 @@ specialized domains">
       \lambda\,\log P_{\text{LM}}\!\bigl(y_t \mid y_{&lt;t}\bigr)
       \right]
       \]</span></p>
-      <p>where:<br />
-      - <span class="math inline">\(t\)</span> is the decoding step
+      <p>where:</p>
+      <ul>
+      <li><span class="math inline">\(t\)</span> is the decoding step
       (0-based).<br />
-      - <span class="math inline">\(y_t\)</span> is the chosen token at
-      step <span class="math inline">\(t\)</span> and <span
+      </li>
+      <li><span class="math inline">\(y_t\)</span> is the chosen token
+      at step <span class="math inline">\(t\)</span> and <span
       class="math inline">\(y_{&lt;t}\)</span> are previously generated
       tokens.<br />
-      - <span class="math inline">\(x\)</span> represents the acoustic
+      </li>
+      <li><span class="math inline">\(x\)</span> represents the acoustic
       features (e.g., raw audio input).<br />
-      - <span class="math inline">\(P_{\text{ASR}}\)</span> depends on
+      </li>
+      <li><span class="math inline">\(P_{\text{ASR}}\)</span> depends on
       both <span class="math inline">\(x\)</span> and <span
       class="math inline">\(y_{&lt;t}\)</span>, while <span
       class="math inline">\(P_{\text{LM}}\)</span> depends on <span
       class="math inline">\(y_{&lt;t}\)</span> only.<br />
-      - <span class="math inline">\(\lambda\)</span> is the weighting
-      factor to determine the language model’s influence.</p>
+      </li>
+      <li><span class="math inline">\(\lambda\)</span> is the weighting
+      factor to determine the language model’s influence.</li>
+      </ul>
       <p>The idea is that the ASR model understands phonetics and
       language in a general sense while the LM model understands the
       specialized domain in its written form, but has no access to the
@@ -882,7 +888,7 @@ specialized domains">
       <li><p>A shuffle test (permutation test) is a nonparametric
       significance test where labels (baseline vs. fused) are randomly
       swapped to see how often a difference as large as the observed one
-      would arise by chance</p></li>
+      would arise by chance.</p></li>
       </ol>
     </article>
   </main>

@@ -75,7 +75,8 @@ y^* = \arg\max_{y_t}\;
 \right]
 $$
 
-where:  
+where:
+ 
 - $t$ is the decoding step (0-based).  
 - $y_t$ is the chosen token at step $t$ and $y_{<t}$ are previously generated tokens.  
 - $x$ represents the acoustic features (e.g., raw audio input).  
@@ -419,4 +420,4 @@ Future work towards learned gating mechanisms, advanced fusion architectures, an
 
 3. [Word Error Rate (WER)](https://en.wikipedia.org/wiki/Word_error_rate) is the standard metric for evaluating ASR systems, calculated as the minimum number of word-level edits (insertions, deletions, substitutions) required to transform the hypothesis into the reference, divided by the total number of words in the reference.
 
-4. A shuffle test (permutation test) is a nonparametric significance test where labels (baseline vs. fused) are randomly swapped to see how often a difference as large as the observed one would arise by chance
+4. A shuffle test (permutation test) is a nonparametric significance test where labels (baseline vs. fused) are randomly swapped to see how often a difference as large as the observed one would arise by chance.
