@@ -203,7 +203,7 @@ In preliminary synthetic evaluations, shallow fusion demonstrated modest WER red
 - **Whisper Small + GPT-2 PubMed Small:** WER decreased from 6.86% to 6.30% at λ = 0.24 (an 8.3% relative reduction)
 - **Whisper Medium + GPT-2 PubMed Medium:** WER decreased from 5.20% to 4.84% at λ = 0.24 (a 6.9% relative reduction)
 
-These preliminary results align with prior work (e.g., Kannan et al., 2017, **9.1% relative reduction** on Google Voice Search with shallow fusion. While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
+These preliminary results align with prior work (e.g., Kannan et al., 2017, 9.1% relative reduction on Google Voice Search with shallow fusion. While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
