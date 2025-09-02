@@ -183,7 +183,7 @@ The implementation performs fusion by:
 
 ### Evaluation Framework
 
-Evaluation FrameworkTesting was conducted on 358 synthetic radiology report dictations (each under 30 seconds). Ideally, evaluation would occur on authentic clinical dictations, however, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
+Testing was conducted on 358 synthetic radiology report dictations (each under 30 seconds). Ideally, evaluation would occur on authentic clinical dictations, however, access to such datasets typically requires institutional permissions and agreements. To generate the synthetic dataset, I prompted a language model to create realistic radiology report dictations that mirror the style, terminology, and content patterns found in actual clinical documentation. While this limited dataset demonstrates feasibility, production deployment would require validation on larger, authentic clinical datasets.
 
 The primary evaluation metric was Word Error Rate (WER)<sup>3</sup>, which measures the percentage of incorrectly transcribed words. Testing compared transcriptions from:
 
@@ -198,9 +198,12 @@ The comparison between vanilla and PubMed-tuned GPT-2 models tests whether domai
 
 ### Overall Performance
 
-In preliminary synthetic evaluations, shallow fusion demonstrated modest WER reductions across different model sizes on the synthetic radiology dictations. For **Whisper Small + GPT-2 PubMed Small**, WER decreased from 6.86% to 6.29% at λ = 0.24 (an **8.3% relative reduction**). For **Whisper Medium + GPT-2 PubMed Medium**, WER decreased from 5.20% to 4.84% at λ = 0.30 (a **6.9% relative reduction**). These preliminary results align with prior work (e.g., Kannan et al., 2017, **9.1% relative reduction** on Google Voice Search with shallow fusion).
+In preliminary synthetic evaluations, shallow fusion demonstrated modest WER reductions across different model sizes on the synthetic radiology dictations. 
 
-While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
+- **Whisper Small + GPT-2 PubMed Small:** WER decreased from 6.86% to 6.30% at λ = 0.24 (an 8.3% relative reduction)
+- **Whisper Medium + GPT-2 PubMed Medium:** WER decreased from 5.20% to 4.84% at λ = 0.24 (a 6.9% relative reduction)
+
+These preliminary results align with prior work (e.g., Kannan et al., 2017, **9.1% relative reduction** on Google Voice Search with shallow fusion. While these improvements are modest, analysis suggests that fusion particularly excels at correcting medical terminology errors, successfully recovering terms like "scapholunate" from "scaffolunate" and "cholecystitis" from "colosceitis" though fused model occasionally introduces hyphenation artifacts in compound medical terms which hurts WER.
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
@@ -224,19 +227,21 @@ To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0
 | **Fused WER**       |  0.051 |   0.05 |   0.05 |   0.05 |   0.05 |   0.05 |   0.05 |  0.049 |  0.049 |  0.048 |  0.049 |  0.049 |
 | **Relative Δ (%)**  |  2.6   |   3.3  |   4    |   3.6  |   4    |   4.4  |   4    |  5.5   |  6.2   |  6.9   |  4.7   |  5.5   |
 
-> Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values.
+> Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Relative reductions are calculated from unrounded values**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-value
+
 <!-- 
-In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section). -->
+In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
+ -->
 
 ### Statistical Significance
 
 The fused system and original Whisper only system were tested on 358 of the same audio clips.
 
-**For the small model**, overall errors fell from 6.86% to 6.29% (8.3% relative reduction). A permutation test<sup>4</sup> suggests a difference this size would happen by chance about 1 in 43 times (two-sided p = 0.024), or about 1 in 81 times if testing only for improvement (one-sided p = 0.012). With 44 improved utterances versus 21 degraded ones, this pattern is consistent with a modest real effect on this set.
+**For the small model**, overall errors fell from 6.86% to 6.30% (8.3% relative reduction). A permutation test<sup>4</sup> suggests a difference this size would happen by chance about 1 in 43 times (two-sided p = 0.024), or about 1 in 81 times if testing only for improvement (one-sided p = 0.012). With 44 improved utterances versus 21 degraded ones, this pattern is consistent with a modest real effect on this set.
 
 **For the medium model**, overall errors went from 5.20% to 4.84% (6.9% relative reduction). The permutation test suggests a difference this size could occur about 1 in 14 times by chance (two-sided p = 0.069), or about 1 in 30 times if testing only for improvement (one-sided p = 0.034). With 30 improvements versus 14 degradations, this is promising but not conclusive.
 
-**Bottom line:** shallow fusion results show modest, yet consistent error reductions on this dataset. The small model's improvement is statistically significant, while the medium model achieves the lowest absolute error rate but with only suggestive evidence of improvement. More data, ideally real clinical dictations, would make the conclusion more definitive.
+**Bottom line:** Shallow fusion results show modest, yet consistent error reductions on this dataset. The small model's improvement is statistically significant, while the medium model achieves the lowest absolute error rate but with only suggestive evidence of improvement. More data, ideally real clinical dictations, would make the conclusion more definitive.
 
 ### Error Pattern Analysis and Failure Modes
 
@@ -249,7 +254,7 @@ The fusion system frequently "over-corrected" spoken abbreviations into their fo
 - This reflects the domain language model's bias toward written medical documentation style
 
 **2. Punctuation Insertion**  
-The GPT-2 model, trained on formatted medical abstracts, introduced punctuation that wasn't present in the spoken audio. This created a stylistic mismatch between transcribed speech and formal written medical language.
+The GPT-2 model, trained on formatted medical abstracts, introduced punctuation that wasn't present in the spoken audio. This created a stylistic mismatch between transcribed speech and formal written medical language, with inappropriate hyphenation of compound terms being particularly prominent (e.g., "hydronephrosis" -> "hydro-nephrosis").
 
 **3. Premature Termination and Incomplete Transcripts**  
 When λ (the LM weight) was set too high, beam search decoding often produced incomplete transcripts. Chorowski & Jaitly (2016) reported that external LMs can cause seq2seq systems to skip words or drop parts of an utterance during decoding, unless a coverage term is added to the beam search criterion. In this experiment, higher λ coupled with wide beam searches similarly led to premature terminations, with the LM assigning high probability to end-of-sequence tokens once a transcript appeared semantically complete, even while audio continued.

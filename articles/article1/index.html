@@ -468,17 +468,16 @@ specialized domains">
       distribution</li>
       </ol>
       <h3 id="evaluation-framework">Evaluation Framework</h3>
-      <p>Evaluation FrameworkTesting was conducted on 358 synthetic
-      radiology report dictations (each under 30 seconds). Ideally,
-      evaluation would occur on authentic clinical dictations, however,
-      access to such datasets typically requires institutional
-      permissions and agreements. To generate the synthetic dataset, I
-      prompted a language model to create realistic radiology report
-      dictations that mirror the style, terminology, and content
-      patterns found in actual clinical documentation. While this
-      limited dataset demonstrates feasibility, production deployment
-      would require validation on larger, authentic clinical
-      datasets.</p>
+      <p>Testing was conducted on 358 synthetic radiology report
+      dictations (each under 30 seconds). Ideally, evaluation would
+      occur on authentic clinical dictations, however, access to such
+      datasets typically requires institutional permissions and
+      agreements. To generate the synthetic dataset, I prompted a
+      language model to create realistic radiology report dictations
+      that mirror the style, terminology, and content patterns found in
+      actual clinical documentation. While this limited dataset
+      demonstrates feasibility, production deployment would require
+      validation on larger, authentic clinical datasets.</p>
       <p>The primary evaluation metric was Word Error Rate
       (WER)<sup>3</sup>, which measures the percentage of incorrectly
       transcribed words. Testing compared transcriptions from:</p>
@@ -496,21 +495,24 @@ specialized domains">
       <h3 id="overall-performance">Overall Performance</h3>
       <p>In preliminary synthetic evaluations, shallow fusion
       demonstrated modest WER reductions across different model sizes on
-      the synthetic radiology dictations. For <strong>Whisper Small +
-      GPT-2 PubMed Small</strong>, WER decreased from 6.86% to 6.29% at
-      λ = 0.24 (an <strong>8.3% relative reduction</strong>). For
-      <strong>Whisper Medium + GPT-2 PubMed Medium</strong>, WER
-      decreased from 5.20% to 4.84% at λ = 0.30 (a <strong>6.9% relative
-      reduction</strong>). These preliminary results align with prior
-      work (e.g., Kannan et al., 2017, <strong>9.1% relative
-      reduction</strong> on Google Voice Search with shallow
-      fusion).</p>
-      <p>While these improvements are modest, analysis suggests that
-      fusion particularly excels at correcting medical terminology
-      errors, successfully recovering terms like “scapholunate” from
-      “scaffolunate” and “cholecystitis” from “colosceitis” though fused
-      model occasionally introduces hyphenation artifacts in compound
-      medical terms which hurts WER.</p>
+      the synthetic radiology dictations.</p>
+      <ul>
+      <li><strong>Whisper Small + GPT-2 PubMed Small:</strong> WER
+      decreased from 6.86% to 6.30% at λ = 0.24 (an 8.3% relative
+      reduction)</li>
+      <li><strong>Whisper Medium + GPT-2 PubMed Medium:</strong> WER
+      decreased from 5.20% to 4.84% at λ = 0.24 (a 6.9% relative
+      reduction)</li>
+      </ul>
+      <p>These preliminary results align with prior work (e.g., Kannan
+      et al., 2017, <strong>9.1% relative reduction</strong> on Google
+      Voice Search with shallow fusion. While these improvements are
+      modest, analysis suggests that fusion particularly excels at
+      correcting medical terminology errors, successfully recovering
+      terms like “scapholunate” from “scaffolunate” and “cholecystitis”
+      from “colosceitis” though fused model occasionally introduces
+      hyphenation artifacts in compound medical terms which hurts
+      WER.</p>
       <h3 id="hyperparameter-sensitivity-λ-lambda-weight">Hyperparameter
       Sensitivity (λ / Lambda Weight)</h3>
       <p>To evaluate the effect of the fusion weight λ, it was varied
@@ -660,16 +662,20 @@ specialized domains">
       </table>
       <blockquote>
       <p>Note: Values are corpus (micro) WER on 358 synthetic radiology
-      dictation sentences after the specified normalization. λ was
-      selected on this same set, so results may be optimistic; see the
-      significance section for permutation-test p-values. <!-- 
-      In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section). --></p>
+      dictation sentences after the specified normalization.
+      <strong>Relative reductions are calculated from unrounded
+      values</strong>. λ was selected on this same set, so results may
+      be optimistic; see the significance section for permutation-test
+      p-value</p>
       </blockquote>
+      <!-- 
+      In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.3%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
+       -->
       <h3 id="statistical-significance">Statistical Significance</h3>
       <p>The fused system and original Whisper only system were tested
       on 358 of the same audio clips.</p>
       <p><strong>For the small model</strong>, overall errors fell from
-      6.86% to 6.29% (8.3% relative reduction). A permutation
+      6.86% to 6.30% (8.3% relative reduction). A permutation
       test<sup>4</sup> suggests a difference this size would happen by
       chance about 1 in 43 times (two-sided p = 0.024), or about 1 in 81
       times if testing only for improvement (one-sided p = 0.012). With
@@ -681,7 +687,7 @@ specialized domains">
       chance (two-sided p = 0.069), or about 1 in 30 times if testing
       only for improvement (one-sided p = 0.034). With 30 improvements
       versus 14 degradations, this is promising but not conclusive.</p>
-      <p><strong>Bottom line:</strong> shallow fusion results show
+      <p><strong>Bottom line:</strong> Shallow fusion results show
       modest, yet consistent error reductions on this dataset. The small
       model’s improvement is statistically significant, while the medium
       model achieves the lowest absolute error rate but with only
@@ -706,7 +712,9 @@ specialized domains">
       The GPT-2 model, trained on formatted medical abstracts,
       introduced punctuation that wasn’t present in the spoken audio.
       This created a stylistic mismatch between transcribed speech and
-      formal written medical language.</p>
+      formal written medical language, with inappropriate hyphenation of
+      compound terms being particularly prominent (e.g.,
+      “hydronephrosis” -&gt; “hydro-nephrosis”).</p>
       <p><strong>3. Premature Termination and Incomplete
       Transcripts</strong><br />
       When λ (the LM weight) was set too high, beam search decoding
