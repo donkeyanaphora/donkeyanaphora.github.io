@@ -76,7 +76,7 @@ y^* = \arg\max_{y_t}\;
 $$
 
 where:
- 
+
 - $t$ is the decoding step (0-based).  
 - $y_t$ is the chosen token at step $t$ and $y_{<t}$ are previously generated tokens.  
 - $x$ represents the acoustic features (e.g., raw audio input).  
@@ -141,12 +141,10 @@ $$
 | below      | –1.0         | –5.0        | –1.0 + 0.2 × (–5.0) = –2.0 |
 | follow        | –3.5         | –3.8        | –3.5 + 0.2 × (–3.8) = –4.26 |
 
-> *Note: The numbers here are illustrative. In practice additional context and scaling would favor the correct token "Fallot"; additionally, rare words are likely split into multiple tokens but the intuition remains the same.*
-
-"Fallot" now has the highest combined score.
+> *Note: These values are illustrative. In practice, rare medical terms may be split across multiple tokens, but the principle remains the same, the domain model's confidence helps disambiguate uncertain acoustic predictions.*
 
 **Final Corrected Output:**  
-"The procedure was medically necessary for the treatment of claimant's Tetralogy of Fallot."✔️
+Since "Fallot" now has the highest combined score the final output reads: "The procedure was medically necessary for the treatment of claimant's Tetralogy of Fallot."✔️
 
 This illustrates how **domain-aware shallow fusion** could potentially improve ASR output in specialized contexts.
 

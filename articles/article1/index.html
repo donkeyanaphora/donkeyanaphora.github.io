@@ -399,14 +399,14 @@ specialized domains">
       </tbody>
       </table>
       <blockquote>
-      <p><em>Note: The numbers here are illustrative. In practice
-      additional context and scaling would favor the correct token
-      “Fallot”; additionally, rare words are likely split into multiple
-      tokens but the intuition remains the same.</em></p>
+      <p><em>Note: These values are illustrative. In practice, rare
+      medical terms may be split across multiple tokens, but the
+      principle remains the same, the domain model’s confidence helps
+      disambiguate uncertain acoustic predictions.</em></p>
       </blockquote>
-      <p>“Fallot” now has the highest combined score.</p>
       <p><strong>Final Corrected Output:</strong><br />
-      “The procedure was medically necessary for the treatment of
+      Since “Fallot” now has the highest combined score the final output
+      reads: “The procedure was medically necessary for the treatment of
       claimant’s Tetralogy of Fallot.”✔️</p>
       <p>This illustrates how <strong>domain-aware shallow
       fusion</strong> could potentially improve ASR output in
