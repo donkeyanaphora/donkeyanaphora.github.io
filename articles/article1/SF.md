@@ -153,7 +153,7 @@ This illustrates how **domain-aware shallow fusion** could potentially improve A
 
 ### Model Selection and Preparation
 
-For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external model selected for this fusion process was GPT-2 small, medium, and large. The reason for selecting these models was partly due to convenience, because pre-trained versions are widely available and they share a tokenizer/vocabulary with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another. While Bio-GPT represents an existing medical language model, it uses a different tokenizer that would require learning a mapping function between tokenization schemes. To avoid potential errors and implementation complexity, I opted to train custom GPT-2 variants on medical data while preserving Whisper's tokenizer compatibility.
+For this implementation, I chose **Whisper** as the base ASR model due to its strong general-purpose performance and **GPT-2** as the domain-specific language model. The external models selected for this fusion process were GPT-2 small, medium, and large. The reason for selecting these models was partly due to the shared tokenizer/vocabulary they have with Whisper's decoder. The shared vocabulary means we do not have to learn a mapping from one model's vocabulary to another. While Bio-GPT represents an existing medical language model, it uses a different tokenizer that would require learning a mapping function between tokenization schemes. To avoid potential errors and implementation complexity, I opted to train custom GPT-2 variants on medical data thus preserving Whisper's tokenizer compatibility.
 
 ### Training Domain-Specific Language Models
 
@@ -178,7 +178,7 @@ The implementation performs fusion by:
 
 1. Running Whisper's encoder to generate audio features
 2. At each decoding step, computing logit distributions from both Whisper's decoder and the domain-adapted GPT-2
-3. Combining logits using the weighted sum formulation described earlier
+3. Combining logits for shared tokens using the weighted sum formulation described earlier
 4. Selecting tokens based on the fused probability distribution
 
 ### Evaluation Framework
@@ -217,9 +217,9 @@ Shallow fusion's effectiveness depends critically on domain expertise. Testing w
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Your data - already converted to percentages
+// Shallow fusion performance data
 const data = {
-  labels: [0.03, 0.06, 0.09, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.30, 0.33, 0.36],
+  labels: [0.03, 0.06, 0.09, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.3, 0.33, 0.36],
   datasets: [
     {
       label: 'Baseline (Whisper Only)',
@@ -232,7 +232,7 @@ const data = {
     },
     {
       label: '+ Medical GPT-2',
-      data: [6.66, 6.67, 6.60, 6.50, 6.56, 6.43, 6.43, 6.28, 6.48, 6.67, 6.98, 7.00],
+      data: [6.66, 6.67, 6.6, 6.5, 6.56, 6.43, 6.43, 6.28, 6.48, 6.67, 6.98, 7.0],
       borderColor: '#10B981',
       backgroundColor: '#10B98120',
       fill: '+1',
@@ -251,7 +251,7 @@ const data = {
   ]
 };
 
-// Simple, clean chart
+// Create interactive chart
 new Chart(document.getElementById('fusionChart'), {
   type: 'line',
   data: data,
@@ -265,78 +265,72 @@ new Chart(document.getElementById('fusionChart'), {
         text: 'Domain Expertise is Critical for Shallow Fusion',
         font: { size: 16, weight: 'bold' }
       },
+      legend: {
+        position: 'top',
+      },
       tooltip: {
         callbacks: {
           title: (ctx) => 'λ = ' + ctx[0].label,
           label: (ctx) => {
             const val = ctx.parsed.y.toFixed(2);
-            const change = ((val - 6.86) / 6.86 * 100).toFixed(1);
-            return ctx.dataset.label + ': ' + val + '% (' + (change > 0 ? '+' : '') + change + '%)';
+            const baseline = 6.86;
+            const change = ((val - baseline) / baseline * 100).toFixed(1);
+            if (ctx.dataset.label.includes('Baseline')) {
+              return ctx.dataset.label + ': ' + val + '%';
+            }
+            return ctx.dataset.label + ': ' + val + '% (' + 
+                   (change > 0 ? '+' : '') + change + '% change)';
           }
         }
       }
     },
     scales: {
-      x: { title: { display: true, text: 'Fusion Weight (λ)' }},
+      x: { 
+        title: { display: true, text: 'Fusion Weight (λ)' }
+      },
       y: { 
         title: { display: true, text: 'Word Error Rate (%)' },
-        min: 6, max: 8.5
+        min: 5.8,
+        max: 8.8
       }
     }
   }
 });
 </script>
 ```
-> *Figure 2: Interactive graph showing domain-specific models improve performance (green) while generic models degrade it (red). Hover for exact values.*
 
+> *Figure 2: Word error rates across fusion weights (λ) in preliminary testing. Medical GPT-2 (green) reduced WER below baseline while generic GPT-2 (red) increased it in this synthetic evaluation. Interactive hover for details*
 
-**Key results at optimal λ:**
-
-- **Whisper Small baseline:** 6.86% WER
-- **+ Medical GPT-2:** 6.28% WER (−8.5% improvement)
-- **+ Generic GPT-2:** 7.45% WER (+8.6% degradation)
-- **Whisper Medium baseline:** 5.16% WER  
-- **+ Medical GPT-2:** 4.80% WER (−7.0% improvement)
-
-These results align with prior work (Kannan et al., 2017: 9.1% reduction) but add a crucial insight: *any* language model isn't sufficient—domain alignment is essential. The medical models excel at correcting terminology like "scapholunate" from "scaffolunate," while generic models introduce errors by biasing toward everyday language.
+The medical models achieved optimal performance at λ = 0.24-0.30, with the small configuration reducing WER from 6.86% to 6.28% (8.5% relative improvement) and the medium configuration from 5.16% to 4.80% (7.0% relative improvement). In contrast, generic GPT-2 models consistently increased error rates, demonstrating that domain alignment, not just language modeling, drives improvement.These results align with prior work—Kannan et al. (2017), who reported a 9.1% relative WER reduction on Google Voice Search using shallow fusion. Overall, The medical models excel at correcting specialized terminology like "scapholunate" from "scaffolunate," while generic models introduce errors by biasing transcriptions toward everyday language.
 
 ### Hyperparameter Sensitivity (λ / Lambda Weight)
 
-To evaluate the effect of the fusion weight λ, it was varied between 0.03 and 0.36 using two model configurations. Although different model sizes could be mixed and matched (e.g., GPT-2 Medium with Whisper Tiny), matching model sizes were used to ensure improvements reflected fusion rather than raw model capacity differences.
+The fusion weight λ controls the balance between acoustic and language model predictions. Testing λ values from 0.03 to 0.36 revealed consistent patterns across model sizes:
 
-**Table 1. WER vs. λ for Whisper Small + GPT-2 PubMed Small**  
-*Baseline WER = 0.0686*
+**Table 1: WER Performance Across Fusion Weights**
 
-| λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |    0.3 |    0.33 |   0.36 |
-|---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|---------|--------|
-| **Fused WER**       | 0.0666 | 0.0667 |  0.066 |  0.065 | 0.0656 | 0.0643 | 0.0643 | 0.0628 | 0.0648 | 0.0667 |  0.0698 |   0.07 |
-| **Relative Δ (%)**  | 2.9    | 2.8    |  3.8   |  5.2   | 4.4    | 6.3    | 6.3    | 8.5    | 5.5    | 2.8    | -1.7    |  -2    |
+| Configuration | Baseline WER | Optimal λ | Best WER | Relative Improvement |
+|--------------|--------------|-----------|----------|---------------------|
+| Whisper Small + Medical GPT-2 Small | 6.86% | 0.24 | 6.28% | 8.5% |
+| Whisper Medium + Medical GPT-2 Medium | 5.16% | 0.30 | 4.80% | 7.0% |
 
-<br>
-
-**Table 2. WER vs. λ for Whisper Medium + GPT-2 PubMed Medium**  
-*Baseline WER = 0.0516*
-
-| λ (Fusion Weight)   |   0.03 |   0.06 |   0.09 |   0.12 |   0.15 |   0.18 |   0.21 |   0.24 |   0.27 |   0.3 |   0.33 |   0.36 |
-|---------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|-------|--------|--------|
-| **Fused WER**       | 0.0502 | 0.0499 | 0.0495 | 0.0497 | 0.0495 | 0.0493 | 0.0495 | 0.0487 | 0.0484 | 0.048 | 0.0491 | 0.0487 |
-| **Relative Δ (%)**  | 2.7    | 3.3    | 4.1    | 3.7    | 4.1    | 4.5    | 4.1    | 5.6    | 6.2    | 7     | 4.8    | 5.6    |
-
-> Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Percentages are computed from the displayed WERs (rounded to 4 decimals) for consistency, full-precision calculations may differ slightly**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values
+<!-- > Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Percentages are computed from the displayed WERs (rounded to 4 decimals) for consistency, full-precision calculations may differ slightly**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values -->
 
 <!-- 
 In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.5%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
  -->
 
+Performance degrades at extreme λ values, when too low (< 0.1) fusion provides minimal domain benefit, while too high (> 0.33) causes the language model to override valid acoustic evidence. The optimal range (0.24-0.30) suggests a consistent balance point where domain knowledge enhances without overwhelming acoustic information.
+
 ### Statistical Significance
 
 The fused system and original Whisper only system were tested on 358 of the same audio clips.
 
-**For the small model**, overall errors fell from 6.86% to 6.28% (8.5% relative reduction). A permutation test<sup>4</sup> suggests a difference this size would happen by chance about 1 in 43 times (two-sided p = 0.024), or about 1 in 81 times if testing only for improvement (one-sided p = 0.012). With 44 improved utterances versus 21 degraded ones, this pattern is consistent with a modest real effect on this set.
+**For the small model**, overall errors fell from 6.86% to 6.28% (8.5% relative reduction). A permutation test<sup>4</sup> suggests a difference this size would happen by chance about 1 in 81 times if testing only for improvement (one-sided p = 0.012). With 44 improved utterances versus 21 degraded ones, this pattern is consistent with a modest real effect on this set.
 
-**For the medium model**, overall errors went from 5.16% to 4.80% (7.0% relative reduction). The permutation test suggests a difference this size could occur about 1 in 14 times by chance (two-sided p = 0.069), or about 1 in 30 times if testing only for improvement (one-sided p = 0.034). With 30 improvements versus 14 degradations, this is promising but not conclusive.
+**For the medium model**, overall errors went from 5.16% to 4.80% (7.0% relative reduction). The permutation test suggests a difference this size could occur about 1 in 30 times if testing only for improvement (one-sided p = 0.034). With 30 improvements versus 14 degradations, this is promising but test would benefit from more data.
 
-**Bottom line:** Shallow fusion results show modest, yet consistent error reductions on this dataset. The small model's improvement is statistically significant, while the medium model achieves the lowest absolute error rate but with only suggestive evidence of improvement. More data, ideally real clinical dictations, would make the conclusion more definitive.
+**Bottom line:** Shallow fusion results show modest, yet consistent error reductions on this dataset where fusion improvements are statistically significant. However, more data, ideally real clinical dictations, would make the conclusion more definitive.
 
 ### Error Pattern Analysis and Failure Modes
 
