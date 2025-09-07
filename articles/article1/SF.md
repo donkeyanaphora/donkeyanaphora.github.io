@@ -328,7 +328,7 @@ The fusion weight λ controls the balance between acoustic and language model pr
 In synthetic testing, the small model configuration showed optimal results at λ = 0.24, yielding a **8.5%** relative WER reduction. The medium configuration achieved a **6.9%** relative reduction at the same λ = 0.30. Error analysis suggests that the benefits of fusion lie in correcting domain-specific medical terminology, however, analysis would benefit from more data (see future work section).
  -->
 <br>
-Performance degrades at extreme λ values, when too low (< 0.1) fusion provides minimal domain benefit, while too high (> 0.33) causes the language model to override valid acoustic evidence. The optimal range (0.24-0.30) suggests a consistent balance point where domain knowledge enhances without overwhelming acoustic information.
+Performance degrades at extreme λ values, when too low fusion provides minimal domain benefit, while too high (> 0.33) causes the language model to override valid acoustic evidence. The optimal range (0.24-0.30) suggests a consistent balance point where domain knowledge enhances without overwhelming acoustic information.
 
 ### Statistical Significance
 
