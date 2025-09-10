@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Collins Westnedge - Resume</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
+            max-width: 750px; 
+            margin: 30px auto; 
+            line-height: 1.5;
+            color: #333;
+            font-size: 11pt;
+        }
+        h1 { 
+            font-size: 20pt; 
+            margin-bottom: 8px; 
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        h2 { 
+            font-size: 11pt; 
+            border-bottom: 1.5px solid #333; 
+            margin-top: 18px;
+            margin-bottom: 8px;
+            padding-bottom: 2px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        p { 
+            margin: 6px 0; 
+        }
+        ul { 
+            margin: 4px 0; 
+            padding-left: 22px; 
+        }
+        li { 
+            margin: 3px 0; 
+            font-size: 10.5pt;
+        }
+        a { 
+            color: #0066cc; 
+            text-decoration: none; 
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .header-info { 
+            font-size: 10.5pt; 
+            margin-bottom: 18px; 
+            color: #555;
+        }
+        .position {
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        .company { 
+            font-weight: 600; 
+        }
+        .role {
+            color: #555;
+            font-size: 10.5pt;
+        }
+        .project-title {
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .project-link {
+            font-weight: normal;
+            font-size: 10pt;
+        }
+        .skills-line {
+            margin: 4px 0;
+            font-size: 10.5pt;
+        }
+        @media print {
+            body { margin: 20px; max-width: 100%; }
+            a { color: #000; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>COLLINS WESTNEDGE</h1>
+<div class="header-info">
+Chicago, IL · cwestnedge@gmail.com · 
+<a href="https://donkeyanaphora.github.io">donkeyanaphora.github.io</a> · 
+<a href="https://github.com/donkeyanaphora">github.com/donkeyanaphora</a> · 
+<a href="https://huggingface.co/cwestnedge">huggingface.co/cwestnedge</a>
+</div>
+
+<h2>Education</h2>
+<p><strong>University of Chicago</strong> — B.A. Philosophy (Philosophy of Language & Formal Semantics)<br>
+<span style="font-size: 10.5pt; color: #555;">Relevant coursework: Formal Semantics, Logic, Probability & Statistics, Computational Linguistics</span></p>
+<p><strong>University of Chicago</strong> — M.S. Data Science (applying Fall 2025)</p>
+
+<h2>Experience</h2>
+<div class="position">
+    <span class="company">Northwestern Mutual</span> — Core Data & Analytics (Enterprise Compliance)<br>
+    <span class="role">Senior Data Scientist (2023–Present) · Data Scientist (2021–2023)</span>
+</div>
+<ul>
+    <li>Building inference system and pipeline for Whisper-based ASR initiative; projecting ~90% annual cost reduction ($1.0M → $0.10M) at comparable WER</li>
+    <li>Developed RAG assistants for call centers; implemented evaluation frameworks for hallucination and drift detection</li>
+    <li>Led company wide enablement of open-source models (Hugging Face); security testing and governance documentation</li>
+    <li>Guided embedding model fine-tuning for Q/A retrieval; advised on data curation and hard-negative mining approaches; achieved improvements in Recall@k/MRR and latency</li>
+</ul>
+
+<div class="position">
+    <span class="company">Hanover Research</span> — Statistical Programming Analyst
+</div>
+<ul>
+    <li>Built reproducible statistical analyses and client-ready reports in R</li>
+    <li>Transformed ambiguous business questions into testable analyses and actionable recommendations</li>
+</ul>
+
+<h2>Leadership</h2>
+<div class="position">
+    <span class="company">Northwestern Mutual Data Science Institute</span> — Research Chair
+</div>
+<ul>
+    <li>Advised on research design and evaluation; helped select proposals for grant funding</li>
+    <li>Supported industry–academic collaboration and responsible AI practices</li>
+    <li>Delivered technical workshops and presented AI solutions to engineering, compliance, and law stakeholders</li>
+</ul>
+
+<h2>Projects & Open Source</h2>
+<div class="project-title">
+    Medical Speech Recognition via Shallow Fusion 
+    <span class="project-link">— <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION">github.com/donkeyanaphora/SHALLOW_FUSION</a></span>
+</div>
+<ul>
+    <li>~8.5% relative WER improvement by combining Whisper with domain-adapted GPT-2</li>
+    <li>~3.6B PubMed tokens; released models, code, and evaluation framework</li>
+    <li>Shared-tokenizer approach for inference-time fusion</li>
+</ul>
+
+<div class="project-title">
+    IR Concept Erasure 
+    <span class="project-link">— <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE">github.com/donkeyanaphora/IR_CONCEPT_ERASURE</a></span>
+</div>
+<ul>
+    <li>Projection-based method to remove unwanted directions in embedding spaces</li>
+    <li>Trigger Hit Rate @k (THR@k); reduced trigger hits while maintaining retrieval quality</li>
+    <li>Applied to improve RAG safety</li>
+</ul>
+
+<div class="project-title">
+    Technical Writing & Research 
+    <span class="project-link">— <a href="https://donkeyanaphora.github.io">donkeyanaphora.github.io</a></span>
+</div>
+<ul>
+    <li>Shallow Fusion (medical ASR adaptation)</li>
+    <li>Extra-Ordinary Language (creative/intentional rule-breaking evaluation)</li>
+    <li>Linear Models in Modern Applications (projection methods vs. semantic filtering)</li>
+    <li>Notes on alignment, controllable generation, RLHF diversity</li>
+</ul>
+
+<h2>Skills</h2>
+<div class="skills-line"><strong>Programming:</strong> Python (PyTorch, NumPy, Transformers, pandas, scikit-learn), SQL, Git</div>
+<div class="skills-line"><strong>ML/AI:</strong> LLMs, RAG, Whisper ASR, Information Retrieval</div>
+<div class="skills-line"><strong>Specialties:</strong> Evaluation (WER, Recall@k, MRR), secure ML deployment, activation steering, robustness, formal semantics</div>
+<div class="skills-line"><strong>General:</strong> Communication</div>
+
+<h2>Research Interests</h2>
+<ul>
+    <li>Robustness & Alignment</li>
+    <li>Controllable Generation & Activation Steering</li>
+    <li>Adversarial Machine Learning</li>
+    <li>Creative AI</li>
+    <li>Computational Linguistics & Formal Semantics</li>
+</ul>
+
+<h2>Speaking & Community</h2>
+<ul>
+    <li>Practical NLP talk (Northwestern Mutual)</li>
+    <li>NMDSI "People Profiles" feature</li>
+    <li>Open-source ML contributor</li>
+    <li><a href="https://en.wikipedia.org/wiki/Buffalo_buffalo_Buffalo_buffalo_buffalo_buffalo_Buffalo_buffalo">Easter Egg</a></li>
+</ul>
+
+</body>
+</html>
