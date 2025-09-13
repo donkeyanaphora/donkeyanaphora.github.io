@@ -68,7 +68,7 @@ First, it's helpful to think about how these statements behave across two interp
 | *"Two distincts, division none"* | M<sub>phys</sub> ⊨ Distinct(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Distinct(a,b) | Two bodies, one soul |
 | *"Hearts remote, yet not asunder"* | M<sub>phys</sub> ⊨ Remote(a,b) **and**<br>M<sub>interp</sub> ⊨ ¬Remote(a,b) | Spatially apart, spiritually united |
 | *"Hot ice / wondrous strange snow"*[^1] | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) **and**<br>M<sub>interp</sub> ⊨ (Ice ∧ Hot) | Physically impossible,  imaginatively possible |
-| *“A cage went in search of a bird”* | M<sub>phys</sub> ⊨ ¬Animate(cage) ∧ Search(e, cage, bird) ⇒ ⊥<br><br>M<sub>interp</sub> ⊨ Search(e, oppression, freedom) | An inanimate **cage** can’t be a seeker (type clash)<br><br> metaphorically, oppression pursues freedom. |
+| *“A cage went in search of a bird”* | M<sub>phys</sub> ⊨ ¬Animate(cage) ∧ Search(e, cage, bird) ⇒ ⊥<br><br>M<sub>interp</sub> ⊨ Search(e, oppression, freedom) | Cages dont search (type clash)<br><br> metaphorically, oppression pursues freedom. |
 
 
 ### Core Characteristics
