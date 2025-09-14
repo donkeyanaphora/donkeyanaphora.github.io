@@ -168,6 +168,7 @@ The models were trained using standard autoregressive language modeling objectiv
 
 - [View on GitHub](https://github.com/donkeyanaphora/SHALLOW_FUSION)  
 - [Hugging Face Models](https://huggingface.co/cwestnedge/models)  
+- [Model Loss Comparisons](https://huggingface.co/cwestnedge/gpt2-small-pubmed/blob/main/output.png)
 
 ### Fusion Pipeline Architecture
 
