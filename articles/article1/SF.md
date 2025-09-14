@@ -103,7 +103,7 @@ Consider an example where Whisper serves as our listening expert and GPT-2 as ou
 
 **1. Whisper Initial Decoding:**
 
-Whisper produces logits at each step:
+Whisper produces log probabilites at each step:
 
 - Token: "The" -> high confidence  
 - Token: "procedure" -> high confidence  
@@ -123,11 +123,11 @@ At the ambiguous decoding step in "The procedure was medically necessary for the
 
 > *Note: GPT-2, which has been fine tuned on medical literature, strongly favors the correct token (produces log probabilities closer to 0 for Fallot) while Whisper, which had minimal access to medical terminology, assigns it a much lower likelihood (log probabilities that are more negative).*
 
-**3. Shallow Fusion (Combining Logits):**
+**3. Shallow Fusion (Combining Log Probabilities):**
 
 **Fusion Equation:**
 
-We combine each model's logits using a weighted sum in the following way:
+We combine each model's log probabilites using a weighted sum in the following way:
 
 $$
 \log P_{\text{combined}}(y_t) = \log P_{\text{Whisper}}(y_t \mid x, y_{<t}) + \lambda \log P_{\text{GPT2}}(y_t \mid y_{<t})
@@ -177,7 +177,7 @@ The implementation performs fusion by:
 
 1. Running Whisper's encoder to generate audio features
 2. At each decoding step, computing logit distributions from both Whisper's decoder and the domain-adapted GPT-2
-3. Combining logits for shared tokens using the weighted sum formulation described earlier
+3. Combining log probs for shared tokens using the weighted sum formulation described earlier
 4. Selecting tokens based on the fused probability distribution
 
 ### Evaluation Framework

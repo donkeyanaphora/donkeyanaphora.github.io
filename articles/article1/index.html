@@ -301,7 +301,7 @@ specialized domains">
       <h4 id="step-by-step-fusion-process">Step-by-Step Fusion
       Process</h4>
       <p><strong>1. Whisper Initial Decoding:</strong></p>
-      <p>Whisper produces logits at each step:</p>
+      <p>Whisper produces log probabilites at each step:</p>
       <ul>
       <li>Token: “The” -&gt; high confidence<br />
       </li>
@@ -353,10 +353,11 @@ specialized domains">
       minimal access to medical terminology, assigns it a much lower
       likelihood (log probabilities that are more negative).</em></p>
       </blockquote>
-      <p><strong>3. Shallow Fusion (Combining Logits):</strong></p>
+      <p><strong>3. Shallow Fusion (Combining Log
+      Probabilities):</strong></p>
       <p><strong>Fusion Equation:</strong></p>
-      <p>We combine each model’s logits using a weighted sum in the
-      following way:</p>
+      <p>We combine each model’s log probabilites using a weighted sum
+      in the following way:</p>
       <p><span class="math display">\[
       \log P_{\text{combined}}(y_t) = \log P_{\text{Whisper}}(y_t \mid
       x, y_{&lt;t}) + \lambda \log P_{\text{GPT2}}(y_t \mid y_{&lt;t})
@@ -467,7 +468,7 @@ specialized domains">
       <li>Running Whisper’s encoder to generate audio features</li>
       <li>At each decoding step, computing logit distributions from both
       Whisper’s decoder and the domain-adapted GPT-2</li>
-      <li>Combining logits for shared tokens using the weighted sum
+      <li>Combining log probs for shared tokens using the weighted sum
       formulation described earlier</li>
       <li>Selecting tokens based on the fused probability
       distribution</li>
