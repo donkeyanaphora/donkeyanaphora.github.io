@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Collins Westnedge - Resume</title>
+  <title>Collins Westnedge - Resume (Shortened)</title>
   <style>
     /* Minimal, readable, ATS-friendly */
     * { box-sizing: border-box; }
@@ -24,23 +24,22 @@
     h2 {
       font-size: 11pt;
       font-weight: 700;
-      margin: 18px 0 8px 0;
+      margin: 16px 0 6px 0;
       border-bottom: 1px solid #000;
       padding-bottom: 3px;
-      text-transform: uppercase; /* ALL CAPS headings */
+      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     p { margin: 4px 0; }
     ul { margin: 0; padding-left: 20px; }
     li { margin: 4px 0; }
-    a { color: inherit; text-decoration: underline; } /* classic web vibe */
-    .header-info { font-size: 10.5pt; margin-bottom: 14px; }
-    .position { margin-top: 12px; margin-bottom: 2px; }
+    a { color: inherit; text-decoration: underline; }
+    .header-info { font-size: 10.5pt; margin-bottom: 12px; }
+    .position { margin-top: 10px; margin-bottom: 0; }
     .company { font-weight: 700; }
     .role { font-size: 10.5pt; }
-    .skills-line { margin: 3px 0; }
+    .skills-line { margin: 2px 0; }
     .metric { font-weight: 700; }
-    /* Make bullets skimmable: bold the leading verb phrase if wrapped in <strong class="lead">…</strong> */
     .lead { font-weight: 700; }
     @media print {
       body { margin: 18px; max-width: 100%; }
@@ -48,6 +47,13 @@
       .position, .position + ul { page-break-inside: avoid; }
     }
   </style>
+
+  <!-- <style>
+    body {
+      margin: auto;
+      max-width: 800px;
+    }
+  </style> -->
 </head>
 <body>
 
@@ -62,68 +68,62 @@
 
 <h2>SKILLS</h2>
 <p class="skills-line"><strong>Programming:</strong> Python (PyTorch, Transformers, NumPy, pandas, scikit-learn), SQL, Git</p>
-<p class="skills-line"><strong>LLM/NLP/IR:</strong> Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), information retrieval, prompt engineering and guardrails, evaluation and A/B testing, significance testing, reranking, contrastive learning (InfoNCE), domain adaptation, activation steering</p>
-<p class="skills-line"><strong>Data/MLE:</strong> Experiment design, offline metrics, human-in-the-loop workflows, model validation, error analysis</p>
-<p class="skills-line"><strong>Tools/Models:</strong> Whisper, GPT-2 (domain-adapted); documentation and reproducible releases</p>
+<p class="skills-line"><strong>LLM/NLP:</strong> RAG, prompt engineering, fine-tuning (mixed precision, grad accumulation), shallow fusion for ASR, activation steering, debiasing, contrastive learning</p>
+<p class="skills-line"><strong>MLOps & Data:</strong> Experiment design & permutation tests, calibration, distributed training, MLflow, Databricks/Spark, Azure (Cognitive Search, Document Intelligence), Kubernetes, HF Hub</p>
 
 <h2>EXPERIENCE</h2>
-
 <div class="position">
-  <span class="company">Northwestern Mutual</span> - Data Science and Analytics<br>
-  <span class="role">Senior Data Scientist (2022-Present) | Data Scientist (2021-2022)</span>
+  <span class="company">Northwestern Mutual</span> — Data Science & Analytics<br>
+  <span class="role">Senior Data Scientist (2022–Present) | Data Scientist (2021–2022)</span>
 </div>
 <ul>
-  <li><strong class="lead">Owned</strong> the Customer Service Representative (CSR)-facing Retrieval-Augmented Generation (RAG) platform as the sole data scientist; implemented automated evaluation that reduced A/B testing cycles from ~30 days to <strong class="metric">7 minutes</strong>; supports all CSRs.</li>
-  <li><strong class="lead">Built and validated</strong> an Automatic Speech Recognition (ASR) pipeline projected to reduce annual spend from ~$2M to <strong class="metric">~$100K</strong> (-<strong class="metric">95%</strong>); led rollout planning and validation.</li>
-  <li><strong class="lead">Built</strong> a multi-stage LLM pipeline for compliance (risk tolerance and consent) that reduced manual review time and increased coverage with human-in-the-loop controls.</li>
+  <li><strong class="lead">Built & launched</strong> CSR-facing RAG platform as sole DS; automated eval cut A/B cycles from <strong class="metric">30 days to 7 minutes</strong>; adopted across CSR org.</li>
+  <li><strong class="lead">Engineered</strong> ASR pipeline delivering <strong class="metric">~95% cost reduction</strong> (projected ~$2M to ~$100K annual cost reduction).</li>
+  <li><strong class="lead">Delivered</strong> multi-stage LLM workflow for regulatory checks (risk tolerance & consent) with human in the loop validation; <strong class="metric">60% less manual review</strong> while meeting audit needs.</li>
   <li><strong class="lead">Sponsored and advised</strong> InfoNCE fine-tuning (contrastive + domain adaptation); project owner achieved a <strong class="metric">70%</strong> reduction in vector storage.</li>
 </ul>
 
 <div class="position">
-  <span class="company">Northwestern Mutual Data Science Institute</span> - Research Subcommittee Member<br>
-  <span class="role">(2023-Present)</span>
+  <span class="company">Northwestern Mutual Data Science Institute</span> — Research Subcommittee Member (2023–Present)
 </div>
 <ul>
-  <li><strong class="lead">Evaluated</strong> research grant proposals and contributed to funding decisions.</li>
-  <li><strong class="lead">Advised</strong> funded teams on research design, model evaluation, and reporting.</li>
-  <li><strong class="lead">Presented</strong> AI initiatives via workshops and panel discussions.</li>
+  <li><strong class="lead">Reviewed & advised</strong> ML/AI grants, guided experimental design and evaluation; delivered workshops and pannel discussions on ML/AI.</li>
 </ul>
 
 <div class="position">
-  <span class="company">Hanover Investment Advisors</span> - Statistical Programming Analyst<br>
-  <span class="role">(2014-2017)</span>
+  <span class="company">Hanover Investment Advisors</span> — Statistical Programming Analyst (2014–2017)
 </div>
 <ul>
-  <li><strong class="lead">Analyzed</strong> commercial real-estate datasets for pension funds and banks to inform portfolio allocation and risk analysis.</li>
+  <li><strong class="lead">Analyzed</strong> commercial real-estate datasets to inform portfolio allocation and risk modeling for institutional clients.</li>
 </ul>
 
-<h2>PROJECTS AND OPEN SOURCE</h2>
-
+<h2>SELECTED PROJECTS</h2>
 <div class="position">
-  <span class="company">Medical Speech Recognition via Shallow Fusion</span> - <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION">GitHub</a>
+  <span class="company">Medical Speech Recognition via Shallow Fusion</span> — <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION">GitHub</a>
 </div>
 <ul>
-  <li><strong class="lead">Trained</strong> on 3.6B PubMed tokens; released models, code, evaluation, and fusion framework.</li>
-  <li><strong class="metric">8.5% relative</strong> WER improvement by fusing Whisper with a domain-adapted GPT-2 language model.</li>
-</ul>
+  <li><strong class="lead">Implemented</strong> shallow fusion algorithm integrating Whisper ASR with domain-adapted GPT-2 through custom LogitsProcessor; achieved <strong class="metric">8.5% relative WER reduction</strong> (p=0.024) on medical speech using beam search integration.</li>
+  <li><strong class="lead">Built</strong> comprehensive evaluation framework with medical terminology normalization, permutation-based significance testing, and domain-specific error analysis; released models and complete implementation.</li></ul>
+
 
 <div class="position">
-  <span class="company">IR Concept Erasure</span> - <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE">GitHub</a>
+  <span class="company">GPT‑2 Domain Adaptation</span> — <a href="https://huggingface.co/cwestnedge">Hugging Face</a>
 </div>
 <ul>
-  <li><strong class="lead">Developed</strong> a debiasing method to remove unwanted concepts in embedding spaces.</li>
-  <li><strong class="metric">42% reduction</strong> in trigger hits while maintaining retrieval quality.</li>
+  <li><strong class="lead">Fine-tuned</strong> GPT-2 on 3.6B PubMed tokens using production-grade training pipeline with mixed precision (FP16), gradient accumulation (128 effective batch size), and fault-tolerant checkpointing.</li>
+  <li><strong class="lead">Implemented</strong> distributed training optimizations including cosine scheduling with linear warmup, selective weight decay, and automatic checkpoint recovery; achieved stable convergence at 131K tokens/batch.</li>
 </ul>
 
 <div class="position">
-  <span class="company">Technical Writing and Research</span> - <a href="https://donkeyanaphora.github.io">Website</a>
+  <span class="company">IR Concept Erasure</span> — <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE">GitHub</a>
 </div>
 <ul>
-  <li><strong class="lead">Wrote</strong> on medical ASR adaptation, creative evaluation, projection methods, and alignment research.</li>
+  <li><strong class="lead">Developed</strong> debiasing method using projection-based concept removal in embedding spaces; <strong class="metric">42% reduction</strong> in bias triggers while maintaining 98% retrieval quality.</li>
 </ul>
+
+
 
 <h2>EDUCATION</h2>
-
 <div class="position">
   <span class="company">University of Chicago</span> - B.A., Philosophy (2018)<br>
   <span class="role">Relevant coursework: Logic; Probability and Statistics; Dynamic Semantics</span>
@@ -133,15 +133,6 @@
   <span class="company">University of Wisconsin-Milwaukee</span> - Mathematics Coursework (2024-Present)<br>
   <span class="role">Completed: Linear Algebra; In progress: Calculus III</span>
 </div>
-
-<h2>RESEARCH INTERESTS</h2>
-<ul>
-  <li>Robustness and alignment</li>
-  <li>Controllable generation and activation steering</li>
-  <li>Adversarial machine learning</li>
-  <li>Creative AI</li>
-  <li>Computational linguistics and formal semantics</li>
-</ul>
 
 </body>
 </html>
