@@ -11,6 +11,7 @@
       line-height: 1.5;
       color: #333;
       font-size: 11pt;
+      word-break: break-word;
     }
     h1 { 
       font-size: 20pt; 
@@ -44,6 +45,8 @@
     @media print {
       body { margin: 20px; max-width: 100%; }
       a { color: #000; }
+      h2 { page-break-after: avoid; }
+      .position, .position + ul, .project-title, .project-title + ul { page-break-inside: avoid; }
     }
   </style>
 </head>
@@ -51,15 +54,15 @@
 
 <h1>COLLINS WESTNEDGE</h1>
 <div class="header-info">
-  Chicago, IL · cwestnedge@gmail.com · 
-  <a href="https://www.linkedin.com/in/collins-westnedge/">LinkedIn</a> · 
-  <a href="https://donkeyanaphora.github.io">Website</a> · 
-  <a href="https://github.com/donkeyanaphora">GitHub</a> · 
+  Chicago, IL &middot; cwestnedge@gmail.com &middot; 
+  <a href="https://www.linkedin.com/in/collins-westnedge/">LinkedIn</a> &middot; 
+  <a href="https://donkeyanaphora.github.io">Website</a> &middot; 
+  <a href="https://github.com/donkeyanaphora">GitHub</a> &middot; 
   <a href="https://huggingface.co/cwestnedge">Hugging Face</a>
 </div>
 
 <!-- Optional one-line tagline (uncomment to use)
-<p style="color:#555;">Senior Data Scientist focused on LLM/RAG, ASR, and evaluation; sole DS owner of a company-wide CSR RAG app (A/B: ~30 days → <strong class="metric">7 minutes</strong>; ASR cost −<strong class="metric">95%</strong>).</p>
+<p style="color:#555;">I build production AI: I run the company’s customer-service knowledge app, cut testing from a month to <strong class="metric">7 minutes</strong>, and cut speech-to-text costs by about <strong class="metric">95%</strong>.</p>
 -->
 
 <h2>Skills</h2>
@@ -72,19 +75,18 @@
 
 <div class="position">
   <span class="company">Northwestern Mutual</span> &mdash; Data Science &amp; Analytics<br>
-  <span class="role">Senior Data Scientist (2022–Present) · Data Scientist (2021–2022)</span>
+  <span class="role">Senior Data Scientist (2022&ndash;Present) &middot; Data Scientist (2021&ndash;2022)</span>
 </div>
 <ul>
-  <li>Owned the Customer Service Representative (CSR)-facing Retrieval-Augmented Generation (RAG) platform as the sole data scientist; implemented automated evaluation that reduced A/B testing cycles from ~30 days to <strong class="metric">7 minutes</strong>; shipped FINRA-compliant prompts; supports all CSRs.</li>
+  <li>Owned the Customer Service Representative (CSR) facing Retrieval-Augmented Generation (RAG) platform as the sole data scientist; implemented automated evaluation that reduced A/B testing cycles from ~30 days to <strong class="metric">7 minutes</strong>; supports all CSRs.</li>
   <li>Built and validated an Automatic Speech Recognition (ASR) pipeline projected to reduce annual spend from ~$2M to <strong>~$100K</strong> (&minus;<strong class="metric">95%</strong>); led rollout planning and validation.</li>
   <li>Built a multi-stage LLM pipeline for compliance (risk tolerance and consent) that reduced manual review time and increased coverage with human-in-the-loop controls.</li>
-  <li>Sponsored and advised InfoNCE fine-tuning (contrastive + domain adaptation); project owner achieved 70% vector storage reduction.</li>
-  
+  <li>Sponsored and advised InfoNCE fine-tuning (contrastive + domain adaptation); project owner achieved a <strong class="metric">70%</strong> reduction in vector storage.</li>
 </ul>
 
 <div class="position">
   <span class="company">Northwestern Mutual Data Science Institute</span> &mdash; Research Subcommittee Member<br>
-  <span class="role">(2023–Present)</span>
+  <span class="role">(2023&ndash;Present)</span>
 </div>
 <ul>
   <li>Evaluated research grant proposals and contributed to funding decisions.</li>
@@ -94,7 +96,7 @@
 
 <div class="position">
   <span class="company">Hanover Investment Advisors</span> &mdash; Statistical Programming Analyst<br>
-  <span class="role">(2014–2017)</span>
+  <span class="role">(2014&ndash;2017)</span>
 </div>
 <ul>
   <li>Analyzed commercial real-estate datasets for pension funds and banks to inform portfolio allocation and risk analysis.</li>
@@ -129,8 +131,16 @@
 </ul>
 
 <h2>Education</h2>
-<p><strong>University of Chicago</strong> — B.A., Philosophy (2018). Relevant coursework: Logic; Probability &amp; Statistics; Dynamic Semantics</p>
-<p><strong>University of Wisconsin–Milwaukee</strong> — Mathematics Coursework (2024–Present). Completed: Linear Algebra; In progress: Calculus III</p>
+
+<div class="position">
+  <span class="company">University of Chicago</span> &mdash; B.A., Philosophy (2018)<br>
+  <span class="role">Relevant coursework: Logic; Probability &amp; Statistics; Dynamic Semantics</span>
+</div>
+
+<div class="position">
+  <span class="company">University of Wisconsin&ndash;Milwaukee</span> &mdash; Mathematics Coursework (2024&ndash;Present)<br>
+  <span class="role">Completed: Linear Algebra; In progress: Calculus III</span>
+</div>
 
 <h2>Research Interests</h2>
 <ul>
