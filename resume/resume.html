@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Collins Westnedge - Resume (Shortened)</title>
+  <meta charset="UTF-8" />
+  <title>Collins Westnedge — Resume (Short)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     /* Minimal, readable, ATS-friendly */
     * { box-sizing: border-box; }
@@ -15,11 +16,14 @@
       line-height: 1.5;
       overflow-wrap: anywhere;
       word-break: break-word;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     h1 {
       font-size: 16pt;
       font-weight: 700;
       margin: 0 0 8px 0;
+      letter-spacing: 0.2px;
     }
     h2 {
       font-size: 11pt;
@@ -47,54 +51,48 @@
       .position, .position + ul { page-break-inside: avoid; }
     }
   </style>
-
-  <!-- <style>
-    body {
-      margin: auto;
-      max-width: 800px;
-    }
-  </style> -->
 </head>
 <body>
 
 <h1>COLLINS WESTNEDGE</h1>
 <div class="header-info">
-  Chicago, IL | cwestnedge@gmail.com |
-  <a href="https://www.linkedin.com/in/collins-westnedge/">LinkedIn</a> |
-  <a href="https://donkeyanaphora.github.io">Website</a> |
-  <a href="https://github.com/donkeyanaphora">GitHub</a> |
+  Chicago, IL &nbsp;|&nbsp;
+  <a href="mailto:cwestnedge@gmail.com">cwestnedge@gmail.com</a> &nbsp;|&nbsp;
+  <a href="https://www.linkedin.com/in/collins-westnedge/">LinkedIn</a> &nbsp;|&nbsp;
+  <a href="https://donkeyanaphora.github.io">Website</a> &nbsp;|&nbsp;
+  <a href="https://github.com/donkeyanaphora">GitHub</a> &nbsp;|&nbsp;
   <a href="https://huggingface.co/cwestnedge">Hugging Face</a>
 </div>
 
 <h2>SKILLS</h2>
 <p class="skills-line"><strong>Programming:</strong> Python (PyTorch, Transformers, NumPy, pandas, scikit-learn), SQL, Git</p>
 <p class="skills-line"><strong>LLM/NLP:</strong> RAG, prompt engineering, fine-tuning (mixed precision, grad accumulation), shallow fusion for ASR, activation steering, debiasing, contrastive learning</p>
-<p class="skills-line"><strong>MLOps & Data:</strong> Experiment design & permutation tests, calibration, distributed training, MLflow, Databricks/Spark, Azure (Cognitive Search, Document Intelligence), Kubernetes, HF Hub</p>
+<p class="skills-line"><strong>MLOps &amp; Data:</strong> Experiment design &amp; permutation tests, calibration, distributed training, MLflow, Databricks/Spark, Azure (Cognitive Search, Document Intelligence), Kubernetes, Hugging Face Hub</p>
 
 <h2>EXPERIENCE</h2>
 <div class="position">
-  <span class="company">Northwestern Mutual</span> — Data Science & Analytics<br>
-  <span class="role">Senior Data Scientist (2022–Present) | Data Scientist (2021–2022)</span>
+  <span class="company">Northwestern Mutual</span> — Data Science &amp; Analytics<br />
+  <span class="role">Senior Data Scientist (2022–Present) &nbsp;|&nbsp; Data Scientist (2021–2022)</span>
 </div>
 <ul>
-  <li><strong class="lead">Built & launched</strong> CSR-facing RAG platform as sole DS; automated eval cut A/B cycles from <strong class="metric">30 days to 7 minutes</strong>; adopted across CSR org.</li>
-  <li><strong class="lead">Engineered</strong> ASR pipeline delivering <strong class="metric">~95% cost reduction</strong> (projected ~$2M to ~$100K annual cost reduction).</li>
-  <li><strong class="lead">Delivered</strong> multi-stage LLM workflow for regulatory checks (risk tolerance & consent) with human in the loop validation; <strong class="metric">60% less manual review</strong> while meeting audit needs.</li>
-  <li><strong class="lead">Sponsored and advised</strong> InfoNCE fine-tuning (contrastive + domain adaptation); project owner achieved a <strong class="metric">70%</strong> reduction in vector storage.</li>
+  <li><span class="lead">Built &amp; launched</span> a CSR (customer service)–facing RAG platform as sole DS; automated evaluation cut A/B cycles from <span class="metric">30 days to 7 minutes</span> and was adopted across the CSR org</li>
+  <li><span class="lead">Engineered</span> an ASR pipeline that cut projected annual run-rate from <span class="metric">~$2M to ~$100K (~95%)</span></li>
+  <li><span class="lead">Delivered</span> a multi-stage LLM workflow for regulatory checks (risk tolerance &amp; consent) with human-in-the-loop validation; <span class="metric">60% less manual review</span> while meeting audit requirements</li>
+  <li><span class="lead">Sponsored &amp; advised</span> InfoNCE fine-tuning (contrastive + domain adaptation); project owner achieved a <span class="metric">70%</span> reduction in vector storage</li>
 </ul>
 
 <div class="position">
   <span class="company">Northwestern Mutual Data Science Institute</span> — Research Subcommittee Member (2023–Present)
 </div>
 <ul>
-  <li><strong class="lead">Reviewed & advised</strong> ML/AI grants, guided experimental design and evaluation; delivered workshops and pannel discussions on ML/AI.</li>
+  <li><span class="lead">Reviewed &amp; advised</span> ML/AI grants, guided experimental design and evaluation, and delivered workshops and panel discussions on ML/AI</li>
 </ul>
 
 <div class="position">
   <span class="company">Hanover Investment Advisors</span> — Statistical Programming Analyst (2014–2017)
 </div>
 <ul>
-  <li><strong class="lead">Analyzed</strong> commercial real-estate datasets to inform portfolio allocation and risk modeling for institutional clients.</li>
+  <li><span class="lead">Analyzed</span> commercial real-estate datasets to inform portfolio allocation and risk modeling for institutional clients</li>
 </ul>
 
 <h2>SELECTED PROJECTS</h2>
@@ -102,35 +100,33 @@
   <span class="company">Medical Speech Recognition via Shallow Fusion</span> — <a href="https://github.com/donkeyanaphora/SHALLOW_FUSION">GitHub</a>
 </div>
 <ul>
-  <li><strong class="lead">Implemented</strong> shallow fusion algorithm integrating Whisper ASR with domain-adapted GPT-2 through custom LogitsProcessor; achieved <strong class="metric">8.5% relative WER reduction</strong> (p=0.024) on medical speech using beam search integration.</li>
-  <li><strong class="lead">Built</strong> comprehensive evaluation framework with medical terminology normalization, permutation-based significance testing, and domain-specific error analysis; released models and complete implementation.</li></ul>
-
+  <li><span class="lead">Implemented</span> shallow fusion integrating Whisper ASR with domain-adapted GPT-2 via a custom LogitsProcessor; achieved an <span class="metric">8.5% relative WER reduction</span> (p = 0.024) on medical speech using beam-search integration</li>
+  <li><span class="lead">Built</span> an evaluation framework with medical terminology normalization, permutation-based significance testing, and domain-specific error analysis; released models and complete implementation</li>
+</ul>
 
 <div class="position">
-  <span class="company">GPT‑2 Domain Adaptation</span> — <a href="https://huggingface.co/cwestnedge">Hugging Face</a>
+  <span class="company">GPT-2 Domain Adaptation</span> — <a href="https://huggingface.co/cwestnedge">Hugging Face</a>
 </div>
 <ul>
-  <li><strong class="lead">Fine-tuned</strong> GPT-2 on 3.6B PubMed tokens using production-grade training pipeline with mixed precision (FP16), gradient accumulation (128 effective batch size), and fault-tolerant checkpointing.</li>
-  <li><strong class="lead">Implemented</strong> distributed training optimizations including cosine scheduling with linear warmup, selective weight decay, and automatic checkpoint recovery; achieved stable convergence at 131K tokens/batch.</li>
+  <li><span class="lead">Fine-tuned</span> GPT-2 on 3.6B PubMed tokens using a production-grade training pipeline with mixed precision (FP16), gradient accumulation (128 effective batch size), and fault-tolerant checkpointing</li>
+  <li><span class="lead">Implemented</span> distributed training optimizations including cosine scheduling with linear warmup, selective weight decay, and automatic checkpoint recovery; achieved stable convergence at 131K tokens/batch</li>
 </ul>
 
 <div class="position">
   <span class="company">IR Concept Erasure</span> — <a href="https://github.com/donkeyanaphora/IR_CONCEPT_ERASURE">GitHub</a>
 </div>
 <ul>
-  <li><strong class="lead">Developed</strong> debiasing method using projection-based concept removal in embedding spaces; <strong class="metric">42% reduction</strong> in bias triggers while maintaining 98% retrieval quality.</li>
+  <li><span class="lead">Developed</span> a debiasing method using projection-based concept removal in embedding spaces; <span class="metric">42% reduction</span> in bias triggers while maintaining 98% retrieval quality</li>
 </ul>
-
-
 
 <h2>EDUCATION</h2>
 <div class="position">
-  <span class="company">University of Chicago</span> - B.A., Philosophy (2018)<br>
+  <span class="company">University of Chicago</span> — B.A., Philosophy (2018)<br />
   <span class="role">Relevant coursework: Logic; Probability and Statistics; Dynamic Semantics</span>
 </div>
 
 <div class="position">
-  <span class="company">University of Wisconsin-Milwaukee</span> - Mathematics Coursework (2024-Present)<br>
+  <span class="company">University of Wisconsin–Milwaukee</span> — Mathematics Coursework (2024–Present)<br />
   <span class="role">Completed: Linear Algebra; In progress: Calculus III</span>
 </div>
 
