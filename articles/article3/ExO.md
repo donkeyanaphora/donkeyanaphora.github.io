@@ -3,7 +3,7 @@ title: "Extra-Ordinary Language"
 description: "An exploration of literary and creative intelligence and things I wish language models did better."
 slug: "article3"
 date: "2025-07-02"
-draft: true
+draft: false
 image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 ---
 
