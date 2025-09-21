@@ -3,7 +3,7 @@ title: "Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges"
 description: "An exploration of shallow fusion as a method to address data scarcity and integration in specialized domains"
 slug: "article1"
 date: "2025-08-26"
-draft: true
+draft: false
 image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 ---
 
