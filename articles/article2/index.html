@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Using Linear Models in Modern
-Applications - Collins Westnedge</title>
+  <title>Closed-Form Logit Steering - Collins Westnedge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   
   <!-- Mobile app settings -->
@@ -12,11 +11,10 @@ Applications - Collins Westnedge</title>
 
   <!-- SEO essentials -->
   <meta name="google-site-verification" content="hmW81pKLkPLJXY0kFe-I1vNXno-xD9XbEWyZyGfz-SA" />
-  <meta name="description" content="A closer look at how using least
-squares projection can offer a stable alternative to semantic
-filtering.">
+  <meta name="description" content="Minimal derivation: the smallest
+change to x so a sigmoid model outputs a chosen probability p.">
   <meta name="author" content="Collins Westnedge">
-  <link rel="canonical" href="https://donkeyanaphora.github.io/articles/article2/">
+  <link rel="canonical" href="https://donkeyanaphora.github.io/articles/logit-steering/">
   
   <!-- Hide drafts from search engines -->
   <meta name="robots" content="noindex, nofollow">
@@ -33,12 +31,11 @@ filtering.">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://donkeyanaphora.github.io/articles/article2/">
-  <meta property="og:title" content="Using Linear Models in Modern
-Applications">
-  <meta property="og:description" content="A closer look at how using
-least squares projection can offer a stable alternative to semantic
-filtering.">
+  <meta property="og:url" content="https://donkeyanaphora.github.io/articles/logit-steering/">
+  <meta property="og:title" content="Closed-Form Logit Steering">
+  <meta property="og:description" content="Minimal derivation: the
+smallest change to x so a sigmoid model outputs a chosen probability
+p.">
   <meta property="og:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
   <meta property="og:site_name" content="The Latent Realm">
   <meta property="article:author" content="Collins Westnedge">
@@ -46,12 +43,11 @@ filtering.">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://donkeyanaphora.github.io/articles/article2/">
-  <meta name="twitter:title" content="Using Linear Models in Modern
-Applications">
-  <meta name="twitter:description" content="A closer look at how using
-least squares projection can offer a stable alternative to semantic
-filtering.">
+  <meta name="twitter:url" content="https://donkeyanaphora.github.io/articles/logit-steering/">
+  <meta name="twitter:title" content="Closed-Form Logit Steering">
+  <meta name="twitter:description" content="Minimal derivation: the
+smallest change to x so a sigmoid model outputs a chosen probability
+p.">
   <meta name="twitter:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
 
   <!-- MathJax config -->
@@ -87,132 +83,101 @@ filtering.">
   <!-- Markdown content -->
   <main class="content">
     <article class="markdown-body">
-      <h1 id="using-linear-models-in-modern-applications">📐 Using
-      Linear Models in Modern Applications</h1>
+      <h1 id="closed-form-logit-steering">Closed-Form Logit
+      Steering</h1>
       <p><strong>COLLINS WESTNEDGE</strong><br />
-      <em>MAY 16, 2025</em></p>
-      <h2 id="introduction">Introduction</h2>
-      <p>I’ve been really busy so this will be a little informal but
-      <strong>STILL WORTH THE READ</strong> because in the day to day
-      landscape of people talking agentic AI, RAG systems, vector
-      databases etc things like least squares regression and linear
-      models tend to feel like dusty sklearn imports or the stuff of
-      technical coding interviews. Despite the heavy focus on foundation
-      model integration classic linear tools like ordinary least squares
-      regression and its projection formula corrolary remain
-      surprisingly powerful. By framing modern tasks like semantic
-      filtering and bias removal as geometric problems, it becomes clear
-      why simple formulas like</p>
-      <p><span class="math display">\[
-      X\,(X^{\!\top}X)^{+}X^{\!\top}
-      \]</span></p>
-      <p>work so well. The focus of this article is show how ordinary
-      least squares offers insights as well as stable and theoretically
-      grounded solution to semantic filtering in modern search and
-      retrieval systems.</p>
-      <h2 id="linalg-recap">Linalg Recap</h2>
-      <p><em>lorem ipsum</em></p>
-      <h3 id="key-formulas">Key Formulas</h3>
-      <table>
-      <colgroup>
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-      </colgroup>
-      <thead>
-      <tr>
-      <th>Formula</th>
-      <th>Intuitive role</th>
-      <th>Visual cue</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-      <td><span class="math inline">\(X^{+} =
-      (X^{\!\top}X)^{-1}X^{\!\top}\)</span></td>
-      <td>Recipe for weights. Solves <span
-      class="math inline">\(\displaystyle\min_{\beta}\,\lVert y -
-      X\beta\rVert_2^{\,2}\)</span>.</td>
-      <td>How much of each arrow do I need?</td>
-      </tr>
-      <tr>
-      <td><span class="math inline">\(\hat{\beta}=X^{+}y\)</span></td>
-      <td>Coordinates along the arrows (scalar steps to reach the
-      closest point).</td>
-      <td>Labels on the sub-space axes.</td>
-      </tr>
-      <tr>
-      <td><span class="math inline">\(P_X = X\,X^{+}\)</span></td>
-      <td>Snap-to-span operator (orthogonal projector: symmetric,
-      idempotent).</td>
-      <td>Elevator lowering you to the sheet.</td>
-      </tr>
-      <tr>
-      <td><span class="math inline">\(\hat{y}=P_Xy =
-      X\hat{\beta}\)</span></td>
-      <td>Foot of the perpendicular — the unique point in <span
-      class="math inline">\(\operatorname{span}(X)\)</span> minimizing
-      <span class="math inline">\(\lVert
-      y-\hat{y}\rVert_2\)</span>.</td>
-      <td>Black dot where the plumb-line hits.</td>
-      </tr>
-      <tr>
-      <td><span class="math inline">\(r = y-\hat{y} =
-      (I-P_X)\,y\)</span></td>
-      <td>Residual, orthogonal to every column of <span
-      class="math inline">\(X\)</span> (<span
-      class="math inline">\(X^{\!\top}r=0\)</span>).</td>
-      <td>Red straight-down arrow.</td>
-      </tr>
-      </tbody>
-      </table>
-      <h3 id="theorems">Theorems</h3>
-      <p><strong>Best Approximation Theorem</strong></p>
-      <p>Let <span
-      class="math inline">\(W\subseteq\mathbb{R}^{n}\)</span>, <span
-      class="math inline">\(y\in\mathbb{R}^{n}\)</span>, and <span
-      class="math inline">\(\widehat{y}=\operatorname{proj}_{W}(y)\)</span>.
-      Then <span class="math display">\[
-      \lVert y-\widehat{y}\rVert_2 \;&lt;\; \lVert y-v\rVert_2,
-      \qquad\forall\,v\in W,\;v\neq\widehat{y}.
-      \]</span> Hence <span class="math inline">\(y-\widehat{y}\in
-      W^{\perp}\)</span> and is the closest vector in <span
-      class="math inline">\(W^{\perp}\)</span> to <span
-      class="math inline">\(y\)</span>.</p>
-      <h3 id="take-away-corollary">Take-away Corollary</h3>
-      <p>If <span
-      class="math inline">\(\mathbf{u}_{\mathrm{proj}}=\operatorname{proj}_{V}(\mathbf{u})\)</span>,
-      then <span class="math display">\[
-      \mathbf{u}_{\mathrm{new}}
-      =\mathbf{u}-\mathbf{u}_{\mathrm{proj}}
-      \in V^{\perp}.
-      \]</span> Thus <span
-      class="math inline">\(\mathbf{u}_{\mathrm{new}}\)</span> is the
-      closest-possible embedding to <span
-      class="math inline">\(\mathbf{u}\)</span> that is perfectly
-      orthogonal to <span class="math inline">\(V\)</span>.</p>
-      <h4 id="tldr">TL;DR</h4>
-      <p>Define <span class="math display">\[
-      \mathbf{u}_{\mathrm{new}}
-      =\arg\min_{w\in V^{\perp}}\lVert\mathbf{u}-w\rVert
-      =\operatorname{proj}_{V^{\perp}}(\mathbf{u}).
-      \]</span></p>
-      <ol type="1">
-      <li><strong>Minimal distortion</strong> — <span
-      class="math inline">\(\mathbf{u}_{\mathrm{new}}\)</span> is the
-      closest vector in <span class="math inline">\(V^{\perp}\)</span>
-      to <span class="math inline">\(\mathbf{u}\)</span>.<br />
+      <em>OCT 8, 2025</em></p>
+      <hr />
+      <h2 id="problem">Problem</h2>
+      <p>For a binary classifier with a sigmoid activation, show the
+      relationship between input <span class="math inline">\(x\)</span>
+      and an augmented input <span class="math inline">\(x&#39;\)</span>
+      that achieves a desired probability <span
+      class="math inline">\(p\)</span>, and derive a closed-form
+      solution.</p>
+      <hr />
+      <h2 id="identities-intuition">Identities &amp; Intuition</h2>
+      <h3 id="model-components">Model components</h3>
+      <ul>
+      <li><p><strong>Sigmoid:</strong> <span
+      class="math inline">\(\sigma(z)=\dfrac{1}{1+e^{-z}}\)</span><br />
+      score <span class="math inline">\(\to\)</span> probability (e.g.,
+      <span class="math inline">\(z=0 \Rightarrow
+      p=0.5\)</span>)</p></li>
+      <li><p><strong>Score:</strong> <span
+      class="math inline">\(z=w^\top x + b\)</span><br />
+      linear combination of features plus bias term</p></li>
+      <li><p><strong>Logit (log-odds):</strong> <span
+      class="math inline">\(\operatorname{logit}(p)=\ln\!\left(\dfrac{p}{1-p}\right)\)</span><br />
+      probability <span class="math inline">\(\to\)</span> linear score
+      (inverse of <span class="math inline">\(\sigma\)</span>)</p></li>
+      </ul>
+      <h3 id="geometry">Geometry</h3>
+      <ul>
+      <li><span class="math inline">\(H=\{\,x\in\mathbb{R}^n:\; w^\top x
+      + b = 0\,\}\)</span> — decision boundary (<span
+      class="math inline">\(p=0.5\)</span>)<br />
       </li>
-      <li><strong>Guaranteed orthogonality</strong> — <span
-      class="math inline">\(\langle\mathbf{u}_{\mathrm{new}}, v\rangle =
-      0\)</span> for every <span class="math inline">\(v\in
-      V\)</span>.</li>
+      <li><span class="math inline">\(w \perp H\)</span> — <span
+      class="math inline">\(w\)</span> is normal to <span
+      class="math inline">\(H\)</span></li>
+      </ul>
+      <h3 id="goal">Goal</h3>
+      <p>Move <span class="math inline">\(x\)</span> along <span
+      class="math inline">\(w\)</span> by some <span
+      class="math inline">\(\lambda\)</span>: <span
+      class="math display">\[
+      x&#39; = x + \lambda w
+      \]</span> with <span class="math display">\[
+      \operatorname{logit}(p) = w^\top x&#39; + b.
+      \]</span></p>
+      <hr />
+      <h2 id="derivation">Derivation</h2>
+      <ol type="1">
+      <li><p><strong>Plug in <span class="math inline">\(x&#39;\)</span>
+      (use <span class="math inline">\(w^\top
+      w=\|w\|^2\)</span>):</strong> <span class="math display">\[
+      \begin{aligned}
+      \operatorname{logit}(p)
+      &amp;= w^\top(x+\lambda w)+b \\
+      &amp;= w^\top x + \lambda\, w^\top w + b \\
+      &amp;= w^\top x + \lambda\|w\|^{2} + b.
+      \end{aligned}
+      \]</span></p></li>
+      <li><p><strong>Solve for <span
+      class="math inline">\(\lambda\)</span>:</strong> <span
+      class="math display">\[
+      \lambda
+      = \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}.
+      \]</span></p></li>
+      <li><p><strong>Substitute <span
+      class="math inline">\(\lambda\)</span> into <span
+      class="math inline">\(x&#39; = x + \lambda w\)</span>:</strong>
+      <span class="math display">\[
+      x&#39; = x + \frac{\operatorname{logit}(p) - (w^\top x +
+      b)}{\|w\|^{2}}\,w.
+      \]</span></p></li>
       </ol>
-      <h2 id="visual-intuition">Visual Intuition</h2>
-      <h2 id="mean-subtraction-vs.-projection-residuals">Mean
-      Subtraction vs. Projection Residuals</h2>
-      <h2 id="examples">Examples</h2>
-      <h2 id="conclusion">Conclusion</h2>
+      <hr />
+      <h2 id="final-formula">Final Formula</h2>
+      <p><span class="math display">\[
+      \boxed{
+      x&#39; = x + \frac{\operatorname{logit}(p) - (w^\top x +
+      b)}{\|w\|^{2}}\,w
+      }
+      \]</span></p>
+      <p><em>Where <span class="math inline">\(x&#39; = x + \lambda
+      w\)</span> achieves the target probability <span
+      class="math inline">\(p\)</span>.</em></p>
+      <hr />
+      <h2 id="applications">Applications</h2>
+      <ul>
+      <li>counterfactual creation ?<br />
+      </li>
+      <li>debiasing / concept erasure ✓<br />
+      </li>
+      <li>hard negative mining ✓</li>
+      </ul>
     </article>
   </main>
 
