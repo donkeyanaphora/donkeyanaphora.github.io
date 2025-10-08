@@ -252,6 +252,20 @@ h2 {
   transition: color .25s ease;
 }
 
+h4 {
+  margin: 3rem 0 0.75rem 0;  /* BIG gap before h4 */
+  font-size: 1.1rem;
+  color: var(--link);
+}
+
+h4:first-child {
+  margin-top: 0.5rem;
+}
+
+.card {
+  margin: 0.75rem 0;  /* small gap between cards */
+}
+
 /* ========== LAYOUT ========== */
 #wrapper {
   width: 60%;
