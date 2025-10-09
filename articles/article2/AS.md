@@ -33,6 +33,7 @@ For a binary classifier with a sigmoid activation, show the relationship between
   probability $\to$ linear score (inverse of $\sigma$)
 
 ### Geometry
+
 - $H=\{\,x\in\mathbb{R}^n:\; w^\top x + b = 0\,\}$ — decision boundary ($p=0.5$)  
 - $w \perp H$ — $w$ is normal to $H$
 
@@ -84,6 +85,16 @@ $$
 *Where $x' = x + \lambda w$ achieves the target probability $p$.*
 
 ---
+
+## Interactive Demo
+
+[![Interactive 3D Visualization](https://www.desmos.com/calc-3d-thumbs/production/version/vneb3kclie/28dcc360-a562-11f0-8a7e-3186abbe9703.png)](https://www.desmos.com/3d/a8l7iozpkg)
+
+<p style="text-align: center; font-size: 0.9em; color: #6b7280; margin-top: 0.5rem;">
+<em>Interactive 3D visualization</em>
+</p>
+
+--- 
 
 ## Applications
 
