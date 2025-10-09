@@ -91,7 +91,9 @@ $$
 [![Interactive 3D Visualization](https://www.desmos.com/calc-3d-thumbs/production/version/vneb3kclie/28dcc360-a562-11f0-8a7e-3186abbe9703.png)](https://www.desmos.com/3d/a8l7iozpkg)
 
 <p style="text-align: center; font-size: 0.9em; color: #6b7280; margin-top: 0.5rem;">
-<em>Interactive 3D visualization</em>
+<a href="https://www.desmos.com/3d/a8l7iozpkg" style="color: #2563eb; text-decoration: none;">
+<em>Click to interact</em>
+</a>
 </p>
 
 --- 
