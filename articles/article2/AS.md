@@ -2,7 +2,7 @@
 title: "Closed-Form Logit Steering"
 description: "Minimal derivation: the smallest change to x so a sigmoid model outputs a chosen probability p."
 slug: "logit-steering"
-date: "2025-05-16"
+date: "2025-10-08"
 draft: true
 image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 ---
@@ -16,7 +16,7 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 
 ## Goal
 
-The goal is to show how to transform some input $x$ to achieve any target probability $p$ in a binary classifier with a sigmoid activation function.
+The goal is to show how to transform some input $x$ to achieve any target probability $p$ in a linear binary classifier with a sigmoid activation function.
 
 ---
 
@@ -37,7 +37,7 @@ The goal is to show how to transform some input $x$ to achieve any target probab
 - $H=\{\,x\in\mathbb{R}^n:\; w^\top x + b = 0\,\}$ — decision boundary ($p=0.5$)  
 - $w \perp H$ — $w$ is normal to $H$
 
-### Goal
+### Approach
 Move $x$ along $w$ by some $\lambda$:
 $$
 x' = x + \lambda w
@@ -51,7 +51,9 @@ $$
 
 ## Derivation
 
-1. **Plug in $x'$ (use $w^\top w=\|w\|^2$):**
+1. **Set up the constraint:** Since the model's score is $z = w^\top x' + b$ and we want probability $p$, we require $w^\top x' + b = \operatorname{logit}(p)$.
+
+2. **Plug in $x'$ (use $w^\top w=\|w\|^2$):**
 $$
 \begin{aligned}
 \operatorname{logit}(p)
@@ -61,13 +63,13 @@ $$
 \end{aligned}
 $$
 
-2. **Solve for $\lambda$:**
+3. **Solve for $\lambda$:**
 $$
 \lambda
 = \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}.
 $$
 
-3. **Substitute $\lambda$ into $x' = x + \lambda w$:**
+4. **Substitute $\lambda$ into $x' = x + \lambda w$:**
 $$
 x' = x + \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}\,w.
 $$

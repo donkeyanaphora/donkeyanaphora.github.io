@@ -39,7 +39,7 @@ p.">
   <meta property="og:image" content="https://donkeyanaphora.github.io/assets/images/thumbnail.png">
   <meta property="og:site_name" content="The Latent Realm">
   <meta property="article:author" content="Collins Westnedge">
-  <meta property="article:published_time" content="2025-05-16">
+  <meta property="article:published_time" content="2025-10-08">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -91,8 +91,8 @@ p.">
       <h2 id="goal">Goal</h2>
       <p>The goal is to show how to transform some input <span
       class="math inline">\(x\)</span> to achieve any target probability
-      <span class="math inline">\(p\)</span> in a binary classifier with
-      a sigmoid activation function.</p>
+      <span class="math inline">\(p\)</span> in a linear binary
+      classifier with a sigmoid activation function.</p>
       <hr />
       <h2 id="identities-intuition">Identities &amp; Intuition</h2>
       <h3 id="model-components">Model components</h3>
@@ -119,7 +119,7 @@ p.">
       class="math inline">\(w\)</span> is normal to <span
       class="math inline">\(H\)</span></li>
       </ul>
-      <h3 id="goal-1">Goal</h3>
+      <h3 id="approach">Approach</h3>
       <p>Move <span class="math inline">\(x\)</span> along <span
       class="math inline">\(w\)</span> by some <span
       class="math inline">\(\lambda\)</span>: <span
@@ -131,6 +131,12 @@ p.">
       <hr />
       <h2 id="derivation">Derivation</h2>
       <ol type="1">
+      <li><p><strong>Set up the constraint:</strong> Since the model’s
+      score is <span class="math inline">\(z = w^\top x&#39; +
+      b\)</span> and we want probability <span
+      class="math inline">\(p\)</span>, we require <span
+      class="math inline">\(w^\top x&#39; + b =
+      \operatorname{logit}(p)\)</span>.</p></li>
       <li><p><strong>Plug in <span class="math inline">\(x&#39;\)</span>
       (use <span class="math inline">\(w^\top
       w=\|w\|^2\)</span>):</strong> <span class="math display">\[
