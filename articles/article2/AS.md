@@ -16,7 +16,7 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 
 ## Goal
 
-The goal is to show how to transform some input $x$ to achieve any target probability $p$ in a linear binary classifier with a sigmoid activation function.
+The goal is to derive the closed-form minimal perturbation to an input x that achieves any target probability p ∈ (0,1) in logistic regression.
 
 ---
 
