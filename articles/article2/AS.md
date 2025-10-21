@@ -14,9 +14,9 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 
 ---
 
-## Problem
+## Goal
 
-For a binary classifier with a sigmoid activation, show the relationship between input $x$ and an augmented input $x'$ that achieves a desired probability $p$, and derive a closed-form solution.
+The goal is to show how to transform some input $x$ to achieve any target probability $p$ in a binary classifier with a sigmoid activation function.
 
 ---
 
@@ -24,13 +24,13 @@ For a binary classifier with a sigmoid activation, show the relationship between
 
 ### Model components
 - **Sigmoid:** $\sigma(z)=\dfrac{1}{1+e^{-z}}$  
-  score $\to$ probability (e.g., $z=0 \Rightarrow p=0.5$)
+  maps score to probability (e.g., $z=0 \Rightarrow p=0.5$)
 
 - **Score:** $z=w^\top x + b$  
   linear combination of features plus bias term
 
 - **Logit (log-odds):** $\operatorname{logit}(p)=\ln\!\left(\dfrac{p}{1-p}\right)$  
-  probability $\to$ linear score (inverse of $\sigma$)
+  maps probability to linear score (inverse of $\sigma$)
 
 ### Geometry
 

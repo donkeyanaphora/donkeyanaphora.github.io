@@ -88,29 +88,26 @@ p.">
       <p><strong>COLLINS WESTNEDGE</strong><br />
       <em>OCT 8, 2025</em></p>
       <hr />
-      <h2 id="problem">Problem</h2>
-      <p>For a binary classifier with a sigmoid activation, show the
-      relationship between input <span class="math inline">\(x\)</span>
-      and an augmented input <span class="math inline">\(x&#39;\)</span>
-      that achieves a desired probability <span
-      class="math inline">\(p\)</span>, and derive a closed-form
-      solution.</p>
+      <h2 id="goal">Goal</h2>
+      <p>The goal is to show how to transform some input <span
+      class="math inline">\(x\)</span> to achieve any target probability
+      <span class="math inline">\(p\)</span> in a binary classifier with
+      a sigmoid activation function.</p>
       <hr />
       <h2 id="identities-intuition">Identities &amp; Intuition</h2>
       <h3 id="model-components">Model components</h3>
       <ul>
       <li><p><strong>Sigmoid:</strong> <span
       class="math inline">\(\sigma(z)=\dfrac{1}{1+e^{-z}}\)</span><br />
-      score <span class="math inline">\(\to\)</span> probability (e.g.,
-      <span class="math inline">\(z=0 \Rightarrow
-      p=0.5\)</span>)</p></li>
+      maps score to probability (e.g., <span class="math inline">\(z=0
+      \Rightarrow p=0.5\)</span>)</p></li>
       <li><p><strong>Score:</strong> <span
       class="math inline">\(z=w^\top x + b\)</span><br />
       linear combination of features plus bias term</p></li>
       <li><p><strong>Logit (log-odds):</strong> <span
       class="math inline">\(\operatorname{logit}(p)=\ln\!\left(\dfrac{p}{1-p}\right)\)</span><br />
-      probability <span class="math inline">\(\to\)</span> linear score
-      (inverse of <span class="math inline">\(\sigma\)</span>)</p></li>
+      maps probability to linear score (inverse of <span
+      class="math inline">\(\sigma\)</span>)</p></li>
       </ul>
       <h3 id="geometry">Geometry</h3>
       <ul>
@@ -122,7 +119,7 @@ p.">
       class="math inline">\(w\)</span> is normal to <span
       class="math inline">\(H\)</span></li>
       </ul>
-      <h3 id="goal">Goal</h3>
+      <h3 id="goal-1">Goal</h3>
       <p>Move <span class="math inline">\(x\)</span> along <span
       class="math inline">\(w\)</span> by some <span
       class="math inline">\(\lambda\)</span>: <span
