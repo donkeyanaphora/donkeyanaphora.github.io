@@ -39,6 +39,7 @@ The goal is to derive the closed-form minimal perturbation to an input x that ac
 
 ### Approach
 Move $x$ along $w$ by some $\lambda$:
+
 $$
 x' = x + \lambda w
 $$
@@ -54,6 +55,7 @@ $$
 1. **Set up the constraint:** Since the model's score is $z = w^T x' + b$ and we want probability $p$, we require $w^T x' + b = \operatorname{logit}(p)$.
 
 2. **Plug in $x'$ (use $w^T w=\|w\|^2$):**
+
 $$
 \begin{aligned}
 \operatorname{logit}(p)
@@ -64,12 +66,14 @@ $$
 $$
 
 3. **Solve for $\lambda$:**
+
 $$
 \lambda
 = \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}.
 $$
 
 4. **Substitute $\lambda$ into $x' = x + \lambda w$:**
+
 $$
 x' = x + \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}\,w.
 $$

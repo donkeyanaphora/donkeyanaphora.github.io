@@ -121,8 +121,8 @@ p.">
       <h3 id="approach">Approach</h3>
       <p>Move <span class="math inline">\(x\)</span> along <span
       class="math inline">\(w\)</span> by some <span
-      class="math inline">\(\lambda\)</span>: <span
-      class="math display">\[
+      class="math inline">\(\lambda\)</span>:</p>
+      <p><span class="math display">\[
       x&#39; = x + \lambda w
       \]</span> with <span class="math display">\[
       \operatorname{logit}(p) = w^T x&#39; + b.
@@ -136,29 +136,35 @@ p.">
       require <span class="math inline">\(w^T x&#39; + b =
       \operatorname{logit}(p)\)</span>.</p></li>
       <li><p><strong>Plug in <span class="math inline">\(x&#39;\)</span>
-      (use <span class="math inline">\(w^T w=\|w\|^2\)</span>):</strong>
-      <span class="math display">\[
+      (use <span class="math inline">\(w^T
+      w=\|w\|^2\)</span>):</strong></p></li>
+      </ol>
+      <p><span class="math display">\[
       \begin{aligned}
       \operatorname{logit}(p)
       &amp;= w^T(x+\lambda w)+b \\
       &amp;= w^T x + \lambda\, w^T w + b \\
       &amp;= w^T x + \lambda\|w\|^{2} + b.
       \end{aligned}
-      \]</span></p></li>
-      <li><p><strong>Solve for <span
-      class="math inline">\(\lambda\)</span>:</strong> <span
-      class="math display">\[
+      \]</span></p>
+      <ol start="3" type="1">
+      <li><strong>Solve for <span
+      class="math inline">\(\lambda\)</span>:</strong></li>
+      </ol>
+      <p><span class="math display">\[
       \lambda
       = \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}.
-      \]</span></p></li>
-      <li><p><strong>Substitute <span
+      \]</span></p>
+      <ol start="4" type="1">
+      <li><strong>Substitute <span
       class="math inline">\(\lambda\)</span> into <span
-      class="math inline">\(x&#39; = x + \lambda w\)</span>:</strong>
-      <span class="math display">\[
+      class="math inline">\(x&#39; = x + \lambda
+      w\)</span>:</strong></li>
+      </ol>
+      <p><span class="math display">\[
       x&#39; = x + \frac{\operatorname{logit}(p) - (w^T x +
       b)}{\|w\|^{2}}\,w.
-      \]</span></p></li>
-      </ol>
+      \]</span></p>
       <hr />
       <h2 id="final-formula">Final Formula</h2>
       <p><span class="math display">\[
