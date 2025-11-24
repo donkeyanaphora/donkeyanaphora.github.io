@@ -26,7 +26,7 @@ The goal is to derive the closed-form minimal perturbation to an input x that ac
 - **Sigmoid:** $\sigma(z)=\dfrac{1}{1+e^{-z}}$  
   maps score to probability (e.g., $z=0 \Rightarrow p=0.5$)
 
-- **Score:** $z=w^\top x + b$  
+- **Score:** $z=w^T x + b$  
   linear combination of features plus bias term
 
 - **Logit (log-odds):** $\operatorname{logit}(p)=\ln\!\left(\dfrac{p}{1-p}\right)$  
@@ -34,7 +34,7 @@ The goal is to derive the closed-form minimal perturbation to an input x that ac
 
 ### Geometry
 
-- $H=\{\,x\in\mathbb{R}^n:\; w^\top x + b = 0\,\}$ — decision boundary ($p=0.5$)  
+- $H=\{\,x\in\mathbb{R}^n:\; w^T x + b = 0\,\}$ — decision boundary ($p=0.5$)  
 - $w \perp H$ — $w$ is normal to $H$
 
 ### Approach
@@ -44,34 +44,34 @@ x' = x + \lambda w
 $$
 with
 $$
-\operatorname{logit}(p) = w^\top x' + b.
+\operatorname{logit}(p) = w^T x' + b.
 $$
 
 ---
 
 ## Derivation
 
-1. **Set up the constraint:** Since the model's score is $z = w^\top x' + b$ and we want probability $p$, we require $w^\top x' + b = \operatorname{logit}(p)$.
+1. **Set up the constraint:** Since the model's score is $z = w^T x' + b$ and we want probability $p$, we require $w^T x' + b = \operatorname{logit}(p)$.
 
-2. **Plug in $x'$ (use $w^\top w=\|w\|^2$):**
+2. **Plug in $x'$ (use $w^T w=\|w\|^2$):**
 $$
 \begin{aligned}
 \operatorname{logit}(p)
-&= w^\top(x+\lambda w)+b \\
-&= w^\top x + \lambda\, w^\top w + b \\
-&= w^\top x + \lambda\|w\|^{2} + b.
+&= w^T(x+\lambda w)+b \\
+&= w^T x + \lambda\, w^T w + b \\
+&= w^T x + \lambda\|w\|^{2} + b.
 \end{aligned}
 $$
 
 3. **Solve for $\lambda$:**
 $$
 \lambda
-= \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}.
+= \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}.
 $$
 
 4. **Substitute $\lambda$ into $x' = x + \lambda w$:**
 $$
-x' = x + \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}\,w.
+x' = x + \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}\,w.
 $$
 
 ---
@@ -80,7 +80,7 @@ $$
 
 $$
 \boxed{
-x' = x + \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}\,w
+x' = x + \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}\,w
 }
 $$
 

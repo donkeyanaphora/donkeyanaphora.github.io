@@ -100,8 +100,8 @@ p.">
       class="math inline">\(\sigma(z)=\dfrac{1}{1+e^{-z}}\)</span><br />
       maps score to probability (e.g., <span class="math inline">\(z=0
       \Rightarrow p=0.5\)</span>)</p></li>
-      <li><p><strong>Score:</strong> <span
-      class="math inline">\(z=w^\top x + b\)</span><br />
+      <li><p><strong>Score:</strong> <span class="math inline">\(z=w^T x
+      + b\)</span><br />
       linear combination of features plus bias term</p></li>
       <li><p><strong>Logit (log-odds):</strong> <span
       class="math inline">\(\operatorname{logit}(p)=\ln\!\left(\dfrac{p}{1-p}\right)\)</span><br />
@@ -110,8 +110,8 @@ p.">
       </ul>
       <h3 id="geometry">Geometry</h3>
       <ul>
-      <li><span class="math inline">\(H=\{\,x\in\mathbb{R}^n:\; w^\top x
-      + b = 0\,\}\)</span> — decision boundary (<span
+      <li><span class="math inline">\(H=\{\,x\in\mathbb{R}^n:\; w^T x +
+      b = 0\,\}\)</span> — decision boundary (<span
       class="math inline">\(p=0.5\)</span>)<br />
       </li>
       <li><span class="math inline">\(w \perp H\)</span> — <span
@@ -125,38 +125,37 @@ p.">
       class="math display">\[
       x&#39; = x + \lambda w
       \]</span> with <span class="math display">\[
-      \operatorname{logit}(p) = w^\top x&#39; + b.
+      \operatorname{logit}(p) = w^T x&#39; + b.
       \]</span></p>
       <hr />
       <h2 id="derivation">Derivation</h2>
       <ol type="1">
       <li><p><strong>Set up the constraint:</strong> Since the model’s
-      score is <span class="math inline">\(z = w^\top x&#39; +
-      b\)</span> and we want probability <span
-      class="math inline">\(p\)</span>, we require <span
-      class="math inline">\(w^\top x&#39; + b =
+      score is <span class="math inline">\(z = w^T x&#39; + b\)</span>
+      and we want probability <span class="math inline">\(p\)</span>, we
+      require <span class="math inline">\(w^T x&#39; + b =
       \operatorname{logit}(p)\)</span>.</p></li>
       <li><p><strong>Plug in <span class="math inline">\(x&#39;\)</span>
-      (use <span class="math inline">\(w^\top
-      w=\|w\|^2\)</span>):</strong> <span class="math display">\[
+      (use <span class="math inline">\(w^T w=\|w\|^2\)</span>):</strong>
+      <span class="math display">\[
       \begin{aligned}
       \operatorname{logit}(p)
-      &amp;= w^\top(x+\lambda w)+b \\
-      &amp;= w^\top x + \lambda\, w^\top w + b \\
-      &amp;= w^\top x + \lambda\|w\|^{2} + b.
+      &amp;= w^T(x+\lambda w)+b \\
+      &amp;= w^T x + \lambda\, w^T w + b \\
+      &amp;= w^T x + \lambda\|w\|^{2} + b.
       \end{aligned}
       \]</span></p></li>
       <li><p><strong>Solve for <span
       class="math inline">\(\lambda\)</span>:</strong> <span
       class="math display">\[
       \lambda
-      = \frac{\operatorname{logit}(p) - (w^\top x + b)}{\|w\|^{2}}.
+      = \frac{\operatorname{logit}(p) - (w^T x + b)}{\|w\|^{2}}.
       \]</span></p></li>
       <li><p><strong>Substitute <span
       class="math inline">\(\lambda\)</span> into <span
       class="math inline">\(x&#39; = x + \lambda w\)</span>:</strong>
       <span class="math display">\[
-      x&#39; = x + \frac{\operatorname{logit}(p) - (w^\top x +
+      x&#39; = x + \frac{\operatorname{logit}(p) - (w^T x +
       b)}{\|w\|^{2}}\,w.
       \]</span></p></li>
       </ol>
@@ -164,7 +163,7 @@ p.">
       <h2 id="final-formula">Final Formula</h2>
       <p><span class="math display">\[
       \boxed{
-      x&#39; = x + \frac{\operatorname{logit}(p) - (w^\top x +
+      x&#39; = x + \frac{\operatorname{logit}(p) - (w^T x +
       b)}{\|w\|^{2}}\,w
       }
       \]</span></p>
