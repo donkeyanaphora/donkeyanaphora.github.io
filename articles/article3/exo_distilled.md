@@ -42,7 +42,27 @@ For tasks that admit many verifiable correct answers, the distribution of *first
 
 ### Possible abstract
 
-Investigate whether preference alignment (RLHF and related methods) collapses diversity within the set of valid solutions for tasks that admit many verifiable correct answers. Define and introduce metric (Selective Entropy Index) that rewards high entropy over valid solutions while penalizing probability mass assigned to invalid ones. Across task families with enumerable valid sets (Goldbach partitions, word ladders, seating under constraints, constrained anagrams, N-Queens placements, etc), compare base LLMs against their aligned siblings under matched decoding. Estimate the valid-space distributions via sampling, and test paired differences in SEI. Further examine correlations between SEI and creativity metrics on semi-verifiable tasks. Preliminary work suggests a generalization–diversity trade off after RLHF; the goal is to sharpen this by isolating diversity collapse within valid solution set for tasks that admit many verifiable correct answers. Findings inform diversity-preserving alignment objectives and evaluations that complement ARC-style measures of fluid intelligence.
+Investigate whether preference alignment (RLHF and related methods) collapses diversity within the set of valid solutions for tasks that admit many verifiable correct answers. Define and introduce metric (Selective Entropy Index) that rewards high entropy over valid solutions while penalizing probability mass assigned to invalid ones. Across task families with enumerable valid sets (Goldbach partitions, word ladders, seating under constraints, constrained anagrams, N-Queens placements, etc), compare base LLMs against their aligned siblings under matched decoding. Estimate the valid-space distributions via sampling, and test paired differences in SEI. Further examine correlations between SEI and creativity metrics on semi-verifiable tasks. Preliminary work suggests a generalization–diversity trade off after RLHF; the goal is to sharpen this by isolating whether diversity collapses within valid solution sets for tasks that admit many verifiable correct answers. Results could inform diversity preserving alignment objectives and evaluations that complement ARC-style measures of fluid intelligence. Could also help support preliminary work that suggests the generalization–diversity trade off.
 
+### Resources
+RLHF penalizes output diversity 	
+- https://arxiv.org/abs/2310.06452
+- https://arxiv.org/pdf/2406.05587
+- https://aclanthology.org/2025.naacl-long.561.pdf ⭐️
+- https://gwern.net/creative-benchmark
+- https://openreview.net/pdf?id=PXD3FAVHJT ⭐️
 
+Exo Language/analogical reasoning
+- https://arxiv.org/pdf/2403.11810
+- https://arxiv.org/pdf/1911.01547 ⭐️
+- nucleus sampling: https://arxiv.org/pdf/1904.09751
+- https://www.nature.com/articles/s41599-025-04999-2. ⭐️
+- https://www.sciencedirect.com/science/article/pii/S1871187125001191 ⭐️
+- https://aclanthology.org/2025.naacl-long.561.pdf (one fish two fish) ⭐️
+- https://gwern.net/creative-benchmark 
 <!-- Across task families with enumerable valid sets (Goldbach partitions, shortest-path enumeration, DAG topological orders, N-Queens, constrained anagrams, and integer partitions) -->
+
+LLM Creative Literary abilities
+- https://arxiv.org/abs/2312.03746
+- https://www.sciencedirect.com/science/article/pii/S1871187125001191?via%3Dihub
+- nucleus sampling: https://arxiv.org/pdf/1904.09751
