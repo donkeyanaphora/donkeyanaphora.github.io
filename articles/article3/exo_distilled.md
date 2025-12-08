@@ -66,3 +66,6 @@ LLM Creative Literary abilities
 - https://arxiv.org/abs/2312.03746
 - https://www.sciencedirect.com/science/article/pii/S1871187125001191?via%3Dihub
 - nucleus sampling: https://arxiv.org/pdf/1904.09751
+
+Need more on mode collapse...
+- https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse
