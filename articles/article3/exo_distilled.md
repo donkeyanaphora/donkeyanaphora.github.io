@@ -42,10 +42,44 @@ For tasks that admit many verifiable correct answers, the distribution of *first
 
 ### Possible abstract
 
-Investigate whether preference alignment (RLHF and related methods) collapses diversity within the set of valid solutions for tasks that admit many verifiable correct answers. Define and introduce metric (Selective Entropy Index) that rewards high entropy over valid solutions while penalizing probability mass assigned to invalid ones. Across task families with enumerable valid sets (Goldbach partitions, word ladders, seating under constraints, constrained anagrams, N-Queens placements, etc), compare base LLMs against their aligned siblings under matched decoding. Estimate the valid-space distributions via sampling, and test paired differences in SEI. Further examine correlations between SEI and creativity metrics on semi-verifiable tasks. Preliminary work suggests a generalization–diversity trade off after RLHF; the goal is to sharpen this by isolating whether diversity collapses within valid solution sets for tasks that admit many verifiable correct answers. Results could inform diversity preserving alignment objectives and evaluations that complement ARC-style measures of fluid intelligence. Could also help support preliminary work that suggests the generalization–diversity trade off.
+Investigate whether preference alignment (RLHF and related methods) collapses diversity within the set of valid solutions for tasks that admit many verifiable correct answers. Define and introduce metric (Selective Entropy Index) that rewards high entropy over valid solutions while penalizing probability mass assigned to invalid ones. Across task families with enumerable valid sets, compare base LLMs against their aligned siblings under matched decoding. Estimate the valid-space distributions via sampling, and test paired differences in SEI. Further examine correlations between SEI and creativity metrics on semi-verifiable tasks. Preliminary work suggests a generalization–diversity trade off after RLHF; the goal is to further this work by isolating whether diversity collapses within valid solution sets for tasks that admit many verifiable correct answers. Results could inform diversity preserving alignment objectives and evaluations that complement ARC-style measures of fluid intelligence. Could also help support preliminary work that suggests the generalization–diversity trade off.
 
 ### Resources
-RLHF penalizes output diversity 	
+
+**RLHF, Mode Collapse & Output Diversity**
+
+* [Creativity Has Left the Chat: The Price of Debiasing Language Models](https://arxiv.org/abs/2406.05587) - *arXiv* (2024)
+* [Understanding the Effects of RLHF on LLM Generalisation and Diversity](https://openreview.net/pdf?id=PXD3FAVHJT) - *ICLR / OpenReview* ⭐️
+* [Mysteries of Mode Collapse](https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse) - *LessWrong essay*
+
+**Exo-Language, Analogical & Fluid Reasoning**
+
+* [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547) - *arXiv* (Chollet, 2019) ⭐️
+* [Metaphor Understanding Challenge Dataset for LLMs](https://arxiv.org/abs/2403.11810) - *arXiv* (2024)
+* [One fish, two fish, but not the whole sea: Alignment reduces language models’ conceptual diversity](https://aclanthology.org/2025.naacl-long.561.pdf) - *NAACL 2025* ⭐️
+
+* [Towards Benchmarking LLM Diversity & Creativity](https://gwern.net/creative-benchmark) - *Gwern.net*
+
+**Creative Language & Literary Ability in LLMs**
+
+* [Evaluating Large Language Model Creativity from a Literary Perspective](https://arxiv.org/abs/2312.03746) - *arXiv* (2023)
+* [Rethinking Literary Creativity in the Digital Age: Human vs. AI Playwriting](https://www.nature.com/articles/s41599-025-04999-2) — *Humanities & Social Sciences Communications (Nature)* ⭐️
+* [Large language models show both individual and collective creativity comparable to humans](https://www.sciencedirect.com/science/article/pii/S1871187125001191) - *ScienceDirect*
+
+**Sampling, Diversity & Generation Mechanics**
+
+* [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751) - *arXiv* (Holtzman et al., 2019)
+  *(Introduces nucleus / top-p sampling)*
+
+**Philosophy of Language & Logic (tangential)**
+
+* [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
+* [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
+* [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
+* [Exformation](https://en.wikiversity.org/wiki/Information?utm_source=chatgpt.com) - Wikiversity
+
+
+<!-- RLHF penalizes output diversity 	
 - https://arxiv.org/abs/2310.06452
 - https://arxiv.org/pdf/2406.05587
 - https://aclanthology.org/2025.naacl-long.561.pdf ⭐️
@@ -60,7 +94,6 @@ Exo Language/analogical reasoning
 - https://www.sciencedirect.com/science/article/pii/S1871187125001191 ⭐️
 - https://aclanthology.org/2025.naacl-long.561.pdf (one fish two fish) ⭐️
 - https://gwern.net/creative-benchmark 
-<!-- Across task families with enumerable valid sets (Goldbach partitions, shortest-path enumeration, DAG topological orders, N-Queens, constrained anagrams, and integer partitions) -->
 
 LLM Creative Literary abilities
 - https://arxiv.org/abs/2312.03746
@@ -68,4 +101,4 @@ LLM Creative Literary abilities
 - nucleus sampling: https://arxiv.org/pdf/1904.09751
 
 Need more on mode collapse...
-- https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse
+- https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse -->
