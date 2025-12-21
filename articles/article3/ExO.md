@@ -64,7 +64,10 @@ As DFW said "we all know there's no quicker way to empty a joke of its particula
 
 In each case, the reader encounters a jarring violation of expectation that is only resolved through a figurative reinterpretation:
 
-- ⟦φ⟧<sub>lit</sub> = ⊥ ; ⟦φ⟧<sub>fig</sub> = ψ. 
+<!-- - ⟦φ⟧<sub>lit</sub> = ⊥ ; ⟦φ⟧<sub>fig</sub> = ψ.  -->
+$$
+\text{⟦φ⟧}_{\text{lit}} = \bot \quad ; \quad \text{⟦φ⟧}_{\text{fig}} = \psi
+$$
 
 Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊥ indicates contradiction, and ψ the emergent or resolved meaning.
 
