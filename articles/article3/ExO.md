@@ -10,11 +10,11 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 # 🎭 Extra-Ordinary Language 
 
 **COLLINS WESTNEDGE**  
-*JULY 2, 2025*
+*DEC 23, 2025*
 
 ## Introduction
 
-I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically expressions that violate the [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) of language and yet carry high degrees of intentionality and depth. 
+I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically, expressions that violate the [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) of language and yet carry high degrees of intentionality and depth. 
 
 When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
 
@@ -115,7 +115,7 @@ In short, ExO language appears to depend on advanced, or at least highly creativ
 
 ## Key Readings
 
-These papers and essays collectively help explore **extra‑ordinary (ExO) language**: RLHF studies detail how reward shaping affects diversity, Chollet’s work addresses fluid intelligence and efficient generalization, lingustic/philosophical perspectives on metaphor, analogy, and contradiction concepts central to creativity and nuanced language use.
+These papers and essays collectively help explore **extra‑ordinary (ExO) language**: RLHF studies detail how reward shaping affects diversity, Chollet’s work addresses fluid intelligence and efficient generalization, linguistic/philosophical perspectives on metaphor, analogy, and contradiction concepts central to creativity and nuanced language use.
 
 **RLHF, Mode Collapse & Output Diversity**
 
@@ -123,7 +123,7 @@ These papers and essays collectively help explore **extra‑ordinary (ExO) lan
 * [Understanding the Effects of RLHF on LLM Generalisation and Diversity](https://openreview.net/pdf?id=PXD3FAVHJT) - *ICLR / OpenReview* ⭐️
 * [Mysteries of Mode Collapse](https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse) - *LessWrong essay*
 
-**Exo-Language, Analogical & Fluid Reasoning**
+**ExO-Language, Analogical & Fluid Reasoning**
 
 * [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547) - *arXiv* (Chollet, 2019) ⭐️
 * [Metaphor Understanding Challenge Dataset for LLMs](https://arxiv.org/abs/2403.11810) - *arXiv* (2024)
@@ -147,7 +147,7 @@ These papers and essays collectively help explore **extra‑ordinary (ExO) lan
 * [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
 * [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
 * [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
-* [Exformation](https://en.wikiversity.org/wiki/Information?utm_source=chatgpt.com) - Wikiversity
+* [Exformation](https://en.wikiversity.org/wiki/Information) - Wikiversity
 
 ## Closing Thoughts
 
