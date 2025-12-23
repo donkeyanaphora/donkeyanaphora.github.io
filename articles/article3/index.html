@@ -129,51 +129,67 @@ better.">
       That is, hot ice and wondrous strange snow.<br />
       How shall we find the concord of this discord?</p>
       <p>— <em>Shakespeare, <strong>A Midsummer Night’s
-      Dream</strong></em> <a href="#fn1" class="footnote-ref"
-      id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+      Dream</strong></em></p>
       </blockquote>
       <h3 id="core-characteristics">Core Characteristics</h3>
-      <p>Because of their intentionality and depth I’m going to call
+      <p>Because of their intentionality and depth, I’m going to call
       these violations of “ordinary use” <strong>extra-ordinary
-      use</strong> or <strong>ExO language</strong>. They don’t obscure
-      meaning but instead elucidate by way of contradiction or a
-      violation of expectations.</p>
-      <p>These literary examples share a unifying feature: they present
-      a <strong>literal semantic failure</strong> in one domain that
-      creates insightful or profound resonance in another domain
-      (metaphorical, allegorical, or abstract).</p>
-      <p>As DFW said “we all know there’s no quicker way to empty a joke
-      of its particular magic than to explain it” and the same is true
-      for figurative language. However, at the risk of literary
-      blasphemy here is one way to illustrate the ways in which these
-      expressions <em>may</em> resolve through a figurative
-      interpretation:</p>
+      use</strong>, or <strong>ExO language</strong>. They don’t obscure
+      meaning; instead, they elucidate by way of contradiction or
+      violated expectation. These literary examples share a unifying
+      feature: they present a <strong>literal semantic failure</strong>
+      in one domain that creates insightful or profound resonance in
+      another (metaphorical, allegorical, or abstract).</p>
+      <p>As David Foster Wallace said, “we all know there’s no quicker
+      way to empty a joke of its particular magic than to explain it,”
+      and the same is true for figurative language. Still, it’s worth
+      illustrating how these expressions <em>may</em> resolve through a
+      figurative interpretation, albeit with some loss of “magic”:</p>
       <ul>
       <li>“Two distincts, division none” - two bodies, one soul</li>
       <li>“A cage went in search of a bird” - oppression seeks
       freedom</li>
-      <li>“I can’t go on, I’ll go on” - continuation is not a choice,
+      <li>“I can’t go on. I’ll go on.” - I don’t choose to continue;
       it’s compulsory</li>
       </ul>
       <p>In each case, the reader encounters a jarring violation of
       expectation that is only resolved through a figurative
-      reinterpretation:</p>
-      <!-- - ⟦φ⟧<sub>lit</sub> = ⊥ ; ⟦φ⟧<sub>fig</sub> = ψ.  -->
+      reinterpretation. One way to capture that pattern is:</p>
       <p><span class="math display">\[
-      \text{⟦φ⟧}_{\text{lit}} = \bot \quad ; \quad
-      \text{⟦φ⟧}_{\text{fig}} = \psi
+      \text{⟦φ⟧}_{\text{literal}} = \bot \quad ; \quad
+      \text{⟦φ⟧}_{\text{figurative}} = \psi
       \]</span></p>
       <p>Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊥
-      indicates contradiction, and ψ the emergent or resolved
-      meaning.</p>
+      indicates contradiction, and ψ the emergent or resolved meaning.
+      Framed this way, two of ExO language’s core properties are built
+      directly into the equation:</p>
+      <ul>
+      <li><strong>Surface-level anomaly</strong>: under a literal
+      reading, the expression collapses, i.e., ( <span
+      class="math inline">\(\text{⟦φ⟧}_{\text{lit}}=\bot\)</span> ) (a
+      clash of type, animacy, modality, physics, selectional
+      restrictions, etc.).</li>
+      <li><strong>Recoverability</strong>: despite that collapse, a
+      coherent reading exists, i.e., there is some (<span
+      class="math inline">\(\psi\)</span>) such that (<span
+      class="math inline">\(\text{⟦φ⟧}_{\text{fig}}=\psi\)</span>).</li>
+      </ul>
+      <p>However, in practice, strong ExO lines also tend to carry:</p>
+      <ul>
+      <li><strong>Intent signal</strong>: the violation feels deliberate
+      and motivated within the larger context.</li>
+      <li><strong>Irreducibility</strong>: paraphrase diminishes the
+      associative effects (the deviation is doing semantic work that a
+      literal restatement can’t).</li>
+      </ul>
       <p>Ultimately, these examples illustrate how expressions can
       fracture under a literal reading yet resolve in an imaginative
       one. Making that fracture or violation explicit clarifies how
-      objectives rooted in the distributional hypothesis e.g. next-token
-      prediction or RLHF tuned for coherence and readability could steer
-      models away from ExO language. If we want systems that embrace
-      deliberate, meaningful rule-bending, we’ll need benchmarks that
-      more actively reward it.</p>
+      objectives rooted in the distributional hypothesis, e.g.,
+      next-token prediction or RLHF tuned for coherence and readability
+      could steer models away from ExO language. If we want systems that
+      embrace deliberate, meaningful rule-bending, we’ll need benchmarks
+      that more actively reward it.</p>
       <h2 id="why-might-current-ai-struggle-here">Why Might Current AI
       Struggle Here?</h2>
       <p>Current language models face several systematic barriers to
@@ -208,27 +224,54 @@ better.">
       works than great works, and the reading comprehension/literary
       analysis task itself aligns more intuitively with how we quantify
       intelligence in school.</p>
+      <!-- 
+      **RLHF Optimization Pressure**: This one is fun to think about. From a preference learning perspective, I doubt anyone wants to do full-blown Harold Bloom literary analysis to rate model outputs. Most annotators would favor accessible, Wikipedia-style entries over Joycean explorations of any topic. This optimization pressure could easily eliminate whatever literary capabilities emerge during pretraining. There are also many studies that suggest RLHF can reduce a model's output diversity, which can be found in the key readings section further down.
+
+      Studies indicate RLHF improves generalization on benchmark tasks at the cost of reduced output diversity, suggesting a tradeoff between the two. The interesting case is what happens within the set of valid solutions. For tasks that admit many correct answers, does RLHF collapse probability mass onto a narrow set of conventional solutions/model responses? If so, this would work directly against fluid intelligence, which, following Chollet, should exhibit uniform probability across equally valid outputs while suppressing invalid ones. ExO language is precisely the kind of output that's valid but unconventional: high on the "correct but rare" end of the distribution, and thus vulnerable to being optimized away.
+
+
+      **The Deeper Issue: Fluid Literary Intelligence**: The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what could be called fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks. An ability to traverse distant conceptual pathways, pathways that have not surfaced during pretraining. This likely overlaps with the intuition that scaling up inference time compute improves reasoning models by allowing them to perform a more exhaustive search of the solution space. However, as far as I can tell this strategy mostly applies to verifiable tasks and thus creative analogical reasoning in a literary or ExO capacity may remain a blindspot. 
+
+      In short, ExO language appears to depend on advanced, or at least highly creative, analogical reasoning. Its defining feature is the construction of meaningful and unexpected connections between disparate, and often seemingly contradictory, concepts, connections that resist literal validation but nonetheless produce insight.  -->
       <p><strong>RLHF Optimization Pressure</strong>: This one is fun to
       think about. From a preference learning perspective, I doubt
       anyone wants to do full-blown Harold Bloom literary analysis to
       rate model outputs. Most annotators would favor accessible,
       Wikipedia-style entries over Joycean explorations of any topic.
-      This optimization pressure likely eliminates whatever literary
-      capabilities emerge during pretraining. There are also many
-      studies that suggest RLHF can reduce a model’s output diversity,
-      which can be found in the key readings section further down.</p>
-      <p>Studies indicate RLHF improves generalization on benchmark
-      tasks at the cost of reduced output diversity, suggesting a
-      tradeoff between the two. The interesting case is what happens
-      within the set of valid solutions. For tasks that admit many
-      correct answers, does RLHF collapse probability mass onto a narrow
-      set of conventional solutions? If so, this would work directly
-      against fluid intelligence, which, following Chollet, should
-      exhibit uniform probability across equally valid outputs while
-      suppressing invalid ones. ExO language is precisely the kind of
-      output that’s valid but unconventional: high on the “correct but
-      rare” end of the distribution, and thus vulnerable to being
-      optimized away.</p>
+      That optimization pressure could easily eliminate whatever
+      literary capabilities emerge during pretraining. There are also
+      many studies that suggest RLHF can reduce a model’s output
+      diversity (see key readings section below).</p>
+      <p>Some studies frame this as a generalization–diversity tradeoff
+      rather than a defect. However, the interesting confound is what
+      happens within the set of valid solutions. For tasks that admit
+      many correct answers, does RLHF squish probability mass onto a
+      narrow set of conventional solutions/model responses? If so, this
+      would work directly against the kind of “fluid” intelligence that
+      (following Chollet) shouldn’t collapse onto a single normative
+      solution when multiple answers are equally defensible. ExO
+      language is precisely the kind of output that’s valid but
+      unconventional, high on the “valid, meaningful and rare” end of
+      the distribution, and thus vulnerable to being optimized away.</p>
+      <p><strong>A Concrete Example: Analogical Reasoning on IQ
+      Tests</strong>: Models already score well on linguistic similarity
+      tasks (how are X and Y alike?) like those found on the WAIS, which
+      are intended to measure analogical reasoning capabilities. Ask a
+      model “what is similar between a horse and a tiger?”, you’ll
+      likely get the sociologically correct “hive mind answer”: “both
+      are mammals.” RLHF likely helps the model here in that it pushes
+      outputs toward sociological consensus. But when my friend was
+      asked the same question, he joked: “they’re both one step away
+      from a zebra.” That answer is wrong by IQ test scoring standards,
+      but it’s arguably closer to ExO thinking: an unexpected connection
+      that reframes both concepts through a third.</p>
+      <p>If RLHF concentrates probability mass toward canonical answers
+      even when multiple interpretations could be defensible and
+      arguably more interesting, it may be penalizing the unconventional
+      links that make ExO language distinctive and profound. To state
+      this in our ExO terminology from earlier, similarity tests are
+      built to reward convergence toward categorical abstraction, not
+      divergence toward imaginative reframing.</p>
       <p><strong>The Deeper Issue: Fluid Literary Intelligence</strong>:
       The more I examine instances of impactful prose packed with
       intentionality and metaphysical depth, the more convinced I am
@@ -239,21 +282,28 @@ better.">
       have not surfaced during pretraining. This likely overlaps with
       the intuition that scaling up inference time compute improves
       reasoning models by allowing them to perform a more exhaustive
-      grid search of the solution space. However, as far as I can tell
-      this strategy mostly applies to verifiable tasks and thus creative
+      search of the solution space. However, as far as I can tell this
+      strategy mostly applies to verifiable tasks and thus creative
       analogical reasoning in a literary or ExO capacity may remain a
       blindspot.</p>
       <p>In short, ExO language appears to depend on advanced, or at
       least highly creative, analogical reasoning. Its defining feature
       is the construction of meaningful and unexpected connections
-      between disparate, and often seemingly contradictory, concepts,
-      connections that resist literal validation but nonetheless produce
-      insight.</p>
+      between disparate, and often seemingly contradictory or
+      mismatched, concepts, connections that resist literal
+      interpretations but nonetheless produce insight.</p>
       <p><strong>Missing Benchmarks</strong>: This leads to deeper
-      questions: What constitutes literary novelty computationally? Why
-      are there no benchmarks on par with ARC that touch this axis of
-      intelligence? Current reasoning evaluation has heavily favored
-      verifiable tasks (coding, math) over creative reasoning.</p>
+      questions: What constitutes literary novelty computationally and
+      why are there no benchmarks on par with ARC that touch this axis
+      of intelligence? The ARC datasets I’ve looked at resemble the
+      visual matrix reasoning tasks on WAIS-style IQ tests. However, as
+      far as I’m aware there is no linguistic equivalent, specifically,
+      one that rewards unconventional yet valid analogical reasoning.
+      More generally, we likely need a linguistic variant of ARC in the
+      spirit of measuring efficient generalization, capacities that
+      can’t be easily “bench-maxed” by practitioners targeting the test
+      set. For now, reasoning evaluation has heavily favored verifiable
+      tasks (coding, math) over creative reasoning.</p>
       <h2 id="key-readings">Key Readings</h2>
       <p>These papers and essays collectively help explore
       <strong>extra‑ordinary (ExO) language</strong>: RLHF studies
@@ -330,7 +380,7 @@ better.">
       - Wikiversity</li>
       </ul>
       <h2 id="closing-thoughts">Closing Thoughts</h2>
-      <p><strong>Sociological Influence</strong>: How do we account for
+      <p><strong>Sociological Influence:</strong> How do we account for
       the way social and historical contexts shape judgements of novelty
       and creativity and is it a moving target?</p>
       <p>Novelty and creativity are often historically and socially
@@ -351,20 +401,24 @@ better.">
       social and historical contexts shape our aesthetic judgements and
       distinguish between those that are fleeting and those that
       endure.</p>
-      <p>Just because models can exhibit surprisal or violate semantic
-      expectations doesn’t always mean they possess the ability to do so
-      meaningfully. Ultimately, the goal is to understand whether
-      machines can develop the kind of flexible, creative intelligence
-      that ExO language represents—and to build evaluation frameworks
-      that recognize this intelligence when it emerges. In short, we
-      need benchmarks that reward “wondrous strange snow.”</p>
+      <p><strong>Final Thoughts:</strong> Just because models can
+      exhibit surprisal or violate semantic expectations doesn’t always
+      mean they possess the ability to do so meaningfully. Ultimately,
+      the goal is to understand whether machines can develop the kind of
+      flexible, creative intelligence that ExO language represents—and
+      to build evaluation frameworks that recognize this intelligence
+      when it emerges. In short, we need benchmarks that reward
+      “wondrous strange snow.”</p>
       <hr />
-      <p><em>Shout-out to my good friend Joshua for the stimulating
-      convo and amazing <strong>Midsummer</strong> example. And
-      shout-out to Henry too for the great convos on AGI/ARC and
-      thoughts on diffusion-based and RL approaches. And last but not
-      least shoutout to Noel for her core contributions on aesthetics
-      and philosophical insights on creativity and intelligence</em></p>
+      <!-- [^1]: *Theseus sets up an open contradiction **hot** + **ice** only to “resolve” it with the sneering flourish “wondrous strange snow.”  
+            The oxymoron stays physically impossible, but the new name lets the audience picture it for a moment as an imaginable marvel.  
+            I think this imaginative license would still make it a Modal-Projection (MP).* -->
+      <p><em>Shoutout to my good friend Joshua for the stimulating convo
+      and amazing <strong>Midsummer</strong> example. And shout-out to
+      Henry too for the great convos on AGI/ARC and thoughts on
+      diffusion-based and RL approaches. And last but not least shoutout
+      to Noel for her core contributions on aesthetics and philosophical
+      insights on creativity and intelligence</em></p>
       <!-- [^2]: The table below shows loosely how the literary ExO examples behave across two interpretive models:
 
       - **M<sub>phys</sub>**: Physical/literal interpretation (common sense, ordinary meaning)
@@ -377,21 +431,6 @@ better.">
       | *"Hot ice / wondrous strange snow"* | Modal Projection | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) ∧ M<sub>interp</sub> ⊭ ¬(Ice ∧ Hot) | Physically impossible, imaginatively conceivable |
       | *"A cage went in search of a bird"* | Type Clash | M<sub>phys</sub>: ¬Animate(cage) ∧ Search(cage, bird) ⇒ ⊥ | Cages can't search; metaphorically, oppression pursues freedom |
       | *"I can't go on. I'll go on."* | Modal Clash | M<sub>phys</sub> ⊨ ¬Able(x, continue) ∧ M<sub>interp</sub> ⊨ Continue(x) | Logical contradiction; existential persistence despite impossibility | -->
-      <section id="footnotes"
-      class="footnotes footnotes-end-of-document" role="doc-endnotes">
-      <hr />
-      <ol>
-      <li id="fn1"><p><em>Theseus sets up an open contradiction
-      <strong>hot</strong> + <strong>ice</strong> only to “resolve” it
-      with the sneering flourish “wondrous strange snow.”<br />
-      The oxymoron stays physically impossible, but the new name lets
-      the audience picture it for a moment as an imaginable
-      marvel.<br />
-      I think this imaginative license would still make it a
-      Modal-Projection (MP).</em><a href="#fnref1" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      </ol>
-      </section>
     </article>
   </main>
 
