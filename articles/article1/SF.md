@@ -4,7 +4,8 @@ description: "An exploration of shallow fusion as a method to address data scarc
 slug: "article1"
 date: "2025-08-26"
 draft: false
-image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
+image: "donkeyanaphora.github.io/articles/article1/assets/thumbnail.jpg"
+
 ---
 
 # 🔗 Shallow Fusion: Bridging Data Scarcity and AI Integration Challenges 
