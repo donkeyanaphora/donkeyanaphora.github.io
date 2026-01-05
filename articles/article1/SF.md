@@ -321,8 +321,8 @@ The fusion weight λ controls the balance between acoustic and language model pr
 
 | Configuration | Baseline WER | Optimal λ | Best WER | Relative Improvement |
 |--------------|--------------|-----------|----------|---------------------|
-| Whisper Small + Medical GPT-2 Small | 6.86% | 0.24 | 6.28% | 8.5% |
-| Whisper Medium + Medical GPT-2 Medium | 5.16% | 0.30 | 4.80% | 7.0% |
+| Whisper Small + <br>Medical GPT-2 Small | 6.86% | 0.24 | 6.28% | 8.5% |
+| Whisper Medium + <br>Medical GPT-2 Medium | 5.16% | 0.30 | 4.80% | 7.0% |
 
 <!-- > Note: Values are corpus (micro) WER on 358 synthetic radiology dictation sentences after the specified normalization. **Percentages are computed from the displayed WERs (rounded to 4 decimals) for consistency, full-precision calculations may differ slightly**. λ was selected on this same set, so results may be optimistic; see the significance section for permutation-test p-values -->
 
