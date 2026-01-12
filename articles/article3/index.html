@@ -121,7 +121,7 @@ better.">
       <p>— <em>Kafka, <strong>Aphorisms</strong></em></p>
       </blockquote>
       <blockquote>
-      <p>I can’t go on. I’ll go on.</p>
+      <p>You must go on. I can’t go on. I’ll go on.</p>
       <p>— <em>Beckett, <strong>The Unnamable</strong></em></p>
       </blockquote>
       <blockquote>
@@ -137,40 +137,42 @@ better.">
       use</strong>, or <strong>ExO language</strong>. They don’t obscure
       meaning; instead, they elucidate by way of contradiction or
       violated expectation. These literary examples share a unifying
-      feature: they present a <strong>literal semantic failure</strong>
-      in one domain that creates insightful or profound resonance in
-      another (metaphorical, allegorical, or abstract).</p>
+      feature: they present a <strong>literal semantic
+      breakdown</strong> in one domain that creates insightful or
+      profound resonance in another (metaphorical, allegorical, or
+      abstract).</p>
       <p>As David Foster Wallace said, “we all know there’s no quicker
-      way to empty a joke of its particular magic than to explain it,”
-      and the same is true for figurative language. Still, it’s worth
+      way to empty a joke of its peculiar magic than to explain it,” and
+      the same is true for figurative language. Still, it’s worth
       illustrating how these expressions <em>may</em> resolve through a
       figurative interpretation, albeit with some loss of “magic”:</p>
       <ul>
       <li>“Two distincts, division none” - two bodies, one soul</li>
       <li>“A cage went in search of a bird” - oppression seeks
       freedom</li>
-      <li>“I can’t go on. I’ll go on.” - I don’t choose to continue;
-      it’s compulsory</li>
+      <li>“You must go on. I can’t go on. I’ll go on.” - I don’t choose
+      to continue; it’s compulsory</li>
       </ul>
       <p>In each case, the reader encounters a jarring violation of
       expectation that is only resolved through a figurative
       reinterpretation. One way to capture that pattern is:</p>
       <p><span class="math display">\[
-      \text{⟦φ⟧}_{\text{literal}} = \bot \quad ; \quad
+      \text{⟦φ⟧}_{\text{literal}} = \text{⊘} \quad ; \quad
       \text{⟦φ⟧}_{\text{figurative}} = \psi
       \]</span></p>
-      <p>Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊥
-      indicates contradiction, and ψ the emergent or resolved meaning.
-      Framed this way, two of ExO language’s core properties are built
-      directly into the equation:</p>
+      <p>Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊘
+      indicates a semantic anomaly (a violation of expectation), and ψ
+      the emergent or resolved meaning. Framed this way, two of ExO
+      language’s core properties are built directly into the notation
+      above:</p>
       <ul>
       <li><strong>Surface-level anomaly</strong>: under a literal
-      reading, the expression collapses, i.e., ( <span
-      class="math inline">\(\text{⟦φ⟧}_{\text{lit}}=\bot\)</span> ) (a
-      clash of type, animacy, modality, physics, selectional
-      restrictions, etc.).</li>
-      <li><strong>Recoverability</strong>: despite that collapse, a
-      coherent reading exists, i.e., there is some (<span
+      reading, expectations are violated, i.e., ( <span
+      class="math inline">\(\text{⟦φ⟧}_{\text{lit}}=\text{⊘}\)</span> )
+      (a cage can’t search, ice can’t be hot, distincts can’t lack
+      division etc).</li>
+      <li><strong>Recoverability</strong>: despite that violation or
+      collapse, a coherent reading exists, i.e., there is some (<span
       class="math inline">\(\psi\)</span>) such that (<span
       class="math inline">\(\text{⟦φ⟧}_{\text{fig}}=\psi\)</span>).</li>
       </ul>
@@ -200,27 +202,28 @@ better.">
       here they are:</p>
       <h3 id="base-training">Base Training</h3>
       <p>Though profound literature and instances of ExO exist in
-      pretraining corpora (Google Books, etc.), against which base
-      models like GPT and Llama have been tuned, it’s statistically
-      underrepresented. By definition, semantic violations are rare.
-      Even within Pulitzer Prize winning articles, books, etc the
-      instances of profound subversions of meaning and use (as impactful
-      as they may be) are few and far between. That being said even if a
-      model encountered notable instances of ExO language they are by
-      definition violations of <em>ordinary usage</em>, the very pattern
-      the model is optimizing <em>towards</em>. Given the prefix “That
-      is, hot” the continuation ” ice” is unlikely, lying on the tail
-      end of the distribution for the proposed words to come. From a
-      decoding perspective sequences like “hot ice” are absolutely
-      possible, but not probable, so then what sort of sampling strategy
-      could surface them? <a href="#fn1" class="footnote-ref"
-      id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-      <p>At this point the most reliable way to turn the improbable into
-      probable (as in the case of “hot ice” or “I can’t go on, I’ll go
-      on”) is to condition the model on the exact instances in which
-      they have <em>already</em> occurred. Insofar as we care about
-      seeing ExO on the page our job here is done, but if we care about
-      the generation of <em>new</em> forms of ExO, new intentional rule
+      pretraining corpora (Project Gutenberg, Books3, BookCorpus etc.),
+      against which many base models like GPT and Llama have been tuned,
+      it’s statistically underrepresented. By definition, semantic
+      violations are rare. Even within Pulitzer Prize winning articles,
+      books, etc the instances of profound subversions of meaning and
+      use (as impactful as they may be) are few and far between. That
+      being said even if a model encountered notable instances of ExO
+      language they are by definition violations of <em>ordinary
+      usage</em>, the very pattern the model is optimizing
+      <em>towards</em>. Given the prefix “That is, hot” the continuation
+      ” ice” is unlikely, lying on the tail end of the distribution for
+      the proposed words to come. From a decoding perspective sequences
+      like “hot ice” are absolutely possible, but not probable, so then
+      what sort of sampling strategy could surface them? <a href="#fn1"
+      class="footnote-ref" id="fnref1"
+      role="doc-noteref"><sup>1</sup></a>.</p>
+      <p>At this point the easiest way to turn the improbable into
+      probable (in the case of “hot ice” or “I can’t go on, I’ll go on”)
+      is to condition the model on the exact instances in which they
+      have <em>already</em> occurred. Insofar as we care about seeing
+      ExO on the page our job here is done, but if we care about the
+      generation of <em>new</em> forms of ExO, new intentional rule
       breaking, e.g., the meaningful violations that extend beyond
       imitation, we have made 0 progress.</p>
       <p>ExO sequences are in fact hiding somewhere in the set of

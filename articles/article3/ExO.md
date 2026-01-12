@@ -37,7 +37,7 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 >   
 > — *Kafka, **Aphorisms***
 
-> I can't go on. I'll go on.
+> You must go on. I can't go on. I'll go on.
 >
 > — *Beckett, **The Unnamable***
 
@@ -50,24 +50,24 @@ In this post, I'm dog-earing these thoughts to revisit later. The aim here is to
 
 ### Core Characteristics
 
-Because of their intentionality and depth, I’m going to call these violations of “ordinary use” **extra-ordinary use**, or **ExO language**. They don’t obscure meaning; instead, they elucidate by way of contradiction or violated expectation. These literary examples share a unifying feature: they present a **literal semantic failure** in one domain that creates insightful or profound resonance in another (metaphorical, allegorical, or abstract).
+Because of their intentionality and depth, I’m going to call these violations of “ordinary use” **extra-ordinary use**, or **ExO language**. They don’t obscure meaning; instead, they elucidate by way of contradiction or violated expectation. These literary examples share a unifying feature: they present a **literal semantic breakdown** in one domain that creates insightful or profound resonance in another (metaphorical, allegorical, or abstract).
 
-As David Foster Wallace said, “we all know there’s no quicker way to empty a joke of its particular magic than to explain it,” and the same is true for figurative language. Still, it’s worth illustrating how these expressions *may* resolve through a figurative interpretation, albeit with some loss of “magic”:
+As David Foster Wallace said, “we all know there’s no quicker way to empty a joke of its peculiar magic than to explain it,” and the same is true for figurative language. Still, it’s worth illustrating how these expressions *may* resolve through a figurative interpretation, albeit with some loss of “magic”:
 
 * "Two distincts, division none" - two bodies, one soul
 * "A cage went in search of a bird" - oppression seeks freedom
-* "I can't go on. I'll go on." - I don't choose to continue; it’s compulsory
+* "You must go on. I can't go on. I'll go on." - I don't choose to continue; it’s compulsory
 
 In each case, the reader encounters a jarring violation of expectation that is only resolved through a figurative reinterpretation. One way to capture that pattern is:
 
 $$
-\text{⟦φ⟧}_{\text{literal}} = \bot \quad ; \quad \text{⟦φ⟧}_{\text{figurative}} = \psi
+\text{⟦φ⟧}_{\text{literal}} = \text{⊘} \quad ; \quad \text{⟦φ⟧}_{\text{figurative}} = \psi
 $$
 
-Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊥ indicates contradiction, and ψ the emergent or resolved meaning. Framed this way, two of ExO language’s core properties are built directly into the equation:
+Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊘ indicates a semantic anomaly (a violation of expectation), and ψ the emergent or resolved meaning. Framed this way, two of ExO language’s core properties are built directly into the notation above:
 
-* **Surface-level anomaly**: under a literal reading, the expression collapses, i.e., ( $\text{⟦φ⟧}_{\text{lit}}=\bot$ ) (a clash of type, animacy, modality, physics, selectional restrictions, etc.).
-* **Recoverability**: despite that collapse, a coherent reading exists, i.e., there is some ($\psi$) such that ($\text{⟦φ⟧}_{\text{fig}}=\psi$).
+* **Surface-level anomaly**: under a literal reading, expectations are violated, i.e., ( $\text{⟦φ⟧}_{\text{lit}}=\text{⊘}$ ) (a cage can't search, ice can't be hot, distincts can't lack division etc).
+* **Recoverability**: despite that violation or collapse, a coherent reading exists, i.e., there is some ($\psi$) such that ($\text{⟦φ⟧}_{\text{fig}}=\psi$).
 
 However, in practice, strong ExO lines also tend to carry:
 
@@ -80,9 +80,9 @@ Ultimately, these examples illustrate how expressions can fracture under a liter
 Current language models face several systematic barriers to producing ExO language; at this point many of these are my own thoughts or fan theory rather than concrete fact, but nevertheless here they are: 
 
 ### Base Training
-Though profound literature and instances of ExO exist in pretraining corpora (Google Books, etc.), against which base models like GPT and Llama have been tuned, it's statistically underrepresented. By definition, semantic violations are rare. Even within Pulitzer Prize winning articles, books, etc the instances of profound subversions of meaning and use (as impactful as they may be) are few and far between. That being said even if a model encountered notable instances of ExO language they are by definition violations of *ordinary usage*, the very pattern the model is optimizing *towards*. Given the prefix "That is, hot" the continuation " ice" is unlikely, lying on the tail end of the distribution for the proposed words to come. From a decoding perspective sequences like "hot ice" are absolutely possible, but not probable, so then what sort of sampling strategy could surface them? [^1].
+Though profound literature and instances of ExO exist in pretraining corpora (Project Gutenberg, Books3, BookCorpus etc.), against which many base models like GPT and Llama have been tuned, it's statistically underrepresented. By definition, semantic violations are rare. Even within Pulitzer Prize winning articles, books, etc the instances of profound subversions of meaning and use (as impactful as they may be) are few and far between. That being said even if a model encountered notable instances of ExO language they are by definition violations of *ordinary usage*, the very pattern the model is optimizing *towards*. Given the prefix "That is, hot" the continuation " ice" is unlikely, lying on the tail end of the distribution for the proposed words to come. From a decoding perspective sequences like "hot ice" are absolutely possible, but not probable, so then what sort of sampling strategy could surface them? [^1].
 
-At this point the most reliable way to turn the improbable into probable (as in the case of "hot ice" or "I can't go on, I'll go on") is to condition the model on the exact instances in which they have *already* occurred. Insofar as we care about seeing ExO on the page our job here is done, but if we care about the generation of *new* forms of ExO, new intentional rule breaking, e.g., the meaningful violations that extend beyond imitation, we have made 0 progress. 
+At this point the easiest way to turn the improbable into probable (in the case of "hot ice" or "I can't go on, I'll go on") is to condition the model on the exact instances in which they have *already* occurred. Insofar as we care about seeing ExO on the page our job here is done, but if we care about the generation of *new* forms of ExO, new intentional rule breaking, e.g., the meaningful violations that extend beyond imitation, we have made 0 progress. 
 
 ExO sequences are in fact hiding somewhere in the set of possible generations, but the question remains what objectives or sampling techniques could possibly surface them? This might be as good a time as any to question the very foundation, the model architecture, and at the very least consider whether next token prediction is even the right framework for ExO language. For example, does it make sense to say that we cogitate left to right one word at a time, and then make some sort of value judgement accept/reject on the final form these sequential trajectories? [^2]. 
 
