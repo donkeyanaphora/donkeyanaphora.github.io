@@ -111,7 +111,7 @@ This seems like an interesting way to overcome the hurdles we discussed earlier,
 
 ## Closing Thoughts
 
-**Final Thoughts:** Just because models can exhibit surprisal or violate semantic expectations doesn't always mean they possess the ability to do so meaningfully. Ultimately, the goal is to understand whether machines can develop the kind of novel, conceptual re-framings that define ExO language and to build evaluation frameworks that recognize this kind of rhetorical force when it emerges. In short, we need benchmarks and optimization strategies that do not suppress, but instead reward "wondrous strange snow." [^5]
+Just because models can exhibit surprisal or violate semantic expectations doesn't always mean they possess the ability to do so meaningfully. Ultimately, the goal is to understand whether machines can develop the kind of novel, conceptual re-framings that define ExO language and to build evaluation frameworks that recognize this kind of rhetorical force when it emerges. In short, we need benchmarks and optimization strategies that do not suppress, but instead reward "wondrous strange snow." [^5]
 
 ## Key Resources
 
