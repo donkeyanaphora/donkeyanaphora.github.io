@@ -10,7 +10,7 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 # 🎭 Extra-Ordinary Language 
 
 **COLLINS WESTNEDGE**  
-*DEC 23, 2025*
+*JAN 11, 2026*
 
 ## Introduction
 
