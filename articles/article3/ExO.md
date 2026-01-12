@@ -16,11 +16,9 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 
 I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically, expressions that violate the [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) of language and yet carry high degrees of intentionality and depth. 
 
-When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
+When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language spontaneously. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
 
-In this post, I'm dog-earing these thoughts to revisit later. The aim here is to understand what makes these expressions work and more critically, the implications this has on how we measure and evaluate model intelligence. 
-
-<!-- Along the way, I'll attempt some preliminary formalizations and speculate about why current AI systems struggle with this capacity. -->
+In this post, I'm dog-earing these thoughts to revisit later. The aim here is to understand what makes these expressions work and more critically, the mechanisms by which models may surface or suppress them.
 
 ## Literary Examples
 
@@ -76,109 +74,84 @@ However, in practice, strong ExO lines also tend to carry:
 * **Intent signal**: the violation feels deliberate and motivated within the larger context.
 * **Irreducibility**: paraphrase diminishes the associative effects (the deviation is doing semantic work that a literal restatement can’t).
 
-Ultimately, these examples illustrate how expressions can fracture under a literal reading yet resolve in an imaginative one. Making that fracture or violation explicit clarifies how objectives rooted in the distributional hypothesis, e.g., next-token prediction or RLHF tuned for coherence and readability could steer models away from ExO language. If we want systems that embrace deliberate, meaningful rule-bending, we’ll need benchmarks that more actively reward it.
+Ultimately, these examples illustrate how expressions can fracture under a literal reading yet resolve in an imaginative one. The purpose of the notation is not to serve as a definition, but to make that fracture/violation explicit thus clarifying how base model objectives rooted in next token prediction or post training strategies optimized on user preferences (helpfulness, coherence, etc.) could steer models away from ExO language. If we want systems that embrace deliberate, meaningful rule-bending, we’ll need objectives, benchmarks, or sampling techniques that more actively encourage it.
 
 ## Why Might Current AI Struggle Here?
 Current language models face several systematic barriers to producing ExO language; at this point many of these are my own thoughts or fan theory rather than concrete fact, but nevertheless here they are: 
 
-**Data Scarcity in Pretraining**: Though profound literature exists in pretraining corpora (Google Books, etc.), it's statistically underrepresented. By definition, novel writing is rare, and easily-licensed conventional text dominates the training mix. Even within Pulitzer Prize winning articles/books etc the instances of truly profound prose/ExO language (as impactful as they may be) are few and far between. 
+### Base Training
+Though profound literature and instances of ExO exist in pretraining corpora (Google Books, etc.), against which base models like GPT and Llama have been tuned, it's statistically underrepresented. By definition, semantic violations are rare. Even within Pulitzer Prize winning articles, books, etc the instances of profound subversions of meaning and use (as impactful as they may be) are few and far between. That being said even if a model encountered notable instances of ExO language they are by definition violations of *ordinary usage*, the very pattern the model is optimizing *towards*. Given the prefix "That is, hot" the continuation " ice" is unlikely, lying on the tail end of the distribution for the proposed words to come. From a decoding perspective sequences like "hot ice" are absolutely possible, but not probable, so then what sort of sampling strategy could surface them? [^2].
 
-**Objective Mismatch**: From a causal language modeling perspective, next token prediction is less about encoding the abstract concepts or deep intentionality these examples are made up of and more so about emulation of style and prose. At this phase models learn to reproduce surface features without encoding the abstract concepts that necessarily drive literary innovation. Even though large causal models like GPT-3 begin to exhibit some few-shot behavior with sufficient examples, it seems unlikely that the causal training paradigm alone gets us the abstract associative power necessary for truly novel language.
+At this point the most reliable way to turn the improbable into probable (as in the case of "hot ice" or "I can't go on, I'll go on") is to condition the model on the exact instances in which they have *already* occurred. Insofar as we care about seeing ExO on the page our job here is done, but if we care about the generation of *new* forms of ExO, new intentional rule breaking, e.g., the meaningful violations that extend beyond imitation, we have made 0 progress. 
 
-**Task Absence During Fine-tuning**: When models are optimized for instruction following, there's likely an absence of tasks that push them to not just learn ExO behavior, but more importantly exhibit it. The training emphasizes practical capabilities over creative linguistic reasoning. Though literary analysis and reading comprehension are a big part of this phase they are somewhat distinct from the task of exhibiting and producing novel prose. In short, there are more analyses of great works than great works, and the reading comprehension/literary analysis task itself aligns more intuitively with how we quantify intelligence in school.
+ExO sequences are in fact hiding somewhere in the set of possible generations, but the question remains what objectives or sampling techniques could possibly surface them? This might be as good a time as any to question the very foundation, the model architecture, and at the very least consider whether next token prediction is even the right framework for ExO language. For example, does it make sense to say that we cogitate left to right one word at a time, and then make some sort of value judgement accept/reject on the final form these sequential trajectories? [^3]. 
 
-<!-- 
-**RLHF Optimization Pressure**: This one is fun to think about. From a preference learning perspective, I doubt anyone wants to do full-blown Harold Bloom literary analysis to rate model outputs. Most annotators would favor accessible, Wikipedia-style entries over Joycean explorations of any topic. This optimization pressure could easily eliminate whatever literary capabilities emerge during pretraining. There are also many studies that suggest RLHF can reduce a model's output diversity, which can be found in the key readings section further down.
+### Post-training
+From a post training perspective there are likely a few culprits or rather one culprit that hurts in different ways, preventing the emergence of ExO. The first of which is as simple as task absence, e.g., the under-representation of ExO demonstrations in the instruction/demonstration datasets upon which the base models we discussed earlier are further optimized. I mean honestly what sort of standalone questions would even elicit a demonstration of intentional semantic rule breaking "please reshape my perspective of X?" 
 
-Studies indicate RLHF improves generalization on benchmark tasks at the cost of reduced output diversity, suggesting a tradeoff between the two. The interesting case is what happens within the set of valid solutions. For tasks that admit many correct answers, does RLHF collapse probability mass onto a narrow set of conventional solutions/model responses? If so, this would work directly against fluid intelligence, which, following Chollet, should exhibit uniform probability across equally valid outputs while suppressing invalid ones. ExO language is precisely the kind of output that's valid but unconventional: high on the "correct but rare" end of the distribution, and thus vulnerable to being optimized away.
+My gut tells me that ExO emerges from a very different kind of language game, one that is culturally and historically situated and doesn't cleanly fit into the box of *instruction following* (a game whose economic utility maps more directly to an ROI). To further this point I would argue that Kafka (or any writer, poet, activist) for that matter was not following an instruction. The aim was to subvert meaning, to reshape the linguistic pathways through which we talk and *think* about the world. Though you could argue that someone probably instructed Kafka to "write more of XYZ" or that speech writers are instructed to put some idea into the form of compelling rhetoric, but even so it's very hard to imagine these instructions stripped of the socio-political landscape [^1] by which they are motivated and dropped into some instruction/demonstration dataset. Just to be clear this isn't to say there's some irreducibly human or non-optimizable part of ExO, as I mentioned before these are just my ramblings. [^4]
 
+Before moving onto the next topic in post-training it's worth reiterating our point from earlier about ExO expressions like "hot ice" surfacing as our prior gets closer to the original instance in which it occurred:
 
-**The Deeper Issue: Fluid Literary Intelligence**: The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what could be called fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks. An ability to traverse distant conceptual pathways, pathways that have not surfaced during pretraining. This likely overlaps with the intuition that scaling up inference time compute improves reasoning models by allowing them to perform a more exhaustive search of the solution space. However, as far as I can tell this strategy mostly applies to verifiable tasks and thus creative analogical reasoning in a literary or ExO capacity may remain a blindspot. 
+| Context | P("ice") |
+|---------|----------|
+| "That is, hot ___" | ▪○○○○ |
+| "Tedious and brief! That is, hot ___" | ▪▪▪○○ |
+| [Full Shakespeare]... "hot ___" | ▪▪▪▪▪ |
+<br>
+The model is only ever looking a single word ahead but as that prior increases and more closely resembles the excerpt in which our target word occurred the probability increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely. 
 
-In short, ExO language appears to depend on advanced, or at least highly creative, analogical reasoning. Its defining feature is the construction of meaningful and unexpected connections between disparate, and often seemingly contradictory, concepts, connections that resist literal validation but nonetheless produce insight.  -->
+However, the question remains how would we sample for ExO, and what recipe could we concoct (based on token probability masses) to reliably produce instances of it. Overall, these strategies can't encode "take a low probability path here, because it *will* conceptually or rhetorically pay off later" because as the table illustrates there is no notion of later. But what if we could learn one? 
 
+This brings us to RLHF (and preference optimization more broadly) a strategy by which we aren't just conditioning on some previously seen ExO prior, but incorporating information about where individual token choice *may* take us. It's important to disclose that the shift is not that the model stops being a next-token predictor, it's that we train it using feedback that is defined over the entire sequence. 
 
-**RLHF Optimization Pressure**: This one is fun to think about. From a preference learning perspective, I doubt anyone wants to do full-blown Harold Bloom literary analysis to rate model outputs. Most annotators would favor accessible, Wikipedia-style entries over Joycean explorations of any topic. That optimization pressure could easily eliminate whatever literary capabilities emerge during pretraining. There are also many studies that suggest RLHF can reduce a model's output diversity (see key readings section below).
+The reward model has seen complete sequences and encodes information about how these trajectories resolve. But the base model still has to learn which token-level decisions lead to this reward. The effect feels like pruning a tree, until the probability mass for a given token is concentrated around tokens that take us in directions humans prefer. 
 
-Some studies frame this as a generalization–diversity tradeoff rather than a defect. However, the interesting confound is what happens within the set of valid solutions. For tasks that admit many correct answers, does RLHF squish probability mass onto a narrow set of conventional solutions/model responses? If so, this would work directly against the kind of “fluid” intelligence that (following Chollet) shouldn’t collapse onto a single normative solution when multiple answers are equally defensible. ExO language is precisely the kind of output that's valid but unconventional, high on the "valid, meaningful and rare" end of the distribution, and thus vulnerable to being optimized away.
-
-**A Concrete Example: Analogical Reasoning on IQ Tests**: Models already score well on linguistic similarity tasks (how are X and Y alike?) like those found on the WAIS, which are intended to measure analogical reasoning capabilities. Ask a model "what is similar between a horse and a tiger?", you'll likely get the sociologically correct "hive mind answer": "both are mammals." RLHF likely helps the model here in that it pushes outputs toward sociological consensus. But when my friend was asked the same question, he joked: "they're both one step away from a zebra." That answer is wrong by IQ test scoring standards, but it's arguably closer to ExO thinking: an unexpected connection that reframes both concepts through a third.
-
-If RLHF concentrates probability mass toward canonical answers even when multiple interpretations could be defensible and arguably more interesting, it may be penalizing the unconventional links that make ExO language distinctive and profound. To state this in our ExO terminology from earlier, similarity tests are built to reward convergence toward categorical abstraction, not divergence toward imaginative reframing. 
-
-
-**The Deeper Issue: Fluid Literary Intelligence**: The more I examine instances of impactful prose packed with intentionality and metaphysical depth, the more convinced I am that modeling such language requires what could be called fluid literary intelligence. This goes beyond pattern matching toward adaptive generalization on out-of-distribution linguistic tasks. An ability to traverse distant conceptual pathways, pathways that have not surfaced during pretraining. This likely overlaps with the intuition that scaling up inference time compute improves reasoning models by allowing them to perform a more exhaustive search of the solution space. However, as far as I can tell this strategy mostly applies to verifiable tasks and thus creative analogical reasoning in a literary or ExO capacity may remain a blindspot.
-
-In short, ExO language appears to depend on advanced, or at least highly creative, analogical reasoning. Its defining feature is the construction of meaningful and unexpected connections between disparate, and often seemingly contradictory or mismatched, concepts, connections that resist literal interpretations but nonetheless produce insight.
-
-**Missing Benchmarks**: This leads to deeper questions: What constitutes literary novelty computationally and why are there no benchmarks on par with ARC that touch this axis of intelligence? The ARC datasets I've looked at resemble the visual matrix reasoning tasks on WAIS-style IQ tests. However, as far as I'm aware there is no linguistic equivalent, specifically, one that rewards unconventional yet valid analogical reasoning. More generally, we likely need a linguistic variant of ARC in the spirit of measuring efficient generalization, capacities that can’t be easily “bench-maxed” by practitioners targeting the test set. For now, reasoning evaluation has heavily favored verifiable tasks (coding, math) over creative reasoning.
-
-## Key Readings
-
-These papers and essays collectively help explore **extra‑ordinary (ExO) language**: RLHF studies detail how reward shaping affects diversity, Chollet’s work addresses fluid intelligence and efficient generalization, linguistic/philosophical perspectives on metaphor, analogy, and contradiction concepts central to creativity and nuanced language use.
-
-**RLHF, Mode Collapse & Output Diversity**
-
-* [Creativity Has Left the Chat: The Price of Debiasing Language Models](https://arxiv.org/abs/2406.05587) - *arXiv* (2024)
-* [Understanding the Effects of RLHF on LLM Generalisation and Diversity](https://openreview.net/pdf?id=PXD3FAVHJT) - *ICLR / OpenReview* ⭐️
-* [Mysteries of Mode Collapse](https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse) - *LessWrong essay*
-
-**ExO-Language, Analogical & Fluid Reasoning**
-
-* [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547) - *arXiv* (Chollet, 2019) ⭐️
-* [Metaphor Understanding Challenge Dataset for LLMs](https://arxiv.org/abs/2403.11810) - *arXiv* (2024)
-
-* [One fish, two fish, but not the whole sea: Alignment reduces language models’ conceptual diversity](https://aclanthology.org/2025.naacl-long.561.pdf) - *NAACL 2025* ⭐️
-* [Towards Benchmarking LLM Diversity & Creativity](https://gwern.net/creative-benchmark) - *Gwern.net*
-
-**Creative Language & Literary Ability in LLMs**
-
-* [Evaluating Large Language Model Creativity from a Literary Perspective](https://arxiv.org/abs/2312.03746) - *arXiv* (2023)
-* [Rethinking Literary Creativity in the Digital Age: Human vs. AI Playwriting](https://www.nature.com/articles/s41599-025-04999-2) — *Humanities & Social Sciences Communications (Nature)* ⭐️
-* [Large language models show both individual and collective creativity comparable to humans](https://www.sciencedirect.com/science/article/pii/S1871187125001191) - *ScienceDirect*
-
-**Sampling, Diversity & Generation Mechanics**
-
-* [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751) - *arXiv* (Holtzman et al., 2019) ⭐️
-  *(Introduces nucleus / top-p sampling)*
-
-**Philosophy of Language & Logic**
-
-* [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
-* [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
-* [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
-* [Exformation](https://en.wikiversity.org/wiki/Information) - Wikiversity
+This seems like an interesting way to overcome the hurdles we discussed earlier, however, there remains one major issue: we are still playing the wrong language game. As interesting as optimization toward something as ineffable as human preference may be it's still rooted in a context that doesn't quite fit ExO, primarily because it's the context in which preferences map to coherence, rule following, legibility, helpfulness, etc. 
 
 ## Closing Thoughts
 
-**Sociological Influence:** How do we account for the way social and historical contexts shape judgements of novelty and creativity and is it a moving target?   
+**Final Thoughts:** Just because models can exhibit surprisal or violate semantic expectations doesn't always mean they possess the ability to do so meaningfully. Ultimately, the goal is to understand whether machines can develop the kind of novel, conceptual re-framings that define ExO language and to build evaluation frameworks that recognize this kind of rhetorical force when it emerges. In short, we need benchmarks and optimization strategies that do not suppress, but instead reward "wondrous strange snow." [^5]
 
-Novelty and creativity are often historically and socially situated. A good deal of what constitutes creativity and novelty is dependent on the historical context in which artistic expressions are judged. Citizen Kane, for example, is often cited as one of the greatest films of all time due to its innovative cinematography and storytelling. However, the cinematic innovations that define this film, such as Toland's use of depth of field, is now a staple in most introductory film courses. Fashion often follows a similar arc, innovative and fresh designs that mark the runway one season saturate the shelves of fast-fashion retailers the next.
+## Key Resources
 
-Though judgements about creativity and artistic merit are heavily influenced by the social and historical factors there is still a sense in which great works are able to stand the test of time. When evaluating creative intelligence, we must consider how social and historical contexts shape our aesthetic judgements and distinguish between those that are fleeting and those that endure.
+**Philosophy of Language & Logic**
 
-**Final Thoughts:** Just because models can exhibit surprisal or violate semantic expectations doesn't always mean they possess the ability to do so meaningfully. Ultimately, the goal is to understand whether machines can develop the kind of flexible, creative intelligence that ExO language represents—and to build evaluation frameworks that recognize this intelligence when it emerges. In short, we need benchmarks that reward "wondrous strange snow."
+* ⭐ [Richard Rorty, *Contingency, Irony, and Solidarity* (1989)](https://sites.pitt.edu/~rbrandom/Courses/Antirepresentationalism%20(2020)/Texts/rorty-contingency-irony-and-solidarity-1989.pdf) — PDF
+* [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
+* [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
+* [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
+* [Chiasmus](https://en.wikipedia.org/wiki/Chiasmus) - Wikipedia
+* [Exformation](https://en.wikiversity.org/wiki/Information) - Wikiversity
 
----
+**RLHF & Output Diversity**
 
-<!-- [^1]: *Theseus sets up an open contradiction **hot** + **ice** only to “resolve” it with the sneering flourish “wondrous strange snow.”  
-      The oxymoron stays physically impossible, but the new name lets the audience picture it for a moment as an imaginable marvel.  
-      I think this imaginative license would still make it a Modal-Projection (MP).* -->
+* ⭐️ [Aligning language models to follow instructions](https://openai.com/index/instruction-following/) - *OpenAI*
+* ⭐️ [Understanding the Effects of RLHF on LLM Generalisation and Diversity](https://openreview.net/pdf?id=PXD3FAVHJT) - *ICLR / OpenReview* 
+* ⭐️ [One fish, two fish, but not the whole sea: Alignment reduces language models’ conceptual diversity](https://aclanthology.org/2025.naacl-long.561.pdf) - *NAACL 2025*
 
+**Fluid/Intelligence Reasoning**
 
+* ⭐️ [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547) - *arXiv* (Chollet, 2019)
+* [Towards Benchmarking LLM Diversity & Creativity](https://gwern.net/creative-benchmark) - *Gwern.net*
 
-*Shoutout to my good friend Joshua for the stimulating convo and amazing **Midsummer** example. And shout-out to Henry too for the great convos on AGI/ARC and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
+**Sampling, Diversity & Generation Mechanics**
 
+* ⭐️ [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751) - *arXiv* (Holtzman et al., 2019)
+  *(Introduces nucleus / top-p sampling)*
 
-<!-- [^2]: The table below shows loosely how the literary ExO examples behave across two interpretive models:
+**Diffusion Based Approaches**
 
-- **M<sub>phys</sub>**: Physical/literal interpretation (common sense, ordinary meaning)
-- **M<sub>interp</sub>**: Creative interpretation (metaphor, allegory, figurative readings)
+* [COMING SOON]
 
-| Passage | Pattern | Formal Notation | Plain English |
-|---------|---------|-----------------|---------------|
-| *"Two distincts, division none"* | Modal Clash | M<sub>phys</sub> ⊨ Distinct(a,b) ∧ M<sub>interp</sub> ⊨ ¬Distinct(a,b) | Two bodies, one soul |
-| *"Hearts remote, yet not asunder"* | Modal Clash | M<sub>phys</sub> ⊨ Remote(a,b) ∧ M<sub>interp</sub> ⊨ ¬Remote(a,b) | Spatially apart, spiritually united |
-| *"Hot ice / wondrous strange snow"* | Modal Projection | M<sub>phys</sub> ⊨ ¬(Ice ∧ Hot) ∧ M<sub>interp</sub> ⊭ ¬(Ice ∧ Hot) | Physically impossible, imaginatively conceivable |
-| *"A cage went in search of a bird"* | Type Clash | M<sub>phys</sub>: ¬Animate(cage) ∧ Search(cage, bird) ⇒ ⊥ | Cages can't search; metaphorically, oppression pursues freedom |
-| *"I can't go on. I'll go on."* | Modal Clash | M<sub>phys</sub> ⊨ ¬Able(x, continue) ∧ M<sub>interp</sub> ⊨ Continue(x) | Logical contradiction; existential persistence despite impossibility | -->
+[^1]: **Sociological Influence:** How do we account for the way social and historical contexts shape judgments of novelty and creativity and is it a moving target?<br><br>
+Novelty and creativity are often historically and socially situated. A good deal of what constitutes creativity and novelty is dependent on the historical context in which artistic expressions are judged. Citizen Kane, for example, is often cited as one of the greatest films of all time due to its innovative cinematography and storytelling. However, the cinematic innovations that define this film, such as Toland's use of depth of field, is now a staple in most introductory film courses. Fashion often follows a similar arc, innovative and fresh designs that mark the runway one season saturate the shelves of fast-fashion retailers the next.<br><br>
+Though judgments about creativity and artistic merit are heavily influenced by the social and historical factors there is still a sense in which great works are able to stand the test of time. When evaluating creative intelligence, we must consider how social and historical contexts shape our aesthetic judgments and distinguish between those that are fleeting and those that endure.
+
+[^2]: Holtzman et al.'s *The Curious Case of Neural Text Degeneration* (2019) explores this problem and introduces nucleus sampling as one approach.
+
+[^3]: Diffusion-based text generation offers an alternative to autoregressive prediction, see resources section (coming soon).
+
+[^4]: Rorty's *Contingency, Irony, and Solidarity* (1989) develops this idea at length, arguing that genuinely novel metaphors create new language games rather than play within existing ones.
+
+[^5]: ⭐ *Shoutout to my good friend Joshua for the stimulating convo, the amazing Shakespeare examples and great resources on literary devices + Richard Rorty. And shout-out to Henry too for the great convos on AGI/ARC and thoughts on diffusion-based and RL approaches. And last but not least shoutout to Noel for her core contributions on aesthetics and philosophical insights on creativity and intelligence*
