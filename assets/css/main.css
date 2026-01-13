@@ -994,3 +994,11 @@ main.content,
 footer {
   flex-shrink: 0;
 }
+
+/* gross patch to make sure citations dont get weird spacing
+ because of a tag attributes everywhere else on website */
+a.footnote-ref {
+  min-height: 0;
+  min-width: 0;
+  display: inline;
+}
