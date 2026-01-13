@@ -203,22 +203,21 @@ better.">
       here they are:</p>
       <h3 id="base-training">Base Training</h3>
       <p>Though profound literature and instances of ExO exist in
-      pretraining corpora (Project Gutenberg, Books3, BookCorpus etc.),
-      against which many base models like GPT and Llama have been tuned,
-      it’s statistically underrepresented. By definition, semantic
-      violations are rare. Even within Pulitzer Prize winning articles,
-      books, etc the instances of profound subversions of meaning and
-      use (as impactful as they may be) are few and far between. That
-      being said even if a model encountered notable instances of ExO
-      language they are by definition violations of <em>ordinary
-      usage</em>, the very pattern the model is optimizing
-      <em>towards</em>. Given the prefix “That is, hot” the continuation
-      ” ice” is unlikely, lying on the tail end of the distribution for
-      the proposed words to come. From a decoding perspective sequences
-      like “hot ice” are absolutely possible, but not probable, so then
-      what sort of sampling strategy could surface them? <a href="#fn1"
-      class="footnote-ref" id="fnref1"
-      role="doc-noteref"><sup>1</sup></a>.</p>
+      pretraining corpora (Project Gutenberg, Books1-3, etc), against
+      which many base models like GPT and Llama have been tuned, it’s
+      statistically underrepresented. By definition, semantic violations
+      are rare. Even within Pulitzer Prize winning articles, books, etc
+      the instances of profound subversions of meaning and use (as
+      impactful as they may be) are few and far between. That being said
+      even if a model encountered notable instances of ExO language they
+      are by definition violations of <em>ordinary usage</em>, the very
+      pattern the model is optimizing <em>towards</em>. Given the prefix
+      “That is, hot” the continuation ” ice” is unlikely, lying on the
+      tail end of the distribution for the proposed words to come. From
+      a decoding perspective sequences like “hot ice” are absolutely
+      possible, but not probable, so then what sort of sampling strategy
+      could surface them? <a href="#fn1" class="footnote-ref"
+      id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
       <p>At this point the easiest way to turn the improbable into
       probable (in the case of “hot ice” or “I can’t go on, I’ll go on”)
       is to condition the model on the exact instances in which they
@@ -342,24 +341,32 @@ better.">
       <h2 id="key-resources">Key Resources</h2>
       <p><strong>Philosophy of Language &amp; Logic</strong></p>
       <ul>
-      <li>⭐ <a
+      <li><p>⭐ <a
       href="https://sites.pitt.edu/~rbrandom/Courses/Antirepresentationalism%20(2020)/Texts/rorty-contingency-irony-and-solidarity-1989.pdf">Richard
       Rorty, <em>Contingency, Irony, and Solidarity</em> (1989)</a> —
-      PDF</li>
-      <li><a
+      PDF</p></li>
+      <li><p><a
+      href="https://hal.science/hal-02381339/file/Abrusan.SemanticAnomaly.Ungrammaticality.pdf">Marta
+      Abrusán, <em>Semantic Anomaly, Pragmatic Infelicity and
+      Ungrammaticality</em> (2019)</a> — PDF</p></li>
+      <li><p><a
       href="https://plato.stanford.edu/entries/metaphor/">Metaphor</a> -
-      <em>Stanford Encyclopedia of Philosophy</em></li>
-      <li><a
+      <em>Stanford Encyclopedia of Philosophy</em></p></li>
+      <li><p><a
       href="https://plato.stanford.edu/entries/contradiction/">Contradiction</a>
-      - <em>Stanford Encyclopedia of Philosophy</em></li>
-      <li><a
+      - <em>Stanford Encyclopedia of Philosophy</em></p></li>
+      <li><p><a
       href="https://en.wikipedia.org/wiki/Catachresis">Catachresis</a> -
-      Wikipedia</li>
-      <li><a href="https://en.wikipedia.org/wiki/Chiasmus">Chiasmus</a>
-      - Wikipedia</li>
-      <li><a
+      Wikipedia</p></li>
+      <li><p><a
+      href="https://en.wikipedia.org/wiki/Chiasmus">Chiasmus</a> -
+      Wikipedia</p></li>
+      <li><p><a
+      href="https://en.wikipedia.org/wiki/Category_mistake">Category
+      Mistake</a> - Wikipedia</p></li>
+      <li><p><a
       href="https://en.wikiversity.org/wiki/Information">Exformation</a>
-      - Wikiversity</li>
+      - Wikiversity</p></li>
       </ul>
       <p><strong>RLHF &amp; Output Diversity</strong></p>
       <ul>

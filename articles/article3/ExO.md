@@ -80,7 +80,7 @@ Ultimately, these examples illustrate how expressions can fracture under a liter
 Current language models face several systematic barriers to producing ExO language; at this point many of these are my own thoughts or fan theory rather than concrete fact, but nevertheless here they are: 
 
 ### Base Training
-Though profound literature and instances of ExO exist in pretraining corpora (Project Gutenberg, Books3, BookCorpus etc.), against which many base models like GPT and Llama have been tuned, it's statistically underrepresented. By definition, semantic violations are rare. Even within Pulitzer Prize winning articles, books, etc the instances of profound subversions of meaning and use (as impactful as they may be) are few and far between. That being said even if a model encountered notable instances of ExO language they are by definition violations of *ordinary usage*, the very pattern the model is optimizing *towards*. Given the prefix "That is, hot" the continuation " ice" is unlikely, lying on the tail end of the distribution for the proposed words to come. From a decoding perspective sequences like "hot ice" are absolutely possible, but not probable, so then what sort of sampling strategy could surface them? [^1].
+Though profound literature and instances of ExO exist in pretraining corpora (Project Gutenberg, Books1-3, etc), against which many base models like GPT and Llama have been tuned, it's statistically underrepresented. By definition, semantic violations are rare. Even within Pulitzer Prize winning articles, books, etc the instances of profound subversions of meaning and use (as impactful as they may be) are few and far between. That being said even if a model encountered notable instances of ExO language they are by definition violations of *ordinary usage*, the very pattern the model is optimizing *towards*. Given the prefix "That is, hot" the continuation " ice" is unlikely, lying on the tail end of the distribution for the proposed words to come. From a decoding perspective sequences like "hot ice" are absolutely possible, but not probable, so then what sort of sampling strategy could surface them? [^1].
 
 At this point the easiest way to turn the improbable into probable (in the case of "hot ice" or "I can't go on, I'll go on") is to condition the model on the exact instances in which they have *already* occurred. Insofar as we care about seeing ExO on the page our job here is done, but if we care about the generation of *new* forms of ExO, new intentional rule breaking, e.g., the meaningful violations that extend beyond imitation, we have made 0 progress. 
 
@@ -118,10 +118,14 @@ Just because models can exhibit surprisal or violate semantic expectations doesn
 **Philosophy of Language & Logic**
 
 * ⭐ [Richard Rorty, *Contingency, Irony, and Solidarity* (1989)](https://sites.pitt.edu/~rbrandom/Courses/Antirepresentationalism%20(2020)/Texts/rorty-contingency-irony-and-solidarity-1989.pdf) — PDF
+
+* [Marta Abrusán, *Semantic Anomaly, Pragmatic Infelicity and Ungrammaticality* (2019)](https://hal.science/hal-02381339/file/Abrusan.SemanticAnomaly.Ungrammaticality.pdf) — PDF
+
 * [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
 * [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
 * [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
 * [Chiasmus](https://en.wikipedia.org/wiki/Chiasmus) - Wikipedia
+* [Category Mistake](https://en.wikipedia.org/wiki/Category_mistake) - Wikipedia
 * [Exformation](https://en.wikiversity.org/wiki/Information) - Wikiversity
 
 **RLHF & Output Diversity**
