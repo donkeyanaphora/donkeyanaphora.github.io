@@ -118,9 +118,7 @@ Just because models can exhibit surprisal or violate semantic expectations doesn
 **Philosophy of Language & Logic**
 
 * ⭐ [Richard Rorty, *Contingency, Irony, and Solidarity* (1989)](https://sites.pitt.edu/~rbrandom/Courses/Antirepresentationalism%20(2020)/Texts/rorty-contingency-irony-and-solidarity-1989.pdf) — PDF
-
 * [Marta Abrusán, *Semantic Anomaly, Pragmatic Infelicity and Ungrammaticality* (2019)](https://hal.science/hal-02381339/file/Abrusan.SemanticAnomaly.Ungrammaticality.pdf) — PDF
-
 * [Metaphor](https://plato.stanford.edu/entries/metaphor/) - *Stanford Encyclopedia of Philosophy*
 * [Contradiction](https://plato.stanford.edu/entries/contradiction/) - *Stanford Encyclopedia of Philosophy*
 * [Catachresis](https://en.wikipedia.org/wiki/Catachresis) - Wikipedia
