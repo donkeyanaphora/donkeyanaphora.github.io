@@ -92,8 +92,8 @@ better.">
       specifically, expressions that push back against the core tenet of
       <a
       href="https://en.wikipedia.org/wiki/Distributional_semantics">distributional
-      hypothesis</a> (i.e., similar usage ≈ similar meaning) and yet
-      carry high degrees of intentionality and depth.</p>
+      hypothesis</a> and yet carry high degrees of intentionality and
+      depth.</p>
       <p>When Kafka wrote “A cage went in search of a bird,” he created
       something that on the surface seems impossible and yet expresses a
       profound and insidious truth. Current AI systems, for all their
@@ -144,9 +144,10 @@ better.">
       abstract).</p>
       <p>As David Foster Wallace said, “we all know there’s no quicker
       way to empty a joke of its peculiar magic than to explain it,” and
-      the same is true for figurative language. Still, it’s worth
+      the same is true of figurative language. Still, it’s worth
       illustrating how these expressions <em>may</em> resolve through a
-      figurative interpretation, albeit with some loss of “magic”:</p>
+      figurative reinterpretation, albeit with some loss of their
+      “peculiar magic”:</p>
       <ul>
       <li>“Two distincts, division none” - two bodies, one soul</li>
       <li>“A cage went in search of a bird” - oppression seeks
@@ -164,8 +165,8 @@ better.">
       <p>Here, ⟦φ⟧ denotes the interpretation of expression φ, ⊘
       indicates a semantic anomaly (a violation of expectation), and ψ
       the emergent or resolved meaning. Framed this way, two of ExO
-      language’s core properties are built directly into the notation
-      above:</p>
+      language’s core properties are built directly into the
+      notation:</p>
       <ul>
       <li><strong>Surface-level anomaly</strong>: under a literal
       reading, expectations are violated, i.e., ( <span
@@ -189,12 +190,12 @@ better.">
       fracture under a literal reading yet resolve in an imaginative
       one. The purpose of the notation is not to serve as a definition,
       but to make that fracture/violation explicit thus clarifying how
-      base model objectives rooted in next token prediction or post
-      training strategies optimized on user preferences (helpfulness,
-      coherence, etc.) could steer models away from ExO language. If we
-      want systems that embrace deliberate, meaningful rule-bending,
-      we’ll need objectives, benchmarks, or sampling techniques that
-      more actively encourage it.</p>
+      base model objectives rooted in next token prediction or
+      post-training strategies optimized on user preferences
+      (helpfulness, coherence, etc.) could steer models away from ExO
+      language. If we want systems that embrace deliberate, meaningful
+      rule-bending, we’ll need objectives, benchmarks, or sampling
+      techniques that more actively encourage it.</p>
       <h2 id="why-might-current-ai-struggle-here">Why Might Current AI
       Struggle Here?</h2>
       <p>Current language models face several systematic barriers to
@@ -208,22 +209,21 @@ better.">
       statistically underrepresented. By definition, semantic violations
       are rare. Even within Pulitzer Prize winning articles, books, etc
       the instances of profound subversions of meaning and use (as
-      impactful as they may be) are few and far between. That being said
-      even if a model encountered notable instances of ExO language they
-      are by definition violations of <em>ordinary usage</em>, the very
-      pattern the model is optimizing <em>towards</em>. Given the prefix
-      “That is, hot” the continuation ” ice” is unlikely, lying on the
-      tail end of the distribution for the proposed words to come. From
-      a decoding perspective sequences like “hot ice” are absolutely
-      possible, but not probable, so then what sort of sampling strategy
-      could surface them? <a href="#fn1" class="footnote-ref"
-      id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+      impactful as they may be) are few and far between. That being
+      said, even if a model encountered notable instances of ExO
+      language they are by definition violations of <em>ordinary
+      usage</em>, the very pattern the model is optimizing
+      <em>towards</em>. Given the prefix “That is, hot” the continuation
+      ” ice” is unlikely, lying on the tail end of the distribution for
+      the proposed words to come. From a decoding perspective sequences
+      like “hot ice” are absolutely possible, but not probable, so then
+      what sort of sampling strategy could surface them?</p>
       <p>At this point the easiest way to turn the improbable into
-      probable (in the case of “hot ice” or “I can’t go on, I’ll go on”)
-      is to condition the model on the exact instances in which they
-      have <em>already</em> occurred. Insofar as we care about seeing
-      ExO on the page our job here is done, but if we care about the
-      generation of <em>new</em> forms of ExO, new intentional rule
+      probable (as in the case of “hot ice” or “I can’t go on, I’ll go
+      on”) is to condition the model on the exact instances in which
+      they have <em>already</em> occurred. Insofar as we care about
+      seeing ExO on the page our job here is done, but if we care about
+      the generation of <em>new</em> forms of ExO, new intentional rule
       breaking, e.g., the meaningful violations that extend beyond
       imitation, we have made 0 progress.</p>
       <p>ExO sequences are in fact hiding somewhere in the set of
@@ -234,43 +234,45 @@ better.">
       prediction is even the right framework for ExO language. For
       example, does it make sense to say that we cogitate left to right
       one word at a time, and then make some sort of value judgement
-      accept/reject on the final form these sequential trajectories? <a
-      href="#fn2" class="footnote-ref" id="fnref2"
-      role="doc-noteref"><sup>2</sup></a>.</p>
+      accept/reject on the final form these sequential trajectories? Or
+      are there alternative strategies for generating text that more
+      closely align with our own ideation/writing process? <a
+      href="#fn1" class="footnote-ref" id="fnref1"
+      role="doc-noteref"><sup>1</sup></a></p>
       <h3 id="post-training">Post-training</h3>
-      <p>From a post training perspective there are likely a few
+      <p>From a post-training perspective there are likely a few
       culprits or rather one culprit that hurts in different ways,
       preventing the emergence of ExO. The first of which is as simple
       as task absence, e.g., the under-representation of ExO
       demonstrations in the instruction/demonstration datasets upon
       which the base models we discussed earlier are further optimized.
-      I mean honestly what sort of standalone questions would even
-      elicit a demonstration of intentional semantic rule breaking
-      “please reshape my perspective of X?”</p>
+      Honestly, what sort of standalone questions would even elicit a
+      demonstration of intentional semantic rule breaking “please
+      reshape my perspective of X?”</p>
       <p>My gut tells me that ExO emerges from a very different kind of
       language game, one that is culturally and historically situated
       and doesn’t cleanly fit into the box of <em>instruction
       following</em> (a game whose economic utility maps more directly
-      to an ROI). To further this point I would argue that Kafka (or any
-      writer, poet, activist) for that matter was not following an
+      to an ROI). To further this point, I would argue that Kafka (or
+      any writer, poet, activist) for that matter was not following an
       instruction. The aim was to subvert meaning, to reshape the
       linguistic pathways through which we talk and <em>think</em> about
       the world. Though you could argue that someone probably instructed
       Kafka to “write more of XYZ” or that speech writers are instructed
       to put some idea into the form of compelling rhetoric, but even so
       it’s very hard to imagine these instructions stripped of the
-      socio-political landscape by which they are motivated and dropped
-      into some instruction/demonstration dataset. <a href="#fn3"
+      socio-political landscape in which they are motivated and dropped
+      into some instruction/demonstration dataset. Just to be clear this
+      isn’t to say there’s some irreducibly human or non-optimizable
+      dimension of ExO, as I mentioned before these are just my
+      ramblings. <a href="#fn2" class="footnote-ref" id="fnref2"
+      role="doc-noteref"><sup>2</sup></a> <a href="#fn3"
       class="footnote-ref" id="fnref3"
-      role="doc-noteref"><sup>3</sup></a> <a href="#fn4"
-      class="footnote-ref" id="fnref4"
-      role="doc-noteref"><sup>4</sup></a></p>
-      <p>Just to be clear this isn’t to say there’s some irreducibly
-      human or non-optimizable part of ExO, as I mentioned before these
-      are just my ramblings. Before moving onto the next topic in
-      post-training it’s worth reiterating our point from earlier about
-      ExO expressions like “hot ice” surfacing as our prior gets closer
-      to the original instance in which it occurred:</p>
+      role="doc-noteref"><sup>3</sup></a></p>
+      <p>Before moving onto the next topic in post-training it’s worth
+      reiterating our point from earlier about ExO expressions like “hot
+      ice” surfacing as our prior gets closer to the original passage in
+      which it occurs:</p>
       <table>
       <thead>
       <tr>
@@ -293,13 +295,15 @@ better.">
       </tr>
       </tbody>
       </table>
-      <p><br> The model is only ever looking a single word ahead but as
+      <p><br> The model is only ever looking a single word ahead, but as
       that prior increases and more closely resembles the excerpt in
       which our target word occurred the probability increases. This is
       why I mentioned sampling techniques earlier because they offer an
       alternative to building up that prior, instead focusing on
       strategies to leverage the information we have about the
-      distribution to pick words that may not be the most likely.</p>
+      distribution to pick words that may not be the most likely. <a
+      href="#fn4" class="footnote-ref" id="fnref4"
+      role="doc-noteref"><sup>4</sup></a></p>
       <p>However, the question remains how would we sample for ExO, and
       what recipe could we concoct (based on token probability masses)
       to reliably produce instances of it. Overall, these strategies
@@ -308,7 +312,7 @@ better.">
       as the table illustrates there is no notion of later. But what if
       we could learn one?</p>
       <p>This brings us to RLHF (and preference optimization more
-      broadly) a strategy by which we aren’t just conditioning on some
+      broadly), a strategy by which we aren’t just conditioning on some
       previously seen ExO prior, but incorporating information about
       where individual token choices <em>may</em> take us. It’s
       important to disclose that the shift is not that the model stops
@@ -319,24 +323,26 @@ better.">
       model still has to learn which token-level decisions lead to this
       reward. The effect feels like pruning a tree, until the
       probability mass for a given token is concentrated around tokens
-      that take us in directions humans prefer.</p>
+      that take us in directions humans tend to prefer. <!-- 
+      This seems like an interesting way to overcome the hurdles we discussed earlier, however, there remains one major issue: we are still playing the wrong language game. As interesting as optimization toward something as ineffable as human preference may be, it's still rooted in a context that doesn't quite fit ExO, primarily because it's the context in which preferences map to coherence, rule following, legibility, helpfulness, etc.  --></p>
       <p>This seems like an interesting way to overcome the hurdles we
-      discussed earlier, however, there remains one major issue: we are
-      still playing the wrong language game. As interesting as
+      discussed earlier, however, a deeper problem remains: aren’t we
+      still playing the wrong language game? As interesting as
       optimization toward something as ineffable as human preference may
-      be it’s still rooted in a context that doesn’t quite fit ExO,
-      primarily because it’s the context in which preferences map to
-      coherence, rule following, legibility, helpfulness, etc.</p>
+      be, it’s still rooted in a context that doesn’t quite fit ExO, a
+      context in which preferences likely map to coherence,
+      rule-following, legibility, helpfulness, etc., not the
+      rule-bending violations of ExO.</p>
       <h2 id="closing-thoughts">Closing Thoughts</h2>
       <p>Just because models can exhibit surprisal or violate semantic
-      expectations doesn’t always mean they possess the ability to do so
-      meaningfully. Ultimately, the goal is to understand whether
-      machines can develop the kind of novel, conceptual re-framings
-      that define ExO language and to build evaluation frameworks that
-      recognize this kind of rhetorical force when it emerges. In short,
-      we need benchmarks and optimization strategies that do not
-      suppress, but instead reward “wondrous strange snow.” <a
-      href="#fn5" class="footnote-ref" id="fnref5"
+      expectations (under certain constraints) doesn’t mean they possess
+      the ability to do so meaningfully. Ultimately, the goal is to
+      understand whether machines can develop the kind of novel,
+      conceptual re-framings that define ExO language and to build
+      evaluation frameworks that recognize this kind of rhetorical force
+      when it emerges. In short, we need benchmarks and methodologies
+      that do not suppress, but instead reward “wondrous strange snow.”
+      <a href="#fn5" class="footnote-ref" id="fnref5"
       role="doc-noteref"><sup>5</sup></a></p>
       <h2 id="key-resources">Key Resources</h2>
       <p><strong>Philosophy of Language &amp; Logic</strong></p>
@@ -404,15 +410,11 @@ better.">
       class="footnotes footnotes-end-of-document" role="doc-endnotes">
       <hr />
       <ol>
-      <li id="fn1"><p>Holtzman et al.’s <em>The Curious Case of Neural
-      Text Degeneration</em> (2019) explores this problem and introduces
-      nucleus sampling as one approach.<a href="#fnref1"
-      class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-      <li id="fn2"><p>Diffusion-based text generation offers an
+      <li id="fn1"><p>Diffusion-based text generation offers an
       alternative to autoregressive prediction, see resources section
-      (coming soon).<a href="#fnref2" class="footnote-back"
+      (coming soon).<a href="#fnref1" class="footnote-back"
       role="doc-backlink">↩︎</a></p></li>
-      <li id="fn3"><p><strong>Sociological Influence:</strong> How do we
+      <li id="fn2"><p><strong>Sociological Influence:</strong> How do we
       account for the way social and historical contexts shape judgments
       of novelty and creativity and is it a moving target?<br><br>
       Novelty and creativity are often historically and socially
@@ -431,13 +433,17 @@ better.">
       are able to stand the test of time. When evaluating creative
       intelligence, we must consider how social and historical contexts
       shape our aesthetic judgments and distinguish between those that
-      are fleeting and those that endure.<a href="#fnref3"
+      are fleeting and those that endure.<a href="#fnref2"
       class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-      <li id="fn4"><p>Rorty’s <em>Contingency, Irony, and
+      <li id="fn3"><p>Rorty’s <em>Contingency, Irony, and
       Solidarity</em> (1989) develops this idea at length, arguing that
       genuinely novel metaphors create new language games rather than
-      play within existing ones.<a href="#fnref4" class="footnote-back"
+      play within existing ones.<a href="#fnref3" class="footnote-back"
       role="doc-backlink">↩︎</a></p></li>
+      <li id="fn4"><p>Holtzman et al.’s <em>The Curious Case of Neural
+      Text Degeneration</em> (2019) explores this problem and introduces
+      nucleus sampling as one approach.<a href="#fnref4"
+      class="footnote-back" role="doc-backlink">↩︎</a></p></li>
       <li id="fn5"><p>⭐ <em>Shoutout to my good friend Joshua for the
       stimulating convo, the amazing Shakespeare examples and great
       resources on literary devices + Richard Rorty. And shout-out to
