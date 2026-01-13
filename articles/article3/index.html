@@ -89,10 +89,11 @@ better.">
       <h2 id="introduction">Introduction</h2>
       <p>I’ve been thinking about a conversation I had with a former
       colleague about language that defies ordinary usage. More
-      specifically, expressions that push back against the <a
+      specifically, expressions that push back against the core tenet of
+      <a
       href="https://en.wikipedia.org/wiki/Distributional_semantics">distributional
-      hypothesis</a> (similar usage ≈ similar meaning) and yet carry
-      high degrees of intentionality and depth.</p>
+      hypothesis</a> (i.e., similar usage ≈ similar meaning) and yet
+      carry high degrees of intentionality and depth.</p>
       <p>When Kafka wrote “A cage went in search of a bird,” he created
       something that on the surface seems impossible and yet expresses a
       profound and insidious truth. Current AI systems, for all their
@@ -310,10 +311,10 @@ better.">
       <p>This brings us to RLHF (and preference optimization more
       broadly) a strategy by which we aren’t just conditioning on some
       previously seen ExO prior, but incorporating information about
-      where individual token choice <em>may</em> take us. It’s important
-      to disclose that the shift is not that the model stops being a
-      next-token predictor, it’s that we train it using feedback that is
-      defined over the entire sequence.</p>
+      where individual token choices <em>may</em> take us. It’s
+      important to disclose that the shift is not that the model stops
+      being a next-token predictor, it’s that we train it using feedback
+      that is defined over the entire sequence.</p>
       <p>The reward model has seen complete sequences and encodes
       information about how these trajectories resolve. But the base
       model still has to learn which token-level decisions lead to this

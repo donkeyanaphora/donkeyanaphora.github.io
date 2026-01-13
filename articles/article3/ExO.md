@@ -14,7 +14,7 @@ image: "https://donkeyanaphora.github.io/assets/images/thumbnail.png"
 
 ## Introduction
 
-I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically, expressions that push back against the [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) (similar usage ≈ similar meaning) and yet carry high degrees of intentionality and depth.
+I've been thinking about a conversation I had with a former colleague about language that defies ordinary usage. More specifically, expressions that push back against the core tenet of [distributional hypothesis](https://en.wikipedia.org/wiki/Distributional_semantics) (i.e., similar usage ≈ similar meaning) and yet carry high degrees of intentionality and depth.
 
 When Kafka wrote "A cage went in search of a bird," he created something that on the surface seems impossible and yet expresses a profound and insidious truth. Current AI systems, for all their linguistic sophistication, rarely produce such language spontaneously. They excel at coherent, informative prose but struggle with the kind of intentional violations that define great literature.
 
@@ -103,7 +103,7 @@ The model is only ever looking a single word ahead but as that prior increases a
 
 However, the question remains how would we sample for ExO, and what recipe could we concoct (based on token probability masses) to reliably produce instances of it. Overall, these strategies can't encode "take a low probability path here, because it *will* conceptually or rhetorically pay off later" because as the table illustrates there is no notion of later. But what if we could learn one? 
 
-This brings us to RLHF (and preference optimization more broadly) a strategy by which we aren't just conditioning on some previously seen ExO prior, but incorporating information about where individual token choice *may* take us. It's important to disclose that the shift is not that the model stops being a next-token predictor, it's that we train it using feedback that is defined over the entire sequence. 
+This brings us to RLHF (and preference optimization more broadly) a strategy by which we aren't just conditioning on some previously seen ExO prior, but incorporating information about where individual token choices *may* take us. It's important to disclose that the shift is not that the model stops being a next-token predictor, it's that we train it using feedback that is defined over the entire sequence. 
 
 The reward model has seen complete sequences and encodes information about how these trajectories resolve. But the base model still has to learn which token-level decisions lead to this reward. The effect feels like pruning a tree, until the probability mass for a given token is concentrated around tokens that take us in directions humans prefer. 
 
