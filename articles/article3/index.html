@@ -293,14 +293,16 @@ better.">
       </tr>
       </tbody>
       </table>
-      <p><br> The model is only ever looking a single word ahead, but as
-      that prior increases and more closely resembles the excerpt in
-      which our target word occurred the probability increases. This is
-      why I mentioned sampling techniques earlier because they offer an
-      alternative to building up that prior, instead focusing on
-      strategies to leverage the information we have about the
-      distribution to pick words that may not be the most likely.<a
-      href="#fn4" class="footnote-ref" id="fnref4"
+      <p><br></p>
+      <p>From an optimization standpoint, the model is only ever
+      rewarded/penalized for predicting the next token. As the
+      conditioning context grows closer to the original passage in which
+      a target word occurred, the probability mass assigned to that word
+      increases. This is why I mentioned sampling techniques earlier
+      because they offer an alternative to building up that prior,
+      instead focusing on strategies to leverage the information we have
+      about the distribution to pick words that may not be the most
+      likely.<a href="#fn4" class="footnote-ref" id="fnref4"
       role="doc-noteref"><sup>4</sup></a></p>
       <p>However, the question remains how would we sample for ExO, and
       what recipe could we concoct (based on token probability masses)
@@ -329,8 +331,7 @@ better.">
       optimization toward something as ineffable as human preference may
       be, it’s still rooted in a context that doesn’t quite fit ExO, a
       context in which preferences likely map to coherence,
-      rule-following, legibility, helpfulness, etc., not the
-      rule-bending violations of ExO.</p>
+      rule-following, legibility, helpfulness, etc.</p>
       <h2 id="closing-thoughts">Closing Thoughts</h2>
       <p>Just because models can exhibit surprisal or violate semantic
       expectations (under certain constraints) doesn’t mean they possess

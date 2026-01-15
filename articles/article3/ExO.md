@@ -99,7 +99,8 @@ Before moving onto the next topic in post-training it's worth reiterating our po
 | "Tedious and brief! That is, hot ___" | ▪▪▪○○ |
 | [Full Shakespeare]... "hot ___" | ▪▪▪▪▪ |
 <br>
-The model is only ever looking a single word ahead, but as that prior increases and more closely resembles the excerpt in which our target word occurred the probability increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely.[^4]
+
+From an optimization standpoint, the model is only ever rewarded/penalized for predicting the next token. As the conditioning context grows closer to the original passage in which a target word occurred, the probability mass assigned to that word increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely.[^4]
 
 However, the question remains how would we sample for ExO, and what recipe could we concoct (based on token probability masses) to reliably produce instances of it. Overall, these strategies can't encode "take a low probability path here, because it *will* conceptually or rhetorically pay off later" because as the table illustrates there is no notion of later. But what if we could learn one? 
 
@@ -109,7 +110,7 @@ The reward model has seen complete sequences and encodes information about how t
 <!-- 
 This seems like an interesting way to overcome the hurdles we discussed earlier, however, there remains one major issue: we are still playing the wrong language game. As interesting as optimization toward something as ineffable as human preference may be, it's still rooted in a context that doesn't quite fit ExO, primarily because it's the context in which preferences map to coherence, rule following, legibility, helpfulness, etc.  -->
 
-This seems like an interesting way to overcome the hurdles we discussed earlier, however, a deeper problem remains: aren't we still playing the wrong language game? As interesting as optimization toward something as ineffable as human preference may be, it's still rooted in a context that doesn't quite fit ExO, a context in which preferences likely map to coherence, rule-following, legibility, helpfulness, etc., not the rule-bending violations of ExO.
+This seems like an interesting way to overcome the hurdles we discussed earlier, however, a deeper problem remains: aren't we still playing the wrong language game? As interesting as optimization toward something as ineffable as human preference may be, it's still rooted in a context that doesn't quite fit ExO, a context in which preferences likely map to coherence, rule-following, legibility, helpfulness, etc.
 
 ## Closing Thoughts
 
