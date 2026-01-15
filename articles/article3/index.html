@@ -296,14 +296,14 @@ better.">
       <p><br></p>
       <!-- The model is only ever predicting a single word ahead, but as that prior increases and more closely resembles the excerpt in which our target word occurred the probability increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely. -->
       <p>From an optimization standpoint, the model is only ever
-      rewarded/penalized for predicting the next token. As the
-      conditioning context grows closer to the original passage in which
-      a target word occurred, the probability mass assigned to that word
-      increases. This is why I mentioned sampling techniques earlier
-      because they offer an alternative to building up that prior,
-      instead focusing on strategies to leverage the information we have
-      about the distribution to pick words that may not be the most
-      likely.<a href="#fn4" class="footnote-ref" id="fnref4"
+      rewarded/penalized for predicting a single word (token) ahead. As
+      the conditioning context grows closer to the original passage in
+      which a target word occurred, the probability mass assigned to
+      that word increases. This is why I mentioned sampling techniques
+      earlier because they offer an alternative to building up that
+      prior, instead focusing on strategies to leverage the information
+      we have about the distribution to pick words that may not be the
+      most likely.<a href="#fn4" class="footnote-ref" id="fnref4"
       role="doc-noteref"><sup>4</sup></a></p>
       <p>However, the question remains how would we sample for ExO, and
       what recipe could we concoct (based on token probability masses)
