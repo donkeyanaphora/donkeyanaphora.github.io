@@ -294,13 +294,13 @@ better.">
       </tbody>
       </table>
       <p><br></p>
-      <!-- The model is only ever predicting a single word ahead, but as that prior increases and more closely resembles the excerpt in which our target word occurred the probability increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely. -->
+      <!-- The model is only ever predicting a single word ahead, but as that prior more closely resembles the excerpt in which our target word occurred the probability increases. This is why I mentioned sampling techniques earlier because they offer an alternative to building up that prior, instead focusing on strategies to leverage the information we have about the distribution to pick words that may not be the most likely. -->
       <p>From an optimization standpoint, the model is only ever
       rewarded/penalized for predicting a single word (token) ahead. As
       the conditioning context grows closer to the original passage in
       which a target word occurred, the probability mass assigned to
       that word increases. This is why I mentioned sampling techniques
-      earlier because they offer an alternative to building up that
+      earlier because they offer an alternative over building up that
       prior, instead focusing on strategies to leverage the information
       we have about the distribution to pick words that may not be the
       most likely.<a href="#fn4" class="footnote-ref" id="fnref4"
