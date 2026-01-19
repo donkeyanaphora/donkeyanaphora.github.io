@@ -135,11 +135,13 @@ Just because models can exhibit surprisal or violate semantic expectations (unde
 
 * ⭐️ [Aligning language models to follow instructions](https://openai.com/index/instruction-following/) - *OpenAI*
 * ⭐️ [Understanding the Effects of RLHF on LLM Generalisation and Diversity](https://openreview.net/pdf?id=PXD3FAVHJT) - *ICLR / OpenReview* 
-* ⭐️ [One fish, two fish, but not the whole sea: Alignment reduces language models’ conceptual diversity](https://aclanthology.org/2025.naacl-long.561.pdf) - *NAACL 2025*
+* ⭐️ [Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?](https://arxiv.org/abs/2504.13837) - *arXiv* (Yue et al., 2025)
+* [One fish, two fish, but not the whole sea: Alignment reduces language models’ conceptual diversity](https://aclanthology.org/2025.naacl-long.561.pdf) - *NAACL 2025*
 
 **Fluid/Intelligence Reasoning**
 
 * ⭐️ [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547) - *arXiv* (Chollet, 2019)
+* ⭐️ [Art or Artifice? Large Language Models and the False Promise of Creativity](https://dl.acm.org/doi/10.1145/3613904.3642731) - *CHI 2024* (Chakrabarty et al.)
 * [Towards Benchmarking LLM Diversity & Creativity](https://gwern.net/creative-benchmark) - *Gwern.net*
 
 **Sampling, Diversity & Generation Mechanics**
