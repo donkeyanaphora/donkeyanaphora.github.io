@@ -149,9 +149,10 @@ Just because models can exhibit surprisal or violate semantic expectations (unde
 
 **Diffusion Based Approaches**
 
-* [COMING SOON]
+* ⭐ [Diffusion-LM Improves Controllable Text Generation](https://arxiv.org/abs/2205.14217) - *arXiv* (Li et al., 2022)
+* [Simple and Effective Masked Diffusion Language Models (MDLM)](https://arxiv.org/abs/2406.07524) - *arXiv* (Sahoo et al., 2024)
 
-[^1]: Diffusion-based text generation offers an alternative to autoregressive prediction, see resources section (coming soon).
+[^1]: Diffusion-based text generation offers an alternative to autoregressive prediction, see resources section.
 
 [^2]: **Sociological Influence:** How do we account for the way social and historical contexts shape judgments of novelty and creativity and is it a moving target?<br><br>
 Novelty and creativity are often historically and socially situated. A good deal of what constitutes creativity and novelty is dependent on the historical context in which artistic expressions are judged. Citizen Kane, for example, is often cited as one of the greatest films of all time due to its innovative cinematography and storytelling. However, the cinematic innovations that define this film, such as Toland's use of depth of field, is now a staple in most introductory film courses. Fashion often follows a similar arc, innovative and fresh designs that mark the runway one season saturate the shelves of fast-fashion retailers the next.<br><br>
