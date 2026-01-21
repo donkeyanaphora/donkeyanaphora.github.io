@@ -51,11 +51,11 @@ Shallow fusion's appeal lies in its simplicity and flexibility, as it requires n
 
 However, the approach introduces its own challenges. If the language model is weighted too heavily, it may bias transcriptions toward plausible but incorrect tokens; too lightly, and the domain benefits are lost. Tuning the weighting factor for the external model often requires domain-specific adjustment. In addition, shallow fusion increases inference cost since predictions must run through a second model<sup>2</sup>. These trade-offs make it essential to understand the method's failure modes before deploying it in practice.
 
-## Implementation: Medical Domain Fusion Pipeline
+## Shallow Fusion: Conceptual Overview
 
 Having established the landscape of existing approaches, we can now detail the implementation of shallow fusion for medical ASR, combining Whisper (our ASR model) with a domain-adapted GPT-2 model (our external language model). However, before going into the specifics let us first build some intuition on the topic by analogy. 
 
-### Conceptual Framework
+### Analogy
 
 Consider, for example, a person tasked with transcribing audio from a phone call between a customer and a claims representative at an insurance call center. This transcriber can hear the conversation clearly, but they have very little knowledge of the domain, e.g., the technical issues, procedures, and medical terminology that often come up. Now imagine a second person who has worked in this industry for years and has deep familiarity with the jargon and context, but who is hard of hearing.
 
@@ -86,11 +86,12 @@ where:
 
 The idea is that the ASR model understands phonetics and language in a general sense while the LM model understands the specialized domain in its written form, but has no access to the audio signal. Just like in the analogy from earlier by fusing their predictions, we combine phonetic understanding with domain expertise, aiming to improve the quality of transcriptions for domain-specific terms. Without careful integration or synergy between the two, both models can carry major limitations.
 
-#### Process Diagram:
+### Process Diagram:
 ![diagram](assets/viz.png)
 Reference: Kannan et al. (2017)
 
-### Practical Example
+
+## Practical Example
 
 Consider an example where Whisper serves as our listening expert and GPT-2 as our domain-language expert. In practice these models share a tokenizer making the process of integrating their predictions fairly seamless at least for the English version of Whisper (Radford et al., 2022). Now let's consider a claims call center transcript where an ASR model misinterprets a specialized medical term. 
 
@@ -100,7 +101,7 @@ Consider an example where Whisper serves as our listening expert and GPT-2 as ou
 **Whisper Initial Output:**  
 "The procedure was medically necessary for the treatment of claimant's Tetralogy of below."🚫
 
-#### Step-by-Step Fusion Process
+### Step-by-Step Fusion Process
 
 **1. Whisper Initial Decoding:**
 
@@ -375,17 +376,13 @@ Standard conversational language showed minimal improvement, suggesting that ben
 
 The experimental results highlight several areas for improvement that point toward promising future research directions:
 
-#### Real-World Dataset Validation
-The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as the [Shaip Physician Dictation Dataset](https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology), which requires Databricks account permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
+**Real-World Dataset Validation:** The synthetic evaluation dataset, while useful for proof-of-concept demonstration, limits the generalizability of these findings. Future work should incorporate authentic clinical dictations such as the [Shaip Physician Dictation Dataset](https://marketplace.databricks.com/details/8eb39dd5-ffc4-4e8d-8f89-25d91bf1774b/Shaip_Physician-Dictation-Data-Radiology), which requires Databricks account permissions. Real clinical speech presents challenges absent in synthetic data: background noise, speaker variations, interruptions, and the full complexity of clinical communication patterns.
 
-#### Coverage Penalty
-The current implementation does not make use of a coverage penalty to address premature sequence terminations. This penalty term measures how much of the audio the model actually attended to and candidates that skip large stretches are penalized, while transcripts that cover the whole utterance are preferred. This strategy follows Chorowski & Jaitly (2016) and Kannan et al. (2017) and can be incorporated during generation.
+**Coverage Penalty:** The current implementation does not make use of a coverage penalty to address premature sequence terminations. This penalty term measures how much of the audio the model actually attended to and candidates that skip large stretches are penalized, while transcripts that cover the whole utterance are preferred. This strategy follows Chorowski & Jaitly (2016) and Kannan et al. (2017) and can be incorporated during generation.
 
-#### Learned Gating Mechanisms
-The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty, particularly around medical terminology, the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
+**Learned Gating Mechanisms:** The static λ weighting approach represents a significant limitation. A more sophisticated system would dynamically adjust the influence of the external language model based on acoustic confidence and contextual cues. When Whisper exhibits high confidence in its predictions, the domain model should have minimal influence. Conversely, during periods of acoustic uncertainty, particularly around medical terminology, the fusion weight should increase. Implementing this would likely involve training a small gating network that learns to predict optimal λ values given acoustic features and partial transcript context.
 
-#### Advanced Fusion Architectures
-Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task-specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
+**Advanced Fusion Architectures:** Beyond shallow fusion, **deep fusion** and **cold fusion** approaches warrant investigation. Deep fusion could learn more sophisticated integration by combining hidden states and tuning a task-specific fusion function. Cold fusion could be explored by integrating the domain language model during Whisper's training process, though this would require more substantial computational resources and training data.
 
 ### Broader Implications
 
